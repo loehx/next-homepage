@@ -23,8 +23,9 @@
             "@public": ["public"],
             "@styles/*": ["src/styles/*"],
             "@styles": ["src/styles"]
-        }
+        },
+        "incremental": true
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
     "exclude": ["node_modules"]
 }
