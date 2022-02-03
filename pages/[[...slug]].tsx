@@ -2,7 +2,7 @@ import React from "react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { getEntriesByType, getPageBySlug, getConfig } from "data";
 import { ConfigEntry, PageEntry } from "data/definitions";
-import Page from "./page";
+import Page from "../src/components/page";
 
 interface Props {
     page: PageEntry;
