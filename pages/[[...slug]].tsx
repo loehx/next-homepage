@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { getEntriesByType, getPageBySlug, getConfig } from "data";
 import { ConfigEntry, PageEntry } from "data/definitions";
 import Page from "./page";
-import { Footer } from "@components/footer";
 
 interface Props {
     page: PageEntry;
@@ -11,12 +10,7 @@ interface Props {
 }
 
 const DynamicWrapper: NextPage<Props> = (props: Props) => {
-    return (
-        <>
-            <Page {...props.page} />;
-            <Footer {...props.config.footer} />;
-        </>
-    );
+    return <Page {...props.page} config={props.config} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -32,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const params = (context?.params?.slug as string[]) || [];
-    const slug = "/" + params;
+    const slug = "/" + params.join("/");
     const page = await getPageBySlug(slug);
     const config = await getConfig();
 

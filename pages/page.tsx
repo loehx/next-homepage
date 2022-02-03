@@ -1,15 +1,23 @@
-import React, { FC } from "react";
-import { Flex } from "@chakra-ui/react";
-import { PageEntry } from "data/definitions";
+import React, { FC, useEffect } from "react";
+import { PageEntry, ConfigEntry } from "data/definitions";
 import ContentPart from "../src/contentPart";
+import { Footer, FooterProps } from "@components/footer";
 
-const Page: FC<PageEntry> = (props: PageEntry) => {
+interface Props extends PageEntry {
+    config: ConfigEntry;
+}
+
+const Page: FC<Props> = (props: Props) => {
+    useEffect(() => {
+        document.title = props.title;
+    }, []);
     return (
-        <Flex direction="column" minH="100vh">
+        <div>
             {props.mainContent.map((cp) => (
                 <ContentPart key={cp.id} {...cp} />
             ))}
-        </Flex>
+            <Footer {...(props.config.footer as FooterProps)} />
+        </div>
     );
 };
 

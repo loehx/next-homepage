@@ -46,7 +46,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
                     <ul className={styles.metaNav}>
                         {props.metaNavigation.map((item) => (
                             <li>
-                                <a href={item.slug}>{item.title}</a>
+                                <a href={item.slug}>
+                                    {item.teaserTitle || item.title}
+                                </a>
                             </li>
                         ))}
                     </ul>

@@ -6,7 +6,7 @@
 
 .inner {
     max-width: 1000px;
-    padding: 200px 30px 50px;
+    padding: 200px 30px 30px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -57,7 +57,7 @@
 
 .metaNav a {
     color: white;
-    padding: 10px;
+    padding: 5px 15px;
     display: block;
     transition: all 0.2s ease;
     font-weight: bold;
@@ -78,11 +78,6 @@
     line-height: 0;
     min-width: 400px;
     border-top: 30px solid white;
-    transition: all 0.5s ease-in-out;
-}
-
-.initializing .waves {
-    transform: translateY(150px) rotate(180deg);
 }
 
 .waves svg {

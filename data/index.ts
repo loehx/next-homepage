@@ -16,6 +16,7 @@ export async function getEntriesByType<T extends Entry>(
 }
 
 export async function getPageBySlug(slug: string): Promise<PageEntry> {
+    if (slug[0] === "/") slug = slug.substring(1);
     const result = await contentful.getEntries<PageEntry>({
         content_type: "page",
         "fields.slug[in]": `${slug},/${slug}`,

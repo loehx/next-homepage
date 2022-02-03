@@ -18,6 +18,7 @@ export interface AssetEntry extends Entry {
 
 export interface PageEntry extends Entry {
     title: string;
+    teaserTitle: string;
     description: string;
     mainContent: Array<Entry>;
     slug: string;

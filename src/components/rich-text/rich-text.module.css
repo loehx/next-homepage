@@ -1,0 +1,24 @@
+.wrapper {
+}
+
+.wrapper h1,
+.wrapper h2,
+.wrapper h3 {
+    margin: 15px 0 15px;
+}
+
+.wrapper h1 {
+    font-size: 48px;
+}
+
+.wrapper h2 {
+    font-size: 32px;
+}
+
+.wrapper h3 {
+    font-size: 20px;
+}
+
+.wrapper a {
+    color: red;
+}

@@ -64,12 +64,16 @@ export const Stage: React.FC<StageProps> = (props) => {
                         </div>
                     )}
                 </div>
-                <div
-                    className={styles.phone}
-                    style={{ backgroundImage: `url(${props.phoneImage.url})` }}
-                >
-                    <img src={phoneFrameSrc} alt={props.phoneImage.name} />
-                </div>
+                {props.phoneImage && (
+                    <div
+                        className={styles.phone}
+                        style={{
+                            backgroundImage: `url(${props.phoneImage.url})`,
+                        }}
+                    >
+                        <img src={phoneFrameSrc} alt={props.phoneImage.name} />
+                    </div>
+                )}
             </div>
             <div className={styles.waves}>
                 <svg
