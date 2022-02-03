@@ -1,22 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
 import backgroundVideoSrc from "./background.mp4";
 import backgroundImageSrc from "./background.png";
+import phoneFrameSrc from "./phone-frame.png";
+import { RichText, RichTextValue } from "@components/rich-text";
 
-interface Props {
+export interface StageProps {
     id: string;
     type: string;
     h1: string;
     h2: string;
+    description: RichTextValue;
     phoneImage: {
         name: string;
         url: string;
     };
+    logo: {
+        name: string;
+        url: string;
+    };
+    logoWidth: number;
 }
 
-export const Stage: React.FC<Props> = (props) => {
+export const Stage: React.FC<StageProps> = (props) => {
+    const [initializing, setInitializing] = useState(true);
+    const classNames = [styles.stage];
+    if (initializing) classNames.push(styles.initializing);
+
+    console.log(props);
+
+    useEffect(() => {
+        setTimeout(() => setInitializing(false));
+    }, []);
+
     return (
-        <div className={styles.stage}>
+        <div className={classNames.join(" ")}>
             <div className={styles.background}>
                 <img src={backgroundImageSrc} alt="Background Image" />
                 <video
@@ -24,8 +42,35 @@ export const Stage: React.FC<Props> = (props) => {
                     src={backgroundVideoSrc}
                     loop
                     autoPlay
+                    muted
                     controls={false}
                 ></video>
+            </div>
+            <div className={styles.inner}>
+                <div className={styles.intro}>
+                    {props.logo && (
+                        <div className={styles.logo}>
+                            <img
+                                src={props.logo.url}
+                                alt={props.logo.name}
+                                width={props.logoWidth}
+                            />
+                        </div>
+                    )}
+                    {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
+                    {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
+                    {props.description && (
+                        <div className={styles.description}>
+                            <RichText {...props.description} />
+                        </div>
+                    )}
+                </div>
+                <div
+                    className={styles.phone}
+                    style={{ backgroundImage: `url(${props.phoneImage.url})` }}
+                >
+                    <img src={phoneFrameSrc} alt={props.phoneImage.name} />
+                </div>
             </div>
             <div className={styles.waves}>
                 <svg
@@ -39,11 +84,6 @@ export const Stage: React.FC<Props> = (props) => {
                         className={styles.wavesFill}
                     ></path>
                 </svg>
-            </div>
-            <pre>{JSON.stringify(props, null, 3)}</pre>
-            <div className={styles.intro}>
-                {props.h1 && <h1>{props.h1}</h1>}
-                {props.h2 && <h2>{props.h2}</h2>}
             </div>
         </div>
     );
