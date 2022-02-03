@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
-import backgroundVideoSrc from "./background.mp4";
-import backgroundImageSrc from "./background.png";
+import backgroundVideoSrc from "../../assets/background.mp4";
+import backgroundImageSrc from "../../assets/background.png";
 import phoneFrameSrc from "./phone-frame.png";
 import { RichText, RichTextValue } from "@components/rich-text";
 
@@ -38,7 +38,6 @@ export const Stage: React.FC<StageProps> = (props) => {
             <div className={styles.background}>
                 <img src={backgroundImageSrc} alt="Background Image" />
                 <video
-                    className="styles.background"
                     src={backgroundVideoSrc}
                     loop
                     autoPlay

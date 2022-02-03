@@ -12,10 +12,8 @@ test("Config looks promising", async () => {
     expect(config.type).toBe("config");
     expect(config.startPage).toBeDefined();
     expect(config.startPage.type).toBe("page");
-    expect(config.mainNavigation).toBeDefined();
-    expect(config.mainNavigation.type).toBe("navigation");
-    expect(config.footerNavigation).toBeDefined();
-    expect(config.footerNavigation.type).toBe("navigation");
+    expect(config.footer).toBeDefined();
+    expect(config.footer.type).toBe("footer");
 });
 
 test("Pages can be fetched", async () => {

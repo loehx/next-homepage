@@ -1,0 +1,97 @@
+.footer {
+    position: relative;
+    height: auto;
+    overflow: hidden;
+}
+
+.inner {
+    max-width: 1000px;
+    padding: 200px 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 auto;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.background img,
+.background video {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.text {
+    position: relative;
+    color: white;
+    background-color: rgb(0 0 0 / 32%);
+    padding: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.text a {
+}
+
+.text p:last-child {
+    margin: 0;
+}
+
+.metaNav {
+    position: relative;
+    list-style: none;
+    background-color: rgb(0 0 0 / 32%);
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+}
+
+.metaNav a {
+    color: white;
+    padding: 10px;
+    display: block;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.metaNav a:hover {
+    background-color: white;
+    color: #c40180;
+}
+
+.waves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    min-width: 400px;
+    border-top: 30px solid white;
+    transition: all 0.5s ease-in-out;
+}
+
+.initializing .waves {
+    transform: translateY(150px) rotate(180deg);
+}
+
+.waves svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+}
+
+.wavesFill {
+    fill: #ffffff;
+}

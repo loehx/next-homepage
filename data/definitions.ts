@@ -8,18 +8,12 @@ export interface ConfigEntry extends Entry {
     name: string;
     favicon: AssetEntry;
     startPage: PageEntry;
-    mainNavigation: NavigationEntry;
-    footerNavigation: NavigationEntry;
+    footer: Entry;
 }
 
 export interface AssetEntry extends Entry {
     name: string;
     url: string;
-}
-
-export interface NavigationEntry extends Entry {
-    name: string;
-    items: Array<PageEntry>;
 }
 
 export interface PageEntry extends Entry {
