@@ -1,0 +1,14 @@
+{
+  "../node_modules/next/dist/client/index.js -> ../pages/_error": {
+    "id": 9651,
+    "files": [
+      "static/chunks/651.e7ad805f32a091cd.js"
+    ]
+  },
+  "_app.tsx -> webfontloader": {
+    "id": 5933,
+    "files": [
+      "static/chunks/933.aa8f563f58b6ce60.js"
+    ]
+  }
+}

@@ -1,18 +1,20 @@
 import React from "react";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { Document } from "@contentful/rich-text-types";
 import styles from "./rich-text.module.css";
 export type RichTextValue = Document;
 
 export const RichText: React.FC<RichTextValue> = (document: RichTextValue) => {
+    const html = documentToHtmlString(document, {
+        renderNode: {
+            ["paragraph"]: (node, next) =>
+                `<p>${next(node.content).replace(/\n/g, `</br>`)}</p>`,
+        },
+    });
     return (
-        <div className={styles.wrapper}>
-            {documentToReactComponents(document, {
-                renderText: (text) =>
-                    text
-                        .split("\n")
-                        .flatMap((text, i) => [i > 0 && <br />, text]),
-            })}
-        </div>
+        <div
+            className={styles.wrapper}
+            dangerouslySetInnerHTML={{ __html: html }}
+        ></div>
     );
 };

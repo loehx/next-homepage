@@ -1,5 +1,6 @@
-# next-homepage
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4b24e0e9-81fe-4b2b-ac76-36dc779fef8f/deploy-status)](https://app.netlify.com/sites/loehx/deploys)
 
+# next-homepage
 
 This project was generated with [superplate](https://github.com/pankod/superplate).
 
@@ -31,13 +32,11 @@ superplate is a Next.js all-in-one project generator. Create your project with t
 
 To learn more about **superplate**, please check out the [Documentation](https://github.com/pankod/superplate).
 
-
 ### **Chakra UI**
 
 Chakra UI is a simple, modular and accessible component library that gives you the building blocks you need to build your React applications.
 
 [Go To Documentation](https://chakra-ui.com/docs/getting-started)
-
 
 ### **SASS/SCSS**
 
@@ -45,13 +44,11 @@ Sass is a stylesheet language that’s compiled to CSS. It allows you to use var
 
 [Go To Documentation](https://sass-lang.com/documentation)
 
-
 ### **Fetch**
 
 Next.js has a built-in polyfill for the fetch API. You don&#39;t need to worry about using it on either server or client side.
 
 [Go To Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-
 
 ### **ESLint**
 
@@ -59,14 +56,11 @@ A pluggable and configurable linter tool for identifying and reporting on patter
 
 [Go To Documentation](https://eslint.org/docs/user-guide/getting-started)
 
-
 ### **Prettier**
 
 An opinionated code formatter; Supports many languages; Integrates with most editors.
 
 [Go To Documentation](https://prettier.io/docs/en/index.html)
-
-
 
 ## License
 
