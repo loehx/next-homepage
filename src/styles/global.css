@@ -10,6 +10,10 @@ body {
         "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+html.wf-loading {
+    color: transparent !important;
+}
+
 .page {
     min-height: 100vh;
     display: flex;

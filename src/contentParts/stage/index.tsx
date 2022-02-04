@@ -4,6 +4,7 @@ import backgroundVideoSrc from "../../assets/background.mp4";
 import backgroundImageSrc from "../../assets/background.png";
 import phoneFrameSrc from "./phone-frame.png";
 import { RichText, RichTextValue } from "@components/rich-text";
+import { useInitializeClass } from "src/hooks";
 
 export interface StageProps {
     id: string;
@@ -23,18 +24,10 @@ export interface StageProps {
 }
 
 export const Stage: React.FC<StageProps> = (props) => {
-    const [initializing, setInitializing] = useState(true);
-    const classNames = [styles.stage];
-    if (initializing) classNames.push(styles.initializing);
-
-    console.log(props);
-
-    useEffect(() => {
-        setTimeout(() => setInitializing(false));
-    }, []);
+    const classNames = useInitializeClass(styles.initializing, styles.stage);
 
     return (
-        <div className={classNames.join(" ")}>
+        <div className={classNames}>
             <div className={styles.background}>
                 <img src={backgroundImageSrc} alt="Background Image" />
                 <video

@@ -16,7 +16,7 @@ function loadFonts() {
     import("webfontloader").then((WebFont) => {
         WebFont.load({
             google: {
-                families: ["Droid Sans", "Righteous"],
+                families: ["Droid Sans:300,400,600", "Righteous:400"],
             },
         });
     });

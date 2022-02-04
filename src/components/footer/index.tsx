@@ -4,6 +4,7 @@ import backgroundVideoSrc from "../../assets/background.mp4";
 import backgroundImageSrc from "../../assets/background.png";
 import { RichText, RichTextValue } from "@components/rich-text";
 import { PageEntry } from "data/definitions";
+import { useInitializeClass } from "src/hooks";
 
 export interface FooterProps {
     id: string;
@@ -14,18 +15,10 @@ export interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = (props) => {
-    const [initializing, setInitializing] = useState(true);
-    const classNames = [styles.footer];
-    if (initializing) classNames.push(styles.initializing);
-
-    console.log(props);
-
-    useEffect(() => {
-        setTimeout(() => setInitializing(false));
-    }, []);
+    const classNames = useInitializeClass(styles.initializing, styles.footer);
 
     return (
-        <div className={classNames.join(" ")}>
+        <div className={classNames}>
             <div className={styles.background}>
                 <img src={backgroundImageSrc} alt="Background Image" />
                 <video
