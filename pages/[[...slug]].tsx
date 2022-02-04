@@ -24,7 +24,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context: any) => {
     const params = (context?.params?.slug as string[]) || [];
     const slug = "/" + params.join("/");
     const page = await getPageBySlug(slug);
