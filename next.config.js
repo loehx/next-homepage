@@ -14,5 +14,6 @@ module.exports = withPlugins(
             disableStaticImages: true,
         },
         exportTrailingSlash: true,
+        distDir: "build",
     },
 );
