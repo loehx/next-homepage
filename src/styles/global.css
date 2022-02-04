@@ -20,3 +20,11 @@ html.wf-loading {
     flex-direction: column;
     justify-content: space-between;
 }
+
+a,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
