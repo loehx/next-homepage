@@ -1,3 +1,5 @@
+import data from "data";
+import { ConfigEntry } from "data/definitions";
 import { useEffect, useState } from "react";
 
 export const useInitializeClass = (
@@ -15,4 +17,13 @@ export const useInitializeClass = (
     }, []);
 
     return classNames.join(" ");
+};
+
+export const useConfig = (): ConfigEntry | undefined => {
+    const [config, setConfig] = useState<ConfigEntry>();
+    useEffect(() => {
+        data.getConfig().then((config) => setConfig(config));
+    }, []);
+
+    return config;
 };

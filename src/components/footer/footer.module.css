@@ -6,8 +6,9 @@
 
 .inner {
     max-width: 1000px;
-    padding: 200px 30px 30px;
+    padding: 120px 30px 30px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
     margin: 0 auto;
@@ -24,10 +25,10 @@
 .background img,
 .background video {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .text {
@@ -54,6 +55,7 @@
     border-radius: 5px;
     padding: 5px;
     display: flex;
+    margin: 15px 0 0;
 }
 
 .metaNav a {
@@ -85,7 +87,7 @@
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
-    height: 150px;
+    height: 80px;
 }
 
 .wavesFill {

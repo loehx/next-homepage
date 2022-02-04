@@ -229,7 +229,13 @@
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
-    height: 150px;
+    height: 50px;
+}
+
+@media only screen and (min-width: 800px) {
+    .waves svg {
+        height: 150px;
+    }
 }
 
 .wavesFill {

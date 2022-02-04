@@ -9,6 +9,7 @@ export interface ConfigEntry extends Entry {
     favicon: AssetEntry;
     startPage: PageEntry;
     footer: Entry;
+    currentCV: AssetEntry;
 }
 
 export interface AssetEntry extends Entry {
@@ -22,4 +23,24 @@ export interface PageEntry extends Entry {
     description: string;
     mainContent: Array<Entry>;
     slug: string;
+}
+
+export interface LinkEntry extends Entry {
+    name: string;
+    url: string;
+    image: AssetEntry;
+}
+
+export interface CompanyEntry extends Entry {
+    name: string;
+    fullName: string;
+    url: string;
+    logo: AssetEntry;
+}
+
+export interface TechnologyEntry extends Entry {
+    name: string;
+    fullName: string;
+    url: string;
+    logo: AssetEntry;
 }
