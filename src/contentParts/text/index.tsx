@@ -14,13 +14,9 @@ export interface TextProps {
 
 export const Text: React.FC<TextProps> = (props) => {
     return (
-        <div className={styles.text}>
+        <div className={styles.wrapper}>
             <div className={styles.inner}>
-                {props.text && (
-                    <div className={styles.text}>
-                        <RichText {...props.text} />
-                    </div>
-                )}
+                {props.text && <RichText {...props.text} />}
             </div>
         </div>
     );

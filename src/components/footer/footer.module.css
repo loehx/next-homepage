@@ -6,7 +6,7 @@
 
 .inner {
     max-width: 1000px;
-    padding: 120px 30px 30px;
+    padding: 150px 30px 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -80,7 +80,7 @@
     overflow: hidden;
     line-height: 0;
     min-width: 400px;
-    border-top: 30px solid white;
+    border-top: 60px solid white;
 }
 
 .waves svg {

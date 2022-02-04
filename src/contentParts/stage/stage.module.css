@@ -107,12 +107,7 @@
     border-radius: 5px;
     margin-top: 15px;
     transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.4s;
-    padding: 15px 15px 5px 15px;
-}
-
-.description p {
-    margin-top: 0;
-    margin-bottom: 10px;
+    padding: 15px;
 }
 
 .initializing .description {

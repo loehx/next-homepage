@@ -15,7 +15,7 @@ const renderLink = (link: LinkEntry) => {
         if (config) link.url = config.currentCV.url;
     }
 
-    const readableUrl = link.url.replace(/[\w]+[:][/]*|[/]+/gi, "");
+    const readableUrl = link.url.replace(/[\w]+[:][/]*|^[/]+/gi, "");
     return (
         <li key={link.id}>
             <a href={link.url} target="_blank">

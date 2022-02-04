@@ -8,6 +8,7 @@ body {
     padding: 0;
     font-family: "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 16px;
 }
 
 html.wf-loading {

@@ -1,8 +1,16 @@
-.text {
+.wrapper {
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 1000px;
 }
 
 .inner {
-    margin: 0 auto;
+    position: relative;
+    margin: 0;
     max-width: 1000px;
-    padding: 30px;
+}
+
+.inner p {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 18px;
 }

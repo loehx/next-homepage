@@ -2,6 +2,14 @@
     letter-spacing: 0.5px;
 }
 
+.wrapper *:first-child {
+    margin-top: 0;
+}
+
+.wrapper p {
+    margin: 1em 0 0;
+}
+
 .wrapper h1,
 .wrapper h2,
 .wrapper h3 {
@@ -43,4 +51,15 @@
 
 .wrapper a:hover:before {
     width: 110%;
+}
+
+.wrapper ul {
+    margin: 0;
+}
+
+.wrapper li {
+    margin: 0.25em 0 0 0;
+}
+.wrapper li p {
+    margin: 0;
 }
