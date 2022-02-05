@@ -7,6 +7,7 @@ export const client = contentful.createClient({
     accessToken: config.accessToken,
     space: config.space,
     environment: config.environment,
+    removeUnresolved: true,
 });
 
 const DEFAULT_OPTIONS = {

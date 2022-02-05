@@ -10,18 +10,26 @@ export interface ImageTextProps extends Entry {
     text: RichTextValue;
     image: AssetEntry;
     imageRight: boolean;
+    imageWidth: number;
 }
 
 export const ImageText: React.FC<ImageTextProps> = (props) => {
+    const imageStyle =
+        props.imageWidth > 0
+            ? { flexBasis: `${props.imageWidth}%` }
+            : undefined;
     return (
         <div className={styles.wrapper}>
             <div className={styles.inner}>
-                {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
+                {props.h2 && <h2 className={styles.title}>{props.h2}</h2>}
                 <div className={props.imageRight ? styles.imageRight : ""}>
-                    <div className={styles.imageWrapper}>
+                    <div className={styles.imageWrapper} style={imageStyle}>
                         <img src={props.image.url} alt={props.image.name} />
                     </div>
                     <div className={styles.textWrapper}>
+                        {props.h2 && (
+                            <h2 className={styles.title}>{props.h2}</h2>
+                        )}
                         <RichText {...props.text} />
                     </div>
                 </div>

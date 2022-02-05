@@ -6,9 +6,10 @@ html,
 body {
     margin: 0;
     padding: 0;
-    font-family: "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    font-family: "Open Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 300;
 }
 
 html.wf-loading {
@@ -20,6 +21,19 @@ html.wf-loading {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 600;
+}
+
+b,
+strong {
+    font-weight: 600;
 }
 
 a,

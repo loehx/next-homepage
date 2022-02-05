@@ -100,9 +100,9 @@
 
 .description {
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     text-align: left;
-    font-weight: bold;
+    font-weight: 600;
     background-color: rgb(0 0 0 / 32%);
     border-radius: 5px;
     margin-top: 15px;

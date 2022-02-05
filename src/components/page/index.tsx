@@ -3,12 +3,14 @@ import { PageEntry, ConfigEntry } from "data/definitions";
 import ContentPart from "../../contentPart";
 import { Footer, FooterProps } from "@components/footer";
 import Head from "next/head";
+import { useInitializeClass } from "src/hooks";
 
 interface Props extends PageEntry {
     config: ConfigEntry;
 }
 
 const Page: FC<Props> = (props: Props) => {
+    const className = useInitializeClass("initialize", "page");
     return (
         <>
             <Head>
@@ -17,7 +19,7 @@ const Page: FC<Props> = (props: Props) => {
                 <meta name="description" content={props.description} />
                 <meta name="author" content="Alexander Löhn" />
             </Head>
-            <div className="page">
+            <div className={className}>
                 {props.mainContent.map((cp) => (
                     <ContentPart key={cp.id} {...cp} />
                 ))}

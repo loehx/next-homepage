@@ -6,7 +6,7 @@
 
 .inner {
     max-width: 1000px;
-    padding: 150px 30px 30px;
+    padding: 200px 30px 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -36,7 +36,7 @@
     color: white;
     background-color: rgb(0 0 0 / 32%);
     padding: 15px;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 16px;
     border-radius: 5px;
 }
@@ -87,7 +87,7 @@
     position: relative;
     display: block;
     width: calc(100% + 1.3px);
-    height: 80px;
+    height: 120px;
 }
 
 .wavesFill {
