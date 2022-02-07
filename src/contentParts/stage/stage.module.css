@@ -133,14 +133,21 @@
 
 .description {
     color: white;
-    font-size: 16px;
+    font-size: 12px;
     text-align: left;
-    font-weight: 600;
+    font-weight: 500;
     background-color: rgb(0 0 0 / 32%);
     border-radius: 5px;
     margin-top: 15px;
     transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.8s;
     padding: 15px;
+}
+
+@media only screen and (min-width: 800px) {
+    .description {
+        font-size: 16px;
+        font-weight: 600;
+    }
 }
 
 .initializing .description {

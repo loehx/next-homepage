@@ -15,7 +15,7 @@
     flex-wrap: wrap;
 }
 
-@media only screen and (min-width: 1000px) {
+/* @media only screen and (min-width: 1000px) {
     .list:hover .project:not(.open):not(.show) {
         filter: blur(3px);
     }
@@ -25,7 +25,7 @@
         filter: blur(0px) !important;
         outline: 2px solid #1980fc !important;
     }
-}
+} */
 
 .project {
     position: relative;
@@ -100,7 +100,7 @@
 .description {
     font-size: 16px;
     opacity: 0.8;
-    margin-top: 15px;
+    margin-top: 5px;
 }
 
 .panelRight {
