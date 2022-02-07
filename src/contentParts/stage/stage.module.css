@@ -44,17 +44,29 @@
     margin: 0 auto;
     position: relative;
     height: 100%;
-    padding: 30px 30px 150px 30px;
+    padding: 30px 30px 120px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column-reverse;
+}
+
+@media only screen and (min-width: 800px) {
+    .inner {
+        flex-direction: row;
+        padding: 30px 30px 150px 30px;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        transition: all 0.4s cubic-bezier(0.68, -0.37, 0.29, 2);
+    }
 }
 
 .logo {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    transition: all 0.4s cubic-bezier(0.68, -0.37, 0.29, 2);
+    display: none;
 }
 
 .initializing .logo {
@@ -65,7 +77,7 @@
     position: relative;
     font-family: Righteous;
     color: white;
-    font-size: 40px;
+    font-size: 35px;
     line-height: 1.2;
     margin: 0;
     opacity: 1;
@@ -118,6 +130,7 @@
     opacity: 1;
     transform: translateY(0);
     transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.3s;
+    margin-top: 30px;
 }
 
 .initializing .h2 {
@@ -128,6 +141,7 @@
 @media only screen and (min-width: 800px) {
     .h2 {
         font-size: 20px;
+        margin-top: 0;
     }
 }
 
@@ -190,32 +204,58 @@
 }
 
 .phone {
-    display: none;
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+    box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
+    border-radius: 17px;
+    width: 100px;
+    height: 204.5px;
+    transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.5s,
+        border-radius 0s linear 0s,
+        background-position 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 2s;
+    transform: translate(0);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.initializing .phone {
+    top: 100%;
+    right: -50px;
+    transform: scale(0.8) rotate(-5deg);
+    box-shadow: none;
+}
+
+.phone:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out 1.2s;
+    border-radius: 17px;
+}
+
+.initializing .phone:before {
+    opacity: 1;
+}
+
+.phone img {
+    position: relative;
+    transform-origin: right;
+    width: 100%;
 }
 
 @media only screen and (min-width: 800px) {
     .phone {
-        display: block;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        overflow: hidden;
-        box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
         border-radius: 45px;
         width: 300px;
         height: 613.5px;
-        transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.5s,
-            background-position 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 2s;
-        transform: translate(0);
-        filter: blur(0);
-    }
-
-    .initializing .phone {
-        top: 100%;
-        right: -50px;
-        transform: scale(0.8) rotate(-5deg);
-        box-shadow: none;
-        filter: blur(0.5);
     }
 
     @media only screen and (max-height: 900px) {
@@ -226,25 +266,9 @@
         }
     }
 
-    .phone:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        background-color: black;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out 1.2s;
-    }
-
-    .initializing .phone:before {
-        opacity: 1;
-    }
-
     .phone img {
-        position: relative;
         height: 100%;
+        width: auto;
     }
 }
 
