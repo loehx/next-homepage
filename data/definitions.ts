@@ -23,6 +23,10 @@ export interface PageEntry extends Entry {
     description: string;
     mainContent: Array<Entry>;
     slug: string;
+    ogtitle: string;
+    ogdescription: string;
+    ogurl: string;
+    ogimage: AssetEntry;
 }
 
 export interface LinkEntry extends Entry {

@@ -15,5 +15,6 @@ module.exports = withPlugins(
         },
         exportTrailingSlash: true,
         target: "serverless",
+        compress: false,
     },
 );

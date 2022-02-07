@@ -9,6 +9,9 @@ interface Props extends PageEntry {
     config: ConfigEntry;
 }
 
+const renderOG = (name: string, value: string) =>
+    value && <meta property={name} content={value} />;
+
 const Page: FC<Props> = (props: Props) => {
     const className = useInitializeClass("initialize", "page");
     return (
@@ -18,6 +21,13 @@ const Page: FC<Props> = (props: Props) => {
                 <link rel="shortcut icon" href={props.config.favicon.url} />
                 <meta name="description" content={props.description} />
                 <meta name="author" content="Alexander Löhn" />
+                {renderOG("og:image", props.ogimage?.url)}
+                {renderOG("og:title", props.ogtitle)}
+                {renderOG("og:description", props.ogdescription)}
+                {renderOG("og:url", props.ogurl)}
+                {renderOG("og:locale", "de_DE")}
+                {renderOG("og:site_name", "Alexander Löhn")}
+                {renderOG("og:type", "website")}
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (

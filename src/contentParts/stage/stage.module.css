@@ -51,6 +51,10 @@
     flex-direction: column-reverse;
 }
 
+.logo {
+    display: none;
+}
+
 @media only screen and (min-width: 800px) {
     .inner {
         flex-direction: row;
@@ -63,10 +67,6 @@
         margin-bottom: 30px;
         transition: all 0.4s cubic-bezier(0.68, -0.37, 0.29, 2);
     }
-}
-
-.logo {
-    display: none;
 }
 
 .initializing .logo {
