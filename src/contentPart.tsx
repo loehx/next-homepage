@@ -4,6 +4,10 @@ import { Stage, StageProps } from "./contentParts/stage";
 import { Text, TextProps } from "./contentParts/text";
 import { LinksModule, LinksModuleProps } from "./contentParts/linksModule";
 import { ImageText, ImageTextProps } from "./contentParts/imageText";
+import {
+    ProjectsModule,
+    ProjectsModuleProps,
+} from "./contentParts/projectsModule";
 
 const Page: FC<Entry> = (props: Entry) => {
     return (
@@ -15,6 +19,9 @@ const Page: FC<Entry> = (props: Entry) => {
             )}
             {props.type === "linksmodule" && (
                 <LinksModule {...(props as LinksModuleProps)} />
+            )}
+            {props.type === "projectsmodule" && (
+                <ProjectsModule {...(props as ProjectsModuleProps)} />
             )}
 
             {/* ADD MORE COMPONENTS HERE ... */}

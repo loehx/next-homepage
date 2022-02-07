@@ -1,0 +1,216 @@
+.wrapper {
+}
+
+.inner {
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 30px;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media only screen and (min-width: 1000px) {
+    .list:hover .project:not(.open):not(.show) {
+        filter: blur(3px);
+    }
+
+    .list:hover .project:not(.open):not(.show):hover,
+    .list .project:not(.show):focus {
+        filter: blur(0px) !important;
+        outline: 2px solid #1980fc !important;
+    }
+}
+
+.project {
+    position: relative;
+    flex-basis: 100%;
+    max-width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid rgb(211, 211, 211);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transform: translateY(0%);
+    padding: 15px;
+    cursor: pointer;
+}
+
+.project.show {
+    filter: blur(0px);
+    border: 1px solid #ad0054;
+    outline: 2px solid #ad0054;
+}
+
+.project.hide {
+    display: none;
+}
+
+@media only screen and (min-width: 1000px) {
+    .project.hide {
+        display: flex;
+        filter: blur(3px);
+        opacity: 0.7;
+        user-select: none;
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .project {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .imageWrapper {
+        display: block;
+        flex-shrink: 0;
+        width: 120px;
+        padding-top: 15px;
+    }
+}
+
+.project:hover {
+    z-index: 1;
+}
+
+.textWrapper {
+    flex-basis: 100%;
+}
+
+.fromTo {
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.name {
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.description {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-top: 15px;
+}
+
+.panelRight {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+}
+
+@media only screen and (min-width: 1000px) {
+    .panelRight {
+        width: auto;
+        height: 100%;
+    }
+}
+
+.techLogos {
+    display: flex;
+    padding-left: 15px;
+    align-items: center;
+}
+.techLogos img {
+    height: 40px;
+    width: 40px;
+}
+@media only screen and (min-width: 1000px) {
+    .techLogos {
+        margin-top: 0px;
+    }
+}
+.moreTech {
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.imageWrapper {
+    display: none;
+}
+
+.imageWrapper img {
+    max-width: 100%;
+}
+
+.filterBar {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.filter {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 5px;
+    color: #ad0054;
+    display: block;
+    cursor: pointer;
+}
+
+.filter.reset {
+    transform: scale(2);
+}
+
+.filter:hover {
+    color: #ad0054;
+}
+
+.filter.active {
+    outline: 2px solid #ad0054;
+    color: #ad0054;
+}
+
+.initHide {
+    display: none;
+}
+
+.companyLogoWrapper {
+    display: none;
+}
+@media only screen and (min-width: 1000px) {
+    .companyLogoWrapper {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .companyLogoWrapper img {
+        width: 150px;
+        height: 150px;
+        margin: -35px 0;
+        overflow: hidden;
+    }
+}
+
+.details {
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.details dt {
+    margin: 0;
+    width: 100px;
+    padding-right: 15px;
+    margin-bottom: 10px;
+}
+.details dd {
+    margin: 0;
+    flex-basis: calc(100% - 100px);
+    font-weight: 500;
+    margin-bottom: 10px;
+}

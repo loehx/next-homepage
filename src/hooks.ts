@@ -12,7 +12,7 @@ export const useInitializeClass = (
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            setTimeout(() => setInitializing(false));
+            setTimeout(() => setInitializing(false), 100);
         }
     }, []);
 

@@ -41,11 +41,14 @@
     transform: translateY(0%);
     box-shadow: 0 0 0 0 rgb(0 0 0 / 56%);
     transition: all 0.1s ease-in-out;
+    outline: 2px solid transparent;
 }
 
 @media (hover: hover) {
-    .list a:hover {
+    .list a:hover,
+    .list a:focus {
         filter: blur(0px) !important;
+        outline: 2px solid #1980fc;
     }
 
     .list:hover a {
@@ -72,7 +75,7 @@
 
 .name {
     display: block;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
 }
 
@@ -80,9 +83,10 @@
     max-width: 90%;
     width: 360px;
     display: block;
+    font-size: 16px;
     text-overflow: ellipsis;
     overflow: hidden;
     word-wrap: break-word;
     white-space: nowrap;
-    color: rgba(0 0 0 / 40%);
+    color: rgba(0 0 0 / 60%);
 }

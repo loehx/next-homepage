@@ -44,3 +44,31 @@ export interface TechnologyEntry extends Entry {
     url: string;
     logo: AssetEntry;
 }
+
+export interface ProjectEntry extends Entry {
+    name: string;
+    description: string;
+    from: string;
+    to: string;
+    role: string;
+    sector: string;
+    url: string;
+    company: CompanyEntry;
+    technologies: TechnologyEntry[];
+    moreTechnologies: string;
+    team: string;
+}
+
+export interface TechnologyEntry extends Entry {
+    name: string;
+    fullName: string;
+    url: string;
+    logo: AssetEntry;
+}
+
+export interface CompanyEntry extends Entry {
+    name: string;
+    fullName: string;
+    url: string;
+    logo: AssetEntry;
+}

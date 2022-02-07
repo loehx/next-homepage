@@ -5,6 +5,38 @@
     max-height: 1400px;
     position: relative;
     overflow: hidden;
+    /* background: linear-gradient(270deg, #00a6fe, #ad0054 80%);
+    background-size: 150% 150%; */
+    /* -webkit-animation: AnimationName 10s ease infinite;
+    animation: AnimationName 10s ease infinite; */
+}
+
+/* @-webkit-keyframes AnimationName {
+    0% {
+        background-position: 0% 90%;
+    }
+    50% {
+        background-position: 90% 4%;
+    }
+    100% {
+        background-position: 0% 150%;
+    }
+}
+@keyframes AnimationName {
+    0% {
+        background-position: 0% 90%;
+    }
+    50% {
+        background-position: 90% 4%;
+    }
+    100% {
+        background-position: 0% 150%;
+    }
+} */
+
+.stage.initializing * {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
 }
 
 .inner {
@@ -22,7 +54,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
-    transition: all 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 0.1s;
+    transition: all 0.4s cubic-bezier(0.68, -0.37, 0.29, 2);
 }
 
 .initializing .logo {
@@ -40,7 +72,7 @@
     padding: 0 15px;
     text-align: center;
     transform: translateY(0);
-    transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.2s;
+    transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.5s;
 }
 
 .initializing .h1 {
@@ -68,7 +100,8 @@
     }
 
     .initializing .h1:before {
-        width: 0;
+        width: 0%;
+        transition: all 0s ease-out 0s;
     }
 }
 
@@ -106,7 +139,7 @@
     background-color: rgb(0 0 0 / 32%);
     border-radius: 5px;
     margin-top: 15px;
-    transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.4s;
+    transition: all 0.3s cubic-bezier(0.68, -0.37, 0.29, 2) 0.8s;
     padding: 15px;
 }
 
@@ -164,7 +197,7 @@
         border-radius: 45px;
         width: 300px;
         height: 613.5px;
-        transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.3s,
+        transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.5s,
             background-position 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 2s;
         transform: translate(0);
         filter: blur(0);
