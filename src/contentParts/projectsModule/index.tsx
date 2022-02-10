@@ -26,7 +26,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                 {props.title && <h2 className={styles.h2}>{props.title}</h2>}
                 <div className={styles.filterBar}>
                     {props.techFilter.map((tech) => (
-                        <a
+                        <span
                             key={tech.id}
                             className={cx(
                                 styles.filter,
@@ -35,15 +35,15 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             onClick={() => setTechFilter(tech.id)}
                         >
                             {tech.name}
-                        </a>
+                        </span>
                     ))}
                     {techFilter && (
-                        <a
+                        <span
                             className={cx(styles.filter, styles.reset)}
                             onClick={() => setTechFilter(undefined)}
                         >
                             &times;
-                        </a>
+                        </span>
                     )}
                 </div>
                 <ul className={cx(styles.list)}>
