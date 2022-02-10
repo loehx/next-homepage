@@ -5,18 +5,27 @@
 }
 
 .inner {
-    max-width: 1000px;
-    padding: 30px 30px 30px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
+    padding: 100px 30px 30px;
     margin: 0 auto;
     z-index: 1;
     position: relative;
-    height: 45vw;
-    min-height: 450px;
-    max-height: 600px;
+
+    flex-direction: row;
+}
+
+@media only screen and (min-width: 800px) {
+    .inner {
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 30px;
+        max-width: 1000px;
+        height: 45vw;
+        min-height: 450px;
+        max-height: 600px;
+        flex-direction: row;
+    }
 }
 
 .background {
@@ -39,7 +48,6 @@
 .text {
     position: relative;
     color: white;
-    background-color: rgb(0 0 0 / 32%);
     padding: 15px;
     font-weight: 600;
     font-size: 16px;

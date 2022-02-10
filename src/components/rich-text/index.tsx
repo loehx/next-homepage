@@ -3,10 +3,10 @@ import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { Document, INLINES } from "@contentful/rich-text-types";
 import styles from "./rich-text.module.css";
 import cx from "classnames";
-
+export type RichTextValue = Document;
 interface Props {
-    document: Document;
-    darkBackground: boolean;
+    document: RichTextValue;
+    darkBackground?: boolean;
 }
 
 export const RichText: React.FC<Props> = (props: Props) => {
