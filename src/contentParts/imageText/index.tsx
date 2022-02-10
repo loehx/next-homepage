@@ -30,7 +30,7 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                         {props.h2 && (
                             <h2 className={styles.title}>{props.h2}</h2>
                         )}
-                        <RichText {...props.text} />
+                        <RichText document={props.text} />
                     </div>
                 </div>
             </div>
