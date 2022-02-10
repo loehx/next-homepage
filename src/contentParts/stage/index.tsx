@@ -60,7 +60,10 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
                     {props.description && (
                         <div className={styles.description}>
-                            <RichText {...props.description} />
+                            <RichText
+                                document={props.description}
+                                darkBackground={true}
+                            />
                         </div>
                     )}
                 </div>

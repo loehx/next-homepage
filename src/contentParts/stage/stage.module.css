@@ -146,7 +146,6 @@
 }
 
 .description {
-    color: white;
     font-size: 12px;
     text-align: left;
     font-weight: 500;
@@ -274,11 +273,17 @@
 
 .waves {
     position: absolute;
-    bottom: -5vw;
+    bottom: 0;
     left: 0;
     width: 100%;
     overflow: hidden;
     line-height: 0;
+}
+
+@media only screen and (min-width: 800px) {
+    .waves {
+        bottom: -5vw;
+    }
 }
 
 .waves svg {

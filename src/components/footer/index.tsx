@@ -16,23 +16,26 @@ export interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.footer);
-
+    const isMobile =
+        typeof window !== "undefined" ? window.innerWidth < 800 : true;
     return (
         <div className={classNames}>
             <div className={styles.background}>
                 <img src={backgroundImageSrc} alt="Background Image" />
-                <video
-                    src={backgroundVideoSrc}
-                    loop
-                    autoPlay
-                    muted
-                    controls={false}
-                ></video>
+                {!isMobile && (
+                    <video
+                        src={backgroundVideoSrc}
+                        loop
+                        autoPlay
+                        muted
+                        controls={false}
+                    ></video>
+                )}
             </div>
             <div className={styles.inner}>
                 {props.text && (
                     <div className={styles.text}>
-                        <RichText {...props.text} />
+                        <RichText document={props.text} darkBackground={true} />
                     </div>
                 )}
                 {props.metaNavigation && (

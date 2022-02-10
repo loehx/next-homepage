@@ -62,3 +62,15 @@
 .wrapper li p {
     margin: 0;
 }
+
+.darkBackground {
+    color: white;
+}
+
+.darkBackground a {
+    color: white;
+}
+
+.darkBackground a::before {
+    content: none;
+}

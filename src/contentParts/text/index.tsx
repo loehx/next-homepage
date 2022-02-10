@@ -16,7 +16,7 @@ export const Text: React.FC<TextProps> = (props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.inner}>
-                {props.text && <RichText {...props.text} />}
+                {props.text && <RichText document={props.text} />}
             </div>
         </div>
     );
