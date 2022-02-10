@@ -27,3 +27,34 @@ export const useConfig = (): ConfigEntry | undefined => {
 
     return config;
 };
+
+export interface Dimensions {
+    x: number;
+    y: number;
+}
+
+export const useBrowserDimensions = (
+    d: Dimensions = { x: 375, y: 667 }, // iPhone SE
+): Dimensions => {
+    const [dimensions, setDimensions] = useState<Dimensions>(d);
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setDimensions({
+                x: window.innerWidth,
+                y: window.innerHeight,
+            });
+        }
+    }, []);
+
+    return dimensions;
+};
+
+export const useIsMobile = (defaultValue: boolean): boolean => {
+    const [isMobile, setIsMobile] = useState(true);
+    const dimensions = useBrowserDimensions();
+    useEffect(() => {
+        setIsMobile(dimensions.x <= 800);
+    }, [dimensions]);
+
+    return isMobile;
+};

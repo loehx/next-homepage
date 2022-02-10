@@ -20,7 +20,10 @@ const renderLink = (link: LinkEntry) => {
         <li key={link.id}>
             <a href={link.url} target="_blank">
                 <div className={styles.imageWrapper}>
-                    <img src={link.image.url} alt={link.image.name} />
+                    <img
+                        src={link.image.url + "?w=100"}
+                        alt={link.image.name}
+                    />
                 </div>
                 <div className={styles.textWrapper}>
                     <span className={styles.name}>{link.name}</span>
