@@ -204,13 +204,16 @@
 
 .details dt {
     margin: 0;
-    width: 100px;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: 115px;
+    opacity: 0.8;
     padding-right: 15px;
     margin-bottom: 10px;
 }
 .details dd {
     margin: 0;
-    flex-basis: calc(100% - 100px);
+    flex-basis: calc(100% - 115px);
     font-weight: 500;
     margin-bottom: 10px;
 }

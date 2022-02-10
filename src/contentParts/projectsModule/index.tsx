@@ -48,7 +48,11 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                 </div>
                 <ul className={cx(styles.list)}>
                     {projects.map((p) => (
-                        <Project project={p} techFilter={techFilter} />
+                        <Project
+                            project={p}
+                            techFilter={techFilter}
+                            key={p.id}
+                        />
                     ))}
                 </ul>
             </div>

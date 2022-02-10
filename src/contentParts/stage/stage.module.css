@@ -58,7 +58,7 @@
 @media only screen and (min-width: 800px) {
     .inner {
         flex-direction: row;
-        padding: 30px 30px 150px 30px;
+        padding: 30px 30px 250px 30px;
     }
 
     .logo {
@@ -274,29 +274,21 @@
 
 .waves {
     position: absolute;
-    bottom: 0;
+    bottom: -5vw;
     left: 0;
     width: 100%;
     overflow: hidden;
     line-height: 0;
-    transform: rotate(180deg);
-    min-width: 400px;
-    border-top: 30px solid white;
 }
 
 .waves svg {
     position: relative;
     display: block;
-    width: calc(100% + 1.3px);
-    height: 50px;
+    width: calc(100%);
 }
 
 @media only screen and (min-width: 800px) {
     .waves svg {
-        height: 150px;
+        max-height: 600px;
     }
-}
-
-.wavesFill {
-    fill: #ffffff;
 }

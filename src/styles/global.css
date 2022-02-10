@@ -10,6 +10,7 @@ body {
         "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 18px;
     font-weight: 300;
+    min-width: 320px;
 }
 
 html.wf-loading * {

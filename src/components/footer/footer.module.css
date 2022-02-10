@@ -6,12 +6,14 @@
 
 .inner {
     max-width: 1000px;
-    padding: 200px 30px 30px;
+    padding: 25vw 30px 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
     margin: 0 auto;
+    z-index: 1;
+    position: relative;
 }
 
 .background {
@@ -74,22 +76,16 @@
 
 .waves {
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 0;
     width: 100%;
     overflow: hidden;
     line-height: 0;
-    min-width: 400px;
-    border-top: 60px solid white;
+    transform: rotate(180deg);
 }
 
 .waves svg {
     position: relative;
     display: block;
-    width: calc(100% + 1.3px);
-    height: 120px;
-}
-
-.wavesFill {
-    fill: #ffffff;
+    max-height: 500px;
 }

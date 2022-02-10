@@ -37,14 +37,16 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             <div className={styles.textWrapper}>
                 <div className={styles.name}>{project.name}</div>
                 <div className={styles.description}>{project.description}</div>
-                <div className={styles.fromTo}>
-                    {project.from} - {project.to || "today"}
-                </div>
+                {!open && (
+                    <div className={styles.fromTo}>
+                        {project.from} - {project.to || "today"}
+                    </div>
+                )}
 
                 {open && (
                     <dl className={styles.details}>
                         {renderDetail(
-                            "From/To",
+                            "From / To",
                             project.from + " - " + (project.to || "today"),
                         )}
                         {renderDetail("Description", project.description)}
@@ -58,10 +60,10 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 )}
             </div>
             <div className={styles.panelRight}>
-                {open && (
+                {open && project.company?.logo && (
                     <div className={styles.companyLogoWrapper}>
                         <img
-                            src={project.company.logo?.url}
+                            src={project.company.logo?.url + "?w=300"}
                             alt={project.company.fullName}
                             title={project.company.fullName}
                         />
@@ -71,7 +73,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                     {project.technologies.map((t) => (
                         <img
                             key={t.id}
-                            src={t.logo.url}
+                            src={t.logo.url + "?w=80"}
                             alt={t.name}
                             title={t.fullName}
                         />
