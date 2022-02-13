@@ -61,6 +61,8 @@
 }
 
 .imageWrapper {
+    width: 90px;
+    height: 90px;
     padding: 20px;
 }
 
@@ -71,6 +73,13 @@
 .textWrapper {
     flex-basis: 100%;
     overflow: hidden;
+    padding: 15px 15px 15px 0;
+}
+
+@media only screen and (min-width: 1000px) {
+    .textWrapper {
+        padding: 0;
+    }
 }
 
 .name {
@@ -79,14 +88,19 @@
     font-weight: 400;
 }
 
-.url {
+.description {
     max-width: 90%;
     width: 360px;
     display: block;
-    font-size: 16px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-wrap: break-word;
-    white-space: nowrap;
+    font-size: 14px;
     color: rgba(0 0 0 / 60%);
+    word-wrap: break-word;
+}
+
+@media only screen and (min-width: 1000px) {
+    .description {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }

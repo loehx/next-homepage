@@ -42,11 +42,12 @@ export function mapEntry<T extends Entry>(entry: contentful.Entry<unknown>): T {
 
     return result as T;
 }
-function mapAsset(entry: contentful.Entry<unknown>): AssetEntry {
+function mapAsset(entry: contentful.Entry<unknown>): AssetEntry | null {
+    if (!(<any>entry.fields).file) return null;
     return {
         id: entry.sys.id,
         type: "asset",
         name: (<any>entry.fields).title,
-        url: (<any>entry.fields).file.url,
+        url: (<any>entry.fields).file?.url || null,
     };
 }

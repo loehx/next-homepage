@@ -3,11 +3,19 @@ import { Entry, ConfigEntry } from "./definitions";
 import config from "./config.json";
 import { mapEntry } from "./mapping";
 
+const isDev = process.env.NODE_ENV === "development";
+
 export const client = contentful.createClient({
     accessToken: config.accessToken,
     space: config.space,
     environment: config.environment,
     removeUnresolved: true,
+    ...(!isDev
+        ? {}
+        : {
+              accessToken: config.previewAccessToken,
+              host: "preview.contentful.com",
+          }),
 });
 
 const DEFAULT_OPTIONS = {

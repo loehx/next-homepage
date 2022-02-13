@@ -10,15 +10,24 @@ export interface LinksModuleProps extends Entry {
 }
 
 const renderLink = (link: LinkEntry) => {
-    if (link.url === "config.currentCV") {
+    let href = link.url;
+
+    if (href && href === "config.currentCV") {
         const config = useConfig();
         if (config) link.url = config.currentCV.url;
     }
 
-    const readableUrl = link.url.replace(/[\w]+[:][/]*|^[/]+/gi, "");
+    if (link.file) {
+        href = link.file.url;
+    }
+
     return (
         <li key={link.id}>
-            <a href={link.url} target="_blank">
+            <a
+                href={href}
+                target="_blank"
+                title={link.description || styles.name}
+            >
                 <div className={styles.imageWrapper}>
                     <img
                         src={link.image.url + "?w=100"}
@@ -27,7 +36,9 @@ const renderLink = (link: LinkEntry) => {
                 </div>
                 <div className={styles.textWrapper}>
                     <span className={styles.name}>{link.name}</span>
-                    <span className={styles.url}>{readableUrl}</span>
+                    <span className={styles.description}>
+                        {link.description}
+                    </span>
                 </div>
             </a>
         </li>

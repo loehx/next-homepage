@@ -31,8 +31,10 @@ export interface PageEntry extends Entry {
 
 export interface LinkEntry extends Entry {
     name: string;
+    description: string;
     url: string;
     image: AssetEntry;
+    file: AssetEntry;
 }
 
 export interface CompanyEntry extends Entry {
