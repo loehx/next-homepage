@@ -10,21 +10,10 @@ export interface LinksModuleProps extends Entry {
 }
 
 const renderLink = (link: LinkEntry) => {
-    let href = link.url;
-
-    if (href && href === "config.currentCV") {
-        const config = useConfig();
-        if (config) link.url = config.currentCV.url;
-    }
-
-    if (link.file) {
-        href = link.file.url;
-    }
-
     return (
         <li key={link.id}>
             <a
-                href={href}
+                href={link.file?.url || link.url}
                 target="_blank"
                 title={link.description || styles.name}
             >

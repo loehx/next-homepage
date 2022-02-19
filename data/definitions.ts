@@ -9,7 +9,6 @@ export interface ConfigEntry extends Entry {
     favicon: AssetEntry;
     startPage: PageEntry;
     footer: Entry;
-    currentCV: AssetEntry;
 }
 
 export interface AssetEntry extends Entry {
