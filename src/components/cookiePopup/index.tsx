@@ -26,6 +26,9 @@ export const CookiePopup: React.FC<CookiePopupProps> = (props) => {
             const style = `background-image: url(${props.backgroundImage.url}); ${props.cookiePopupCss}`;
             (popupRef.current as any).setAttribute("style", style);
         }
+        setTimeout(() => {
+            setHidden(true);
+        }, 12000);
     }, []);
     return (
         <div className={cx(classNames, hidden && styles.hidden)}>
