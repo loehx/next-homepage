@@ -1,0 +1,21 @@
+.closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none !important;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+
+.closeButton:active {
+    transform: translateY(1px);
+}
+
+.closeButton:before {
+    display: inline-block;
+    content: "\00d7";
+}

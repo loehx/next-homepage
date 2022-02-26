@@ -26,10 +26,6 @@ export const Stage: React.FC<StageProps> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.stage);
     const isMobile = useIsMobile(true);
 
-    useEffect(() => {
-        console.log("AAA");
-    }, [typeof window]);
-
     return (
         <div className={classNames}>
             <div className={styles.background}>

@@ -9,6 +9,7 @@ export interface ConfigEntry extends Entry {
     favicon: AssetEntry;
     startPage: PageEntry;
     footer: Entry;
+    cookiePopup: Entry;
 }
 
 export interface AssetEntry extends Entry {

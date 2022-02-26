@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export const useInitializeClass = (
     initClass: string,
     baseClass: string,
+    delay = 100,
 ): string => {
     const [initializing, setInitializing] = useState(true);
     const classNames = [baseClass];
@@ -12,7 +13,7 @@ export const useInitializeClass = (
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            setTimeout(() => setInitializing(false), 100);
+            setTimeout(() => setInitializing(false), delay);
         }
     }, []);
 
