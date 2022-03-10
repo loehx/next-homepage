@@ -8,6 +8,7 @@ import {
     useIsMobile,
 } from "src/hooks";
 import { AssetEntry } from "data/definitions";
+import { AvailabilityStatus } from "@components/availabilityStatus";
 
 export interface StageProps {
     id: string;
@@ -68,15 +69,21 @@ export const Stage: React.FC<StageProps> = (props) => {
                     )}
                 </div>
                 {props.phoneImage && (
-                    <div
-                        className={styles.phone}
-                        style={{
-                            backgroundImage: `url(${props.phoneImage.url}?w=${
-                                isMobile ? 200 : 400
-                            })`,
-                        }}
-                    >
-                        <img src={phoneFrameSrc} alt={props.phoneImage.name} />
+                    <div className={styles.phoneWrapper}>
+                        <div
+                            className={styles.phone}
+                            style={{
+                                backgroundImage: `url(${
+                                    props.phoneImage.url
+                                }?w=${isMobile ? 200 : 400})`,
+                            }}
+                        >
+                            <img
+                                src={phoneFrameSrc}
+                                alt={props.phoneImage.name}
+                            />
+                        </div>
+                        <AvailabilityStatus availableFrom="2022-08-14" />
                     </div>
                 )}
             </div>

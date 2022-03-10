@@ -34,24 +34,6 @@
     font-family: Righteous;
 }
 
-.wrapper a:before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    height: 0.5em;
-    bottom: -0.1em;
-    background-color: yellow;
-    z-index: -1;
-    width: 0;
-    transition: all 0.2s ease-in-out;
-    transform: translateX(-50%);
-    border-radius: 3px;
-}
-
-.wrapper a:hover:before {
-    width: 110%;
-}
-
 .wrapper ul {
     margin: 0;
 }

@@ -99,7 +99,6 @@
 .description {
     font-size: 16px;
     opacity: 0.8;
-    margin-top: 5px;
 }
 
 .panelRight {
@@ -156,7 +155,7 @@
     font-size: 16px;
     line-height: 1;
     border-radius: 5px;
-    color: #ad0054;
+    color: var(--primary);
     display: block;
     cursor: pointer;
     border: 2px solid transparent;
