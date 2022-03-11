@@ -9,6 +9,7 @@ import {
 } from "src/hooks";
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
+import { Window } from "@components/window";
 
 export interface StageProps {
     id: string;
@@ -21,6 +22,7 @@ export interface StageProps {
     logoWidth: number;
     backgroundImage: AssetEntry;
     backgroundVideo: AssetEntry;
+    text: string;
 }
 
 export const Stage: React.FC<StageProps> = (props) => {
@@ -60,12 +62,10 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
                     {props.description && (
-                        <div className={styles.description}>
-                            <RichText
-                                document={props.description}
-                                darkBackground={true}
-                            />
-                        </div>
+                        <Window
+                            className={styles.description}
+                            text={props.text}
+                        />
                     )}
                 </div>
                 {props.phoneImage && (

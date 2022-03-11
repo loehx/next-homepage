@@ -1,0 +1,64 @@
+.window {
+    background-color: var(--grey-5);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
+    padding: 15px;
+}
+
+.windowInner {
+    padding: 10px 0;
+    font-family: var(--text-mono);
+    color: var(--grey-1);
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 1.8;
+    counter-reset: line;
+}
+
+@media only screen and (min-width: 800px) {
+    .windowInner {
+        font-size: 14px;
+    }
+}
+
+.windowInner > * {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding-left: 2em;
+    padding-right: 1em;
+}
+
+.windowInner > *:before {
+    counter-increment: line;
+    content: counter(line);
+    display: block;
+    position: absolute;
+    left: 0.25em;
+    opacity: 0.5;
+}
+
+.actions {
+}
+
+.actions > * {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.actions > *:nth-child(1) {
+    background-color: var(--red);
+}
+
+.actions > *:nth-child(2) {
+    background-color: var(--yellow);
+}
+
+.actions > *:nth-child(3) {
+    background-color: var(--green);
+}

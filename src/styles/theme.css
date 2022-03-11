@@ -1,7 +1,15 @@
 :root {
     --black: rgb(30, 30, 30);
     --primary: #d02f82;
-    --secondary: #1c7cfa;
-    --green: #8bc34a;
-    --red: #dd3d38;
+    --secondary: hsl(214, 96%, 55%);
+    --green: #00ce22;
+    --red: #ff4f52;
+    --yellow: #ffbb00;
+    --grey-1: #f0f0f0;
+    --grey-2: #e0e0e0;
+    --grey-3: #b3b3b3;
+    --grey-4: #707070;
+    --grey-5: #272c35;
+
+    --text-mono: "JetBrains Mono", monospace, "courier new";
 }
