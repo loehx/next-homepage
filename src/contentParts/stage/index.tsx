@@ -83,7 +83,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                                 alt={props.phoneImage.name}
                             />
                         </div>
-                        <AvailabilityStatus availableFrom="2022-08-14" />
+                        <div className={styles.availability}>
+                            <AvailabilityStatus availableFrom="2022-08-14" />
+                        </div>
                     </div>
                 )}
             </div>

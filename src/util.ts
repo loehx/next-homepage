@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export function daysUntil(date: string | Date): number {
+    console.log("AAA", moment(date));
     return moment(date).diff(moment(), "day") + 1;
 }
 

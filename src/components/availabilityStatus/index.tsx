@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./availabilityStatus.module.css";
 import { RichText, RichTextValue } from "@components/rich-text";
 import { AssetEntry, PageEntry } from "data/definitions";
@@ -21,7 +21,11 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
         styles.initializing,
         styles.availabilityStatusWrapper,
     );
-    const daysUntilAvailable = util.daysUntil(props.availableFrom);
+
+    const daysUntilAvailable = useMemo(
+        () => util.daysUntil(props.availableFrom),
+        [],
+    );
     const isAvailable = daysUntilAvailable <= 0;
     const [secondsUntil, setSecondsUntil] = useState(0);
 

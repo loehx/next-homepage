@@ -22,8 +22,8 @@ export const Window: React.FC<WindowProps> = ({
                 <span></span>
             </div>
             <div className={styles.windowInner}>
-                {lines.map((line) => (
-                    <pre>{line || "\u00A0"}</pre>
+                {lines.map((line, i) => (
+                    <pre key={i}>{line || "\u00A0"}</pre>
                 ))}
             </div>
         </div>

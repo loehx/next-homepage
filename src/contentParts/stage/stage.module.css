@@ -243,3 +243,11 @@
         max-height: 600px;
     }
 }
+
+.availability {
+    transition: all 0.3s ease 2s;
+}
+
+.initializing .availability {
+    opacity: 0;
+}
