@@ -17,7 +17,7 @@
     margin: 0 auto;
     position: relative;
     height: 100%;
-    padding: 30px 30px 120px 30px;
+    padding: 15px 15px 120px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -245,9 +245,16 @@
 }
 
 .availability {
+    display: none;
     transition: all 0.3s ease 2s;
 }
 
 .initializing .availability {
     opacity: 0;
+}
+
+@media only screen and (min-width: 800px) {
+    .availability {
+        display: block;
+    }
 }

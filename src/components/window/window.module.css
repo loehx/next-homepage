@@ -8,10 +8,9 @@
 
 .windowInner {
     padding: 10px 0;
-    font-family: var(--text-mono);
     color: var(--grey-1);
     font-weight: normal;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.8;
     counter-reset: line;
 }
@@ -26,17 +25,25 @@
     display: block;
     position: relative;
     margin: 0;
-    padding-left: 2em;
-    padding-right: 1em;
+    padding-left: 0;
+    padding-right: 0;
+    font-family: var(--text-mono);
 }
 
-.windowInner > *:before {
-    counter-increment: line;
-    content: counter(line);
-    display: block;
-    position: absolute;
-    left: 0.25em;
-    opacity: 0.5;
+@media only screen and (min-width: 800px) {
+    .windowInner > * {
+        padding-left: 2em;
+        padding-right: 1em;
+    }
+
+    .windowInner > *:before {
+        counter-increment: line;
+        content: counter(line);
+        display: block;
+        position: absolute;
+        left: 0.25em;
+        opacity: 0.5;
+    }
 }
 
 .actions {
