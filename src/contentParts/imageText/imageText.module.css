@@ -18,6 +18,53 @@
     .inner > h2 {
         display: none;
     }
+
+    .inner:before {
+        content: "";
+        position: absolute;
+        left: 60%;
+        top: 0;
+        width: 800px;
+        height: 800px;
+        border-right: 15px solid var(--primary);
+        border-radius: 50%;
+        filter: blur(30px);
+        -webkit-animation: spin 30s linear infinite;
+        -moz-animation: spin 30s linear infinite;
+        animation: spin 30s linear infinite;
+    }
+
+    .inner:after {
+        content: "";
+        position: absolute;
+        left: 70%;
+        top: 10%;
+        width: 600px;
+        height: 600px;
+        border-right: 15px solid var(--yellow);
+        border-radius: 50%;
+        filter: blur(30px);
+        -webkit-animation: spin 20s linear infinite;
+        -moz-animation: spin 20s linear infinite;
+        animation: spin 20s linear infinite;
+    }
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 .imageWrapper {
