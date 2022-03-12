@@ -45,20 +45,14 @@
     object-position: center;
 }
 
-.text {
-    position: relative;
-    color: white;
-    padding: 15px 0;
-    font-weight: 600;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-.text a {
-}
-
-.text p:last-child {
-    margin: 0;
+@media only screen and (min-width: 800px) {
+    .infoText {
+        position: absolute;
+        left: 50%;
+        top: 100px;
+        transform: translateX(-50%);
+        width: 600px;
+    }
 }
 
 .metaNav {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./footer.module.css";
 import { RichText, RichTextValue } from "@components/rich-text";
 import { AssetEntry, PageEntry } from "data/definitions";
+import { Window } from "@components/window";
 import {
     useBrowserDimensions,
     useInitializeClass,
@@ -13,6 +14,7 @@ export interface FooterProps {
     type: string;
     name: string;
     text: RichTextValue;
+    infoText: string;
     metaNavigation: PageEntry[];
     backgroundImage: AssetEntry;
     backgroundVideo: AssetEntry;
@@ -41,10 +43,8 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 )}
             </div>
             <div className={styles.inner}>
-                {props.text && (
-                    <div className={styles.text}>
-                        <RichText document={props.text} darkBackground={true} />
-                    </div>
+                {props.infoText && (
+                    <Window className={styles.infoText} text={props.infoText} />
                 )}
                 {props.metaNavigation && (
                     <ul className={styles.metaNav}>

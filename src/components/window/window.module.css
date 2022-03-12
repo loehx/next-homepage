@@ -4,6 +4,7 @@
     border-radius: 5px;
     box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
     padding: 15px;
+    max-width: 100%;
 }
 
 .windowInner {
@@ -28,11 +29,12 @@
     padding-left: 0;
     padding-right: 0;
     font-family: var(--text-mono);
+    white-space: pre-wrap;
 }
 
 @media only screen and (min-width: 800px) {
     .windowInner > * {
-        padding-left: 2em;
+        padding-left: 2.5em;
         padding-right: 1em;
     }
 
