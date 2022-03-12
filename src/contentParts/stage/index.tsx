@@ -16,7 +16,6 @@ export interface StageProps {
     type: string;
     h1: string;
     h2: string;
-    description: RichTextValue;
     phoneImage: AssetEntry;
     logo: AssetEntry;
     logoWidth: number;
@@ -61,7 +60,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                     )}
                     {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
-                    {props.description && (
+                    {props.text && (
                         <Window
                             className={styles.description}
                             text={props.text}

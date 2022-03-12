@@ -13,7 +13,6 @@ export interface FooterProps {
     id: string;
     type: string;
     name: string;
-    text: RichTextValue;
     infoText: string;
     metaNavigation: PageEntry[];
     backgroundImage: AssetEntry;
