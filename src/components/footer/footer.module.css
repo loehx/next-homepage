@@ -2,6 +2,7 @@
     position: relative;
     height: auto;
     overflow: hidden;
+    margin-top: 50px;
 }
 
 .inner {
@@ -11,20 +12,15 @@
     margin: 0 auto;
     z-index: 1;
     position: relative;
-
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 @media only screen and (min-width: 800px) {
     .inner {
-        justify-content: space-between;
-        align-items: flex-end;
         padding: 30px;
         max-width: 1000px;
-        height: 45vw;
-        min-height: 450px;
-        max-height: 600px;
-        flex-direction: row;
     }
 }
 
@@ -45,14 +41,8 @@
     object-position: center;
 }
 
-@media only screen and (min-width: 800px) {
-    .infoText {
-        position: absolute;
-        left: 50%;
-        top: 100px;
-        transform: translateX(-50%);
-        width: 600px;
-    }
+.infoText {
+    max-width: 600px;
 }
 
 .metaNav {
@@ -62,7 +52,7 @@
     border-radius: 5px;
     padding: 5px;
     display: flex;
-    margin: 15px 0 0;
+    margin: 50px 0 0;
 }
 
 .metaNav a {

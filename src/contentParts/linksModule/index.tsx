@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Entry, LinkEntry } from "data/definitions";
 import styles from "./linksModule.module.css";
 import { useConfig } from "src/hooks";
+import Tilt from "react-parallax-tilt";
 
 export interface LinksModuleProps extends Entry {
     name: string;
@@ -12,24 +13,31 @@ export interface LinksModuleProps extends Entry {
 const renderLink = (link: LinkEntry) => {
     return (
         <li key={link.id}>
-            <a
-                href={link.file?.url || link.url}
-                target="_blank"
-                title={link.description || styles.name}
+            <Tilt
+                className={styles.tilt}
+                tiltMaxAngleX={10}
+                tiltMaxAngleY={10}
+                scale={1.05}
             >
-                <div className={styles.imageWrapper}>
-                    <img
-                        src={link.image.url + "?w=100"}
-                        alt={link.image.name}
-                    />
-                </div>
-                <div className={styles.textWrapper}>
-                    <span className={styles.name}>{link.name}</span>
-                    <span className={styles.description}>
-                        {link.description}
-                    </span>
-                </div>
-            </a>
+                <a
+                    href={link.file?.url || link.url}
+                    target="_blank"
+                    title={link.description || styles.name}
+                >
+                    <div className={styles.imageWrapper}>
+                        <img
+                            src={link.image.url + "?w=100"}
+                            alt={link.image.name}
+                        />
+                    </div>
+                    <div className={styles.textWrapper}>
+                        <span className={styles.name}>{link.name}</span>
+                        <span className={styles.description}>
+                            {link.description}
+                        </span>
+                    </div>
+                </a>
+            </Tilt>
         </li>
     );
 };
