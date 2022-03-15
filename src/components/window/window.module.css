@@ -52,12 +52,19 @@
 }
 
 .actions > * {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     overflow: hidden;
     display: inline-block;
     margin-right: 6px;
+}
+
+@media only screen and (min-width: 800px) {
+    .actions > * {
+        width: 12px;
+        height: 12px;
+    }
 }
 
 .actions > *:nth-child(1) {

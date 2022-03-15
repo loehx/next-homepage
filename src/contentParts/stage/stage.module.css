@@ -17,11 +17,17 @@
     margin: 0 auto;
     position: relative;
     height: 100%;
-    padding: 15px 15px 120px 15px;
+    padding: 15px 15px 100px 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     flex-direction: column-reverse;
+}
+
+@media only screen and (min-width: 800px) {
+    .inner {
+        justify-content: space-between;
+    }
 }
 
 .intro > * {
@@ -81,7 +87,7 @@
     font-size: 12px;
     font-weight: bold;
     line-height: 1.2;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 5px;
@@ -96,7 +102,13 @@
 }
 
 .description {
-    margin-top: 30px;
+    margin-top: 20px;
+}
+
+@media only screen and (min-width: 800px) {
+    .description {
+        margin-top: 30px;
+    }
 }
 
 .intro {
