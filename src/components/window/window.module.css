@@ -25,11 +25,13 @@
     font-size: 11px;
     line-height: 1.8;
     counter-reset: line;
+    letter-spacing: -0.2px;
 }
 
 @media only screen and (min-width: 800px) {
     .windowInner {
         font-size: 14px;
+        letter-spacing: 0px;
     }
 }
 
