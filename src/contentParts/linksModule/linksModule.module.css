@@ -57,7 +57,9 @@
 @media (hover: hover) and (min-width: 800px) {
     .tilt:hover {
         background: linear-gradient(var(--secondary) -60%, var(--primary) 140%);
-        color: white;
+    }
+    .tilt:hover a {
+        color: white !important;
     }
     .tilt:hover:before {
         content: "";
