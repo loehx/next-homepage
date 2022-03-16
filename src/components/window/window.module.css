@@ -3,12 +3,13 @@
     color: white;
     border-radius: 5px;
     box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
-    padding: 15px;
+    padding: 20px;
     max-width: 100%;
 }
 
 .windowInner {
-    padding-top: 10px;
+    padding-top: 15px;
+    padding-bottom: 5px;
     color: var(--grey-1);
     font-weight: normal;
     font-size: 11px;
@@ -78,4 +79,16 @@
 
 .actions > *:nth-child(3) {
     background-color: var(--green);
+}
+
+.windowInner em {
+    background: -webkit-linear-gradient(
+        45deg,
+        var(--primary) -30%,
+        var(--secondary) 110%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: brightness(2);
+    font-weight: bold;
 }

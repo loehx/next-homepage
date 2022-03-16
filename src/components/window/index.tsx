@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./window.module.css";
 import cx from "classnames";
+import { renderMarkdown } from "src/util";
 
 interface WindowProps {
     className: string;
@@ -12,7 +13,14 @@ export const Window: React.FC<WindowProps> = ({
     text,
     ...props
 }) => {
-    const lines = text.split("\n");
+    const html = renderMarkdown(text)
+        .replaceAll("<p>", "")
+        .replaceAll("</p>", "\n");
+    const lines = html.split("\n");
+
+    while (!lines[lines.length - 1]) {
+        lines.pop();
+    }
 
     return (
         <div className={cx(className, styles.window)} {...props}>
@@ -23,7 +31,10 @@ export const Window: React.FC<WindowProps> = ({
             </div>
             <div className={styles.windowInner}>
                 {lines.map((line, i) => (
-                    <pre key={i}>{line || "\u00A0"}</pre>
+                    <pre
+                        key={i}
+                        dangerouslySetInnerHTML={{ __html: line || "&nbsp;" }}
+                    ></pre>
                 ))}
             </div>
         </div>

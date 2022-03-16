@@ -10,12 +10,10 @@ export const client = contentful.createClient({
     space: config.space,
     environment: config.environment,
     removeUnresolved: true,
-    ...(!isDev
-        ? {}
-        : {
-              accessToken: config.previewAccessToken,
-              host: "preview.contentful.com",
-          }),
+    ...(isDev && {
+        accessToken: config.previewAccessToken,
+        host: "preview.contentful.com",
+    }),
 });
 
 const DEFAULT_OPTIONS = {

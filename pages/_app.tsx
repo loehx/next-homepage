@@ -20,7 +20,7 @@ function loadFonts() {
                 families: [
                     "Nunito:300,400,600,700",
                     "Righteous:400",
-                    "JetBrains+Mono",
+                    "JetBrains+Mono:400,800",
                 ],
             },
         });
