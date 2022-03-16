@@ -3,13 +3,23 @@
     color: white;
     border-radius: 5px;
     box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
-    padding: 20px;
+    padding: 40px 20px 20px;
     max-width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.window:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba(0 0 0 / 10%);
+    height: 30px;
 }
 
 .windowInner {
-    padding-top: 15px;
-    padding-bottom: 5px;
     color: var(--grey-1);
     font-weight: normal;
     font-size: 11px;
@@ -51,33 +61,57 @@
 
 .actions {
     line-height: 0;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 .actions > * {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    overflow: hidden;
     display: inline-block;
     margin-right: 6px;
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
-@media only screen and (min-width: 800px) {
-    .actions > * {
-        width: 12px;
-        height: 12px;
+@media only screen and (hover: hover) {
+    .actions > *:before {
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        filter: blur(10px);
+        transition: all 0.2s ease;
+        opacity: 0;
+    }
+
+    .actions > *:hover:before {
+        opacity: 1;
+    }
+
+    .actions > *:active {
+        transform: scale(0.9);
+        filter: brightness(0.8);
     }
 }
 
-.actions > *:nth-child(1) {
+.actions > *:nth-child(1),
+.actions > *:nth-child(1):before {
     background-color: var(--red);
 }
 
-.actions > *:nth-child(2) {
+.actions > *:nth-child(2),
+.actions > *:nth-child(2):before {
     background-color: var(--yellow);
 }
 
-.actions > *:nth-child(3) {
+.actions > *:nth-child(3),
+.actions > *:nth-child(3):before {
     background-color: var(--green);
 }
 

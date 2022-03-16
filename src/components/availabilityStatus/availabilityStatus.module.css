@@ -59,8 +59,9 @@
 }
 .daysUntilAvailable > *:nth-child(2) {
     padding: 10px 10px 5px 10px;
-    font-family: "Righteous";
-    font-size: 40px;
+    font-family: "JetBrains Mono";
+    font-weight: bold;
+    font-size: 32px;
     line-height: 1;
 }
 .daysUntilAvailable > *:nth-child(3) {
