@@ -74,7 +74,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                             style={{
                                 backgroundImage: `url(${
                                     props.phoneImage.url
-                                }?w=${isMobile ? 200 : 400})`,
+                                }?w=${isMobile ? 400 : 800})`,
                             }}
                         >
                             <img
