@@ -25,6 +25,7 @@ const Page: FC<Props> = (props: Props) => {
                 <link rel="shortcut icon" href={config.favicon.url} />
                 <meta name="description" content={props.description} />
                 <meta name="author" content="Alexander Löhn" />
+                <meta name="theme-color" content="#000000"></meta>
                 {renderOG("og:image", props.ogimage?.url)}
                 {renderOG("og:title", props.ogtitle)}
                 {renderOG("og:description", props.ogdescription)}

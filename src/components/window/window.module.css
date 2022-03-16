@@ -8,7 +8,7 @@
 }
 
 .windowInner {
-    padding: 10px 0;
+    padding-top: 10px;
     color: var(--grey-1);
     font-weight: normal;
     font-size: 11px;
@@ -49,6 +49,7 @@
 }
 
 .actions {
+    line-height: 0;
 }
 
 .actions > * {
