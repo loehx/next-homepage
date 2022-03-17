@@ -12,6 +12,7 @@ body {
     font-weight: 300;
     min-width: 320px;
     color: var(--black);
+    overflow-x: hidden;
 }
 
 html.wf-loading * {
