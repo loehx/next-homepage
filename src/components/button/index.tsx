@@ -7,21 +7,25 @@ import cx from "classnames";
 
 export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    text: string;
     primary: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
     className,
-    text,
+    children,
     ...props
 }) => {
     return (
         <button
-            className={cx(styles.btn, styles["btn--primary"], className)}
+            className={cx(
+                {
+                    "p-2": true,
+                },
+                className,
+            )}
             {...props}
         >
-            {text}
+            {children}
         </button>
     );
 };

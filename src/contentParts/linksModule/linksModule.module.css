@@ -17,7 +17,6 @@
 
 .list li {
     position: relative;
-    flex-basis: 100%;
     padding-bottom: 15px;
     max-width: 100%;
 }
@@ -92,7 +91,6 @@
 }
 
 .textWrapper {
-    flex-basis: 100%;
     overflow: hidden;
     padding: 15px 15px 15px 0;
 }

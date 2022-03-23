@@ -8,6 +8,10 @@ import {
     ProjectsModule,
     ProjectsModuleProps,
 } from "./contentParts/projectsModule";
+import {
+    LetterImageGenerator,
+    LetterImageGeneratorProps,
+} from "./contentParts/letterImageGenerator";
 
 const Page: FC<Entry> = (props: Entry) => {
     return (
@@ -22,6 +26,11 @@ const Page: FC<Entry> = (props: Entry) => {
             )}
             {props.type === "projectsmodule" && (
                 <ProjectsModule {...(props as ProjectsModuleProps)} />
+            )}
+            {props.type === "letterimagegenerator" && (
+                <LetterImageGenerator
+                    {...(props as LetterImageGeneratorProps)}
+                />
             )}
 
             {/* ADD MORE COMPONENTS HERE ... */}

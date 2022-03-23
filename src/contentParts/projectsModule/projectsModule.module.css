@@ -98,7 +98,7 @@
 }
 
 .textWrapper {
-    flex-basis: 100%;
+    flex: 1;
 }
 
 .fromTo {
@@ -223,6 +223,7 @@
     font-size: 16px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 1em;
 }
 
 .details dt {

@@ -11,5 +11,7 @@
     --grey-4: #707070;
     --grey-5: #272c35;
 
-    --text-mono: "JetBrains Mono", monospace, "courier new";
+    --font-mono: "JetBrains Mono", monospace, "courier new";
+    --font-default: "Nunito", "sans-serif";
+    --font-headline: "Righteous", "Impact";
 }

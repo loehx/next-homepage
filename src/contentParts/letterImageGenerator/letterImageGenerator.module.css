@@ -1,0 +1,61 @@
+.wrapper {
+    padding: 30px;
+    position: relative;
+}
+
+.inputWrapper {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.textWrapper pre {
+    white-space: nowrap;
+    margin: 0;
+    line-height: 1;
+    width: fit-content;
+}
+
+.dropZone {
+    --accent-color: var(--secondary);
+    position: relative;
+    border: 3px solid var(--accent-color);
+    color: var(--accent-color);
+    border-radius: 5px;
+    font-weight: bold;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    margin-right: 20px;
+    flex-grow: 1;
+}
+
+.dropZone:hover {
+    --accent-color: var(--primary);
+}
+
+.dropZone input,
+.dropZone:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dropZone:before {
+    content: "";
+    opacity: 0.05;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--accent-color),
+        var(--accent-color) 20px,
+        white 20px,
+        white 40px
+    );
+}
