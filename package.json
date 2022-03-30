@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build && next export",
-        "start": "next dev",
+        "start": "next dev -p 8080",
         "deploy": "netlify deploy --build --prod",
         "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
         "prettier": "prettier --write '**/*.{js,jsx,ts,tsx}'",
