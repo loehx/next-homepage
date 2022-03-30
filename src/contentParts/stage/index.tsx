@@ -22,6 +22,7 @@ export interface StageProps {
     backgroundImage: AssetEntry;
     backgroundVideo: AssetEntry;
     text: string;
+    availableFrom: string;
 }
 
 export const Stage: React.FC<StageProps> = (props) => {
@@ -39,7 +40,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                 />
                 {!isMobile && props.backgroundVideo && (
                     <video
-                        src={props.backgroundVideo.url}
+                        src={props.backgroundVideo.url}26185038304435257884
                         loop
                         autoPlay
                         muted
@@ -82,9 +83,13 @@ export const Stage: React.FC<StageProps> = (props) => {
                                 alt={props.phoneImage.name}
                             />
                         </div>
-                        <div className={styles.availability}>
-                            <AvailabilityStatus availableFrom="2022-08-14" />
-                        </div>
+                        {props.availableFrom && (
+                            <div className={styles.availability}>
+                                <AvailabilityStatus
+                                    availableFrom={props.availableFrom}
+                                />
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
