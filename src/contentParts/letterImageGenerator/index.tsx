@@ -3,6 +3,7 @@ import styles from "./letterImageGenerator.module.css";
 import { Entry } from "data/definitions";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { RiArrowLeftRightLine } from "react-icons/ri";
+import cx from "classnames";
 import {
     generatePixelMatrixFromBlob,
     getCharacterMapFromMatrix,
@@ -14,15 +15,13 @@ export interface LetterImageGeneratorProps extends Entry {
 }
 
 export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
-    const config = {
-        resolution: 400,
-    };
     const [file, setFile] = useState<Blob>();
     const [output, setOutput] = useState<string[][]>([]);
     const [matrix, setMatrix] = useState<number[][]>([]);
     const [resolution, setResolution] = useState<number>(50);
+    const [fontSize, setFontSize] = useState<number>(8);
     const [characters, setCharacters] = useState(
-        "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,^`'. ",
+        " .'`^,:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$",
     );
 
     useEffect(() => {
@@ -39,14 +38,6 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
         setOutput(output);
     }, [matrix, characters]);
 
-    const fontSize = useMemo(() => {
-        if (output.length === 0) return;
-        const width = output[0].length;
-        const height = output.length;
-        const n = Math.max(width, height);
-        return `calc(100vw/${n})`;
-    }, [output]);
-
     const text = useMemo(() => {
         if (!output) return;
         return output.map((l) => l.join("")).join("\n");
@@ -59,27 +50,29 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.inputWrapper}>
-                <div className={styles.dropZone}>
+            <div className={cx(styles.inputWrapper, "block md:flex")}>
+                <div className={cx(styles.dropZone, "w-full flex-1 md:mr-6")}>
                     <input
                         type="file"
                         onChange={(e) => setFile((e.target as any).files?.[0])}
                     />
                     Drop your image here
                 </div>
-                <div>
-                    <label>Characters to use:</label>
-                    <input
-                        type="text"
-                        value={characters}
-                        onChange={(e) => setCharacters(e.target.value)}
-                    />
-                    <br />
-                    <button onClick={reverseCharacters} className="p-2">
-                        <RiArrowLeftRightLine />
-                    </button>
-                    <label>Resolution</label>
+                <div className="text-sm mt-6 md:mt-0 flex-shrink-0">
+                    <div className="flex items-center space-x-2">
+                        <label className="block text-sm">Characters:</label>
+                        <input
+                            type="text"
+                            value={characters}
+                            className="border border-grey-200 rounded p-1"
+                            onChange={(e) => setCharacters(e.target.value)}
+                        />
+                        <button onClick={reverseCharacters} className="p-2">
+                            <RiArrowLeftRightLine />
+                        </button>
+                    </div>
                     <div className="flex items-center">
+                        <label>Resolution</label>
                         <button onClick={() => resUp(10)} className="p-2">
                             <FaPlus />
                         </button>
@@ -88,24 +81,33 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
                             <FaMinus />
                         </button>
                     </div>
+                    <div className="flex items-center">
+                        <label>Font size</label>
+                        <button
+                            onClick={() => setFontSize(fontSize + 1)}
+                            className="p-2"
+                        >
+                            <FaPlus />
+                        </button>
+                        <span>{fontSize}px</span>
+                        <button
+                            onClick={() => setFontSize(fontSize - 1)}
+                            className="p-2"
+                        >
+                            <FaMinus />
+                        </button>
+                    </div>
                 </div>
             </div>
             {text && (
-                <div
-                    className="flex justify-center flex-col"
-                    style={{ fontSize }}
-                >
-                    {output.map((l, i) => (
-                        <pre key={"line" + i}>
-                            {l.map((c, i2) =>
-                                c === " " ? (
-                                    <span key={`${i}-${i2}`}>&nbsp;</span>
-                                ) : (
-                                    c
-                                ),
-                            )}
-                        </pre>
-                    ))}
+                <div className="flex items-center flex-col mt-10">
+                    <div className="mx-auto">
+                        This image consists of{" "}
+                        {matrix[0].length * matrix.length} characters
+                    </div>
+                    <pre style={{ fontSize: `${fontSize}px` }}>
+                        {output.map((l) => l.join("") + "\n")}
+                    </pre>
                 </div>
             )}
         </div>
