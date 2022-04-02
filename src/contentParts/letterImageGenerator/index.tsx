@@ -56,7 +56,10 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
                         type="file"
                         onChange={(e) => setFile((e.target as any).files?.[0])}
                     />
-                    Drop your image here
+                    <span className="hidden md:inline">
+                        Drop your image here
+                    </span>
+                    <span className="md:hidden">Upload your image</span>
                 </div>
                 <div className="text-sm mt-6 md:mt-0 flex-shrink-0">
                     <div className="flex items-center space-x-2">
@@ -101,9 +104,8 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
             </div>
             {text && (
                 <div className="flex items-center flex-col mt-10">
-                    <div className="mx-auto">
-                        This image consists of{" "}
-                        {matrix[0].length * matrix.length} characters
+                    <div className="mx-auto mb-4 text-sm text-grey-400">
+                        ({matrix[0].length * matrix.length} characters)
                     </div>
                     <pre style={{ fontSize: `${fontSize}px` }}>
                         {output.map((l) => l.join("") + "\n")}
