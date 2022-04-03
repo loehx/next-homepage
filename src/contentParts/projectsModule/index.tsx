@@ -23,7 +23,9 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.inner}>
-                {props.title && <h2 className={styles.h2}>{props.title}</h2>}
+                {props.title && (
+                    <h2 className="text-3xl mb-6">{props.title}</h2>
+                )}
                 <div className={styles.filterBar}>
                     {props.techFilter.map((tech) => (
                         <span

@@ -13,6 +13,7 @@
     margin: 0 auto;
     line-height: 1;
     width: fit-content;
+    letter-spacing: -0.1em;
 }
 
 .dropZone {

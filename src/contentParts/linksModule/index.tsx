@@ -46,7 +46,9 @@ export const LinksModule: FC<LinksModuleProps> = (props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.inner}>
-                {props.title && <h2 className={styles.h2}>{props.title}</h2>}
+                {props.title && (
+                    <h2 className="text-3xl mb-6">{props.title}</h2>
+                )}
 
                 <ul className={styles.list}>{props.links.map(renderLink)}</ul>
             </div>
