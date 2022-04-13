@@ -14,7 +14,10 @@ const renderOG = (name: string, value: string) =>
     value && <meta property={name} content={value} />;
 
 const Page: FC<Props> = (props: Props) => {
-    const className = useInitializeClass("initialize", "page");
+    const className = useInitializeClass(
+        "initialize",
+        "page space-y-10 md:space-y-24",
+    );
     const { config } = props;
     const showCookiePopup = !useIsMobile(false) && config.cookiePopup;
 

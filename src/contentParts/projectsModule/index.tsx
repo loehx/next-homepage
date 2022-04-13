@@ -21,7 +21,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     }, []);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cx(styles.wrapper, "container")}>
             <div className={styles.inner}>
                 {props.title && (
                     <h2 className="text-3xl mb-6">{props.title}</h2>
@@ -48,7 +48,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                         </span>
                     )}
                 </div>
-                <ul className={cx(styles.list)}>
+                <ul className={cx(styles.list, "space-y-4")}>
                     {projects.map((p) => (
                         <Project
                             project={p}

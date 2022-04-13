@@ -3,6 +3,7 @@ import { Entry, LinkEntry } from "data/definitions";
 import styles from "./linksModule.module.css";
 import { useConfig } from "src/hooks";
 import Tilt from "react-parallax-tilt";
+import cx from "classnames";
 
 export interface LinksModuleProps extends Entry {
     name: string;
@@ -12,7 +13,7 @@ export interface LinksModuleProps extends Entry {
 
 const renderLink = (link: LinkEntry) => {
     return (
-        <li key={link.id}>
+        <li key={link.id} className="col-span-1">
             <Tilt
                 className={styles.tilt}
                 tiltMaxAngleX={10}
@@ -44,14 +45,17 @@ const renderLink = (link: LinkEntry) => {
 
 export const LinksModule: FC<LinksModuleProps> = (props) => {
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.inner}>
-                {props.title && (
-                    <h2 className="text-3xl mb-6">{props.title}</h2>
-                )}
+        <div className="container">
+            {props.title && <h2 className="text-3xl mb-6">{props.title}</h2>}
 
-                <ul className={styles.list}>{props.links.map(renderLink)}</ul>
-            </div>
+            <ul
+                className={cx(
+                    styles.list,
+                    "grid grid-cols-1 md:grid-cols-2 gap-4",
+                )}
+            >
+                {props.links.map(renderLink)}
+            </ul>
         </div>
     );
 };
