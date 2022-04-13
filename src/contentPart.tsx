@@ -4,14 +4,12 @@ import { Stage, StageProps } from "./contentParts/stage";
 import { Text, TextProps } from "./contentParts/text";
 import { LinksModule, LinksModuleProps } from "./contentParts/linksModule";
 import { ImageText, ImageTextProps } from "./contentParts/imageText";
+import { Timeline } from "./contentParts/timeline";
 import {
     ProjectsModule,
     ProjectsModuleProps,
 } from "./contentParts/projectsModule";
-import {
-    LetterImageGenerator,
-    LetterImageGeneratorProps,
-} from "./contentParts/letterImageGenerator";
+import { LetterImageGenerator } from "./contentParts/letterImageGenerator";
 
 const Page: FC<Entry> = (props: Entry) => {
     return (
@@ -28,10 +26,9 @@ const Page: FC<Entry> = (props: Entry) => {
                 <ProjectsModule {...(props as ProjectsModuleProps)} />
             )}
             {props.type === "letterimagegenerator" && (
-                <LetterImageGenerator
-                    {...(props as LetterImageGeneratorProps)}
-                />
+                <LetterImageGenerator {...(props as any)} />
             )}
+            {props.type === "timeline" && <Timeline {...(props as any)} />}
 
             {/* ADD MORE COMPONENTS HERE ... */}
         </div>

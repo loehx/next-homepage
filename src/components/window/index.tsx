@@ -7,6 +7,7 @@ interface WindowProps {
     className?: string;
     text?: string;
     textStyle?: any;
+    onClose?: () => void;
 }
 
 export const Window: React.FC<WindowProps> = ({
@@ -14,6 +15,7 @@ export const Window: React.FC<WindowProps> = ({
     text,
     textStyle,
     children,
+    onClose,
     ...props
 }) => {
     const lines = useMemo(() => {
@@ -31,8 +33,8 @@ export const Window: React.FC<WindowProps> = ({
     return (
         <div className={cx(className, styles.window)} {...props}>
             <div className={styles.actions}>
-                <span></span>
-                <span></span>
+                <span onClick={onClose}></span>
+                <span onClick={onClose}></span>
                 <span></span>
             </div>
             <div className={styles.windowInner} style={textStyle}>
