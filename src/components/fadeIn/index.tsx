@@ -7,9 +7,9 @@ export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
 
     const onScroll = () => {
         if (!element.current) return;
-        let { top, height } = element.current?.getBoundingClientRect();
-        const bottom = window.innerHeight - top;
-        height = Math.min(window.innerHeight / 2, height);
+        const rect = element.current?.getBoundingClientRect();
+        const bottom = window.innerHeight - rect.top;
+        const height = Math.min(window.innerHeight / 2, rect.height);
         setHeight(height);
         let opacity = Math.min(bottom / height);
         opacity = Math.max(opacity, 0);
