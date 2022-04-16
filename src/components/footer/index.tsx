@@ -8,6 +8,7 @@ import {
     useInitializeClass,
     useIsMobile,
 } from "src/hooks";
+import { FadeIn } from "@components/fadeIn";
 
 export interface FooterProps {
     id: string;
@@ -43,7 +44,12 @@ export const Footer: React.FC<FooterProps> = (props) => {
             </div>
             <div className={styles.inner}>
                 {props.infoText && (
-                    <Window className={styles.infoText} text={props.infoText} />
+                    <FadeIn>
+                        <Window
+                            className={styles.infoText}
+                            text={props.infoText}
+                        />
+                    </FadeIn>
                 )}
                 {props.metaNavigation && (
                     <ul className={styles.metaNav}>

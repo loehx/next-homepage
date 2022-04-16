@@ -2,6 +2,7 @@ import { ProjectEntry } from "data/definitions";
 import styles from "./projectsModule.module.css";
 import cx from "classnames";
 import { FC, useState } from "react";
+import { FadeIn } from "@components/fadeIn";
 
 interface Props {
     project: ProjectEntry;
@@ -23,7 +24,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
         );
 
     return (
-        <li
+        <FadeIn
             className={cx(
                 styles.project,
                 techFilter && (show ? styles.show : styles.hide),
@@ -83,6 +84,6 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                       {project.moreTechnologies}
                   </div> */}
             </div>
-        </li>
+        </FadeIn>
     );
 };

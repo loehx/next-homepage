@@ -4,6 +4,7 @@ import styles from "./projectsModule.module.css";
 import data from "data";
 import cx from "classnames";
 import { Project } from "./project";
+import { FadeIn } from "@components/fadeIn";
 
 export interface ProjectsModuleProps extends Entry {
     name: string;
@@ -24,9 +25,11 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
         <div className={cx(styles.wrapper, "container")}>
             <div className={styles.inner}>
                 {props.title && (
-                    <h2 className="text-3xl mb-6">{props.title}</h2>
+                    <FadeIn>
+                        <h2 className="text-3xl mb-6">{props.title}</h2>
+                    </FadeIn>
                 )}
-                <div className={styles.filterBar}>
+                <FadeIn className={styles.filterBar}>
                     {props.techFilter.map((tech) => (
                         <span
                             key={tech.id}
@@ -47,8 +50,8 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             &times;
                         </span>
                     )}
-                </div>
-                <ul className={cx(styles.list, "space-y-4")}>
+                </FadeIn>
+                <div className={cx(styles.list, "space-y-4")}>
                     {projects.map((p) => (
                         <Project
                             project={p}
@@ -56,7 +59,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             key={p.id}
                         />
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );
