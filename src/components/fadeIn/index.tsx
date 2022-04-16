@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export const FadeIn: React.FC<
-    JSX.IntrinsicAttributes & { className?: string }
-> = ({ children, className, ...props }) => {
+export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
     const element = useRef<HTMLDivElement | null>(null);
     const [opacity, setOpacity] = useState(0);
     const [height, setHeight] = useState(0);
