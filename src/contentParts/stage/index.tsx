@@ -10,6 +10,7 @@ import {
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
 import { Window } from "@components/window";
+import { CustomParallax } from "@components/customParallax";
 
 export interface StageProps {
     id: string;
@@ -28,6 +29,10 @@ export interface StageProps {
 export const Stage: React.FC<StageProps> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.stage);
     const isMobile = useIsMobile(true);
+
+    const styleGetter = ({ top, visibility }) => ({
+        transform: `translateY(${top * -0.2}px)`,
+    });
 
     return (
         <div className={classNames}>
@@ -48,51 +53,53 @@ export const Stage: React.FC<StageProps> = (props) => {
                     ></video>
                 )}
             </div>
-            <div className={styles.inner}>
-                <div className={styles.intro}>
-                    {props.logo && (
-                        <div className={styles.logo}>
-                            <img
-                                src={props.logo.url}
-                                alt={props.logo.name}
-                                width={props.logoWidth}
-                            />
-                        </div>
-                    )}
-                    {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
-                    {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
-                    {props.text && (
-                        <Window
-                            className={styles.description}
-                            text={props.text}
-                        />
-                    )}
-                </div>
-                {props.phoneImage && (
-                    <div className={styles.phoneWrapper}>
-                        <div
-                            className={styles.phone}
-                            style={{
-                                backgroundImage: `url(${
-                                    props.phoneImage.url
-                                }?w=${isMobile ? 400 : 800})`,
-                            }}
-                        >
-                            <img
-                                src={phoneFrameSrc}
-                                alt={props.phoneImage.name}
-                            />
-                        </div>
-                        {props.availableFrom && (
-                            <div className={styles.availability}>
-                                <AvailabilityStatus
-                                    availableFrom={props.availableFrom}
+            <CustomParallax styleGetter={styleGetter}>
+                <div className={styles.inner}>
+                    <div className={styles.intro}>
+                        {props.logo && (
+                            <div className={styles.logo}>
+                                <img
+                                    src={props.logo.url}
+                                    alt={props.logo.name}
+                                    width={props.logoWidth}
                                 />
                             </div>
                         )}
+                        {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
+                        {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
+                        {props.text && (
+                            <Window
+                                className={styles.description}
+                                text={props.text}
+                            />
+                        )}
                     </div>
-                )}
-            </div>
+                    {props.phoneImage && (
+                        <div className={styles.phoneWrapper}>
+                            <div
+                                className={styles.phone}
+                                style={{
+                                    backgroundImage: `url(${
+                                        props.phoneImage.url
+                                    }?w=${isMobile ? 400 : 800})`,
+                                }}
+                            >
+                                <img
+                                    src={phoneFrameSrc}
+                                    alt={props.phoneImage.name}
+                                />
+                            </div>
+                            {props.availableFrom && (
+                                <div className={styles.availability}>
+                                    <AvailabilityStatus
+                                        availableFrom={props.availableFrom}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </CustomParallax>
             <div className={styles.waves}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                     <path
