@@ -1,13 +1,8 @@
 .wrapper {
-    margin-top: 50px;
-    margin-bottom: 50px;
 }
 
 .inner {
-    padding: 30px;
     position: relative;
-    margin: 0 auto;
-    max-width: 1000px;
 }
 
 @media only screen and (min-width: 1000px) {

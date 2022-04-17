@@ -21,7 +21,7 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
     const [resolution, setResolution] = useState<number>(50);
     const [fontSize, setFontSize] = useState<number>(8);
     const [characters, setCharacters] = useState(
-        "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,^`'.   ",
+        "   .'`^,:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$",
     );
 
     useEffect(() => {

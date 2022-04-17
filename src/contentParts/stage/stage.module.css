@@ -148,6 +148,7 @@
     transform: translate(0);
     flex-shrink: 0;
     position: relative;
+    opacity: 1;
 }
 
 .phone {
@@ -164,6 +165,7 @@
 }
 
 .initializing .phoneWrapper {
+    opacity: 0;
     top: 100%;
     right: -50px;
     transform: scale(0.8) rotate(-5deg);
@@ -248,12 +250,6 @@
     position: relative;
     display: block;
     width: calc(100%);
-}
-
-@media only screen and (min-width: 800px) {
-    .waves svg {
-        max-height: 600px;
-    }
 }
 
 .availability {

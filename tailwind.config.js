@@ -23,6 +23,10 @@ module.exports = {
             headline: ["var(--font-headline)"],
             mono: ["var(--font-mono)"],
         },
+        screens: {
+            sm: "600px",
+            md: "1000px",
+        },
     },
     plugins: [],
 };

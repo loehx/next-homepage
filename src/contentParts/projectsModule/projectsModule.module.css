@@ -4,7 +4,6 @@
 .inner {
     margin: 0 auto;
     max-width: 1000px;
-    padding: 30px;
 }
 
 .list {
@@ -19,7 +18,6 @@
     position: relative;
     flex-basis: 100%;
     max-width: 100%;
-    margin-bottom: 15px;
     border: 1px solid var(--grey-2);
     border-radius: 5px;
     display: flex;
@@ -28,6 +26,7 @@
     transform: translateY(0%);
     padding: 15px;
     cursor: pointer;
+    outline: none !important;
 }
 
 .project.show {
