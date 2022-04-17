@@ -9,7 +9,7 @@ export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
         if (!element.current) return;
         const rect = element.current?.getBoundingClientRect();
         const bottom = window.innerHeight - rect.top;
-        const height = Math.min(window.innerHeight / 2, rect.height);
+        const height = window.innerHeight * 0.2;
         setHeight(height);
         let opacity = Math.min(bottom / height);
         opacity = Math.max(opacity, 0);
