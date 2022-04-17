@@ -41,7 +41,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         >
             <div
                 className={`w-4 absolute top-0 bottom-0 transition-all ${
-                    open && "!bg-primary-400"
+                    open && "!bg-primary-500"
                 } ${
                     oddMainJob ? "bg-secondary-200" : "bg-secondary-300"
                 } translate-x-[-50%]`}
@@ -51,7 +51,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                 <div
                     className={`absolute w-[50%] top-0 border-t-2 border-secondary ${
                         odd ? "left-full" : "right-full"
-                    } ${open && "!border-primary-400"}`}
+                    } ${open && "!border-primary-500"}`}
                 ></div>
             </div>
 
@@ -76,7 +76,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     >
                         <div className="font-bold">{Math.floor(yearFrom)}</div>
                         <div className={`font-bold ${mainJob && "text-lg"}`}>
-                            {title} {mainJobIndex}
+                            {title}
                         </div>
                         <div
                             className={`transition-opacity ${
