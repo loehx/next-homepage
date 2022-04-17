@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
+export const FadeIn: React.FC<any> = ({
+    children,
+    appearRatio = 0.0,
+    visibleRatio = 0.2,
+    className,
+    ...props
+}) => {
     const element = useRef<HTMLDivElement | null>(null);
     const [opacity, setOpacity] = useState(0);
     const [height, setHeight] = useState(0);
@@ -8,8 +14,8 @@ export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
     const onScroll = () => {
         if (!element.current) return;
         const rect = element.current?.getBoundingClientRect();
-        const bottom = window.innerHeight - rect.top;
-        const height = window.innerHeight * 0.2;
+        const bottom = window.innerHeight - rect.top * (1 + appearRatio);
+        const height = window.innerHeight * visibleRatio;
         setHeight(height);
         let opacity = Math.min(bottom / height);
         opacity = Math.max(opacity, 0);
@@ -18,6 +24,7 @@ export const FadeIn: React.FC<any> = ({ children, className, ...props }) => {
     };
 
     useEffect(() => {
+        onScroll();
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);

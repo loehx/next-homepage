@@ -49,7 +49,6 @@ export function bootstrapEntries(
         ...preCalculations.map((e) => e.yearTo || currentYear),
     );
     const yearsTotal = yearMax - yearMin;
-
     const result = entries.map(
         (entry, index) =>
             ({
@@ -65,7 +64,11 @@ export function bootstrapEntries(
                 durationText: `${entry.from} - ${entry.to || "today"}`,
             } as BootstrapedTimelineEntry),
     );
-    result.sort((a, b) => a.yearFrom - b.yearTo);
-    result.forEach((entry, index) => (entry.index = index));
+    result.sort((a, b) => a.yearFrom - b.yearFrom);
+    let mainJobIndex = 0;
+    result.forEach((entry, index) => {
+        entry.index = index;
+        entry.mainJobIndex = entry.mainJob ? ++mainJobIndex : mainJobIndex;
+    });
     return result;
 }

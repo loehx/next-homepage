@@ -14,7 +14,7 @@ export const Timeline: React.FC<TimelineProps> = (props) => {
     return (
         <div className="container mx-auto px-4">
             <div className={styles.inner}>
-                {props.name && <h2 className="text-3xl">{props.name}</h2>}
+                {props.name && <h2 className="text-3xl mb-10">{props.name}</h2>}
                 <div
                     className="relative"
                     style={{ height: yearsTotal * 70 + "px" }}
