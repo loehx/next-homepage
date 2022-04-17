@@ -60,9 +60,9 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     top,
                     [odd ? "left" : "right"]: `calc(50% + ${level}rem)`,
                 }}
-                className={`absolute px-6 w-auto -mt-2 ${
-                    !odd ? "text-right" : ""
-                } ${odd ? "right-0" : "left-0"}`}
+                className={`absolute w-auto -mt-2 ${!odd ? "text-right" : ""} ${
+                    odd ? "right-0 pl-6" : "left-0 pr-6"
+                }`}
             >
                 <FadeIn
                     className={`mx-${level}`}
@@ -70,16 +70,20 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     visibleRatio={0.4}
                 >
                     <div
-                        className={`text-sm transition-all ${
+                        className={`text-xs md:text-sm transition-all ${
                             open && (odd ? "pl-4" : "pr-4")
                         }`}
                     >
                         <div className="font-bold">{Math.floor(yearFrom)}</div>
-                        <div className={`font-bold ${mainJob && "text-lg"}`}>
+                        <div
+                            className={`md:font-bold text-sm md:text-base ${
+                                mainJob && "text-base md:text-lg"
+                            }`}
+                        >
                             {title}
                         </div>
                         <div
-                            className={`transition-opacity ${
+                            className={`transition-opacity hidden md:block ${
                                 !open ? "opacity-100" : "opacity-100"
                             }`}
                         >
