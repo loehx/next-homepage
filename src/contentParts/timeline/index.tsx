@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./timeline.module.css";
-import { RichText, RichTextValue } from "@components/rich-text";
-import { AssetEntry, Entry } from "data/definitions";
-import { bootstrapEntries, TimelineEntryProps, TimelineProps } from "./core";
+import { bootstrapEntries, TimelineProps } from "./core";
 import { TimelineEntry } from "./entry";
 
 export const Timeline: React.FC<TimelineProps> = (props) => {
