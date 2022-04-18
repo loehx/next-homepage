@@ -30,7 +30,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 techFilter && (show ? styles.show : styles.hide),
                 open && styles.open,
             )}
-            key={project.id}
+            key={`${project.id}-${techFilter}`}
             id={project.id}
             onClick={() => setOpen(!open)}
             tabIndex={0}

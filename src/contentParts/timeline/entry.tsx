@@ -21,11 +21,10 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         durationText,
         mainJobIndex,
     } = props;
-    console.log(yearFrom, "-", yearMin);
     const [open, setOpen] = useState(false);
     const top = `${Math.round(((yearFrom - yearMin) / yearsTotal) * 100)}%`;
     const bottom = `${
-        Math.round((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100
+        Math.floor((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100
     }%`;
     const odd = index % 2 === 1;
     const oddMainJob = mainJobIndex % 2 === 1;

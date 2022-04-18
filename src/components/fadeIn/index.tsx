@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 export const FadeIn: React.FC<any> = ({
     children,
     appearRatio = 0.0,
-    visibleRatio = 0.2,
+    visibleRatio = 0.3,
     className,
     ...props
 }) => {
@@ -28,6 +28,8 @@ export const FadeIn: React.FC<any> = ({
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    useEffect(() => onScroll());
 
     return (
         <div
