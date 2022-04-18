@@ -24,7 +24,9 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
     const [open, setOpen] = useState(false);
     const top = `${Math.round(((yearFrom - yearMin) / yearsTotal) * 100)}%`;
     const bottom = `${
-        Math.floor((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100
+        mainJob
+            ? 0
+            : Math.floor((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100
     }%`;
     const odd = index % 2 === 1;
     const oddMainJob = mainJobIndex % 2 === 1;
@@ -42,15 +44,25 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                 className={`w-4 absolute top-0 bottom-0 transition-all ${
                     open && "!bg-primary-500"
                 } ${
-                    oddMainJob ? "bg-secondary-200" : "bg-secondary-300"
+                    mainJob
+                        ? oddMainJob
+                            ? "bg-secondary-300"
+                            : "bg-secondary-200"
+                        : "bg-secondary-100"
                 } translate-x-[-50%]`}
                 style={{ left, top, bottom }}
                 onClick={() => setOpen(!open)}
             >
                 <div
                     className={`absolute w-[50%] top-0 border-t-2 border-secondary ${
-                        odd ? "left-full" : "right-full"
-                    } ${open && "!border-primary-500"}`}
+                        mainJob
+                            ? oddMainJob
+                                ? "border-secondary-300"
+                                : "border-secondary-200"
+                            : "border-secondary-100"
+                    } ${odd ? "left-full" : "right-full"} ${
+                        open && "!border-primary-500"
+                    }`}
                 ></div>
             </div>
 
@@ -58,6 +70,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                 style={{
                     top,
                     [odd ? "left" : "right"]: `calc(50% + ${level}rem)`,
+                    zIndex: 100 - index,
                 }}
                 className={`absolute w-auto -mt-2 ${!odd ? "text-right" : ""} ${
                     odd ? "right-0 pl-6" : "left-0 pr-6"
@@ -69,32 +82,40 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     visibleRatio={0.4}
                 >
                     <div
-                        className={`text-xs md:text-sm transition-all ${
-                            open && (odd ? "pl-4" : "pr-4")
-                        }`}
+                        className={`text-xs md:text-sm transition-all relative bg-white py-2 -my-2`}
                     >
-                        <div className="font-bold">{Math.floor(yearFrom)}</div>
+                        {open ? (
+                            <div className="font-bold">{durationText}</div>
+                        ) : (
+                            <div className="font-bold">
+                                {Math.floor(yearFrom)}
+                            </div>
+                        )}
                         <div
-                            className={`md:font-bold text-sm md:text-base ${
+                            className={`md:font-bold text-sm md:text-base mt-1 ${
                                 mainJob && "text-base md:text-lg"
                             }`}
                         >
                             {title}
                         </div>
-                        <div
-                            className={`transition-opacity hidden md:block ${
-                                !open ? "opacity-100" : "opacity-100"
-                            }`}
-                        >
-                            {company?.fullName}
+                        <div className={`hidden md:block`}>
+                            {open ? (
+                                <div>{description}</div>
+                            ) : (
+                                <div>
+                                    {company?.fullName}
+                                    <br />
+                                    {company?.companyType}
+                                </div>
+                            )}
                         </div>
-                        <div
-                            className={`transition-opacity ${
-                                open ? "opacity-0" : "opacity-0"
-                            }`}
-                        >
-                            <p>{description}</p>
-                        </div>
+                        {open && (
+                            <div className={`md:hidden mt-2`}>
+                                {company?.fullName}
+                                <br />
+                                {company?.companyType}
+                            </div>
+                        )}
                     </div>
                 </FadeIn>
             </div>
