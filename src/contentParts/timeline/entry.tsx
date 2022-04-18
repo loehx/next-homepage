@@ -85,7 +85,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                         className={`text-xs md:text-sm transition-all relative bg-white py-2 -my-2`}
                     >
                         {open ? (
-                            <div className="font-bold">{durationText}</div>
+                            <div className="">{durationText}</div>
                         ) : (
                             <div className="font-bold">
                                 {Math.floor(yearFrom)}
@@ -94,7 +94,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                         <div
                             className={`md:font-bold text-sm md:text-base mt-1 ${
                                 mainJob && "text-base md:text-lg"
-                            }`}
+                            } ${open && "font-bold"}`}
                         >
                             {title}
                         </div>
