@@ -8,18 +8,18 @@ export const Timeline: React.FC<TimelineProps> = (props) => {
     const entries = bootstrapEntries(props.entries);
     const { yearsTotal } = entries[0];
 
-    console.table(entries);
-
     return (
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 mb-14">
             <div className={styles.inner}>
                 {props.name && (
                     <FadeIn>
-                        <h2 className="text-3xl mb-10">{props.name}</h2>
+                        <h2 className="hidden md:block text-3xl">
+                            {props.name}
+                        </h2>
                     </FadeIn>
                 )}
                 <div
-                    className="relative"
+                    className="relative mt-10"
                     style={{ height: yearsTotal * 70 + "px" }}
                 >
                     {entries.map((entry) => (

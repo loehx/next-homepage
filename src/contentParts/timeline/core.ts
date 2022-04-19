@@ -41,8 +41,6 @@ export function bootstrapEntries(
         yearTo: getDecimalFromMonthAndYear(entry.to),
     }));
 
-    console.log("preCalculations", preCalculations);
-
     const currentYear = new Date().getFullYear();
     const yearMin = Math.min(...preCalculations.map((e) => e.yearFrom ?? 0));
     const yearMax = Math.max(
