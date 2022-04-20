@@ -20,7 +20,7 @@ export const Timeline: React.FC<TimelineProps> = (props) => {
                 )}
                 <div
                     className="relative mt-10"
-                    style={{ height: yearsTotal * 70 + "px" }}
+                    style={{ height: yearsTotal * 80 + "px" }}
                 >
                     {entries.map((entry) => (
                         <TimelineEntry key={entry.id} {...entry} />

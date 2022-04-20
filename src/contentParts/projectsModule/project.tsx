@@ -61,13 +61,15 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 )}
             </div>
             <div className={styles.panelRight}>
-                {open && project.company?.logo && (
+                {open && (
                     <div className={styles.companyLogoWrapper}>
-                        <img
-                            src={project.company.logo?.url + "?w=300"}
-                            alt={project.company.fullName}
-                            title={project.company.fullName}
-                        />
+                        {project.company?.logo && (
+                            <img
+                                src={project.company.logo?.url + "?w=300"}
+                                alt={project.company.fullName}
+                                title={project.company.fullName}
+                            />
+                        )}
                     </div>
                 )}
                 <div className={styles.techLogos}>

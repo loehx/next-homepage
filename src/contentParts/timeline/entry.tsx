@@ -104,7 +104,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                 {title}
                             </div>
                             <div
-                                className={`hidden md:block absolute left-0 right-0`}
+                                className={`hidden md:block absolute left-0 right-0 mt-1`}
                             >
                                 <div className={`absolute left-0 right-0`}>
                                     {company?.fullName}

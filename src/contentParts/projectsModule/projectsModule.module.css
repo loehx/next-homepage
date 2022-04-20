@@ -1,4 +1,5 @@
 .wrapper {
+    --project-accent: var(--secondary);
 }
 
 .inner {
@@ -31,7 +32,7 @@
 
 .project.show {
     filter: blur(0px);
-    border: 1px solid var(--primary);
+    border: 1px solid var(--project-accent);
 }
 
 .project.hide {
@@ -112,7 +113,7 @@
     position: relative;
     /* background: -webkit-linear-gradient(
         45deg,
-        var(--primary) -40%,
+        var(--project-accent) -40%,
         var(--secondary) 140%
     );
     -webkit-background-clip: text;
@@ -178,7 +179,7 @@
     font-size: 16px;
     line-height: 1;
     border-radius: 5px;
-    color: var(--primary);
+    color: var(--project-accent);
     display: block;
     cursor: pointer;
     border: 2px solid transparent;
@@ -189,12 +190,12 @@
 }
 
 .filter:hover {
-    color: var(--primary);
+    color: var(--project-accent);
 }
 
 .filter.active {
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    border: 2px solid var(--project-accent);
+    color: var(--project-accent);
 }
 
 .initHide {
@@ -227,12 +228,14 @@
 
 .details dt {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     text-transform: uppercase;
     width: 115px;
     opacity: 0.8;
     padding-right: 15px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: flex-end;
 }
 .details dd {
     margin: 0;
