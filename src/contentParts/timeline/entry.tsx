@@ -48,16 +48,16 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
             // onMouseEnter={() => setOpen(true)}
             // onMouseLeave={() => setOpen(false)}
             style={{ top, bottom }}
-            onUpdate={mainJob && onScrollUpdate}
+            onUpdate={onScrollUpdate}
         >
             <div>
                 <div
                     className={`w-4 absolute top-0 bottom-0 transition-all ${
-                        open && "!bg-primary-500"
+                        open && "!bg-secondary-500"
                     } ${
                         mainJob
                             ? oddMainJob
-                                ? "bg-secondary-300"
+                                ? "bg-secondary-200"
                                 : "bg-secondary-200"
                             : "bg-secondary-100"
                     } left-[50%] translate-x-[-50%]`}
@@ -67,12 +67,10 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     <div
                         className={`absolute w-[50%] top-0 border-t-2 border-secondary ${
                             mainJob
-                                ? oddMainJob
-                                    ? "border-secondary-300"
-                                    : "border-secondary-200"
+                                ? "border-secondary-200"
                                 : "border-secondary-100"
                         } ${odd ? "left-full" : "right-full"} ${
-                            open && "!border-primary-500"
+                            open && "!border-secondary-500"
                         }`}
                     ></div>
                 </div>
@@ -92,40 +90,45 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                         visibleRatio={0.4}
                     >
                         <div
-                            className={`text-xs md:text-sm transition-all relative bg-white py-2 -my-2`}
+                            className={`text-xs md:text-sm transition-all duration-300 relative bg-white py-2 -my-2 ${""}`}
                         >
-                            {open ? (
-                                <div className="">{durationText}</div>
-                            ) : (
-                                <div className="font-bold">
-                                    {Math.floor(yearFrom)}
-                                </div>
-                            )}
+                            <div className="font-bold">
+                                {Math.floor(yearFrom)}
+                            </div>
+
                             <div
-                                className={`md:font-bold text-sm md:text-base mt-1 ${
+                                className={`md:font-bold text-sm md:text-base transition-color mt-1 md:!text-black ${
                                     mainJob && "text-base md:text-lg"
-                                } ${open && "font-bold"}`}
+                                } ${open && "text-secondary-900"}`}
                             >
                                 {title}
                             </div>
-                            <div className={`hidden md:block`}>
-                                {open ? (
-                                    <div>{description}</div>
-                                ) : (
-                                    <div>
-                                        {company?.fullName}
-                                        <br />
-                                        {company?.companyType}
-                                    </div>
-                                )}
-                            </div>
-                            {open && (
-                                <div className={`md:hidden mt-2`}>
+                            <div
+                                className={`hidden md:block absolute left-0 right-0`}
+                            >
+                                <div className={`absolute left-0 right-0`}>
                                     {company?.fullName}
                                     <br />
                                     {company?.companyType}
                                 </div>
-                            )}
+                                <div
+                                    className={`opacity-0 transition-all duration-500 translate-y-[-20px] bg-white ${
+                                        open && "!opacity-100 !translate-y-[0]"
+                                    }`}
+                                >
+                                    {description}
+                                </div>
+                            </div>
+
+                            <div
+                                className={`md:hidden mt-1 opacity-0 transition-all duration-300 translate-y-[-20px] ${
+                                    open && "!opacity-100 !translate-y-[0]"
+                                }`}
+                            >
+                                {company?.fullName}
+                                <br />
+                                {company?.companyType}
+                            </div>
                         </div>
                     </FadeIn>
                 </div>
