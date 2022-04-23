@@ -103,16 +103,6 @@ export function getPixelMatrix({
     const xlen = Math.ceil(ylen * ratio * stretchX);
     const matrix = newMatrix<number>(ylen, xlen, -1);
 
-    console.table({
-        width,
-        height,
-        select,
-        resolution,
-        ratio,
-        ylen,
-        xlen,
-    });
-
     for (let y = 0; y < ylen; y++) {
         for (let x = 0; x < xlen; x++) {
             const pixel = getPixel(
@@ -149,13 +139,6 @@ export function getCharacterMapFromMatrix({
                 Math.floor(((n - min) / (max - min)) * characters.length) - 1,
             )
         ];
-
-    console.table({
-        min,
-        max,
-        ylen,
-        xlen,
-    });
 
     forEachValueIn(matrix, (val, x, y) => {
         output[y][x] = getChar(val);

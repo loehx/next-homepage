@@ -18,16 +18,13 @@ export const Window: React.FC<WindowProps> = ({
     onClose,
     ...props
 }) => {
-    const lines = useMemo(() => {
-        if (!text) return [];
-        const html = renderMarkdown(text)
-            .replaceAll("<p>", "")
-            .replaceAll("</p>", "\n");
-        const lines = html.split("\n");
-        while (!lines[lines.length - 1]) {
-            lines.pop();
-        }
-        return lines;
+    const html = useMemo(() => {
+        if (!text) return "";
+        console.log(renderMarkdown(text));
+        return renderMarkdown(text)
+            .replaceAll(/(ul|ol)>\n/g, "$1>")
+            .replaceAll(/\n<(li|ul|ol)/g, "<$1")
+            .replace(/\n$/, "");
     }, [text]);
 
     return (
@@ -38,12 +35,17 @@ export const Window: React.FC<WindowProps> = ({
                 <span></span>
             </div>
             <div className={styles.windowInner} style={textStyle}>
-                {lines.map((line, i) => (
-                    <pre
-                        key={i}
-                        dangerouslySetInnerHTML={{ __html: line || "&nbsp;" }}
-                    ></pre>
-                ))}
+                <div className={styles.lineNumbers}>
+                    {new Array(20).fill(0).map((_, i) => (
+                        <div key={i}>{i + 1}</div>
+                    ))}
+                </div>
+
+                <pre
+                    className={styles.text}
+                    dangerouslySetInnerHTML={{ __html: html }}
+                ></pre>
+
                 {children}
             </div>
         </div>

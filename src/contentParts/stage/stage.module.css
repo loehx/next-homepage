@@ -53,19 +53,15 @@
 }
 
 .logo {
-    display: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
 @media only screen and (min-width: 800px) {
     .inner {
         flex-direction: row;
         padding: 30px 30px 250px 30px;
-    }
-
-    .logo {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 30px;
     }
 }
 
@@ -119,6 +115,7 @@
 @media only screen and (min-width: 800px) {
     .intro {
         width: auto;
+        margin: 0 auto;
     }
 }
 

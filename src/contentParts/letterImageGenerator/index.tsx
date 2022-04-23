@@ -8,6 +8,7 @@ import {
     generatePixelMatrixFromBlob,
     getCharacterMapFromMatrix,
 } from "./ligUtils";
+import { FadeIn } from "@components/fadeIn";
 
 export interface LetterImageGeneratorProps extends Entry {
     id: string;
@@ -49,7 +50,7 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
     const resDown = (n: number) => setResolution(Math.max(10, resolution - n));
 
     return (
-        <div className={styles.wrapper}>
+        <FadeIn className={styles.wrapper}>
             <div className={cx(styles.inputWrapper, "block md:flex")}>
                 <div className={cx(styles.dropZone, "w-full flex-1 md:mr-6")}>
                     <input
@@ -107,11 +108,15 @@ export const LetterImageGenerator: React.FC<LetterImageGeneratorProps> = () => {
                     <div className="mx-auto mb-4 text-sm text-grey-400">
                         ({matrix[0].length * matrix.length} characters)
                     </div>
-                    <pre style={{ fontSize: `${fontSize}px` }}>
-                        {output.map((l) => l.join("") + "\n")}
-                    </pre>
+                    <div>
+                        <pre style={{ fontSize: `${fontSize}px` }}>
+                            {output.map((l) => l.join("") + "\n")}
+                        </pre>
+                    </div>
                 </div>
             )}
-        </div>
+        </FadeIn>
     );
 };
+
+export default LetterImageGenerator;

@@ -51,7 +51,7 @@ export const Stage: React.FC<StageProps> = (props) => {
             </div>
             <div className={styles.inner}>
                 <div className={styles.intro}>
-                    {props.logo && (
+                    {props.logo && (!isMobile || !props.phoneImage) && (
                         <div className={styles.logo}>
                             <img
                                 src={props.logo.url}

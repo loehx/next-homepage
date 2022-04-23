@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import dynamic from "next/dynamic";
 import { Entry } from "data/definitions";
 import { Stage, StageProps } from "./contentParts/stage";
 import { Text, TextProps } from "./contentParts/text";
@@ -9,7 +10,9 @@ import {
     ProjectsModule,
     ProjectsModuleProps,
 } from "./contentParts/projectsModule";
-import { LetterImageGenerator } from "./contentParts/letterImageGenerator";
+const LetterImageGenerator = dynamic(
+    () => import("./contentParts/letterImageGenerator"),
+);
 
 const Page: FC<Entry> = (props: Entry) => {
     return (

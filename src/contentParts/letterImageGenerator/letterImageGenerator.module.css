@@ -1,6 +1,7 @@
 .wrapper {
     padding: 30px;
     position: relative;
+    min-height: 40vh;
 }
 
 .inputWrapper {
