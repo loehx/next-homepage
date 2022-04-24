@@ -43,7 +43,7 @@ const Page: FC<Props> = (props: Props) => {
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (
-                    <ContentPart key={cp.id} {...cp} />
+                    <ContentPart key={cp.id} {...cp} config={props.config} />
                 ))}
                 {showCookiePopup && (
                     <CookiePopup {...(config.cookiePopup as any)} />

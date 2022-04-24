@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import dynamic from "next/dynamic";
-import { Entry } from "data/definitions";
+import { ConfigEntry, Entry } from "data/definitions";
 import { Stage, StageProps } from "./contentParts/stage";
 import { Text, TextProps } from "./contentParts/text";
 import { LinksModule, LinksModuleProps } from "./contentParts/linksModule";
@@ -14,19 +14,24 @@ const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
 );
 
-const Page: FC<Entry> = (props: Entry) => {
+interface Props extends Entry {
+    config: ConfigEntry;
+}
+
+const Page: FC<Props> = (props: Props) => {
     return (
         <div data-id={props.id} data-type={props.type}>
-            {props.type === "stage" && <Stage {...(props as StageProps)} />}
-            {props.type === "text" && <Text {...(props as TextProps)} />}
-            {props.type === "imagetext" && (
-                <ImageText {...(props as ImageTextProps)} />
-            )}
+            {props.type === "stage" && <Stage {...(props as any)} />}
+            {props.type === "text" && <Text {...(props as any)} />}
+            {props.type === "imagetext" && <ImageText {...(props as any)} />}
             {props.type === "linksmodule" && (
-                <LinksModule {...(props as LinksModuleProps)} />
+                <LinksModule {...(props as any)} />
             )}
             {props.type === "projectsmodule" && (
-                <ProjectsModule {...(props as ProjectsModuleProps)} />
+                <ProjectsModule
+                    {...(props as any)}
+                    projects={props.config.projects}
+                />
             )}
             {props.type === "letterimagegenerator" && (
                 <LetterImageGenerator {...(props as any)} />

@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Entry, LinkEntry } from "data/definitions";
 import styles from "./linksModule.module.css";
-import { useConfig } from "src/hooks";
 import Tilt from "react-parallax-tilt";
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";

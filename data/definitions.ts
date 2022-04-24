@@ -10,6 +10,7 @@ export interface ConfigEntry extends Entry {
     startPage: PageEntry;
     footer: FooterEntry;
     cookiePopup: Entry;
+    projects: Entry[];
 }
 
 export interface AssetEntry extends Entry {
