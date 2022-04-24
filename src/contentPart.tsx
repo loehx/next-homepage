@@ -31,6 +31,7 @@ const Page: FC<Entry> = (props: Entry) => {
             {props.type === "letterimagegenerator" && (
                 <LetterImageGenerator {...(props as any)} />
             )}
+
             {props.type === "timeline" && <Timeline {...(props as any)} />}
 
             {/* ADD MORE COMPONENTS HERE ... */}
