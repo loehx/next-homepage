@@ -10,6 +10,7 @@ import {
     ProjectsModule,
     ProjectsModuleProps,
 } from "./contentParts/projectsModule";
+import { TechnologySkillset } from "./contentParts/technologySkillset";
 const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
 );
@@ -31,7 +32,9 @@ const Page: FC<Entry> = (props: Entry) => {
             {props.type === "letterimagegenerator" && (
                 <LetterImageGenerator {...(props as any)} />
             )}
-
+            {props.type === "technologyskillset" && (
+                <TechnologySkillset {...(props as any)} />
+            )}
             {props.type === "timeline" && <Timeline {...(props as any)} />}
 
             {/* ADD MORE COMPONENTS HERE ... */}
