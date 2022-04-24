@@ -11,15 +11,12 @@ export interface ProjectsModuleProps extends Entry {
     title: string;
     links: Array<ProjectEntry>;
     techFilter: Array<TechnologyEntry>;
+    projects: Array<ProjectEntry>;
 }
 
 export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
-    const [projects, setProjects] = useState<ProjectEntry[]>([]);
+    const { projects } = props;
     const [techFilter, setTechFilter] = useState<string>();
-
-    useEffect(() => {
-        data.getProjects().then((p) => setProjects(p as ProjectEntry[]));
-    }, []);
 
     return (
         <div className={cx(styles.wrapper, "container")}>
@@ -52,13 +49,14 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                     )}
                 </FadeIn>
                 <div className={cx(styles.list, "space-y-4")}>
-                    {projects.map((p) => (
-                        <Project
-                            project={p}
-                            techFilter={techFilter}
-                            key={p.id}
-                        />
-                    ))}
+                    {projects &&
+                        projects.map((p) => (
+                            <Project
+                                project={p}
+                                techFilter={techFilter}
+                                key={p.id}
+                            />
+                        ))}
                 </div>
             </div>
         </div>

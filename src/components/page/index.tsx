@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { PageEntry, ConfigEntry } from "data/definitions";
 import ContentPart from "../../contentPart";
-import { Footer, FooterProps } from "@components/footer";
+import { Footer } from "@components/footer";
 import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import dynamic from "next/dynamic";
@@ -43,7 +43,7 @@ const Page: FC<Props> = (props: Props) => {
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (
-                    <ContentPart key={cp.id} {...cp} />
+                    <ContentPart key={cp.id} {...cp} config={props.config} />
                 ))}
                 {showCookiePopup && (
                     <CookiePopup {...(config.cookiePopup as any)} />

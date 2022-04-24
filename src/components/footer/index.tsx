@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./footer.module.css";
-import { RichText, RichTextValue } from "@components/rich-text";
-import { AssetEntry, FooterEntry, PageEntry } from "data/definitions";
+import { FooterEntry } from "data/definitions";
 import { Window } from "@components/window";
 import Link from "next/link";
-import {
-    useBrowserDimensions,
-    useInitializeClass,
-    useIsMobile,
-} from "src/hooks";
+import { useInitializeClass, useIsMobile } from "src/hooks";
 import { FadeIn } from "@components/fadeIn";
 
 export const Footer: React.FC<FooterEntry> = (props) => {
