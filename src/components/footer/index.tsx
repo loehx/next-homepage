@@ -3,6 +3,7 @@ import styles from "./footer.module.css";
 import { RichText, RichTextValue } from "@components/rich-text";
 import { AssetEntry, FooterEntry, PageEntry } from "data/definitions";
 import { Window } from "@components/window";
+import Link from "next/link";
 import {
     useBrowserDimensions,
     useInitializeClass,
@@ -45,9 +46,9 @@ export const Footer: React.FC<FooterEntry> = (props) => {
                     <ul className={styles.metaNav}>
                         {props.metaNavigation.map((item) => (
                             <li key={item.id}>
-                                <a href={item.slug}>
+                                <Link href={item.slug}>
                                     {item.teaserTitle || item.title}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
