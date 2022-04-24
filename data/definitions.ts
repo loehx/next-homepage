@@ -8,7 +8,7 @@ export interface ConfigEntry extends Entry {
     name: string;
     favicon: AssetEntry;
     startPage: PageEntry;
-    footer: Entry;
+    footer: FooterEntry;
     cookiePopup: Entry;
 }
 
@@ -27,6 +27,15 @@ export interface PageEntry extends Entry {
     ogdescription: string;
     ogurl: string;
     ogimage: AssetEntry;
+    footer?: FooterEntry;
+}
+
+export interface FooterEntry extends Entry {
+    name: string;
+    infoText: string;
+    metaNavigation: PageEntry[];
+    backgroundImage: AssetEntry;
+    backgroundVideo: AssetEntry;
 }
 
 export interface LinkEntry extends Entry {

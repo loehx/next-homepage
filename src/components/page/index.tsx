@@ -4,7 +4,8 @@ import ContentPart from "../../contentPart";
 import { Footer, FooterProps } from "@components/footer";
 import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
-import { CookiePopup, CookiePopupProps } from "@components/cookiePopup";
+import dynamic from "next/dynamic";
+const CookiePopup = dynamic(() => import("@components/cookiePopup"));
 
 interface Props extends PageEntry {
     config: ConfigEntry;
@@ -29,7 +30,10 @@ const Page: FC<Props> = (props: Props) => {
                 <meta name="description" content={props.description} />
                 <meta name="author" content="Alexander Löhn" />
                 <meta name="theme-color" content="#000000"></meta>
-                {renderOG("og:image", props.ogimage?.url)}
+                {renderOG(
+                    "og:image",
+                    `${props.ogimage?.url}?w=1200&h=630&fit=fill`,
+                )}
                 {renderOG("og:title", props.ogtitle)}
                 {renderOG("og:description", props.ogdescription)}
                 {renderOG("og:url", props.ogurl)}
@@ -42,11 +46,9 @@ const Page: FC<Props> = (props: Props) => {
                     <ContentPart key={cp.id} {...cp} />
                 ))}
                 {showCookiePopup && (
-                    <CookiePopup
-                        {...(config.cookiePopup as CookiePopupProps)}
-                    />
+                    <CookiePopup {...(config.cookiePopup as any)} />
                 )}
-                <Footer {...(config.footer as FooterProps)} />
+                <Footer {...(props.footer || props.config.footer)} />
             </div>
         </>
     );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./footer.module.css";
 import { RichText, RichTextValue } from "@components/rich-text";
-import { AssetEntry, PageEntry } from "data/definitions";
+import { AssetEntry, FooterEntry, PageEntry } from "data/definitions";
 import { Window } from "@components/window";
 import {
     useBrowserDimensions,
@@ -10,17 +10,7 @@ import {
 } from "src/hooks";
 import { FadeIn } from "@components/fadeIn";
 
-export interface FooterProps {
-    id: string;
-    type: string;
-    name: string;
-    infoText: string;
-    metaNavigation: PageEntry[];
-    backgroundImage: AssetEntry;
-    backgroundVideo: AssetEntry;
-}
-
-export const Footer: React.FC<FooterProps> = (props) => {
+export const Footer: React.FC<FooterEntry> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.footer);
     const isMobile = useIsMobile(true);
     return (

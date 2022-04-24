@@ -20,7 +20,6 @@ export const Window: React.FC<WindowProps> = ({
 }) => {
     const html = useMemo(() => {
         if (!text) return "";
-        console.log(renderMarkdown(text));
         return renderMarkdown(text)
             .replaceAll(/(ul|ol)>\n/g, "$1>")
             .replaceAll(/\n<(li|ul|ol)/g, "<$1")

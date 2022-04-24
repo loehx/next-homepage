@@ -39,3 +39,5 @@ export const CookiePopup: React.FC<CookiePopupProps> = (props) => {
         </div>
     );
 };
+
+export default CookiePopup;
