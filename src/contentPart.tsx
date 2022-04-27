@@ -6,10 +6,7 @@ import { Text, TextProps } from "./contentParts/text";
 import { LinksModule, LinksModuleProps } from "./contentParts/linksModule";
 import { ImageText, ImageTextProps } from "./contentParts/imageText";
 import { Timeline } from "./contentParts/timeline";
-import {
-    ProjectsModule,
-    ProjectsModuleProps,
-} from "./contentParts/projectsModule";
+import { ProjectsModule } from "./contentParts/projectsModule";
 import { TechnologySkillset } from "./contentParts/technologySkillset";
 const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
@@ -38,7 +35,10 @@ const Page: FC<Props> = (props: Props) => {
                 <LetterImageGenerator {...(props as any)} />
             )}
             {props.type === "technologyskillset" && (
-                <TechnologySkillset {...(props as any)} />
+                <TechnologySkillset
+                    {...(props as any)}
+                    projects={props.config.projects}
+                />
             )}
             {props.type === "timeline" && <Timeline {...(props as any)} />}
 

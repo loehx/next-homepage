@@ -1,0 +1,10 @@
+.stripes {
+    color: white;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--secondary-200),
+        var(--secondary-200) 10px,
+        var(--secondary-300) 10px,
+        var(--secondary-300) 20px
+    );
+}
