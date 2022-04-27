@@ -80,8 +80,8 @@
         right: 8px;
         background: linear-gradient(
             135deg,
-            transparent 60%,
-            var(--secondary) 120%
+            transparent 10%,
+            var(--secondary-200) 120%
         );
         filter: blur(8px);
         transform: translate;
