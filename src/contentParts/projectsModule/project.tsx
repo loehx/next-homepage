@@ -36,7 +36,10 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             tabIndex={0}
         >
             <div className={styles.textWrapper}>
-                <div className={styles.name}>{project.name}</div>
+                <div className={styles.name}>
+                    <span className={styles.arrow}></span>
+                    {project.name}
+                </div>
                 <div className={styles.description}>{project.description}</div>
                 {!open && (
                     <div className={styles.fromTo}>
