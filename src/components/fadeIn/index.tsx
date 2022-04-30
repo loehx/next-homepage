@@ -29,7 +29,7 @@ export const FadeIn: React.FC<any> = ({
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    useEffect(() => onScroll());
+    useEffect(() => onScroll(), []);
 
     return (
         <div

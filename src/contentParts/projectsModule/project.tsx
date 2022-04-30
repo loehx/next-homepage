@@ -1,7 +1,7 @@
 import { ProjectEntry } from "data/definitions";
 import styles from "./projectsModule.module.css";
 import cx from "classnames";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { FadeIn } from "@components/fadeIn";
 import { Tooltip } from "@components/tooltip";
 
@@ -24,6 +24,10 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             </>
         );
 
+    useEffect(() => {
+        window.dispatchEvent(new Event("scroll"));
+    }, [techFilter]);
+
     const fromYear = project.from.split("/")[1];
     const toYear = project.to?.split("/")[1] || "today";
     const fromTo = fromYear === toYear ? fromYear : `${fromYear} - ${toYear}`;
@@ -35,7 +39,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 techFilter && (show ? styles.show : styles.hide),
                 open && styles.open,
             )}
-            key={`${project.id}-${techFilter}`}
+            key={`${project.id}`}
             id={project.id}
             onClick={() => setOpen(!open)}
             tabIndex={0}
@@ -56,7 +60,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                         {renderDetail("Sector", project.sector)}
                         {renderDetail("Company", project.company.fullName)}
                         {renderDetail("Url", project.url)}
-                        {renderDetail("Tech Stack", project.moreTechnologies)}
+                        {renderDetail("Tech Stack", getTechStack(project))}
                         {renderDetail("Team", project.team)}
                     </dl>
                 )}
@@ -77,7 +81,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 )}
                 <div className={styles.techLogos}>
                     {project.technologies.map((t) => (
-                        <Tooltip text={t.fullName}>
+                        <Tooltip text={t.fullName} key={t.id}>
                             <img
                                 key={t.id}
                                 src={t.logo.url + "?w=80"}
@@ -87,10 +91,14 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                         </Tooltip>
                     ))}
                 </div>
-                {/* <div className={styles.moreTech}>
-                      {project.moreTechnologies}
-                  </div> */}
             </div>
         </FadeIn>
     );
 };
+
+function getTechStack(project: ProjectEntry): string {
+    return [
+        ...project.technologies.map((t) => t.fullName),
+        ...project.moreTechnologies.split(",").map((t) => t.trim()),
+    ].join(", ");
+}
