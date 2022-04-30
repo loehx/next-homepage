@@ -17,10 +17,10 @@ body {
     color: var(--black);
     overflow-x: hidden;
 }
-
+/* 
 html.wf-loading * {
     color: transparent !important;
-}
+} */
 
 .page {
     min-height: 100vh;
