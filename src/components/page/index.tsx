@@ -6,6 +6,7 @@ import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import dynamic from "next/dynamic";
 const CookiePopup = dynamic(() => import("@components/cookiePopup"));
+import ReactTooltip from "react-tooltip";
 
 interface Props extends PageEntry {
     config: ConfigEntry;

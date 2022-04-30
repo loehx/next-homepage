@@ -9,6 +9,8 @@ import {
 } from "src/hooks";
 import * as util from "src/util";
 import cx from "classnames";
+import { Tooltip } from "@components/tooltip";
+import moment from "moment";
 
 export interface AvailabilityStatusProps {
     availableFrom: string;
@@ -37,8 +39,13 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
         return () => clearInterval(interval);
     }, []);
 
+    const tooltip = useMemo(
+        () => moment(props.availableFrom, "YYYY-MM-DD").format("LL"),
+        [props.availableFrom],
+    );
+
     return (
-        <div className={classNames}>
+        <Tooltip className={classNames} text={tooltip}>
             <div
                 className={cx(
                     styles.availabilityStatus,
@@ -59,6 +66,6 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
                     </div>
                 )}
             </div>
-        </div>
+        </Tooltip>
     );
 };

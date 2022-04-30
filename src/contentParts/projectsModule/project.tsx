@@ -3,6 +3,7 @@ import styles from "./projectsModule.module.css";
 import cx from "classnames";
 import { FC, useState } from "react";
 import { FadeIn } from "@components/fadeIn";
+import { Tooltip } from "@components/tooltip";
 
 interface Props {
     project: ProjectEntry;
@@ -64,22 +65,26 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 {open && (
                     <div className={styles.companyLogoWrapper}>
                         {project.company?.logo && (
-                            <img
-                                src={project.company.logo?.url + "?w=300"}
-                                alt={project.company.fullName}
-                                title={project.company.fullName}
-                            />
+                            <Tooltip text={project.company?.fullName}>
+                                <img
+                                    src={project.company.logo?.url + "?w=300"}
+                                    alt={project.company.fullName}
+                                    title={project.company.fullName}
+                                />
+                            </Tooltip>
                         )}
                     </div>
                 )}
                 <div className={styles.techLogos}>
                     {project.technologies.map((t) => (
-                        <img
-                            key={t.id}
-                            src={t.logo.url + "?w=80"}
-                            alt={t.name}
-                            title={t.fullName}
-                        />
+                        <Tooltip text={t.fullName}>
+                            <img
+                                key={t.id}
+                                src={t.logo.url + "?w=80"}
+                                alt={t.name}
+                                title={t.fullName}
+                            />
+                        </Tooltip>
                     ))}
                 </div>
                 {/* <div className={styles.moreTech}>
