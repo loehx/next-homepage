@@ -34,8 +34,8 @@ export const Stage: React.FC<StageProps> = (props) => {
         <div className={classNames}>
             <div className={styles.background}>
                 <img
-                    src={`${props.backgroundImage.url}${
-                        isMobile ? "?h=1335" : ""
+                    src={`${props.backgroundImage.url}?fm=webp${
+                        isMobile ? "&h=1335" : ""
                     }`}
                     alt="Background Image"
                 />
@@ -54,7 +54,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.logo && (!isMobile || !props.phoneImage) && (
                         <div className={styles.logo}>
                             <img
-                                src={props.logo.url}
+                                src={props.logo.url + "?fm=webp"}
                                 alt={props.logo.name}
                                 width={props.logoWidth}
                             />

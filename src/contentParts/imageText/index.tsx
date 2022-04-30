@@ -26,7 +26,11 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                 {props.h2 && <h2 className="text-3xl mb-6">{props.h2}</h2>}
                 <div className={props.imageRight ? styles.imageRight : ""}>
                     <div className={styles.imageWrapper} style={imageStyle}>
-                        <img src={props.image.url} alt={props.image.name} />
+                        <img
+                            src={props.image.url + "?fm=webp"}
+                            alt={props.image.name}
+                            loading="lazy"
+                        />
                     </div>
                     <div className={styles.textWrapper}>
                         {props.h2 && (

@@ -13,8 +13,8 @@ export const Footer: React.FC<FooterEntry> = (props) => {
         <div className={classNames}>
             <div className={styles.background}>
                 <img
-                    src={`${props.backgroundImage.url}${
-                        isMobile ? "?w=750" : ""
+                    src={`${props.backgroundImage.url}?fm=webp${
+                        isMobile ? "&h=1335" : ""
                     }`}
                     alt="Background Image"
                 />
