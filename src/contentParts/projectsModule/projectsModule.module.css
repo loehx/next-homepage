@@ -110,8 +110,29 @@
 }
 
 .fromTo {
-    font-size: 14px;
-    opacity: 0.5;
+    display: none;
+}
+
+@media only screen and (min-width: 1000px) {
+    .fromTo {
+        font-size: 12px;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: translateY(-1rem);
+        position: absolute;
+        top: 100%;
+        opacity: 0;
+        padding-top: 3px;
+        display: block;
+    }
+
+    .project:not(.open):hover {
+        padding-bottom: 3.5rem;
+    }
+
+    .project:not(.open):hover .fromTo {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .name {

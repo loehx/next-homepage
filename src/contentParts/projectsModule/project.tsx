@@ -23,6 +23,10 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             </>
         );
 
+    const fromYear = project.from.split("/")[1];
+    const toYear = project.to?.split("/")[1] || "today";
+    const fromTo = fromYear === toYear ? fromYear : `${fromYear} - ${toYear}`;
+
     return (
         <FadeIn
             className={cx(
@@ -38,11 +42,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             <div className={styles.textWrapper}>
                 <div className={styles.name}>{project.name}</div>
                 <div className={styles.description}>{project.description}</div>
-                {!open && (
-                    <div className={styles.fromTo}>
-                        {project.from} - {project.to || "today"}
-                    </div>
-                )}
+                <div className={styles.fromTo}>{fromTo}</div>
 
                 {open && (
                     <dl className={styles.details}>
