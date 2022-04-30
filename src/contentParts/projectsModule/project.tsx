@@ -59,7 +59,6 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                         {renderDetail("Role", project.role)}
                         {renderDetail("Sector", project.sector)}
                         {renderDetail("Company", project.company.fullName)}
-                        {renderDetail("Url", project.url)}
                         {renderDetail("Tech Stack", getTechStack(project))}
                         {renderDetail("Team", project.team)}
                     </dl>
