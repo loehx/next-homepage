@@ -27,7 +27,7 @@ const renderLink = (link: LinkEntry) => {
                 >
                     <div className={styles.imageWrapper}>
                         <img
-                            src={link.image.url + "?w=100"}
+                            src={link.image.url + "?fm=webp&w=100"}
                             alt={link.image.name}
                         />
                     </div>
