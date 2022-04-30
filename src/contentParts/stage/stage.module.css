@@ -27,6 +27,9 @@
 @media only screen and (min-width: 800px) {
     .inner {
         justify-content: space-between;
+        flex-direction: row;
+        padding: 30px 30px 250px 30px;
+        gap: 60px;
     }
 }
 
@@ -56,13 +59,6 @@
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
-}
-
-@media only screen and (min-width: 800px) {
-    .inner {
-        flex-direction: row;
-        padding: 30px 30px 250px 30px;
-    }
 }
 
 .h1 {
