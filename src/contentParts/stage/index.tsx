@@ -74,9 +74,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                         <div
                             className={styles.phone}
                             style={{
-                                backgroundImage: `url(${
-                                    props.phoneImage.url
-                                }?w=${isMobile ? 400 : 800})`,
+                                backgroundImage: `url(${props.phoneImage.url}?fm=webp&w=800)`,
                             }}
                             aria-label={props.phoneImage.name}
                         >
