@@ -42,15 +42,20 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
             key={`${project.id}`}
             id={project.id}
             onClick={() => setOpen(!open)}
+            aria-label={open ? "Open" : "Close"}
+            aria-expanded={open.toString()}
             tabIndex={0}
         >
             <div className={styles.textWrapper}>
-                <div className={styles.name}>{project.name}</div>
+                <h3 className={styles.name}>{project.name}</h3>
                 <div className={styles.description}>{project.description}</div>
                 <div className={styles.fromTo}>{fromTo}</div>
 
                 {open && (
-                    <dl className={styles.details}>
+                    <dl
+                        className={styles.details}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         {renderDetail(
                             "From / To",
                             project.from + " - " + (project.to || "today"),
@@ -64,16 +69,27 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                     </dl>
                 )}
             </div>
-            <div className={styles.panelRight}>
+            <div
+                className={styles.panelRight}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {open && (
                     <div className={styles.companyLogoWrapper}>
                         {project.company?.logo && (
                             <Tooltip text={project.company?.fullName}>
-                                <img
-                                    src={project.company.logo?.url + "?w=300"}
-                                    alt={project.company.fullName}
-                                    title={project.company.fullName}
-                                />
+                                <a
+                                    href={project.company?.url}
+                                    aria-label={`Visit homepage of ${project.company?.fullName}`}
+                                    target="_blank"
+                                >
+                                    <img
+                                        src={
+                                            project.company.logo?.url + "?w=300"
+                                        }
+                                        alt={project.company.fullName}
+                                        title={project.company.fullName}
+                                    />
+                                </a>
                             </Tooltip>
                         )}
                     </div>
@@ -81,12 +97,18 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                 <div className={styles.techLogos}>
                     {project.technologies.map((t) => (
                         <Tooltip text={t.fullName} key={t.id}>
-                            <img
-                                key={t.id}
-                                src={t.logo.url + "?w=80"}
-                                alt={t.name}
-                                title={t.fullName}
-                            />
+                            <a
+                                href={t.url}
+                                aria-label={`Visit homepage of ${t.fullName}`}
+                                target="_blank"
+                            >
+                                <img
+                                    key={t.id}
+                                    src={t.logo.url + "?w=80"}
+                                    alt={t.name}
+                                    title={t.fullName}
+                                />
+                            </a>
                         </Tooltip>
                     ))}
                 </div>

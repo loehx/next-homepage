@@ -38,15 +38,17 @@ export const Footer: React.FC<FooterEntry> = (props) => {
                     </FadeIn>
                 )}
                 {props.metaNavigation && (
-                    <ul className={styles.metaNav}>
-                        {props.metaNavigation.map((item) => (
-                            <li key={item.id}>
-                                <Link href={item.slug}>
-                                    {item.teaserTitle || item.title}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+                    <nav>
+                        <ul className={styles.metaNav}>
+                            {props.metaNavigation.map((item) => (
+                                <li key={item.id}>
+                                    <Link href={item.slug}>
+                                        {item.teaserTitle || item.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
                 )}
             </div>
             <div className={styles.waves}>

@@ -26,7 +26,10 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                         <h2 className="text-3xl mb-6">{props.title}</h2>
                     </FadeIn>
                 )}
-                <FadeIn className={styles.filterBar}>
+                <FadeIn
+                    className={styles.filterBar}
+                    aria-label="Filter by technology"
+                >
                     {props.techFilter.map((tech) => (
                         <span
                             key={tech.id}
@@ -34,6 +37,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                                 styles.filter,
                                 techFilter === tech.id && styles.active,
                             )}
+                            aria-label={`Show only ${tech.fullName} projects`}
                             onClick={() => setTechFilter(tech.id)}
                         >
                             {tech.name}
@@ -43,6 +47,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                         <span
                             className={cx(styles.filter, styles.reset)}
                             onClick={() => setTechFilter(undefined)}
+                            aria-label={`Show all projects`}
                         >
                             &times;
                         </span>

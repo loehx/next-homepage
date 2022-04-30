@@ -78,11 +78,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     props.phoneImage.url
                                 }?w=${isMobile ? 400 : 800})`,
                             }}
+                            aria-label={props.phoneImage.name}
                         >
-                            <img
-                                src={phoneFrameSrc}
-                                alt={props.phoneImage.name}
-                            />
+                            <img src={phoneFrameSrc} alt={"iphone frame"} />
                         </div>
                         {props.availableFrom && (
                             <div className={styles.availability}>

@@ -175,6 +175,7 @@
     flex-direction: column;
     width: 100%;
     height: auto;
+    cursor: default;
 }
 
 @media only screen and (min-width: 1000px) {
@@ -267,6 +268,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 1em;
+    cursor: default;
 }
 
 .details dt {
