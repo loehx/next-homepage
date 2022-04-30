@@ -271,7 +271,7 @@
 
 .details dt {
     margin: 0;
-    font-size: 13px;
+    font-size: 11px;
     text-transform: uppercase;
     width: 115px;
     opacity: 0.8;
@@ -280,6 +280,14 @@
     display: flex;
     align-items: flex-start;
     padding-top: 3px;
+    background: -webkit-linear-gradient(
+        45deg,
+        var(--secondary) -40%,
+        var(--primary) 120%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
 }
 .details dd {
     margin: 0;
