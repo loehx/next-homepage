@@ -1,7 +1,7 @@
 .availabilityStatusWrapper {
     position: absolute;
     bottom: -50px;
-    left: -50px;
+    left: -30px;
     transform: scale(1);
     opacity: 1;
     user-select: none;
