@@ -8,8 +8,8 @@
 }
 
 .stage.initializing * {
-    transition-duration: 0ms !important;
-    transition-delay: 0ms !important;
+    /*transition-duration: 0ms !important;*/
+    /*transition-delay: 0ms !important;*/
 }
 
 .inner {
@@ -34,7 +34,7 @@
 }
 
 .intro > * {
-    transition: all 0.4s ease;
+    /*transition: all 0.4s ease;*/
 }
 
 .initializing .intro > * {
@@ -43,16 +43,16 @@
 }
 
 .intro > *:nth-child(1) {
-    transition-delay: 0.2s;
+    /*transition-delay: 0.2s;*/
 }
 .intro > *:nth-child(2) {
-    transition-delay: 0.4s;
+    /*transition-delay: 0.4s;*/
 }
 .intro > *:nth-child(3) {
-    transition-delay: 0.6s;
+    /*transition-delay: 0.6s;*/
 }
 .intro > *:nth-child(4) {
-    transition-delay: 0.8s;
+    /*transition-delay: 0.8s;*/
 }
 
 .logo {
@@ -135,9 +135,9 @@
 .phoneWrapper {
     width: 100px;
     height: 204.5px;
-    transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.5s,
+    /*transition: all 1s cubic-bezier(0.68, -0.67, 0.29, 2.19) 0.5s,
         border-radius 0s linear 0s,
-        background-position 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 2s;
+        background-position 0.4s cubic-bezier(0.68, -0.37, 0.29, 2) 2s;*/
     transform: translate(0);
     flex-shrink: 0;
     position: relative;
@@ -177,7 +177,7 @@
     top: 0;
     background-color: black;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out 1.2s;
+    /*transition: opacity 0.3s ease-in-out 1.2s;*/
     border-radius: 17px;
 }
 
@@ -247,7 +247,7 @@
 
 .availability {
     display: none;
-    transition: all 0.3s ease 2s;
+    /*transition: all 0.3s ease 2s;*/
 }
 
 .initializing .availability {
