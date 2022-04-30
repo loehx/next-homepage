@@ -21,6 +21,11 @@ const Page: FC<Props> = (props: Props) => {
     );
     const { config } = props;
     const showCookiePopup = !useIsMobile(false) && config.cookiePopup;
+    const fonts = [
+        "Nunito:300,400,600,700?display",
+        "Righteous:400",
+        "JetBrains+Mono:400,800&display=swap",
+    ].join("|");
 
     return (
         <>
@@ -40,8 +45,11 @@ const Page: FC<Props> = (props: Props) => {
                 {renderOG("og:locale", "de_DE")}
                 {renderOG("og:site_name", "Alexander Löhn")}
                 {renderOG("og:type", "website")}
-                <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-                <link rel="preconnect" href="//fonts.gstatic.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" />
+                <link
+                    href={`https://fonts.googleapis.com/css?family=${fonts}&display=swap`}
+                    rel="stylesheet"
+                />
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (
