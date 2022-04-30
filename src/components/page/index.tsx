@@ -40,6 +40,8 @@ const Page: FC<Props> = (props: Props) => {
                 {renderOG("og:locale", "de_DE")}
                 {renderOG("og:site_name", "Alexander Löhn")}
                 {renderOG("og:type", "website")}
+                <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+                <link rel="preconnect" href="//fonts.gstatic.com" />
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (

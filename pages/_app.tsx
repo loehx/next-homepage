@@ -19,9 +19,9 @@ function loadFonts() {
         WebFont.load({
             google: {
                 families: [
-                    "Nunito:300,400,600,700",
-                    "Righteous:400",
-                    "JetBrains+Mono:400,800",
+                    "Nunito:300,400,600,700?display=swap",
+                    "Righteous:400?display=swap",
+                    "JetBrains+Mono:400,800?display=swap",
                 ],
             },
         });
