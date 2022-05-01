@@ -278,8 +278,7 @@
     width: 115px;
     padding-right: 15px;
     margin-bottom: 10px;
-    display: flex;
-    align-items: flex-start;
+    display: inline-block;
     padding-top: 3px;
     background: -webkit-linear-gradient(
         45deg,
