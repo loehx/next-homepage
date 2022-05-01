@@ -26,7 +26,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
 
     useEffect(() => {
         window.dispatchEvent(new Event("scroll"));
-    }, [techFilter]);
+    }, [techFilter, open]);
 
     const fromYear = project.from.split("/")[1];
     const toYear = project.to?.split("/")[1] || "today";
