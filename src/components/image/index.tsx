@@ -45,6 +45,7 @@ export const Image: React.FC<ImageProps> = ({ asset, ...props }) => {
                 loader={asset ? srcLoader : undefined}
                 loading="lazy"
                 height={height}
+                alt={asset?.description}
                 {...props}
                 src={asset?.url || props.src}
                 onLoadingComplete={() => setShowPlaceholder(false)}

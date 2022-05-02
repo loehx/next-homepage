@@ -74,7 +74,7 @@ function secondsUntilMidnight(): number {
     const midnight = new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDay() + 1,
+        now.getDate() + 1,
     );
     return midnight.getTime() - now.getTime() * 1000;
 }

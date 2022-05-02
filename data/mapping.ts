@@ -43,12 +43,15 @@ export function mapEntry<T extends Entry>(entry: contentful.Entry<unknown>): T {
     return result as T;
 }
 function mapAsset(entry: contentful.Entry<unknown>): AssetEntry | null {
-    if (!(<any>entry.fields).file) return null;
+    const fields = entry.fields as any;
+    if (!fields.file) return null;
+    console.log(fields);
     return {
         id: entry.sys.id,
         type: "asset",
-        name: (<any>entry.fields).title,
-        url: (<any>entry.fields).file?.url || null,
-        ...((<any>entry.fields).file?.details?.image || {}),
+        name: fields.title,
+        ...(fields.description && { description: fields.description }),
+        url: fields.file?.url || null,
+        ...(fields.file?.details?.image || {}),
     };
 }

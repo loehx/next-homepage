@@ -63,16 +63,12 @@ export const Stage: React.FC<StageProps> = (props) => {
                     <div className={styles.phoneWrapper}>
                         <div
                             className={styles.phone}
-                            aria-label={props.phoneImage.name}
+                            aria-label={props.phoneImage.description}
                         >
                             <div
                                 className={`${styles.avatar} w-full h-full relative overflow-hidden rounded`}
                             >
-                                <Image
-                                    asset={props.phoneImage}
-                                    alt={props.phoneImage.name}
-                                    width={300}
-                                />
+                                <Image asset={props.phoneImage} width={300} />
                             </div>
                             <Image src={phoneFrameSrc} alt={"iphone frame"} />
                         </div>
