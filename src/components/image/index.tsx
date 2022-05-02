@@ -54,6 +54,7 @@ export const Image: React.FC<ImageProps> = ({ asset, ...props }) => {
                 <NextImage
                     layout={"fill"}
                     objectFit="cover"
+                    alt="Placeholder image"
                     loader={undefined}
                     src={placeHolderImage}
                 />
