@@ -70,7 +70,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                             >
                                 <Image
                                     asset={props.phoneImage}
-                                    alt={props.phoneImage.alt}
+                                    alt={props.phoneImage.name}
                                     width={300}
                                 />
                             </div>

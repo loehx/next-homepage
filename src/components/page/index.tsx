@@ -33,7 +33,7 @@ const Page: FC<Props> = (props: Props) => {
                 <link rel="shortcut icon" href={config.favicon.url} />
                 <meta name="description" content={props.description} />
                 <meta name="author" content="Alexander Löhn" />
-                <meta name="theme-color" content="#000000"></meta>
+                <meta name="theme-color" content="#000000" />
                 {renderOG(
                     "og:image",
                     `${props.ogimage?.url}?w=1200&h=630&fit=fill`,

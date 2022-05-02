@@ -52,14 +52,14 @@ export const LinksModule: FC<LinksModuleProps> = (props) => {
                 )}
             </FadeIn>
 
-            <ul
+            <div
                 className={cx(
                     styles.list,
                     "grid grid-cols-1 md:grid-cols-2 gap-4",
                 )}
             >
                 {props.links.map(renderLink)}
-            </ul>
+            </div>
         </div>
     );
 };

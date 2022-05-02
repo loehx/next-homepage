@@ -135,7 +135,7 @@
 .phoneWrapper {
     width: 100px;
     height: 204.5px;
-    transition: all 1s ease 0.5s, opacity ease 0.1s 0.5s;
+    transition: all 1s ease 0.5s;
     transform: translate(0);
     flex-shrink: 0;
     position: relative;
