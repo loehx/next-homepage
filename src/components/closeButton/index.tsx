@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./closeButton.module.css";
-import { RichText, RichTextValue } from "@components/rich-text";
-import { Entry, AssetEntry } from "data/definitions";
-import { useInitializeClass } from "src/hooks";
 import cx from "classnames";
 
 export type CloseButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;

@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from "react";
-import styles from "./button.module.css";
-import { RichText, RichTextValue } from "@components/rich-text";
-import { Entry, AssetEntry } from "data/definitions";
-import { useInitializeClass } from "src/hooks";
+import React from "react";
 import cx from "classnames";
 
 export interface ButtonProps

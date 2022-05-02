@@ -20,9 +20,5 @@ module.exports = withPlugins(
         exportTrailingSlash: true,
         target: "serverless",
         compress: false,
-        i18n: {
-            locales: ["en"],
-            defaultLocale: "en",
-        },
     },
 );
