@@ -76,5 +76,5 @@ function secondsUntilMidnight(): number {
         now.getMonth(),
         now.getDate() + 1,
     );
-    return midnight.getTime() - now.getTime() * 1000;
+    return Math.floor((midnight.getTime() - now.getTime()) / 1000);
 }
