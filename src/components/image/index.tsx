@@ -12,6 +12,10 @@ export interface ImageProps {
     height?: number;
     alt?: string;
     fill?: boolean;
+    onLoadingComplete?: (result: {
+        naturalWidth: number;
+        naturalHeight: number;
+    }) => void;
 }
 
 const srcLoader: ImageLoader = ({ src, width, quality = undefined }) => {
@@ -29,7 +33,11 @@ const srcLoader: ImageLoader = ({ src, width, quality = undefined }) => {
     return src + separator + query;
 };
 
-export const Image: React.FC<ImageProps> = ({ asset, ...props }) => {
+export const Image: React.FC<ImageProps> = ({
+    asset,
+    onLoadingComplete,
+    ...props
+}) => {
     const [showPlaceholder, setShowPlaceholder] = useState(true);
     const height =
         props.height ||
@@ -48,7 +56,12 @@ export const Image: React.FC<ImageProps> = ({ asset, ...props }) => {
                 alt={asset?.description}
                 {...props}
                 src={asset?.url || props.src || ""}
-                onLoadingComplete={() => setShowPlaceholder(false)}
+                onLoadingComplete={(result) => {
+                    setShowPlaceholder(false);
+                    if (onLoadingComplete) {
+                        onLoadingComplete(result);
+                    }
+                }}
             />
             {showPlaceholder && (
                 <NextImage

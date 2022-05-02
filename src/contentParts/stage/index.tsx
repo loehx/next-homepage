@@ -47,6 +47,12 @@ export const Stage: React.FC<StageProps> = (props) => {
                                 src={props.logo.url}
                                 alt={props.logo.name}
                                 width={props.logoWidth}
+                                height={
+                                    props.logo.height &&
+                                    props.logo.width &&
+                                    (props.logoWidth / props.logo.width) *
+                                        props.logo.height
+                                }
                             />
                         </div>
                     )}
