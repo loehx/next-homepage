@@ -4,6 +4,7 @@ import cx from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FadeIn } from "@components/fadeIn";
 import { Tooltip } from "@components/tooltip";
+import { Image } from "@components/image";
 
 interface Props {
     project: ProjectEntry;
@@ -81,13 +82,11 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                                     href={project.company?.url}
                                     aria-label={`Visit homepage of ${project.company?.fullName}`}
                                     target="_blank"
+                                    className="w-[150px] h-[80px] relative block overflow-hidden"
                                 >
-                                    <img
-                                        src={
-                                            project.company.logo?.url + "?w=300"
-                                        }
-                                        alt={project.company.fullName}
-                                        title={project.company.fullName}
+                                    <Image
+                                        asset={project.company.logo}
+                                        alt={`logo of ${project.company.fullName}`}
                                     />
                                 </a>
                             </Tooltip>
@@ -101,12 +100,11 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                                 href={t.url}
                                 aria-label={`Visit homepage of ${t.fullName}`}
                                 target="_blank"
+                                className="w-[40px] h-[40px] block"
                             >
-                                <img
-                                    key={t.id}
-                                    src={t.logo.url + "?w=80"}
-                                    alt={t.name}
-                                    title={t.fullName}
+                                <Image
+                                    asset={t.logo}
+                                    alt={`logo of ${t.fullName}`}
                                 />
                             </a>
                         </Tooltip>

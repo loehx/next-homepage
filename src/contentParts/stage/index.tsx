@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.png";
-import { RichText, RichTextValue } from "@components/rich-text";
-import {
-    useBrowserDimensions,
-    useInitializeClass,
-    useIsMobile,
-} from "src/hooks";
+import { useInitializeClass, useIsMobile } from "src/hooks";
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
 import { Window } from "@components/window";
-import { CustomParallax } from "@components/customParallax";
+import { Image } from "@components/image";
 
 export interface StageProps {
     id: string;
@@ -28,18 +23,14 @@ export interface StageProps {
 
 export const Stage: React.FC<StageProps> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.stage);
+    const [showVideo, setShowVideo] = useState(false);
     const isMobile = useIsMobile(true);
 
     return (
         <div className={classNames}>
             <div className={styles.background}>
-                <img
-                    src={`${props.backgroundImage.url}?fm=webp${
-                        isMobile ? "&h=1335" : ""
-                    }`}
-                    alt="Background Image"
-                />
-                {!isMobile && props.backgroundVideo && (
+                <Image asset={props.backgroundImage} alt="Background Image" />
+                {!isMobile && props.backgroundVideo && showVideo && (
                     <video
                         src={props.backgroundVideo.url}
                         loop
@@ -54,7 +45,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.logo && (!isMobile || !props.phoneImage) && (
                         <div className={styles.logo}>
                             <img
-                                src={props.logo.url + "?fm=webp"}
+                                src={props.logo.url}
                                 alt={props.logo.name}
                                 width={props.logoWidth}
                             />
@@ -73,12 +64,16 @@ export const Stage: React.FC<StageProps> = (props) => {
                     <div className={styles.phoneWrapper}>
                         <div
                             className={styles.phone}
-                            style={{
-                                backgroundImage: `url(${props.phoneImage.url}?fm=webp&w=800)`,
-                            }}
                             aria-label={props.phoneImage.name}
                         >
-                            <img src={phoneFrameSrc} alt={"iphone frame"} />
+                            <div className="w-full h-full relative overflow-hidden rounded">
+                                <Image
+                                    asset={props.phoneImage}
+                                    alt={props.phoneImage.alt}
+                                    width={300}
+                                />
+                            </div>
+                            <Image src={phoneFrameSrc} alt={"iphone frame"} />
                         </div>
                         {props.availableFrom && (
                             <div className={styles.availability}>

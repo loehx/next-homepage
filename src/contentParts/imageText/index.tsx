@@ -4,6 +4,7 @@ import { RichText, RichTextValue } from "@components/rich-text";
 import { AssetEntry, Entry } from "data/definitions";
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";
+import { Image } from "@components/image";
 
 export interface ImageTextProps extends Entry {
     id: string;
@@ -26,11 +27,7 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                 {props.h2 && <h2 className="text-3xl mb-6">{props.h2}</h2>}
                 <div className={props.imageRight ? styles.imageRight : ""}>
                     <div className={styles.imageWrapper} style={imageStyle}>
-                        <img
-                            src={props.image.url + "?fm=webp"}
-                            alt={props.image.name}
-                            loading="lazy"
-                        />
+                        <Image asset={props.image} alt={props.image.name} />
                     </div>
                     <div className={styles.textWrapper}>
                         {props.h2 && (

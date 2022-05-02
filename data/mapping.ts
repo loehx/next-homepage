@@ -49,5 +49,6 @@ function mapAsset(entry: contentful.Entry<unknown>): AssetEntry | null {
         type: "asset",
         name: (<any>entry.fields).title,
         url: (<any>entry.fields).file?.url || null,
+        ...((<any>entry.fields).file?.details?.image || {}),
     };
 }

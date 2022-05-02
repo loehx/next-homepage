@@ -16,6 +16,8 @@ export interface ConfigEntry extends Entry {
 export interface AssetEntry extends Entry {
     name: string;
     url: string;
+    width?: number;
+    height?: number;
 }
 
 export interface PageEntry extends Entry {

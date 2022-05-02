@@ -58,6 +58,7 @@
     width: 90px;
     height: 90px;
     padding: 20px;
+    flex-shrink: 0;
 }
 
 .imageWrapper img {

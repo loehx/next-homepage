@@ -6,6 +6,7 @@ import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import dynamic from "next/dynamic";
 const CookiePopup = dynamic(() => import("@components/cookiePopup"));
+import LazyHydrate from "react-lazy-hydration";
 
 interface Props extends PageEntry {
     config: ConfigEntry;
@@ -15,17 +16,15 @@ const renderOG = (name: string, value: string) =>
     value && <meta property={name} content={value} />;
 
 const Page: FC<Props> = (props: Props) => {
-    const className = useInitializeClass(
-        "initialize",
-        "page space-y-10 md:space-y-24",
-    );
+    const className = useInitializeClass("initialize", "page gap-10 md:gap-24");
     const { config } = props;
     const showCookiePopup = !useIsMobile(false) && config.cookiePopup;
-    const fonts = [
-        "Nunito:300,400,600,700?display",
-        "Righteous:400",
-        "JetBrains+Mono:400,800&display=swap",
-    ].join("|");
+
+    // const fonts = [
+    //     "Nunito:300,400,600,700?display",
+    //     "Righteous:400",
+    //     "JetBrains+Mono:400,800&display=swap",
+    // ].join("|");
 
     return (
         <>
@@ -46,10 +45,7 @@ const Page: FC<Props> = (props: Props) => {
                 {renderOG("og:site_name", "Alexander Löhn")}
                 {renderOG("og:type", "website")}
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
-                <link
-                    href={`https://fonts.googleapis.com/css?family=${fonts}&display=swap`}
-                    rel="stylesheet"
-                />
+                <link rel="preconnect" href="https://images.ctfassets.net" />
             </Head>
             <div className={className}>
                 {props.mainContent.map((cp) => (
@@ -58,7 +54,10 @@ const Page: FC<Props> = (props: Props) => {
                 {showCookiePopup && (
                     <CookiePopup {...(config.cookiePopup as any)} />
                 )}
-                <Footer {...(props.footer || props.config.footer)} />
+
+                <LazyHydrate whenVisible>
+                    <Footer {...(props.footer || props.config.footer)} />
+                </LazyHydrate>
             </div>
         </>
     );

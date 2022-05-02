@@ -67,10 +67,11 @@
     flex-shrink: 0;
     overflow: hidden;
     border-radius: 5px;
+    position: relative;
 }
 .imageWrapper img {
     width: 100%;
-    transition: all 6s ease-out;
+    transition: transform 6s ease-out;
 }
 .imageWrapper img:hover {
     transform: scale(1.2);

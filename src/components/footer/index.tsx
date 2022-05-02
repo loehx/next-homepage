@@ -5,6 +5,7 @@ import { Window } from "@components/window";
 import Link from "next/link";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import { FadeIn } from "@components/fadeIn";
+import { Image } from "@components/image";
 
 export const Footer: React.FC<FooterEntry> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.footer);
@@ -12,11 +13,10 @@ export const Footer: React.FC<FooterEntry> = (props) => {
     return (
         <div className={classNames}>
             <div className={styles.background}>
-                <img
-                    src={`${props.backgroundImage.url}?fm=webp${
-                        isMobile ? "&h=1335" : ""
-                    }`}
+                <Image
+                    asset={props.backgroundImage}
                     alt="Background Image"
+                    fill
                 />
                 {!isMobile && (
                     <video

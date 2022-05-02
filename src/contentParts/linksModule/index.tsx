@@ -4,6 +4,7 @@ import styles from "./linksModule.module.css";
 import Tilt from "react-parallax-tilt";
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";
+import { Image } from "@components/image";
 
 export interface LinksModuleProps extends Entry {
     name: string;
@@ -26,10 +27,9 @@ const renderLink = (link: LinkEntry) => {
                     title={link.description || styles.name}
                 >
                     <div className={styles.imageWrapper}>
-                        <img
-                            src={link.image.url + "?fm=webp&w=100"}
-                            alt={link.image.name}
-                        />
+                        <div className="relative w-full h-full">
+                            <Image asset={link.image} alt={link.image.name} />
+                        </div>
                     </div>
                     <div className={styles.textWrapper}>
                         <span className={styles.name}>{link.name}</span>
