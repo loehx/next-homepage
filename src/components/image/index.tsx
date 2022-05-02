@@ -47,7 +47,7 @@ export const Image: React.FC<ImageProps> = ({ asset, ...props }) => {
                 height={height}
                 alt={asset?.description}
                 {...props}
-                src={asset?.url || props.src}
+                src={asset?.url || props.src || ""}
                 onLoadingComplete={() => setShowPlaceholder(false)}
             />
             {showPlaceholder && (
