@@ -45,7 +45,6 @@ export function mapEntry<T extends Entry>(entry: contentful.Entry<unknown>): T {
 function mapAsset(entry: contentful.Entry<unknown>): AssetEntry | null {
     const fields = entry.fields as any;
     if (!fields.file) return null;
-    console.log(fields);
     return {
         id: entry.sys.id,
         type: "asset",

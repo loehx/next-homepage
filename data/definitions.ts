@@ -7,6 +7,7 @@ export interface Entry {
 export interface ConfigEntry extends Entry {
     name: string;
     favicon: AssetEntry;
+    author: string;
     startPage: PageEntry;
     footer: FooterEntry;
     cookiePopup: Entry;
