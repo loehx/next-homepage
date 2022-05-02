@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import styles from "./window.module.css";
 import cx from "classnames";
-import { renderMarkdown } from "src/util";
+import { Marked } from "@ts-stack/markdown";
 
 interface WindowProps {
     className?: string;
@@ -20,7 +20,7 @@ export const Window: React.FC<WindowProps> = ({
 }) => {
     const html = useMemo(() => {
         if (!text) return "";
-        return renderMarkdown(text)
+        return Marked.parse(text)
             .replaceAll(/(ul|ol)>\n/g, "$1>")
             .replaceAll(/\n<(li|ul|ol)/g, "<$1")
             .replace(/\n$/, "");

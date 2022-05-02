@@ -1,16 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./availabilityStatus.module.css";
-import { RichText, RichTextValue } from "@components/rich-text";
-import { AssetEntry, PageEntry } from "data/definitions";
-import {
-    useBrowserDimensions,
-    useInitializeClass,
-    useIsMobile,
-} from "src/hooks";
-import * as util from "src/util";
+import { useInitializeClass } from "src/hooks";
+import { format, parseISO } from "date-fns";
 import cx from "classnames";
 import { Tooltip } from "@components/tooltip";
-import moment from "moment";
 
 export interface AvailabilityStatusProps {
     availableFrom: string;
@@ -24,23 +17,22 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
         styles.availabilityStatusWrapper,
     );
 
-    const daysUntilAvailable = useMemo(
-        () => util.daysUntil(props.availableFrom),
-        [],
-    );
+    const daysUntilAvailable = useMemo(() => {
+        return daysUntil(props.availableFrom);
+    }, []);
     const isAvailable = daysUntilAvailable <= 0;
     const [secondsUntil, setSecondsUntil] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(
-            () => setSecondsUntil(util.secondsUntilMidnight()),
+            () => setSecondsUntil(secondsUntilMidnight()),
             1000,
         );
         return () => clearInterval(interval);
     }, []);
 
     const tooltip = useMemo(
-        () => moment(props.availableFrom, "YYYY-MM-DD").format("LL"),
+        () => format(parseISO(props.availableFrom), "MMM dd, yyyy"),
         [props.availableFrom],
     );
 
@@ -69,3 +61,20 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
         </Tooltip>
     );
 };
+
+function daysUntil(dateString) {
+    const date1 = new Date(dateString);
+    const date2 = new Date();
+    const timeInMilisec = date1.getTime() - date2.getTime();
+    return Math.ceil(timeInMilisec / (1000 * 60 * 60 * 24));
+}
+
+function secondsUntilMidnight(): number {
+    const now = new Date();
+    const midnight = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDay() + 1,
+    );
+    return midnight.getTime() - now.getTime() * 1000;
+}

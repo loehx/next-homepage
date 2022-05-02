@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import dynamic from "next/dynamic";
-import { ConfigEntry, Entry } from "data/definitions";
-import { Stage, StageProps } from "./contentParts/stage";
-import { Text, TextProps } from "./contentParts/text";
-import { LinksModule, LinksModuleProps } from "./contentParts/linksModule";
-import { ImageText, ImageTextProps } from "./contentParts/imageText";
-import { Timeline } from "./contentParts/timeline";
-import { ProjectsModule } from "./contentParts/projectsModule";
 import LazyHydrate from "react-lazy-hydration";
+import { ConfigEntry, Entry } from "data/definitions";
+const Stage = dynamic(() => import("./contentParts/stage"));
+const Text = dynamic(() => import("./contentParts/text"));
+const LinksModule = dynamic(() => import("./contentParts/linksModule"));
+const ImageText = dynamic(() => import("./contentParts/imageText"));
+const Timeline = dynamic(() => import("./contentParts/timeline"));
+const ProjectsModule = dynamic(() => import("./contentParts/projectsModule"));
 const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
 );
@@ -18,7 +18,7 @@ interface Props extends Entry {
 
 const Page: FC<Props> = (props: Props) => {
     return (
-        <LazyHydrate whenIdle>
+        <LazyHydrate whenVisible>
             <div data-id={props.id} data-type={props.type}>
                 {props.type === "stage" && <Stage {...(props as any)} />}
                 {props.type === "text" && <Text {...(props as any)} />}

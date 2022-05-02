@@ -67,3 +67,5 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
         </div>
     );
 };
+
+export default ProjectsModule;

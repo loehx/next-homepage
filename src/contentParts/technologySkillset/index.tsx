@@ -51,3 +51,5 @@ function getProjectMapping(projects: ProjectEntry[]): TechProjectMapping {
     }
     return techProjects;
 }
+
+export default TechnologySkillset;

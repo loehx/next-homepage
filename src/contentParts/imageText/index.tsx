@@ -40,3 +40,5 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
         </div>
     );
 };
+
+export default ImageText;

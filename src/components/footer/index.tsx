@@ -13,11 +13,7 @@ export const Footer: React.FC<FooterEntry> = (props) => {
     return (
         <div className={classNames}>
             <div className={styles.background}>
-                <Image
-                    asset={props.backgroundImage}
-                    alt="Background Image"
-                    fill
-                />
+                <Image asset={props.backgroundImage} alt="Background Image" />
                 {!isMobile && (
                     <video
                         src={props.backgroundVideo.url}

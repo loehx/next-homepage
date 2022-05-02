@@ -21,3 +21,5 @@ export const Text: React.FC<TextProps> = (props) => {
         </div>
     );
 };
+
+export default Text;

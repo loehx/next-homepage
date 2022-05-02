@@ -63,3 +63,5 @@ export const LinksModule: FC<LinksModuleProps> = (props) => {
         </div>
     );
 };
+
+export default LinksModule;

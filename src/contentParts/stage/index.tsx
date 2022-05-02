@@ -23,14 +23,13 @@ export interface StageProps {
 
 export const Stage: React.FC<StageProps> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.stage);
-    const [showVideo, setShowVideo] = useState(false);
     const isMobile = useIsMobile(true);
 
     return (
         <div className={classNames}>
             <div className={styles.background}>
                 <Image asset={props.backgroundImage} alt="Background Image" />
-                {!isMobile && props.backgroundVideo && showVideo && (
+                {!isMobile && props.backgroundVideo && (
                     <video
                         src={props.backgroundVideo.url}
                         loop
@@ -66,7 +65,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                             className={styles.phone}
                             aria-label={props.phoneImage.name}
                         >
-                            <div className="w-full h-full relative overflow-hidden rounded">
+                            <div
+                                className={`${styles.avatar} w-full h-full relative overflow-hidden rounded`}
+                            >
                                 <Image
                                     asset={props.phoneImage}
                                     alt={props.phoneImage.alt}
@@ -114,3 +115,5 @@ export const Stage: React.FC<StageProps> = (props) => {
         </div>
     );
 };
+
+export default Stage;
