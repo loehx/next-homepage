@@ -27,7 +27,11 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                 {props.h2 && <h2 className="text-3xl mb-6">{props.h2}</h2>}
                 <div className={props.imageRight ? styles.imageRight : ""}>
                     <div className={styles.imageWrapper} style={imageStyle}>
-                        <Image asset={props.image} alt={props.image.name} />
+                        <Image
+                            asset={props.image}
+                            alt={props.image.name}
+                            fixedRatio
+                        />
                     </div>
                     <div className={styles.textWrapper}>
                         {props.h2 && (

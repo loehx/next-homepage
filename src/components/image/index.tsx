@@ -16,6 +16,7 @@ export interface ImageProps {
         naturalWidth: number;
         naturalHeight: number;
     }) => void;
+    fixedRatio?: boolean;
 }
 
 const srcLoader: ImageLoader = ({ src, width, quality = undefined }) => {
@@ -45,8 +46,16 @@ export const Image: React.FC<ImageProps> = ({
             ? (asset.width / props.width) * asset.height
             : undefined);
 
+    const wrapperStyles = asset?.width &&
+        asset?.height &&
+        props.fixedRatio && {
+            paddingBottom: `${Math.round(
+                (asset.height / asset?.width) * 100,
+            )}%`,
+        };
+
     return (
-        <span>
+        <div style={wrapperStyles || {}}>
             <NextImage
                 layout={"fill"}
                 objectFit="cover"
@@ -72,6 +81,6 @@ export const Image: React.FC<ImageProps> = ({
                     src={placeHolderImage}
                 />
             )}
-        </span>
+        </div>
     );
 };
