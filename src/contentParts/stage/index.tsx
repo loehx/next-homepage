@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.png";
-import { useInitializeClass, useIsMobile } from "src/hooks";
+import { useIsMobile } from "src/hooks";
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
 import { Window } from "@components/window";
 import { Image } from "@components/image";
+import cx from "classnames";
 
 export interface StageProps {
     id: string;
@@ -22,13 +23,17 @@ export interface StageProps {
 }
 
 export const Stage: React.FC<StageProps> = (props) => {
-    const classNames = useInitializeClass(styles.initializing, styles.stage);
     const isMobile = useIsMobile(true);
+    const [loading, setLoading] = useState(true);
 
     return (
-        <div className={classNames}>
+        <div className={cx(styles.stage, loading && styles.initializing)}>
             <div className={styles.background}>
-                <Image asset={props.backgroundImage} alt="Background Image" />
+                <Image
+                    asset={props.backgroundImage}
+                    alt="Background Image"
+                    onLoadingComplete={() => setLoading(false)}
+                />
                 {!isMobile && props.backgroundVideo && (
                     <video
                         src={props.backgroundVideo.url}
