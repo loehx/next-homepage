@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
-import phoneFrameSrc from "./phone-frame.png";
+import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
