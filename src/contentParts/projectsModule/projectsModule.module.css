@@ -295,3 +295,28 @@
     font-weight: 500;
     margin-bottom: 10px;
 }
+
+.details a {
+    transition: all 0.1s ease;
+}
+
+.details a:after {
+    content: " \2192";
+    line-height: 1;
+    transform: rotate(0deg);
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 0.1s ease;
+    color: var(--primary);
+}
+
+.details a:hover {
+    opacity: 1;
+    color: var(--secondary);
+}
+
+.details a:hover:after {
+    transform: translateX(20%);
+    opacity: 1;
+}

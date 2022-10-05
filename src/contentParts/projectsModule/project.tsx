@@ -17,11 +17,19 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
         ? true
         : project.technologies.find((t) => t.id === techFilter) !== undefined;
 
-    const renderDetail = (name: string, value: string) =>
+    const renderDetail = (name: string, value: string, link?: string) =>
         value && (
             <>
                 <dt>{name}</dt>
-                <dd>{value}</dd>
+                <dd>
+                    {link ? (
+                        <a href={link} target="_blank">
+                            {value}
+                        </a>
+                    ) : (
+                        value
+                    )}
+                </dd>
             </>
         );
 
@@ -62,6 +70,11 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                             project.from + " - " + (project.to || "today"),
                         )}
                         {renderDetail("Description", project.description)}
+                        {renderDetail(
+                            "Url",
+                            project.urlLabel || project.url,
+                            project.url,
+                        )}
                         {renderDetail("Role", project.role)}
                         {renderDetail("Sector", project.sector)}
                         {renderDetail("Company", project.company.fullName)}
