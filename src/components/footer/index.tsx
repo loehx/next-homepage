@@ -14,7 +14,7 @@ export const Footer: React.FC<FooterEntry> = (props) => {
         <div className={classNames}>
             <div className={styles.background}>
                 <Image asset={props.backgroundImage} alt="Background Image" />
-                {!isMobile && (
+                {!isMobile && props.backgroundVideo && (
                     <video
                         src={props.backgroundVideo.url}
                         loop

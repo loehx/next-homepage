@@ -1,5 +1,11 @@
 import * as contentful from "./contentful";
-import { ConfigEntry, Entry, PageEntry, ProjectEntry } from "./definitions";
+import {
+    ConfigEntry,
+    Entry,
+    PageEntry,
+    ProjectEntry,
+    SecretLink,
+} from "./definitions";
 
 export async function getEntry<T extends Entry>(id: string): Promise<T> {
     const result = await contentful.getEntry<T>(id);
@@ -41,6 +47,20 @@ export async function getProjects(): Promise<ProjectEntry[]> {
     });
 
     return projects;
+}
+
+export async function getSecretLink(
+    password: string,
+): Promise<SecretLink | undefined> {
+    return (
+        await contentful.getEntries<SecretLink>({
+            content_type: "secretLink",
+            "fields.password[match]": password,
+            limit: 1,
+        })
+    ).find(
+        (k) => k.password.toLocaleLowerCase() === password.toLocaleLowerCase(),
+    );
 }
 
 export default {

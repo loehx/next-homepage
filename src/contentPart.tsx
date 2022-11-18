@@ -8,6 +8,9 @@ const LinksModule = dynamic(() => import("./contentParts/linksModule"));
 const ImageText = dynamic(() => import("./contentParts/imageText"));
 const Timeline = dynamic(() => import("./contentParts/timeline"));
 const ProjectsModule = dynamic(() => import("./contentParts/projectsModule"));
+const SecretLinkModule = dynamic(
+    () => import("./contentParts/secretLinkModule"),
+);
 const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
 );
@@ -36,6 +39,10 @@ const Page: FC<Props> = (props: Props) => {
                 )}
                 {props.type === "letterimagegenerator" && (
                     <LetterImageGenerator {...(props as any)} />
+                )}
+
+                {props.type === "secretlinkmodule" && (
+                    <SecretLinkModule {...(props as any)} />
                 )}
 
                 {props.type === "timeline" && <Timeline {...(props as any)} />}

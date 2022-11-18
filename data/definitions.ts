@@ -92,3 +92,18 @@ export interface CompanyEntry extends Entry {
     url: string;
     logo: AssetEntry;
 }
+
+export interface SecretLink extends Entry {
+    id: string;
+    type: string;
+    url: string;
+    password: string;
+}
+
+export interface SecretLinkModuleProps extends Entry {
+    id: string;
+    type: string;
+    headline: string;
+    description: string;
+    pleaceholderText: string;
+}
