@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styles from "./secretLink.module.css";
 import { SecretLinkModuleProps } from "data/definitions";
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";
@@ -9,6 +8,7 @@ import { getSecretLink } from "data";
 export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [doggyWidth, setDoggyWidth] = useState(200);
     const [showContentfulLink, setShowContentfulLink] = useState(false);
     const [url, setUrl] = useState("");
     const [salt, setSalt] = useState("");
@@ -44,6 +44,10 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
         setSalt(window.location.search.split("s=")[1]);
     }, []);
 
+    useEffect(() => {
+        setDoggyWidth(randomIntFromInterval(200, 250));
+    }, [error]);
+
     const onPasswordChange = (e) => {
         setShowContentfulLink(false);
         const value = e.target.value || "";
@@ -57,8 +61,8 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
     };
 
     return (
-        <div className={cx(styles.wrapper, "container")}>
-            <FadeIn className={styles.inner}>
+        <div className={cx("container")}>
+            <FadeIn>
                 {props.headline && (
                     <h2 className="text-3xl mb-2">{props.headline}</h2>
                 )}
@@ -69,13 +73,17 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
                     <input
                         type="text"
                         placeholder={props.placeholderText}
-                        className={`border w-full p-4 disabled:opacity-50 rounded-sm`}
+                        className={`border w-full p-4 disabled:opacity-50 rounded-sm uppercase ${
+                            url ? "border-green" : ""
+                        }`}
                         onChange={onPasswordChange}
                         disabled={loading}
                     />
                     <button
                         type="submit"
-                        className="border p-4 font-bold disabled:opacity-50 rounded-sm"
+                        className={`border p-4 font-bold disabled:opacity-50 rounded-sm ${
+                            url ? "border-green" : ""
+                        }`}
                         disabled={loading}
                     >
                         GO
@@ -94,29 +102,28 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
                 {error && (
                     <div className="mt-2 flex items-center p-2 border border-red rounded-sm">
                         <div
-                            className="bg-cover rounded-full border border-red"
+                            className="bg-cover rounded-full border"
                             style={{
-                                backgroundImage: `url(https://place-puppy.com/200x200)`,
+                                backgroundImage: `url(https://place-puppy.com/200x${doggyWidth})`,
                                 width: "60px",
                                 aspectRatio: "1/1",
                             }}
                         ></div>
-                        <span className="p-4 text-red flex-1">{error}</span>
+                        <span className="pl-4 text-red flex-1">{error}</span>
                     </div>
                 )}
 
                 {url && (
-                    <div className="mt-2 flex items-center p-4 border border-green rounded-sm">
+                    <div className="mt-2 p-4">
                         <div className="text-green">
-                            Sie werden weitergeleitet zu / You will be
-                            redirected to&nbsp;
+                            {"Weiterleitung läuft ..."}&nbsp;
                         </div>
                         <a
                             href={url}
                             target="_BLANK"
-                            className="font-bold break-all !text-green"
+                            className="font-bold opacity-50 text-sm"
                         >
-                            {url} ...
+                            {url}
                         </a>
                     </div>
                 )}
@@ -124,5 +131,9 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
         </div>
     );
 };
+
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 export default SecretLinkModule;
