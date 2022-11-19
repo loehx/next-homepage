@@ -5,8 +5,10 @@ import { FadeIn } from "@components/fadeIn";
 import { cipher, decipher } from "./cipher";
 import { getSecretLink } from "data";
 
+const storage = typeof localStorage !== "undefined" ? localStorage : null;
+
 export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState(storage?.getItem("pw") || "");
     const [loading, setLoading] = useState(false);
     const [doggyWidth, setDoggyWidth] = useState(200);
     const [showContentfulLink, setShowContentfulLink] = useState(false);
@@ -30,6 +32,12 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
             return setError(`Keinen Link gefunden / No link found`);
         }
 
+        if (item.url?.startsWith("http")) {
+            setUrl(item.url);
+            location.href = item.url;
+            return;
+        }
+
         const decrypt = decipher(salt);
         const decrypted = decrypt(item.url);
         if (!decrypted.startsWith("http")) {
@@ -51,13 +59,16 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
     const onPasswordChange = (e) => {
         setShowContentfulLink(false);
         const value = e.target.value || "";
+        const pw = value.toUpperCase().trim();
+        setPassword(pw);
+        storage?.setItem("pw", pw);
+
         if (value.startsWith("http")) {
             const encrypt = cipher(salt);
             const encrypted = encrypt(value);
             setShowContentfulLink(true);
             return setInfo(encrypted || "");
         }
-        setPassword(value.toUpperCase().trim());
     };
 
     return (
@@ -78,6 +89,7 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
                         }`}
                         onChange={onPasswordChange}
                         disabled={loading}
+                        value={password}
                     />
                     <button
                         type="submit"
