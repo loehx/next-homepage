@@ -12,6 +12,7 @@ export interface ImageProps {
     height?: number;
     alt?: string;
     fill?: boolean;
+    sizes?: string;
     onLoadingComplete?: (result: {
         naturalWidth: number;
         naturalHeight: number;

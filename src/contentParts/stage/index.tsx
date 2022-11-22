@@ -32,6 +32,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                 <Image
                     asset={props.backgroundImage}
                     alt="Background Image"
+                    sizes="(min-width: 700px) 100vw, 200vw"
                     onLoadingComplete={() => setLoading(false)}
                 />
                 {!isMobile && props.backgroundVideo && (
