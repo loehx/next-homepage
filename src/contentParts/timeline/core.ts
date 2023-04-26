@@ -26,6 +26,7 @@ export interface TimelineProps extends Entry {
 }
 
 function getDecimalFromMonthAndYear(str: string): number {
+    if (!str) return -1;
     const [monthStr, yearStr] = str.split("/");
     if (!yearStr) return parseInt(monthStr);
     const month = parseInt(monthStr);
