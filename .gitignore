@@ -11,3 +11,4 @@ node_modules
 build
 out
 .DS_Store
+imagekit.json

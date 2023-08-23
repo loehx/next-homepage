@@ -1,5 +1,7 @@
 :root {
-    --black: rgb(30, 30, 30);
+    --black-rgb: 30, 30, 30;
+    --black: rgb(var(--black-rgb));
+
     --primary: #d02f82;
     --primary-50: #f9e6f0;
     --primary-100: #f1c1da;

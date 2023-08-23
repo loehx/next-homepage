@@ -12,6 +12,7 @@ export interface ConfigEntry extends Entry {
     footer: FooterEntry;
     cookiePopup: Entry;
     projects: Entry[];
+    logoBright: AssetEntry;
 }
 
 export interface AssetEntry extends Entry {

@@ -3,7 +3,33 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                black: "var(--black)",
+                transparent: "rgba(0,0,0,0)",
+                black: {
+                    DEFAULT: "var(--black)",
+                    5: "rgba(var(--black-rgb, .05))",
+                    10: "rgba(var(--black-rgb, .1))",
+                    20: "rgba(var(--black-rgb, .2))",
+                    30: "rgba(var(--black-rgb, .3))",
+                    40: "rgba(var(--black-rgb, .4))",
+                    50: "rgba(var(--black-rgb, .5))",
+                    60: "rgba(var(--black-rgb, .6))",
+                    70: "rgba(var(--black-rgb, .7))",
+                    80: "rgba(var(--black-rgb, .8))",
+                    90: "rgba(var(--black-rgb, .9))",
+                },
+                white: {
+                    DEFAULT: "white",
+                    5: "rgba(255, 255, 255, .05))",
+                    10: "rgba(255, 255, 255, .1)",
+                    20: "rgba(255, 255, 255, .2)",
+                    30: "rgba(255, 255, 255, .3)",
+                    40: "rgba(255, 255, 255, .4)",
+                    50: "rgba(255, 255, 255, .5)",
+                    60: "rgba(255, 255, 255, .6)",
+                    70: "rgba(255, 255, 255, .7)",
+                    80: "rgba(255, 255, 255, .8)",
+                    90: "rgba(255, 255, 255, .9)",
+                },
                 primary: {
                     DEFAULT: "var(--primary)",
                     50: "var(--primary-50)",
