@@ -28,12 +28,16 @@ export class ImageKitWrapper {
         width?: number;
         height?: number;
         aspectRatio?: string;
+        blurry?: boolean;
     }): string {
         const transformations = [
+            "q-80",
+            "f-webp",
+            options.blurry && "bl-10",
             options.width && `w-${options.width}`,
             options.height && `h-${options.height}`,
             options.aspectRatio &&
-                `ar-${options.aspectRatio.replace("/", ":")}`,
+                `ar-${options.aspectRatio.replace(/[/:]/, "-")}`,
         ].filter(Boolean);
 
         if (!transformations.length) return this.image.url;
