@@ -75,7 +75,7 @@ export const BubblesAnimation: React.FC = () => {
         return () => {
             window.removeEventListener("resize", resizeCanvas);
         };
-    }, []);
+    }, [isMobile]);
 
     return (
         <div
