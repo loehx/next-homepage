@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./gallery.module.css";
 import RightArrow from "./right-arrow.svg";
 import LeftArrow from "./left-arrow.svg";
+import GalleryImage from "./GalleryImage";
 import {
     ImageKitCollection,
     ImageKitImage,
@@ -144,7 +145,7 @@ export const Gallery: React.FC<GalleryProps> = (props) => {
                                     className="h-8 w-8"
                                 />
                             </div>
-                            <div className="drop-shadow-lg text-white p-4 select-none">
+                            <div className="absolute left-1/2 -translate-x-1/2 drop-shadow-lg text-white p-4 select-none">
                                 {currentIndex + 1} / {images.length}​
                             </div>
                             <div
@@ -158,51 +159,6 @@ export const Gallery: React.FC<GalleryProps> = (props) => {
                 </div>
             )}
         </div>
-    );
-};
-
-export interface GalleryImageProps {
-    item: ImageKitImage;
-    aspectRatio: string;
-    fullSize?: boolean;
-    preloading?: boolean;
-    cover?: boolean;
-}
-
-const GalleryImage: React.FC<GalleryImageProps> = (props) => {
-    const image = useMemo(() => new ImageKitWrapper(props.item), [props.item]);
-    const [url, setUrl] = useState(image.getUrl({ width: 256, blurry: true }));
-    const pictureElement = useRef<HTMLPictureElement | null>(null);
-
-    useEffect(() => {
-        const round = (n) => Math.ceil(n / 100) * 100;
-        const pxRatio = (n) => n * window.devicePixelRatio;
-        const prep = (n) => round(pxRatio(n || 0));
-        const width = prep(pictureElement.current?.clientWidth);
-        const height = prep(pictureElement.current?.clientHeight);
-        setUrl(
-            image.getUrl({
-                ...(width > height ? { width } : { height }),
-            }),
-        );
-    }, [pictureElement]);
-
-    return (
-        <picture
-            ref={pictureElement}
-            className={`w-full h-full block overflow-hidden relative ${
-                props.preloading ? "pointer-events-none opacity-0" : ""
-            }`}
-            style={{ aspectRatio: props.aspectRatio }}
-        >
-            <img
-                className={`absolute -translate-x-1/2 -translate-y-1/2 w-full h-full ${
-                    props.cover ? "object-cover" : "object-contain"
-                }`}
-                src={url}
-                style={{ top: "50%", left: "50%" }}
-            />
-        </picture>
     );
 };
 
