@@ -23,7 +23,7 @@ export const BubblesAnimation: React.FC = () => {
         function createBubble() {
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
-            const radius = Math.random() * 2 + 1;
+            const radius = Math.random() * 2;
             const speed = Math.random() * 2 + 1;
             const angle = Math.random() * Math.PI * 2;
             bubbles.push({ x, y, radius, speed, angle });
@@ -44,7 +44,7 @@ export const BubblesAnimation: React.FC = () => {
 
         function drawBubbles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
                 ctx.beginPath();
