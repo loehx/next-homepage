@@ -1,0 +1,10 @@
+@keyframes gradient-shift {
+    0% {
+        transform: translate(-60%, -10%);
+        height: 120%;
+    }
+    100% {
+        transform: translate(0%, -20%);
+        height: 200%;
+    }
+}

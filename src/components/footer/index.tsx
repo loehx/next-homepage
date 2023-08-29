@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import { FadeIn } from "@components/fadeIn";
 import { Image } from "@components/image";
+import { BubblesAnimation } from "src/contentParts/stage/BubbleAnimation";
 
 export const Footer: React.FC<FooterEntry> = (props) => {
     const classNames = useInitializeClass(styles.initializing, styles.footer);
@@ -13,8 +14,13 @@ export const Footer: React.FC<FooterEntry> = (props) => {
     return (
         <div className={classNames}>
             <div className={styles.background}>
-                <Image asset={props.backgroundImage} alt="Background Image" />
-                {!isMobile && props.backgroundVideo && (
+                {props.backgroundImage?.url && (
+                    <Image
+                        asset={props.backgroundImage}
+                        alt="Background Image"
+                    />
+                )}
+                {!isMobile && props.backgroundVideo?.url && (
                     <video
                         src={props.backgroundVideo.url}
                         loop
@@ -22,6 +28,9 @@ export const Footer: React.FC<FooterEntry> = (props) => {
                         muted
                         controls={false}
                     ></video>
+                )}
+                {!props.backgroundImage?.url && !props.backgroundVideo?.url && (
+                    <BubblesAnimation />
                 )}
             </div>
             <div className={styles.inner}>

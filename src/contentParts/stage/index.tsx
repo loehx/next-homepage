@@ -7,6 +7,7 @@ import { AvailabilityStatus } from "@components/availabilityStatus";
 import { Window } from "@components/window";
 import { Image } from "@components/image";
 import cx from "classnames";
+import { BubblesAnimation } from "./BubbleAnimation";
 
 export interface StageProps {
     id: string;
@@ -26,16 +27,22 @@ export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 500);
+    }, []);
+
     return (
         <div className={cx(styles.stage, loading && styles.initializing)}>
             <div className={styles.background}>
-                <Image
-                    asset={props.backgroundImage}
-                    alt="Background Image"
-                    sizes="(min-width: 700px) 100vw, 200vw"
-                    onLoadingComplete={() => setLoading(false)}
-                />
-                {!isMobile && props.backgroundVideo && (
+                {props.backgroundImage?.url && (
+                    <Image
+                        asset={props.backgroundImage}
+                        alt="Background Image"
+                        sizes="(min-width: 700px) 100vw, 200vw"
+                        onLoadingComplete={() => setLoading(false)}
+                    />
+                )}
+                {!isMobile && props.backgroundVideo?.url && (
                     <video
                         src={props.backgroundVideo.url}
                         loop
@@ -43,6 +50,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                         muted
                         controls={false}
                     ></video>
+                )}
+                {!props.backgroundVideo?.url && !props.backgroundImage?.url && (
+                    <BubblesAnimation />
                 )}
             </div>
             <div className={styles.inner}>
