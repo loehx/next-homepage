@@ -3,6 +3,7 @@ import { BootstrapedTimelineEntry } from "./core";
 import cx from "classnames";
 import { Window } from "@components/window";
 import { FadeIn } from "@components/fadeIn";
+import styles from "./timeline.module.css";
 import {
     CustomParallax,
     ParallaxCallbackProps,
@@ -97,17 +98,21 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             </div>
 
                             <div
-                                className={`md:font-bold text-sm md:text-base transition-color mt-1 md:!text-black ${
-                                    mainJob && "text-base md:text-lg"
-                                } ${open && "text-secondary-900"}`}
+                                className={cx(
+                                    `md:inline md:font-bold text-sm md:text-base transition-color mt-1 md:!text-black`,
+                                    mainJob && "text-base md:text-lg",
+                                    open && styles.titleOpen,
+                                )}
                             >
                                 {title}
                             </div>
                             <div
                                 className={`hidden md:block absolute left-0 right-0 mt-1`}
                             >
-                                <div className={`absolute left-0 right-0`}>
-                                    {company?.fullName}
+                                <div className={`absolute left-0 right-0 `}>
+                                    <span className={styles.textSpecial}>
+                                        {company?.fullName}
+                                    </span>
                                     <br />
                                     {company?.companyType}
                                 </div>

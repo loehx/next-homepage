@@ -1,0 +1,23 @@
+.textSpecial {
+    background: -webkit-linear-gradient(
+        45deg,
+        var(--primary) -50%,
+        var(--secondary) 150%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: brightness(1);
+    font-weight: bold;
+}
+
+.titleOpen {
+    background: -webkit-linear-gradient(
+        45deg,
+        var(--secondary) -30%,
+        var(--primary) 110%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: brightness(1);
+    font-weight: bold;
+}
