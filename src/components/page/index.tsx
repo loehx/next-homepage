@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { PageEntry, ConfigEntry } from "data/definitions";
 import ContentPart from "../../contentPart";
 import { Footer } from "@components/footer";
+import { EntryAnimationOne } from "@components/entryAnimationOne";
 import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import dynamic from "next/dynamic";
@@ -54,6 +55,8 @@ const Page: FC<Props> = (props: Props) => {
                 {showCookiePopup && (
                     <CookiePopup {...(config.cookiePopup as any)} />
                 )}
+
+                <EntryAnimationOne />
 
                 <LazyHydrate whenVisible>
                     <Footer {...(props.footer || props.config.footer)} />

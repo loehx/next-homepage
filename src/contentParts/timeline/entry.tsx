@@ -99,7 +99,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
 
                             <div
                                 className={cx(
-                                    `md:inline md:font-bold text-sm md:text-base transition-color mt-1 md:!text-black`,
+                                    `md:inline font-bold text-sm md:text-base transition-color mt-1 md:!text-black`,
                                     mainJob && "text-base md:text-lg",
                                     open && styles.titleOpen,
                                 )}
