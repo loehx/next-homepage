@@ -1,9 +1,9 @@
 .sun__block {
-    --color-1: var(--secondary-200);
-    --color-2: var(--secondary-400);
-    --color-3: var(--secondary-700);
-    --color-4: var(--secondary-900);
-    --color-5: var(--secondary-900);
+    --color-1: #b94619;
+    --color-2: #e9632e;
+    --color-3: #e98c2e;
+    --color-4: #e9d92e;
+    --color-5: #e9d92e;
 
     overflow: hidden;
     position: absolute;
@@ -27,11 +27,11 @@
     margin: 0 auto;
 
     position: absolute;
-    top: calc(50% - 50px);
-    left: calc(50% - 50px);
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
 
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
 }
 
 .run .sun__wrapper {
@@ -75,6 +75,7 @@
     opacity: 1;
     left: -50vw;
     right: -50vw;
+    filter: brightness(10);
 }
 
 .sun {
@@ -85,7 +86,12 @@
     border-radius: 100%;
     overflow: hidden;
     counter-reset: part;
-    transition: transform 1.5s cubic-bezier(0.48, 0.01, 0.99, 0.45) 500ms;
+    transition: all 5s linear 4s;
+}
+
+.run .sun {
+    box-shadow: 0 0 30px var(--color-4);
+    filter: brightness(10);
 }
 
 .sun__part {
@@ -100,7 +106,7 @@
 }
 
 .run .sun__part {
-    top: calc(var(--index) * (50% / 3));
+    top: calc(var(--index) * (80% / 3));
 }
 
 .sun__part--1 {
