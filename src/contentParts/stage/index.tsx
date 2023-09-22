@@ -30,7 +30,7 @@ export const Stage: React.FC<StageProps> = (props) => {
     useEffect(() => {
         setTimeout(
             () => setLoading(false),
-            6000 /* 8000ms due to the animation - todo: turn back to 500ms */,
+            500 /* Entry animation: set this to 6000ms or so */,
         );
     }, []);
 

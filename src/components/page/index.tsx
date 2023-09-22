@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { PageEntry, ConfigEntry } from "data/definitions";
 import ContentPart from "../../contentPart";
 import { Footer } from "@components/footer";
-import { EntryAnimationOne } from "@components/entryAnimationOne";
+// import { EntryAnimationOne } from "@components/entryAnimationOne";
 import Head from "next/head";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import dynamic from "next/dynamic";
@@ -20,12 +20,6 @@ const Page: FC<Props> = (props: Props) => {
     const className = useInitializeClass("initialize", "page gap-10 md:gap-24");
     const { config } = props;
     const showCookiePopup = !useIsMobile(false) && config.cookiePopup;
-
-    // const fonts = [
-    //     "Nunito:300,400,600,700?display",
-    //     "Righteous:400",
-    //     "JetBrains+Mono:400,800&display=swap",
-    // ].join("|");
 
     return (
         <>
@@ -56,7 +50,7 @@ const Page: FC<Props> = (props: Props) => {
                     <CookiePopup {...(config.cookiePopup as any)} />
                 )}
 
-                <EntryAnimationOne />
+                {/* <EntryAnimationOne /> */}
 
                 <LazyHydrate whenVisible>
                     <Footer {...(props.footer || props.config.footer)} />
