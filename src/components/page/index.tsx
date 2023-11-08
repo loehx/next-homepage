@@ -29,6 +29,20 @@ const Page: FC<Props> = (props: Props) => {
                 <meta name="description" content={props.description} />
                 <meta name="author" content={config.author} />
                 <meta name="theme-color" content="#000000" />
+                <meta
+                    name="robots"
+                    content={
+                        props.noIndexNoFollow
+                            ? "noindex,nofollow"
+                            : "index,follow"
+                    }
+                />
+                {props.redirectUrl && (
+                    <meta
+                        http-equiv="Refresh"
+                        content={`2; url='${props.redirectUrl}'`}
+                    />
+                )}
                 {renderOG(
                     "og:image",
                     `${props.ogimage?.url}?w=1200&h=630&fit=fill`,
@@ -43,7 +57,7 @@ const Page: FC<Props> = (props: Props) => {
                 <link rel="preconnect" href="https://images.ctfassets.net" />
             </Head>
             <div className={className}>
-                {props.mainContent.map((cp) => (
+                {props.mainContent?.map((cp) => (
                     <ContentPart key={cp.id} {...cp} config={props.config} />
                 ))}
                 {showCookiePopup && (

@@ -32,6 +32,8 @@ export interface PageEntry extends Entry {
     ogtitle: string;
     ogdescription: string;
     ogurl: string;
+    redirectUrl: string;
+    noIndexNoFollow: boolean;
     ogimage: AssetEntry;
     footer?: FooterEntry;
 }
