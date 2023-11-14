@@ -63,7 +63,11 @@ export function bootstrapEntries(
                 durationText: `${entry.from} - ${entry.to || "today"}`,
             } as BootstrapedTimelineEntry),
     );
-    result.sort((a, b) => b.yearFrom - a.yearFrom);
+    result.sort((a, b) => a.yearFrom - b.yearFrom);
+    console.log(
+        "AAA",
+        result.map((p) => p.yearFrom),
+    );
     let mainJobIndex = 0;
     result.forEach((entry, index) => {
         entry.index = index;

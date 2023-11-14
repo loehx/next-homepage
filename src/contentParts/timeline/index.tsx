@@ -11,13 +11,13 @@ export const Timeline: React.FC<TimelineProps> = (props) => {
     return (
         <div className="container mx-auto px-4 mb-14">
             <div className={styles.inner}>
-                {props.name && (
+                {/* {props.name && (
                     <FadeIn>
                         <h2 className="hidden md:block text-3xl">
                             {props.name}
                         </h2>
                     </FadeIn>
-                )}
+                )} */}
                 <div
                     className="relative mt-10"
                     style={{ height: yearsTotal * 80 + "px" }}

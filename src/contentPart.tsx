@@ -6,6 +6,7 @@ const Stage = dynamic(() => import("./contentParts/stage"));
 const Text = dynamic(() => import("./contentParts/text"));
 const LinksModule = dynamic(() => import("./contentParts/linksModule"));
 const ImageText = dynamic(() => import("./contentParts/imageText"));
+const Companies = dynamic(() => import("./contentParts/companies"));
 const Timeline = dynamic(() => import("./contentParts/timeline"));
 const ProjectsModule = dynamic(() => import("./contentParts/projectsModule"));
 const Gallery = dynamic(() => import("./contentParts/gallery"));
@@ -28,6 +29,12 @@ const Page: FC<Props> = (props: Props) => {
                 {props.type === "text" && <Text {...(props as any)} />}
                 {props.type === "imagetext" && (
                     <ImageText {...(props as any)} />
+                )}
+                {props.type === "companies" && (
+                    <Companies
+                        {...(props as any)}
+                        projects={props.config.projects}
+                    />
                 )}
                 {props.type === "linksmodule" && (
                     <LinksModule {...(props as any)} />

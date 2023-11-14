@@ -50,6 +50,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
             // onMouseLeave={() => setOpen(false)}
             style={{ top: `${top}%`, bottom: `${bottom}%`, zIndex }}
             onUpdate={onScrollUpdate}
+            data-company={company?.id}
         >
             <div>
                 <div
