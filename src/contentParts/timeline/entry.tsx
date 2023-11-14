@@ -27,10 +27,10 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         mainJobIndex,
     } = props;
     const [open, setOpen] = useState(false);
-    const top = `${Math.round(((yearFrom - yearMin) / yearsTotal) * 100)}%`;
-    const bottom = `${
-        Math.floor((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100 - 1
-    }%`;
+    const top = Math.round(((yearFrom - yearMin) / yearsTotal) * 100);
+    const bottom =
+        Math.floor((((yearTo - yearMax) * -1) / yearsTotal) * 10000) / 100 - 1;
+    const zIndex = 100 - Math.round(bottom);
     const odd = index % 2 === 1;
     const oddMainJob = mainJobIndex % 2 === 1;
     const level = mainJob ? 0 : 1;
@@ -48,7 +48,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
             onClick={() => setOpen(true)}
             // onMouseEnter={() => setOpen(true)}
             // onMouseLeave={() => setOpen(false)}
-            style={{ top, bottom }}
+            style={{ top: `${top}%`, bottom: `${bottom}%`, zIndex }}
             onUpdate={onScrollUpdate}
         >
             <div>
@@ -122,6 +122,10 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                     }`}
                                 >
                                     {description}
+                                    <br />
+                                    <span className={styles.textSpecial}>
+                                        {company?.fullName}
+                                    </span>
                                 </div>
                             </div>
 
