@@ -5,6 +5,7 @@ import { Marked } from "@ts-stack/markdown";
 
 interface WindowProps {
     className?: string;
+    style?: any;
     text?: string;
     textStyle?: any;
     onClose?: () => void;

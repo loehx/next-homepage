@@ -26,12 +26,21 @@ export interface StageProps {
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
+    const [scrollY, setScrollY] = useState(0);
+    const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
         setTimeout(
             () => setLoading(false),
             500 /* Entry animation: set this to 6000ms or so */,
         );
+
+        const onScroll = () => setScrollY(window.scrollY);
+        window.addEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+        };
     }, []);
 
     return (
@@ -59,7 +68,10 @@ export const Stage: React.FC<StageProps> = (props) => {
                 )}
             </div>
             <div className={styles.inner}>
-                <div className={styles.intro}>
+                <div
+                    className={styles.intro}
+                    style={{ opacity: 1 - scrollY / (w.innerHeight / 2) }}
+                >
                     {props.logo && (!isMobile || !props.phoneImage) && (
                         <div className={styles.logo}>
                             <img
@@ -72,6 +84,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     (props.logoWidth / props.logo.width) *
                                         props.logo.height
                                 }
+                                style={{
+                                    transform: `translate3d(${scrollY}px,${-scrollY}px,0px)`,
+                                }}
                             />
                         </div>
                     )}
