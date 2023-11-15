@@ -5,7 +5,7 @@ import { default as NextImage, ImageLoader } from "next/image";
 const placeHolderImage =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj+PLly38ACZgD3EOjaxgAAAAASUVORK5CYII=";
 
-export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface ImageProps {
     asset?: AssetEntry;
     src?: string;
     width?: number;
