@@ -84,18 +84,11 @@ export const BubblesAnimation: React.FC = () => {
             style={{ position: "relative", width: "100%", height: "100%" }}
         >
             <div
-                className="background"
+                className="background absolute inset-0"
                 style={{
-                    position: "absolute",
-                    top: "0%",
-                    left: "0%",
-                    transform: "translate(-60%, -10%)",
-                    width: "400%",
-                    height: "300%",
                     background:
-                        "linear-gradient(30deg, #9a2461 20%, #0182de 80%)",
-                    animation: "gradient-shift 5s infinite alternate",
-                    transition: "all 1s ease-in-out",
+                        "linear-gradient(30deg, #9a2461 0%, #0182de 120%)",
+                    animation: "hue-rotate-animation 10s infinite linear",
                 }}
             ></div>
             <canvas
