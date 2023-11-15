@@ -56,17 +56,15 @@
 }
 
 .logo {
-    display: flex;
+    display: none;
     justify-content: center;
     margin-bottom: 30px;
 }
 
-.stage[data-group="a"] .logo {
-    display: none;
-}
-
-.stage[data-group="b"] .phoneWrapper {
-    display: none;
+@media only screen and (min-width: 800px) {
+    .logo {
+        display: flex;
+    }
 }
 
 .h1 {
@@ -191,8 +189,18 @@
     width: 100%;
 }
 
-.phoneWrapper:hover .phone img {
-    animation: 1s linear hue-full-rotate-animation infinite;
+.phoneWrapper .phone img {
+    animation: 2s linear hue-full-rotate-animation infinite !important;
+}
+
+@media only screen and (min-width: 800px) {
+    .phoneWrapper .phone img {
+        animation: none;
+    }
+
+    .phoneWrapper:hover .phone img {
+        animation: 1s linear hue-full-rotate-animation infinite !important;
+    }
 }
 
 @keyframes hue-full-rotate-animation {

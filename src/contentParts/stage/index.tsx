@@ -33,8 +33,6 @@ const CLOSE_MESSAGES = [
     "YES!!! I think we've made it!",
 ];
 
-const GROUP = Math.random() > 0.5 ? "a" : "b";
-
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
@@ -57,10 +55,7 @@ export const Stage: React.FC<StageProps> = (props) => {
     }, []);
 
     return (
-        <div
-            className={cx(styles.stage, loading && styles.initializing)}
-            data-group={GROUP}
-        >
+        <div className={cx(styles.stage, loading && styles.initializing)}>
             <div className={styles.background}>
                 {props.backgroundImage?.url && (
                     <Image
