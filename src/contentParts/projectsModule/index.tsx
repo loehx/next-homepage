@@ -5,6 +5,8 @@ import data from "data";
 import cx from "classnames";
 import { Project } from "./project";
 import { FadeIn } from "@components/fadeIn";
+import { Image } from "@components/image";
+import { Tooltip } from "@components/tooltip";
 
 export interface ProjectsModuleProps extends Entry {
     name: string;
@@ -31,26 +33,45 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                     aria-label="Filter by technology"
                 >
                     {props.techFilter.map((tech) => (
-                        <span
-                            key={tech.id}
-                            className={cx(
-                                styles.filter,
-                                techFilter === tech.id && styles.active,
-                            )}
-                            aria-label={`Show only ${tech.fullName} projects`}
-                            onClick={() => setTechFilter(tech.id)}
-                        >
-                            {tech.name}
-                        </span>
+                        <Tooltip text={tech.fullName} key={tech.id}>
+                            <span
+                                key={tech.id}
+                                className={cx(
+                                    styles.filter,
+                                    techFilter === tech.id && styles.active,
+                                    "w-[45px] h-[45px] block p-[3px] -mx-1",
+                                )}
+                                aria-label={`Show only ${tech.fullName} projects`}
+                                onClick={() =>
+                                    setTechFilter(
+                                        techFilter === tech.id
+                                            ? undefined
+                                            : tech.id,
+                                    )
+                                }
+                            >
+                                <span className="relative w-full h-full block">
+                                    <Image
+                                        asset={tech.logo}
+                                        alt={`logo of ${tech.fullName}`}
+                                        width={30}
+                                        fixedRatio
+                                    />
+                                </span>
+                            </span>
+                        </Tooltip>
                     ))}
                     {techFilter && (
-                        <span
-                            className={cx(styles.filter, styles.reset)}
+                        <Tooltip
+                            text={"Show all projects"}
+                            className={cx(styles.filter, "flex items-center")}
                             onClick={() => setTechFilter(undefined)}
                             aria-label={`Show all projects`}
                         >
-                            &times;
-                        </span>
+                            <span className={cx(styles.reset, styles.filter)}>
+                                &times;
+                            </span>
+                        </Tooltip>
                     )}
                 </FadeIn>
                 <div className={cx(styles.list, "space-y-4")}>

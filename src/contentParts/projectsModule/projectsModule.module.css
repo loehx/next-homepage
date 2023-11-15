@@ -218,13 +218,12 @@
 }
 
 .filter {
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 5px;
     font-size: 16px;
     line-height: 1;
     border-radius: 5px;
     color: var(--project-accent);
-    display: block;
     cursor: pointer;
     border: 2px solid transparent;
 }
