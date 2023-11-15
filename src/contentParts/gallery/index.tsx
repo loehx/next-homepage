@@ -59,7 +59,6 @@ export const Gallery: React.FC<GalleryProps> = (props) => {
 
     useEffect(() => {
         const handleKeyPress = (e) => {
-            console.log("AAA", e.keyCode);
             if (e.keyCode === 27) return setCurrentIndex(-1); // ESC
             if (e.keyCode === 37) return previous(); // arrow-left
             if (e.keyCode === 39) return next(); // arrow-right
