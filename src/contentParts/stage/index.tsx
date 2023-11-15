@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
@@ -33,6 +33,8 @@ const CLOSE_MESSAGES = [
     "YES!!! I think we've made it!",
 ];
 
+const GROUP = Math.random() > 0.5 ? "a" : "b";
+
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
@@ -55,7 +57,10 @@ export const Stage: React.FC<StageProps> = (props) => {
     }, []);
 
     return (
-        <div className={cx(styles.stage, loading && styles.initializing)}>
+        <div
+            className={cx(styles.stage, loading && styles.initializing)}
+            data-group={GROUP}
+        >
             <div className={styles.background}>
                 {props.backgroundImage?.url && (
                     <Image
@@ -83,7 +88,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                     className={styles.intro}
                     style={{ opacity: 1 - scrollY / (w.innerHeight / 2) }}
                 >
-                    {props.logo && (!isMobile || !props.phoneImage) && (
+                    {props.logo && (
                         <div className={styles.logo}>
                             <img
                                 src={props.logo.url}

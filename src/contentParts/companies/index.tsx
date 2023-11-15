@@ -24,6 +24,7 @@ export const Companies: React.FC<CompaniesProps> = (props) => {
                 {props.companies.map((company) => (
                     <Company
                         {...company}
+                        key={company.id}
                         projects={props.projects.filter(
                             (p) => p.company.id === company.id,
                         )}

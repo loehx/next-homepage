@@ -61,6 +61,14 @@
     margin-bottom: 30px;
 }
 
+.stage[data-group="a"] .logo {
+    display: none;
+}
+
+.stage[data-group="b"] .phoneWrapper {
+    display: none;
+}
+
 .h1 {
     position: relative;
     font-family: Righteous;
@@ -83,7 +91,6 @@
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 5px;
-    margin-top: 30px;
 }
 
 @media only screen and (min-width: 800px) {
@@ -94,7 +101,8 @@
 }
 
 .description {
-    margin-top: 20px;
+    max-width: 500px;
+    margin: 20px auto;
 }
 
 @media only screen and (min-width: 800px) {
@@ -140,6 +148,7 @@
     flex-shrink: 0;
     position: relative;
     opacity: 1;
+    margin: 40px 0;
 }
 
 .initializing .phoneWrapper {
@@ -201,7 +210,7 @@
         height: 613.5px;
     }
 
-    @media only screen and (max-height: 1200px) {
+    @media only screen and (max-height: 1600px) {
         .phoneWrapper {
             width: 200px;
             height: 409px;
