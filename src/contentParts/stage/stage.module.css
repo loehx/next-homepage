@@ -190,7 +190,7 @@
 }
 
 .phoneWrapper .phone img {
-    animation: 2s linear hue-full-rotate-animation infinite !important;
+    animation: 2s linear hue-full-rotate-animation infinite;
 }
 
 @media only screen and (min-width: 800px) {
