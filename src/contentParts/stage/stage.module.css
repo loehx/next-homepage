@@ -165,11 +165,11 @@
 }
 
 .initializing .avatar {
-    filter: brightness(0);
+    filter: brightness(0) hue-rotate(-40deg);
 }
 
 .avatar {
-    filter: brightness(1);
+    filter: brightness(1) hue-rotate(-40deg);
     transition: all 0.4s ease 1.5s;
     overflow: hidden;
     border-radius: 20% 20% / 10% 10% 10% 10%;
@@ -180,6 +180,19 @@
     position: relative;
     transform-origin: right;
     width: 100%;
+}
+
+.phoneWrapper:hover .phone img {
+    animation: 1s linear hue-full-rotate-animation infinite;
+}
+
+@keyframes hue-full-rotate-animation {
+    0% {
+        filter: hue-rotate(0);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
 }
 
 @media only screen and (min-width: 800px) {

@@ -23,10 +23,21 @@ export interface StageProps {
     availableFrom: string;
 }
 
+const CLOSE_MESSAGES = [
+    "OH, something went wrong... please try again",
+    "Damn, that didn't work... try again",
+    "Ah, I have an idea! Please try again!",
+    "Damn it! That didn't work either... Well, I will try something new, please give me a second.",
+    "Not done yet, please give me another second.",
+    "OH REALLY?? .. How fast do you think I am??",
+    "YES!!! I think we've made it!",
+];
+
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
     const [scrollY, setScrollY] = useState(0);
+    const [closeCount, setCloseCount] = useState(0);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
@@ -96,6 +107,14 @@ export const Stage: React.FC<StageProps> = (props) => {
                         <Window
                             className={styles.description}
                             text={props.text}
+                            onClose={() => {
+                                const cnt = closeCount;
+                                setCloseCount(closeCount + 1);
+                                alert(CLOSE_MESSAGES[cnt]);
+                            }}
+                            style={{
+                                display: closeCount > 6 ? "none" : undefined,
+                            }}
                         />
                     )}
                 </div>
@@ -108,7 +127,19 @@ export const Stage: React.FC<StageProps> = (props) => {
                             <div
                                 className={`${styles.avatar} w-full h-full relative overflow-hidden rounded`}
                             >
-                                <Image asset={props.phoneImage} width={300} />
+                                <div
+                                    className="w-full h-full"
+                                    style={{
+                                        filter: `brightness(${
+                                            1 - scrollY / (w.innerHeight / 2)
+                                        })`,
+                                    }}
+                                >
+                                    <Image
+                                        asset={props.phoneImage}
+                                        width={300}
+                                    />
+                                </div>
                             </div>
                             <Image src={phoneFrameSrc} alt={"iphone frame"} />
                         </div>
