@@ -64,10 +64,6 @@ export function bootstrapEntries(
             } as BootstrapedTimelineEntry),
     );
     result.sort((a, b) => a.yearFrom - b.yearFrom);
-    console.log(
-        "AAA",
-        result.map((p) => p.yearFrom),
-    );
     let mainJobIndex = 0;
     result.forEach((entry, index) => {
         entry.index = index;
