@@ -9,6 +9,27 @@ import dynamic from "next/dynamic";
 const CookiePopup = dynamic(() => import("@components/cookiePopup"));
 import LazyHydrate from "react-lazy-hydration";
 
+console.log(
+    [
+        "      ___           ___           ___       ___       ___     ",
+        "     /\\__\\         /\\  \\         /\\__\\     /\\__\\     /\\  \\    ",
+        "    /:/  /        /::\\  \\       /:/  /    /:/  /    /::\\  \\   ",
+        "   /:/__/        /:/\\:\\  \\     /:/  /    /:/  /    /:/\\:\\  \\  ",
+        "  /::\\  \\ ___   /::\\~\\:\\  \\   /:/  /    /:/  /    /:/  \\:\\  \\ ",
+        " /:/\\:\\  /\\__\\ /:/\\:\\ \\:\\__\\ /:/__/    /:/__/    /:/__/ \\:\\__\\",
+        " \\/__\\:\\/:/  / \\:\\~\\:\\ \\/__/ \\:\\  \\    \\:\\  \\    \\:\\  \\ /:/  /",
+        "      \\::/  /   \\:\\ \\:\\__\\    \\:\\  \\    \\:\\  \\    \\:\\  /:/  / ",
+        "      /:/  /     \\:\\ \\/__/     \\:\\  \\    \\:\\  \\    \\:\\/:/  /  ",
+        "     /:/  /       \\:\\__\\        \\:\\__\\    \\:\\__\\    \\::/  /   ",
+        "     \\/__/         \\/__/         \\/__/     \\/__/     \\/__/    ",
+        "",
+        "What do computers and air conditioners have in common?",
+        "A: They both become useless when you open windows.",
+        "",
+        "",
+    ].join("\n"),
+);
+
 interface Props extends PageEntry {
     config: ConfigEntry;
 }
