@@ -107,7 +107,12 @@
     max-width: 500px;
     margin: 100px auto 80px auto;
     opacity: var(--scroll);
-    transition: none;
+}
+
+@media only screen and (max-width: 799px) {
+    .description {
+        transition: none;
+    }
 }
 
 @media only screen and (min-width: 800px) {

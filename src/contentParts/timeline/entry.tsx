@@ -133,7 +133,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             <div
                                 className={`md:hidden mt-1 opacity-0 transition-all duration-300 translate-y-[-20px] ${
                                     open && "!opacity-100 !translate-y-[0]"
-                                }`}
+                                } text-sm`}
                             >
                                 {company?.fullName}
                                 <br />
