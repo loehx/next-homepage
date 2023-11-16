@@ -81,7 +81,11 @@ export const Stage: React.FC<StageProps> = (props) => {
             <div className={styles.inner}>
                 <div
                     className={styles.intro}
-                    style={{ opacity: 1 - scrollY / (w.innerHeight / 2) }}
+                    style={
+                        {
+                            "--scroll": scrollY / (w.innerHeight / 2),
+                        } as React.CSSProperties
+                    }
                 >
                     {props.logo && (
                         <div className={styles.logo}>

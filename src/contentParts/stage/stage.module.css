@@ -1,10 +1,15 @@
 .stage {
     width: 100%;
-    height: 100vh;
     min-height: 600px;
     max-height: 1400px;
     position: relative;
     overflow: hidden;
+}
+
+@media only screen and (min-width: 768px) {
+    .stage {
+        height: 100vh;
+    }
 }
 
 .stage.initializing * {
@@ -100,12 +105,15 @@
 
 .description {
     max-width: 500px;
-    margin: 20px auto;
+    margin: 100px auto 80px auto;
+    opacity: var(--scroll);
+    transition: none;
 }
 
 @media only screen and (min-width: 800px) {
     .description {
         margin-top: 30px;
+        opacity: 1;
     }
 }
 
@@ -118,6 +126,7 @@
     .intro {
         width: auto;
         margin: 0 auto;
+        opacity: calc(1 - var(--scroll));
     }
 }
 
@@ -146,7 +155,7 @@
     flex-shrink: 0;
     position: relative;
     opacity: 1;
-    margin: 40px 0;
+    margin: 25vh 0 20px 0;
 }
 
 .initializing .phoneWrapper {
@@ -214,6 +223,7 @@
 
 @media only screen and (min-width: 800px) {
     .phoneWrapper {
+        margin: 40px 0;
         width: 300px;
         height: 613.5px;
     }
