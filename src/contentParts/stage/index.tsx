@@ -147,6 +147,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                             <div className={styles.availability}>
                                 <AvailabilityStatus
                                     availableFrom={props.availableFrom}
+                                    subtractDays={Math.round(-scrollY / 10)}
                                 />
                             </div>
                         )}

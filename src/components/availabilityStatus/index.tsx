@@ -7,6 +7,7 @@ import { Tooltip } from "@components/tooltip";
 
 export interface AvailabilityStatusProps {
     availableFrom: string;
+    subtractDays?: number;
 }
 
 export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
@@ -18,8 +19,8 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
     );
 
     const daysUntilAvailable = useMemo(() => {
-        return daysUntil(props.availableFrom);
-    }, []);
+        return daysUntil(props.availableFrom) + (props.subtractDays || 0);
+    }, [props.subtractDays]);
     const isAvailable = daysUntilAvailable <= 0;
     const [secondsUntil, setSecondsUntil] = useState(0);
 
