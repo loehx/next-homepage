@@ -113,7 +113,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
                                 href={t.url}
                                 aria-label={`Visit homepage of ${t.fullName}`}
                                 target="_blank"
-                                className="w-[40px] h-[40px] block"
+                                className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] block"
                             >
                                 <Image
                                     asset={t.logo}
@@ -130,7 +130,7 @@ export const Project: FC<Props> = ({ project, techFilter }) => {
 
 function getTechStack(project: ProjectEntry): string {
     return [
-        ...project.technologies.map((t) => t.fullName),
-        ...project.moreTechnologies.split(",").map((t) => t.trim()),
+        ...project.technologies?.map((t) => t.fullName),
+        ...(project.moreTechnologies?.split(",").map((t) => t.trim()) || []),
     ].join(", ");
 }
