@@ -73,6 +73,9 @@ module.exports = {
             headline: ["var(--font-headline)"],
             mono: ["var(--font-mono)"],
         },
+        fontSize: {
+            "2xs": "0.625rem",
+        },
         screens: {
             sm: "600px",
             md: "1000px",

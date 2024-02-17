@@ -7,6 +7,7 @@ export interface TimelineEntry extends Entry {
     to: string;
     mainJob: number;
     company: CompanyEntry;
+    freelance: boolean;
 }
 
 export interface BootstrapedTimelineEntry extends TimelineEntry {

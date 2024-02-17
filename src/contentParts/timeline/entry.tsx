@@ -25,6 +25,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         company,
         durationText,
         mainJobIndex,
+        freelance,
     } = props;
     const [open, setOpen] = useState(false);
     const top = Math.round(((yearFrom - yearMin) / yearsTotal) * 100);
@@ -94,8 +95,20 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                         <div
                             className={`text-xs md:text-sm transition-all duration-300 relative bg-white py-2 -my-2 ${""}`}
                         >
-                            <div className="font-bold">
-                                {Math.floor(yearFrom)}
+                            <div className={cx("flex items-baseline", !odd && "justify-end")}>
+                                <span
+                                    className={cx(
+                                        "font-bold",
+                                        !odd && "order-1",
+                                    )}
+                                >
+                                    {Math.floor(yearFrom)}
+                                </span>
+                                {freelance && (
+                                    <span className="px-1 leading-none text-2xs tracking-wide opacity-50">
+                                        FREELANCE
+                                    </span>
+                                )}
                             </div>
 
                             <div
