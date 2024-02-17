@@ -55,6 +55,8 @@ export const Image: React.FC<ImageProps> = ({
             )}%`,
         };
 
+    const { fixedRatio, ...otherProps } = props;
+
     return (
         <div style={wrapperStyles || {}}>
             <NextImage
@@ -64,7 +66,7 @@ export const Image: React.FC<ImageProps> = ({
                 loading="lazy"
                 height={height}
                 alt={asset?.description}
-                {...props}
+                {...otherProps}
                 src={asset?.url || props.src || ""}
                 onLoadingComplete={(result) => {
                     setShowPlaceholder(false);
