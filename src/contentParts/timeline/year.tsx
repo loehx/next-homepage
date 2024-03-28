@@ -25,12 +25,12 @@ export const Year: React.FC<YearProps> = (props) => {
 
     return (
         <CustomParallax
-            className="hidden md:block cursor-default absolute left-1/2 -translate-x-1/2 w-[80vw]"
-            style={{ top: `calc(${top}% + ${offsetPixel}px)`, opacity: opacity * 0.5, zIndex: 150 }}
+            className="hidden md:block cursor-default absolute left-1/2 -translate-x-1/2 w-[80vw] text-xs"
+            style={{ top: `calc(${top}% + ${offsetPixel}px)`, opacity: opacity * 0.4, zIndex: 150 }}
             onUpdate={onScrollUpdate}
         >
             <div
-                className="w-full border-t border-grey-400 p-2"
+                className="w-full border-t-[0.5px] border-grey-400 p-2"
             >
                 {year}
             </div>
