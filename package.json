@@ -3,15 +3,14 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "npm run sync-image-kit && next dev",
-        "build": "npm run sync-image-kit && next build && next export",
-        "start": "npm run sync-image-kit && next dev -p 8080",
+        "dev": "next dev",
+        "build": "next build && next export",
+        "start": "next dev -p 8080",
         "serve": "next start -p 4000",
         "deploy": "netlify deploy --build --prod",
         "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
         "prettier": "prettier --write '**/*.{js,jsx,ts,tsx}'",
-        "test": "jest",
-        "sync-image-kit": "node scripts/syncImageKit.js"
+        "test": "jest"
     },
     "dependencies": {
         "@contentful/rich-text-html-renderer": "^15.11.1",

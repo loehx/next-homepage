@@ -13,7 +13,16 @@ export const BubblesAnimation: React.FC = () => {
         const ctx = canvas.getContext("2d")!;
         if (!ctx) return;
 
-        const bubbles = [] as any;
+        const bubbles = [] as Array<{
+            x: number;
+            y: number;
+            radius: number;
+            speed: number;
+            angle: number;
+            wobble: number;
+            wobbleSpeed: number;
+            amplitude: number;
+        }>;
 
         function resizeCanvas() {
             canvas.width = container.offsetWidth;
@@ -23,32 +32,53 @@ export const BubblesAnimation: React.FC = () => {
         function createBubble() {
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
-            const radius = Math.random() * 2;
-            const speed = Math.random() * 0.5 + 1;
+            const radius = Math.random() * 1.5 + 0.5;
+            const speed = Math.random() * 1.2 + 0.4;
             const angle = Math.random() * Math.PI * 2;
-            bubbles.push({ x, y, radius, speed, angle });
+            const wobble = Math.random() * Math.PI * 2;
+            const wobbleSpeed = Math.random() * 0.08 + 0.04;
+            const amplitude = Math.random() * 3 + 2;
+            bubbles.push({
+                x,
+                y,
+                radius,
+                speed,
+                angle,
+                wobble,
+                wobbleSpeed,
+                amplitude,
+            });
         }
 
         function updateBubbles() {
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
+
+                bubble.wobble += bubble.wobbleSpeed;
+
                 bubble.y -= bubble.speed;
-                bubble.x += Math.sin(bubble.angle) * 0.5;
-                bubble.angle += Math.random() * 0.1 - 0.05;
+
+                bubble.x += Math.sin(bubble.wobble) * bubble.amplitude * 0.1;
+
                 if (bubble.y < -10) {
                     bubble.y = canvas.height + 10;
                     bubble.x = Math.random() * canvas.width;
                 }
+
+                if (bubble.x < 0) bubble.x = canvas.width;
+                if (bubble.x > canvas.width) bubble.x = 0;
             }
         }
 
         function drawBubbles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
+
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
                 ctx.fill();
             }
         }
@@ -61,7 +91,7 @@ export const BubblesAnimation: React.FC = () => {
 
         function init() {
             resizeCanvas();
-            const bubbleCount = isMobile ? 100 : 1000;
+            const bubbleCount = isMobile ? 50 : 500;
             for (let i = 0; i < bubbleCount; i++) {
                 createBubble();
             }

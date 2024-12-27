@@ -9,7 +9,6 @@ const ImageText = dynamic(() => import("./contentParts/imageText"));
 const Companies = dynamic(() => import("./contentParts/companies"));
 const Timeline = dynamic(() => import("./contentParts/timeline"));
 const ProjectsModule = dynamic(() => import("./contentParts/projectsModule"));
-const Gallery = dynamic(() => import("./contentParts/gallery"));
 const SecretLinkModule = dynamic(
     () => import("./contentParts/secretLinkModule"),
 );
