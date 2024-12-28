@@ -47,9 +47,6 @@ const Page: FC<Props> = (props: Props) => {
                 {props.type === "letterimagegenerator" && (
                     <LetterImageGenerator {...(props as any)} />
                 )}
-                {props.type === "gallery" && (
-                    <Gallery {...(props as any)} config={props.config} />
-                )}
                 {props.type === "secretlinkmodule" && (
                     <SecretLinkModule {...(props as any)} />
                 )}
