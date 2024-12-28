@@ -35,12 +35,6 @@ export const Window: React.FC<WindowProps> = ({
                 <span></span>
             </div>
             <div className={styles.windowInner} style={textStyle}>
-                <div className={styles.lineNumbers}>
-                    {new Array(20).fill(0).map((_, i) => (
-                        <div key={i}>{i + 1}</div>
-                    ))}
-                </div>
-
                 <pre
                     className={styles.text}
                     dangerouslySetInnerHTML={{ __html: html }}

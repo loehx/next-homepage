@@ -34,12 +34,11 @@ export const BubblesAnimation: React.FC = () => {
         }
 
         function createBubble(nearCursor = false) {
-            const x = nearCursor
-                ? cursorRef.current.x + (Math.random() * 100 - 50)
-                : Math.random() * canvas.width;
-            const y = nearCursor
-                ? cursorRef.current.y + (Math.random() * 50 - 25)
-                : Math.random() * canvas.height;
+            const x =
+                nearCursor && cursorRef.current.x
+                    ? getRandomX()
+                    : Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
             const radius = Math.random() * 1.5 + 0.5;
             const speed = Math.random() * 1.2 + 0.4;
             const angle = Math.random() * Math.PI * 2;
@@ -72,7 +71,7 @@ export const BubblesAnimation: React.FC = () => {
                     bubble.y = canvas.height + 10;
                     bubble.x =
                         i >= baseBubbleCount
-                            ? cursorRef.current.x + (Math.random() * 100 - 50)
+                            ? getRandomX()
                             : Math.random() * canvas.width;
                 }
 
@@ -103,7 +102,7 @@ export const BubblesAnimation: React.FC = () => {
 
         function createCursorBubbles() {
             if (cursorBubblesCreated.current) return;
-            for (let i = 0; i < baseBubbleCount * 3; i++) {
+            for (let i = 0; i < baseBubbleCount * 2; i++) {
                 createBubble(true);
             }
             cursorBubblesCreated.current = true;
@@ -114,6 +113,7 @@ export const BubblesAnimation: React.FC = () => {
             for (let i = 0; i < baseBubbleCount; i++) {
                 createBubble(false);
             }
+            createCursorBubbles();
             animate();
         }
 
@@ -125,7 +125,6 @@ export const BubblesAnimation: React.FC = () => {
 
             if (!hasMouseMoved.current) {
                 hasMouseMoved.current = true;
-                createCursorBubbles();
             }
         }
 
@@ -140,6 +139,19 @@ export const BubblesAnimation: React.FC = () => {
             cursorBubblesCreated.current = false;
         };
     }, [isMobile]);
+
+    function getRandomX() {
+        const range = 200;
+        return cursorRef.current.x + (gaussianRand() * range - range / 2);
+    }
+
+    function gaussianRand(r = 10) {
+        let rand = 0;
+        for (let i = 0; i < r; i += 1) {
+            rand += Math.random();
+        }
+        return rand / r;
+    }
 
     return (
         <div
