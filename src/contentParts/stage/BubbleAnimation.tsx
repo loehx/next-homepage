@@ -5,6 +5,9 @@ export const BubblesAnimation: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile(true);
+    const cursorRef = useRef({ x: 0, y: 0 });
+    const hasMouseMoved = useRef(false);
+    const cursorBubblesCreated = useRef(false);
 
     useEffect(() => {
         const canvas = canvasRef.current!;
@@ -13,6 +16,7 @@ export const BubblesAnimation: React.FC = () => {
         const ctx = canvas.getContext("2d")!;
         if (!ctx) return;
 
+        const baseBubbleCount = isMobile ? 25 : 250;
         const bubbles = [] as Array<{
             x: number;
             y: number;
@@ -29,9 +33,13 @@ export const BubblesAnimation: React.FC = () => {
             canvas.height = container.offsetHeight;
         }
 
-        function createBubble() {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
+        function createBubble(nearCursor = false) {
+            const x = nearCursor
+                ? cursorRef.current.x + (Math.random() * 100 - 50)
+                : Math.random() * canvas.width;
+            const y = nearCursor
+                ? cursorRef.current.y + (Math.random() * 50 - 25)
+                : Math.random() * canvas.height;
             const radius = Math.random() * 1.5 + 0.5;
             const speed = Math.random() * 1.2 + 0.4;
             const angle = Math.random() * Math.PI * 2;
@@ -62,7 +70,10 @@ export const BubblesAnimation: React.FC = () => {
 
                 if (bubble.y < -10) {
                     bubble.y = canvas.height + 10;
-                    bubble.x = Math.random() * canvas.width;
+                    bubble.x =
+                        i >= baseBubbleCount
+                            ? cursorRef.current.x + (Math.random() * 100 - 50)
+                            : Math.random() * canvas.width;
                 }
 
                 if (bubble.x < 0) bubble.x = canvas.width;
@@ -85,25 +96,48 @@ export const BubblesAnimation: React.FC = () => {
 
         function animate() {
             updateBubbles();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBubbles();
             requestAnimationFrame(animate);
         }
 
+        function createCursorBubbles() {
+            if (cursorBubblesCreated.current) return;
+            for (let i = 0; i < baseBubbleCount * 3; i++) {
+                createBubble(true);
+            }
+            cursorBubblesCreated.current = true;
+        }
+
         function init() {
             resizeCanvas();
-            const bubbleCount = isMobile ? 50 : 500;
-            for (let i = 0; i < bubbleCount; i++) {
-                createBubble();
+            for (let i = 0; i < baseBubbleCount; i++) {
+                createBubble(false);
             }
             animate();
         }
 
+        function handleMouseMove(e: MouseEvent) {
+            cursorRef.current = {
+                x: e.clientX,
+                y: e.clientY,
+            };
+
+            if (!hasMouseMoved.current) {
+                hasMouseMoved.current = true;
+                createCursorBubbles();
+            }
+        }
+
+        window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("resize", resizeCanvas);
         init();
 
-        // Cleanup
         return () => {
             window.removeEventListener("resize", resizeCanvas);
+            window.removeEventListener("mousemove", handleMouseMove);
+            hasMouseMoved.current = false;
+            cursorBubblesCreated.current = false;
         };
     }, [isMobile]);
 
