@@ -38,7 +38,6 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [loading, setLoading] = useState(true);
     const [scrollY, setScrollY] = useState(0);
     const [closeCount, setCloseCount] = useState(0);
-    const [mouseX, setMouseX] = useState(0);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
@@ -53,16 +52,6 @@ export const Stage: React.FC<StageProps> = (props) => {
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, []);
-
-    useEffect(() => {
-        const onMouseMove = (e: MouseEvent) => {
-            const x = (e.clientX / window.innerWidth) * 2 - 1;
-            setMouseX(x);
-        };
-
-        window.addEventListener("mousemove", onMouseMove);
-        return () => window.removeEventListener("mousemove", onMouseMove);
     }, []);
 
     return (
@@ -86,7 +75,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                     ></video>
                 )}
                 {!props.backgroundVideo?.url && !props.backgroundImage?.url && (
-                    <BubblesAnimation mouseX={mouseX} />
+                    <BubblesAnimation />
                 )}
             </div>
             <div className={styles.inner}>
