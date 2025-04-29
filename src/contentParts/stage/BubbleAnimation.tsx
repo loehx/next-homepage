@@ -163,7 +163,7 @@ export const BubblesAnimation: React.FC = () => {
                 className="background absolute inset-0"
                 style={{
                     background:
-                        "linear-gradient(30deg, #9a2461 0%, #0182de 120%)",
+                        "linear-gradient(10deg, rgb(100 2 53) 0%, rgb(47 169 255) 120%)",
                     animation: "hue-rotate-animation 10s infinite linear",
                 }}
             ></div>
