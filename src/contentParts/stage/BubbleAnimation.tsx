@@ -3,18 +3,33 @@ import { useIsMobile } from "src/hooks";
 
 export const BubblesAnimation: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile(true);
     const cursorRef = useRef({ x: 0, y: 0 });
     const hasMouseMoved = useRef(false);
     const cursorBubblesCreated = useRef(false);
 
+    // Background circles data
+    const backgroundCircles = useRef<
+        Array<{
+            x: number;
+            y: number;
+            radius: number;
+            color: string;
+            speed: number;
+            angle: number;
+        }>
+    >([]);
+
     useEffect(() => {
         const canvas = canvasRef.current!;
+        const backgroundCanvas = backgroundCanvasRef.current!;
         const container = containerRef.current!;
-        if (!canvas || !container) return;
+        if (!canvas || !backgroundCanvas || !container) return;
         const ctx = canvas.getContext("2d")!;
-        if (!ctx) return;
+        const bgCtx = backgroundCanvas.getContext("2d")!;
+        if (!ctx || !bgCtx) return;
 
         const baseBubbleCount = isMobile ? 25 : 250;
         const bubbles = [] as Array<{
@@ -31,6 +46,8 @@ export const BubblesAnimation: React.FC = () => {
         function resizeCanvas() {
             canvas.width = container.offsetWidth;
             canvas.height = container.offsetHeight;
+            backgroundCanvas.width = container.offsetWidth;
+            backgroundCanvas.height = container.offsetHeight;
         }
 
         function createBubble(nearCursor = false) {
@@ -93,9 +110,68 @@ export const BubblesAnimation: React.FC = () => {
             }
         }
 
+        function initBackgroundCircles() {
+            const colors = [
+                "rgba(255, 0, 0, 0.15)",
+                "rgba(0, 255, 0, 0.15)",
+                "rgba(0, 0, 255, 0.15)",
+                "rgba(255, 255, 0, 0.15)",
+                "rgba(255, 0, 255, 0.15)",
+                "rgba(0, 255, 255, 0.15)",
+            ];
+
+            for (let i = 0; i < 10; i++) {
+                backgroundCircles.current.push({
+                    x: Math.random() * backgroundCanvas.width,
+                    y: Math.random() * backgroundCanvas.height,
+                    radius: Math.random() * 300 + 200,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: 0,
+                    angle: 0,
+                });
+            }
+        }
+
+        function updateBackgroundCircles() {
+            backgroundCircles.current.forEach((circle) => {
+                circle.angle += circle.speed * 0.01;
+                circle.x += Math.cos(circle.angle) * circle.speed;
+                circle.y += Math.sin(circle.angle) * circle.speed;
+
+                // Wrap around the canvas
+                if (circle.x < -circle.radius)
+                    circle.x = backgroundCanvas.width + circle.radius;
+                if (circle.x > backgroundCanvas.width + circle.radius)
+                    circle.x = -circle.radius;
+                if (circle.y < -circle.radius)
+                    circle.y = backgroundCanvas.height + circle.radius;
+                if (circle.y > backgroundCanvas.height + circle.radius)
+                    circle.y = -circle.radius;
+            });
+        }
+
+        function drawBackgroundCircles() {
+            bgCtx.clearRect(
+                0,
+                0,
+                backgroundCanvas.width,
+                backgroundCanvas.height,
+            );
+            bgCtx.filter = "blur(50px)";
+            backgroundCircles.current.forEach((circle) => {
+                bgCtx.beginPath();
+                bgCtx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+                bgCtx.fillStyle = circle.color;
+                bgCtx.fill();
+            });
+            bgCtx.filter = "none";
+        }
+
         function animate() {
             updateBubbles();
+            updateBackgroundCircles();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackgroundCircles();
             drawBubbles();
             requestAnimationFrame(animate);
         }
@@ -110,6 +186,7 @@ export const BubblesAnimation: React.FC = () => {
 
         function init() {
             resizeCanvas();
+            initBackgroundCircles();
             for (let i = 0; i < baseBubbleCount; i++) {
                 createBubble(false);
             }
@@ -162,11 +239,14 @@ export const BubblesAnimation: React.FC = () => {
             <div
                 className="background absolute inset-0"
                 style={{
-                    background:
-                        "linear-gradient(10deg, rgb(100 2 53) 0%, rgb(47 169 255) 120%)",
-                    animation: "hue-rotate-animation 10s infinite linear",
+                    background: "black",
                 }}
             ></div>
+            <canvas
+                id="backgroundCanvas"
+                ref={backgroundCanvasRef}
+                style={{ position: "absolute", top: 0, left: 0 }}
+            ></canvas>
             <canvas
                 id="canvas"
                 ref={canvasRef}
