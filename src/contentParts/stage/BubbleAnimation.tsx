@@ -6,9 +6,6 @@ export const BubblesAnimation: React.FC = () => {
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile(true);
-    const cursorRef = useRef({ x: 0, y: 0 });
-    const hasMouseMoved = useRef(false);
-    const cursorBubblesCreated = useRef(false);
 
     // Background circles data
     const backgroundCircles = useRef<
@@ -50,11 +47,8 @@ export const BubblesAnimation: React.FC = () => {
             backgroundCanvas.height = container.offsetHeight;
         }
 
-        function createBubble(nearCursor = false) {
-            const x =
-                nearCursor && cursorRef.current.x
-                    ? getRandomX()
-                    : Math.random() * canvas.width;
+        function createBubble() {
+            const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
             const radius = Math.random() * 1.5 + 0.5;
             const speed = Math.random() * 1.2 + 0.4;
@@ -86,10 +80,7 @@ export const BubblesAnimation: React.FC = () => {
 
                 if (bubble.y < -10) {
                     bubble.y = canvas.height + 10;
-                    bubble.x =
-                        i >= baseBubbleCount
-                            ? getRandomX()
-                            : Math.random() * canvas.width;
+                    bubble.x = Math.random() * canvas.width;
                 }
 
                 if (bubble.x < 0) bubble.x = canvas.width;
@@ -175,59 +166,22 @@ export const BubblesAnimation: React.FC = () => {
             requestAnimationFrame(animate);
         }
 
-        function createCursorBubbles() {
-            if (cursorBubblesCreated.current) return;
-            for (let i = 0; i < baseBubbleCount * 2; i++) {
-                createBubble(true);
-            }
-            cursorBubblesCreated.current = true;
-        }
-
         function init() {
             resizeCanvas();
             initBackgroundCircles();
             for (let i = 0; i < baseBubbleCount; i++) {
-                createBubble(false);
+                createBubble();
             }
-            createCursorBubbles();
             animate();
         }
 
-        function handleMouseMove(e: MouseEvent) {
-            cursorRef.current = {
-                x: e.clientX,
-                y: e.clientY,
-            };
-
-            if (!hasMouseMoved.current) {
-                hasMouseMoved.current = true;
-            }
-        }
-
-        window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("resize", resizeCanvas);
         init();
 
         return () => {
             window.removeEventListener("resize", resizeCanvas);
-            window.removeEventListener("mousemove", handleMouseMove);
-            hasMouseMoved.current = false;
-            cursorBubblesCreated.current = false;
         };
     }, [isMobile]);
-
-    function getRandomX() {
-        const range = 200;
-        return cursorRef.current.x + (gaussianRand() * range - range / 2);
-    }
-
-    function gaussianRand(r = 10) {
-        let rand = 0;
-        for (let i = 0; i < r; i += 1) {
-            rand += Math.random();
-        }
-        return rand / r;
-    }
 
     return (
         <div
