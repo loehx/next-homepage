@@ -28,7 +28,7 @@ export const BubblesAnimation: React.FC = () => {
         const bgCtx = backgroundCanvas.getContext("2d")!;
         if (!ctx || !bgCtx) return;
 
-        const baseBubbleCount = isMobile ? 25 : 250;
+        const baseBubbleCount = isMobile ? 25 : 100;
         const bubbles = [] as Array<{
             x: number;
             y: number;
@@ -48,13 +48,14 @@ export const BubblesAnimation: React.FC = () => {
         }
 
         function createBubble() {
+            const r = Math.random();
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
-            const radius = Math.random() * 1.5 + 0.5;
-            const speed = Math.random() * 1.2 + 0.4;
+            const radius = r * 1 + 0.5;
+            const speed = r * 2 + 0.4;
             const angle = Math.random() * Math.PI * 2;
-            const wobble = Math.random() * Math.PI * 2;
-            const wobbleSpeed = Math.random() * 0.08 + 0.04;
+            const wobble = r * Math.PI * 10;
+            const wobbleSpeed = r * 0.5 + 0.04;
             const amplitude = Math.random() * 3 + 2;
             bubbles.push({
                 x,
@@ -96,7 +97,7 @@ export const BubblesAnimation: React.FC = () => {
 
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                ctx.fillStyle = "rgba(255, 255, 255, 1)";
                 ctx.fill();
             }
         }
@@ -147,14 +148,13 @@ export const BubblesAnimation: React.FC = () => {
                 backgroundCanvas.width,
                 backgroundCanvas.height,
             );
-            bgCtx.filter = "blur(50px)";
+
             backgroundCircles.current.forEach((circle) => {
                 bgCtx.beginPath();
                 bgCtx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
                 bgCtx.fillStyle = circle.color;
                 bgCtx.fill();
             });
-            bgCtx.filter = "none";
         }
 
         function animate() {
@@ -195,11 +195,23 @@ export const BubblesAnimation: React.FC = () => {
                     background: "black",
                 }}
             ></div>
-            <canvas
-                id="backgroundCanvas"
-                ref={backgroundCanvasRef}
-                style={{ position: "absolute", top: 0, left: 0 }}
-            ></canvas>
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    filter: isMobile ? "blur(20px)" : "blur(50px)",
+                    overflow: "hidden",
+                }}
+            >
+                <canvas
+                    id="backgroundCanvas"
+                    ref={backgroundCanvasRef}
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                ></canvas>
+            </div>
             <canvas
                 id="canvas"
                 ref={canvasRef}
