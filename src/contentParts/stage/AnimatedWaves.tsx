@@ -24,14 +24,6 @@ const WAVE_CONFIGS = [
         opacity: 0.3,
         phase: Math.PI,
         yOffset: 24,
-    },
-    {
-        amplitude: 10,
-        wavelength: 250,
-        speed: 0.1,
-        opacity: 0.2,
-        phase: Math.PI * 1.5,
-        yOffset: 36,
     }, // slowest, most transparent
 ];
 

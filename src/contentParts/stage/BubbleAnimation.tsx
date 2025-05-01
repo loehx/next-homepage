@@ -28,7 +28,7 @@ export const BubblesAnimation: React.FC = () => {
         const bgCtx = backgroundCanvas.getContext("2d")!;
         if (!ctx || !bgCtx) return;
 
-        const baseBubbleCount = isMobile ? 25 : 100;
+        const baseBubbleCount = isMobile ? 15 : 50;
         const bubbles = [] as Array<{
             x: number;
             y: number;
@@ -39,6 +39,11 @@ export const BubblesAnimation: React.FC = () => {
             wobbleSpeed: number;
             amplitude: number;
         }>;
+
+        let animationFrameId: number;
+        let lastTime = 0;
+        const targetFPS = 30;
+        const frameInterval = 1000 / targetFPS;
 
         function resizeCanvas() {
             canvas.width = container.offsetWidth;
@@ -74,9 +79,7 @@ export const BubblesAnimation: React.FC = () => {
                 const bubble = bubbles[i];
 
                 bubble.wobble += bubble.wobbleSpeed;
-
                 bubble.y -= bubble.speed;
-
                 bubble.x += Math.sin(bubble.wobble) * bubble.amplitude * 0.1;
 
                 if (bubble.y < -10) {
@@ -94,10 +97,9 @@ export const BubblesAnimation: React.FC = () => {
 
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
-
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(255, 255, 255, 1)";
+                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
                 ctx.fill();
             }
         }
@@ -157,13 +159,20 @@ export const BubblesAnimation: React.FC = () => {
             });
         }
 
-        function animate() {
-            updateBubbles();
-            updateBackgroundCircles();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBackgroundCircles();
-            drawBubbles();
-            requestAnimationFrame(animate);
+        function animate(currentTime: number) {
+            if (!lastTime) lastTime = currentTime;
+            const elapsed = currentTime - lastTime;
+
+            if (elapsed >= frameInterval) {
+                lastTime = currentTime - (elapsed % frameInterval);
+
+                updateBubbles();
+                updateBackgroundCircles();
+                drawBackgroundCircles();
+                drawBubbles();
+            }
+
+            animationFrameId = requestAnimationFrame(animate);
         }
 
         function init() {
@@ -172,7 +181,7 @@ export const BubblesAnimation: React.FC = () => {
             for (let i = 0; i < baseBubbleCount; i++) {
                 createBubble();
             }
-            animate();
+            animate(0);
         }
 
         window.addEventListener("resize", resizeCanvas);
@@ -180,6 +189,9 @@ export const BubblesAnimation: React.FC = () => {
 
         return () => {
             window.removeEventListener("resize", resizeCanvas);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
         };
     }, [isMobile]);
 
