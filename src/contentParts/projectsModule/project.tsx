@@ -72,6 +72,14 @@ export const Project: FC<Props> = ({ project, isLast }) => {
         setRelativeScreenPosition(value);
         console.log(value);
     };
+
+    const multiplier = windowWidth <= 768 ? 4 : 3;
+    const getRevealedText = (text: string) => {
+        const r = relativeScreenPosition * multiplier;
+        const showN = Math.min(Math.ceil(text.length * r), text.length);
+        return text.substring(0, showN) + (showN === text.length ? "" : "_");
+    };
+
     return (
         <FadeIn>
             <CustomParallax
@@ -88,41 +96,38 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                             <span className="text-gray-600 text-xs mb-2 mt-6">
                                 {getMonthsCount(project.from)}
                             </span>
-                            <div className="absolute right-[-1.5rem] -top-8 w-0 border-r border-gray-200 -bottom-9"></div>
                         </div>
                         {/* Project Content */}
                         <div className="flex-1 text-sm">
-                            <div className="text-base font-bold text-left w-full mb-2">
+                            <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center">
                                 <span className="text-sm">&gt;_&nbsp;</span>
                                 <span
                                     data-to={project.to}
-                                    className="ml-1 truncate"
+                                    className="ml-1 truncate max-w-[50vw] inline-block"
                                 >
-                                    {project.name}
+                                    {getRevealedText(project.name)}
                                 </span>
+                            </div>
+                            <div
+                                className="relative h-[1.5px] my-2 mb-3 bg-grey-200"
+                                style={{
+                                    left: "-120px",
+                                    width: `calc(120px + ${Math.max(
+                                        0,
+                                        Math.min(
+                                            100,
+                                            relativeScreenPosition *
+                                                (windowWidth <= 768 ? 100 : 50),
+                                        ),
+                                    )}%`,
+                                }}
+                            >
                                 <div
-                                    className="relative h-[1.5px] my-2 mb-3 bg-secondary-100"
-                                    style={{
-                                        left: "-120px",
-                                        width: `calc(120px + ${Math.max(
-                                            0,
-                                            Math.min(
-                                                100,
-                                                relativeScreenPosition *
-                                                    (windowWidth <= 768
-                                                        ? 100
-                                                        : 50),
-                                            ),
-                                        )}%`,
-                                    }}
-                                >
-                                    <div
-                                        className="absolute right-0 top-[-3px] w-0 h-0 
+                                    className="absolute right-0 top-[-3px] w-0 h-0 
                                         border-t-[4px] border-t-transparent 
-                                        border-l-[8px] border-l-secondary-100 
+                                        border-l-[8px] border-l-grey-200 
                                         border-b-[4px] border-b-transparent"
-                                    ></div>
-                                </div>
+                                ></div>
                             </div>
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
                                 {project.technologies
@@ -195,12 +200,15 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                             </div>
                             <div className="mb-1">
                                 <span className="mr-2">👉</span>
-                                {project.description}
+                                {typeof window !== "undefined" &&
+                                window.innerWidth >= 1024
+                                    ? getRevealedText(project.description)
+                                    : project.description}
                             </div>
                             <div className="w-full max-w-xl">
                                 <div className="mb-1">
                                     <span className="mr-2">👨‍💻</span>
-                                    {project.role}
+                                    {getRevealedText(project.role)}
                                 </div>
                                 {project.url && (
                                     <div className="mb-1">
@@ -211,14 +219,14 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {
+                                            {getRevealedText(
                                                 project.url
                                                     .replace(
                                                         /^https?:\/\//g,
                                                         "",
                                                     )
-                                                    .split("/")[0]
-                                            }
+                                                    .split("/")[0],
+                                            )}
                                         </a>
                                     </div>
                                 )}
@@ -231,10 +239,12 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {project.company.name}
+                                            {getRevealedText(
+                                                project.company.name,
+                                            )}
                                         </a>
                                     ) : (
-                                        project.company.name
+                                        getRevealedText(project.company.name)
                                     )}
                                 </div>
                             </div>
