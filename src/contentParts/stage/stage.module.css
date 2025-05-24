@@ -258,6 +258,16 @@
     line-height: 0;
 }
 
+.waves:before {
+    content: "";
+    position: absolute;
+    height: 10px;
+    background-color: #fff;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+}
+
 @media only screen and (min-width: 800px) {
     .waves {
         bottom: 0;
