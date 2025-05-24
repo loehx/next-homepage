@@ -87,9 +87,9 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                 onUpdate={onScrollUpdate}
             >
                 <div className="w-full flex flex-col items-center mb-16 cursor-default">
-                    <div className="flex flex-row items-stretch w-full gap-12">
+                    <div className="flex flex-row items-stretch w-full gap-4 md:gap-12">
                         {/* Timeline */}
-                        <div className="flex flex-col items-end min-w-[70px] md:min-w-[150px] text-right mt-[5px] relative">
+                        <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
                             <span className="font-bold text-sm leading-none">
                                 {getDateString(project.from)}
                             </span>
