@@ -19,6 +19,7 @@ export interface BootstrapedTimelineEntry extends TimelineEntry {
     years: number;
     yearsTotal: number;
     durationText: string;
+    isLatest: boolean;
 }
 
 export interface TimelineProps extends Entry {
@@ -65,10 +66,13 @@ export function bootstrapEntries(
             } as BootstrapedTimelineEntry),
     );
     result.sort((a, b) => a.yearFrom - b.yearFrom);
+    const yearToValues = result.map((entry) => entry.yearTo);
+    const latestYearTo = Math.max(...yearToValues);
     let mainJobIndex = 0;
     result.forEach((entry, index) => {
         entry.index = index;
         entry.mainJobIndex = entry.mainJob ? ++mainJobIndex : mainJobIndex;
+        entry.isLatest = entry.yearTo === latestYearTo;
     });
     return result;
 }
