@@ -25,7 +25,9 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         description,
         hint,
     } = props;
-    const [open, setOpen] = useState(false);
+    const [isCentered, setIsCentered] = useState(false);
+    const [isAboveCenter, setIsAboveCenter] = useState(false);
+    const showActiveState = isCentered || isAboveCenter;
     const fromYear = Number.isFinite(yearFrom) ? yearFrom : yearMin;
     const toYear = yearTo >= 0 ? yearTo : yearMax;
     const normalizedTop = ((yearMax - toYear) / yearsTotal) * 100;
@@ -41,13 +43,14 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         const screenCenter = props.screenHeight / 2;
         const bottom = props.screenHeight - props.bottom;
         const isCentered = props.top < screenCenter && bottom > screenCenter;
-        setOpen(isCentered);
+        setIsCentered(isCentered);
+        setIsAboveCenter(props.top < screenCenter);
     };
 
     return (
         <CustomParallax
             className="cursor-default absolute left-0 right-0"
-            onClick={() => setOpen(true)}
+            onClick={() => setIsCentered(true)}
             // onMouseEnter={() => setOpen(true)}
             // onMouseLeave={() => setOpen(false)}
             style={{ top: `${top}%`, bottom: `${bottom}%`, zIndex }}
@@ -57,7 +60,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
             <div>
                 <div
                     className={`w-4 absolute top-0 bottom-0 transition-all ${
-                        open && "!bg-secondary-500"
+                        showActiveState && "!bg-secondary-500"
                     } ${
                         mainJob
                             ? oddMainJob
@@ -66,7 +69,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             : "bg-secondary-100"
                     } left-[50%] translate-x-[-50%]`}
                     style={{ right: 0, left }}
-                    onClick={() => setOpen(!open)}
+                    onClick={() => setIsCentered(!isCentered)}
                 >
                     {isLatest && (
                         <div
@@ -78,7 +81,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             <div
                                 className={cx(
                                     "w-6 border-t-2 border-secondary",
-                                    open && "!border-secondary-500",
+                                    isCentered && "!border-secondary-500",
                                 )}
                             ></div>
                             <span>Today</span>
@@ -91,7 +94,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                 ? "border-secondary-200"
                                 : "border-secondary-100",
                             odd ? "left-full" : "right-full",
-                            open && "!border-secondary-500",
+                            isCentered && "!border-secondary-500",
                         )}
                     ></div>
                 </div>
@@ -117,7 +120,8 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                 <div
                                     className={cx(
                                         "absolute inset-0 top-auto opacity-0 transition-all duration-500 translate-y-[20px]",
-                                        open && "!opacity-100 !translate-y-[0]",
+                                        showActiveState &&
+                                            "!opacity-100 !translate-y-[0]",
                                     )}
                                 >
                                     {company?.fullName && (
@@ -135,7 +139,8 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             </div>
                             <div
                                 className={`md:hidden mb-1 opacity-0 transition-all duration-300 translate-y-[20px] ${
-                                    open && "!opacity-100 !translate-y-[0]"
+                                    showActiveState &&
+                                    "!opacity-100 !translate-y-[0]"
                                 }`}
                             >
                                 {company?.fullName && (
@@ -154,7 +159,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                 className={cx(
                                     "md:inline font-bold text-sm md:text-base transition-color mt-1 md:!text-black",
                                     mainJob && "text-base md:text-lg",
-                                    open && styles.titleOpen,
+                                    showActiveState && styles.titleOpen,
                                 )}
                             >
                                 {title}

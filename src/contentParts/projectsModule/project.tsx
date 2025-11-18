@@ -107,7 +107,7 @@ export const Project: FC<Props> = ({
                 className="cursor-default"
                 onUpdate={onScrollUpdate}
             >
-                <div className="w-full flex flex-col items-center mb-16 cursor-default">
+                <div className="w-full flex flex-col items-center mb-12 cursor-default">
                     <div className="flex flex-row items-stretch w-full gap-4 md:gap-12">
                         {/* Timeline */}
                         <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
@@ -228,7 +228,7 @@ export const Project: FC<Props> = ({
                                     <span className="mr-2">👨‍💻</span>
                                     {getRevealedText(project.role)}
                                 </div>
-                                {project.url && (
+                                {/* {project.url && (
                                     <div className="mb-1">
                                         <span className="mr-2">👀</span>
                                         <a
@@ -246,8 +246,7 @@ export const Project: FC<Props> = ({
                                                     .split("/")[0],
                                             )}
                                         </a>
-                                    </div>
-                                )}
+                                    </div>  )} */}
                                 <div className="mb-1">
                                     <span className="mr-2">👾</span>
                                     {project.company.url ? (
