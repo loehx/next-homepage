@@ -77,7 +77,6 @@ export const Project: FC<Props> = ({
         const pos = props.center / props.screenHeight + 0.2;
         const value = Math.round(pos * 100) / 100;
         setRelativeScreenPosition(value);
-        console.log(value);
     };
 
     const multiplier = windowWidth <= 768 ? 4 : 3;
