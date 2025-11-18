@@ -22,6 +22,8 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         mainJobIndex,
         freelance,
         isLatest,
+        description,
+        hint,
     } = props;
     const [open, setOpen] = useState(false);
     const fromYear = Number.isFinite(yearFrom) ? yearFrom : yearMin;
@@ -114,15 +116,21 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                             <div className="hidden md:block relative left-0 right-0 mb-1 min-h-[2.5rem]">
                                 <div
                                     className={cx(
-                                        "absolute inset-0 opacity-0 transition-all duration-500 translate-y-[20px]",
+                                        "absolute inset-0 top-auto opacity-0 transition-all duration-500 translate-y-[20px]",
                                         open && "!opacity-100 !translate-y-[0]",
                                     )}
                                 >
-                                    <span className={styles.textSpecial}>
-                                        {company?.fullName}
-                                    </span>
-                                    <br />
-                                    {company?.companyType}
+                                    {company?.fullName && (
+                                        <div className={styles.textSpecial}>
+                                            {company?.fullName}
+                                        </div>
+                                    )}
+                                    {hint ||
+                                        (company?.companyType && (
+                                            <div>
+                                                {hint || company?.companyType}
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
                             <div
@@ -130,9 +138,17 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                     open && "!opacity-100 !translate-y-[0]"
                                 }`}
                             >
-                                {company?.fullName}
-                                <br />
-                                {company?.companyType}
+                                {company?.fullName && (
+                                    <div className="font-bold">
+                                        {company?.fullName}
+                                    </div>
+                                )}
+                                {hint ||
+                                    (company?.companyType && (
+                                        <div>
+                                            {hint || company?.companyType}
+                                        </div>
+                                    ))}
                             </div>
                             <div
                                 className={cx(
