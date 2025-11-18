@@ -31,6 +31,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             key={project.id}
                             project={project}
                             isLast={index === projects.length - 1}
+                            colorIndex={index}
                         />
                     ))}
             </div>

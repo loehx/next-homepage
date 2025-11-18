@@ -11,9 +11,16 @@ interface Props {
     project: ProjectEntry;
     techFilter?: string;
     isLast?: boolean;
+    colorIndex?: number;
+    lineColor?: string;
 }
 
-export const Project: FC<Props> = ({ project, isLast }) => {
+export const Project: FC<Props> = ({
+    project,
+    isLast,
+    colorIndex,
+    lineColor,
+}) => {
     const [relativeScreenPosition, setRelativeScreenPosition] =
         useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -74,6 +81,20 @@ export const Project: FC<Props> = ({ project, isLast }) => {
     };
 
     const multiplier = windowWidth <= 768 ? 4 : 3;
+    const pathWidthMultiplier = windowWidth <= 768 ? 100 : 50;
+    const rainbowColors = [
+        "#F44336",
+        "#4CAF50",
+        "#FFC107",
+        "#2196F3",
+        "#FF9800",
+        "#9C27B0",
+    ];
+    const normalizedIndex = colorIndex ?? 0;
+    const computedColor = rainbowColors[normalizedIndex % rainbowColors.length];
+    const progressColor = lineColor ?? computedColor;
+    const lineProgressBase = relativeScreenPosition * pathWidthMultiplier;
+    const lineProgress = Math.max(0, Math.min(100, lineProgressBase));
     const getRevealedText = (text: string) => {
         const r = relativeScreenPosition * multiplier;
         const showN = Math.min(Math.ceil(text.length * r), text.length);
@@ -109,24 +130,21 @@ export const Project: FC<Props> = ({ project, isLast }) => {
                                 </span>
                             </div>
                             <div
-                                className="relative h-[1.5px] my-2 mb-3 bg-grey-200"
+                                className="relative h-[1.5px] my-2 mb-3"
                                 style={{
                                     left: "-120px",
-                                    width: `calc(120px + ${Math.max(
-                                        0,
-                                        Math.min(
-                                            100,
-                                            relativeScreenPosition *
-                                                (windowWidth <= 768 ? 100 : 50),
-                                        ),
-                                    )}%`,
+                                    width: `calc(120px + ${lineProgress}%)`,
+                                    backgroundColor: progressColor,
                                 }}
                             >
                                 <div
                                     className="absolute right-0 top-[-3px] w-0 h-0 
                                         border-t-[4px] border-t-transparent 
-                                        border-l-[8px] border-l-grey-200 
+                                        border-l-[8px] 
                                         border-b-[4px] border-b-transparent"
+                                    style={{
+                                        borderLeftColor: progressColor,
+                                    }}
                                 ></div>
                             </div>
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
