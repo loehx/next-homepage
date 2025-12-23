@@ -5,7 +5,6 @@ import {
     CustomParallax,
     ParallaxCallbackProps,
 } from "@components/customParallax";
-import { Tooltip } from "@components/tooltip";
 import { RocketIcon } from "@components/rocketIcon";
 import styles from "./project.module.css";
 
@@ -200,34 +199,28 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
                                 {sortedTechnologies.map((tech, i) => (
                                     <span key={tech.id}>
-                                        <Tooltip
-                                            text={tech.fullName}
-                                            placement="top"
-                                            className="inline-block"
+                                        <span
+                                            className={
+                                                frameworksFirst.includes(
+                                                    tech.name.toLowerCase(),
+                                                )
+                                                    ? "text-primary-600 lowercase"
+                                                    : "text-black lowercase"
+                                            }
                                         >
-                                            <span
-                                                className={
-                                                    frameworksFirst.includes(
-                                                        tech.name.toLowerCase(),
-                                                    )
-                                                        ? "text-primary-600 lowercase"
-                                                        : "text-black lowercase"
-                                                }
-                                            >
-                                                {tech.url ? (
-                                                    <a
-                                                        href={tech.url}
-                                                        className="text-inherit hover:outline outline-primary-200 rounded-sm px-1 -mx-1 hover:text-primary-600"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        {tech.name}
-                                                    </a>
-                                                ) : (
-                                                    tech.name
-                                                )}
-                                            </span>
-                                        </Tooltip>
+                                            {tech.url ? (
+                                                <a
+                                                    href={tech.url}
+                                                    className="text-inherit hover:outline outline-primary-200 rounded-sm px-1 -mx-1 hover:text-primary-600"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {tech.name}
+                                                </a>
+                                            ) : (
+                                                tech.name
+                                            )}
+                                        </span>
                                         {i < sortedTechnologies.length - 1 && (
                                             <span className="mx-1">·</span>
                                         )}

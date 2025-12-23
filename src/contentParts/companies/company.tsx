@@ -9,7 +9,6 @@ import {
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";
 import { Image } from "@components/image";
-import { Tooltip } from "@components/tooltip";
 
 interface Props extends CompanyEntry {
     projects: ProjectEntry[];

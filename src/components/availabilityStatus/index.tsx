@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./availabilityStatus.module.css";
 import { useInitializeClass } from "src/hooks";
-import { format, parseISO } from "date-fns";
 import cx from "classnames";
-import { Tooltip } from "@components/tooltip";
 
 export interface AvailabilityStatusProps {
     availableFrom: string;
@@ -32,34 +30,28 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
         return () => clearInterval(interval);
     }, []);
 
-    const tooltip = useMemo(
-        () => format(parseISO(props.availableFrom), "MMM dd, yyyy"),
-        [props.availableFrom],
-    );
-
     return (
-        <Tooltip className={classNames} text={tooltip}>
-            <div
-                className={cx(
-                    styles.availabilityStatus,
-                    isAvailable && styles.available,
-                )}
-            >
-                {isAvailable && (
-                    <div className={styles.availableText}>
-                        <span>Available</span>
-                    </div>
-                )}
-                {!isAvailable && (
-                    <div className={styles.daysUntilAvailable}>
-                        <span>Available in</span>
-                        <span>{daysUntilAvailable}</span>
-                        <span>days</span>
-                        <span>... and {secondsUntil} seconds</span>
-                    </div>
-                )}
-            </div>
-        </Tooltip>
+        <div
+            className={cx(
+                classNames,
+                styles.availabilityStatus,
+                isAvailable && styles.available,
+            )}
+        >
+            {isAvailable && (
+                <div className={styles.availableText}>
+                    <span>Available</span>
+                </div>
+            )}
+            {!isAvailable && (
+                <div className={styles.daysUntilAvailable}>
+                    <span>Available in</span>
+                    <span>{daysUntilAvailable}</span>
+                    <span>days</span>
+                    <span>... and {secondsUntil} seconds</span>
+                </div>
+            )}
+        </div>
     );
 };
 
