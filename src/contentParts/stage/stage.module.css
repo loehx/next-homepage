@@ -106,7 +106,7 @@
 .description {
     max-width: 500px;
     margin: 100px auto 80px auto;
-    opacity: var(--scroll);
+    opacity: 1;
 }
 
 @media only screen and (max-width: 799px) {
@@ -130,7 +130,6 @@
 @media only screen and (min-width: 800px) {
     .intro {
         width: auto;
-        opacity: calc(1 - var(--scroll));
     }
 }
 
