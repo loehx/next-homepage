@@ -16,6 +16,7 @@ body {
     min-width: 320px;
     color: var(--black);
     overflow-x: hidden;
+    background-color: white;
 }
 /* 
 html.wf-loading * {

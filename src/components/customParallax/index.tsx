@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 
 export interface ParallaxCallbackProps {
     screenHeight: number;
@@ -14,6 +14,21 @@ export interface CustomParallaxProps {
     onUpdate?: (props: ParallaxCallbackProps) => void;
 }
 
+let rafId: number | null = null;
+const scrollCallbacks = new Set<() => void>();
+
+const handleScroll = () => {
+    if (rafId !== null) return;
+    rafId = requestAnimationFrame(() => {
+        scrollCallbacks.forEach((callback) => callback());
+        rafId = null;
+    });
+};
+
+if (typeof window !== "undefined") {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+}
+
 export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
     children,
     styleGetter,
@@ -22,10 +37,14 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
 }) => {
     const element = useRef<HTMLDivElement | null>(null);
     const [style, setStyle] = useState<React.CSSProperties>();
+    const intersectionObserver = useRef<IntersectionObserver | null>(null);
+    const isIntersecting = useRef(false);
+    const lastParams = useRef<ParallaxCallbackProps | null>(null);
 
-    const onScroll = () => {
-        if (!element.current) return;
-        const rect = element.current?.getBoundingClientRect();
+    const updateScroll = useCallback(() => {
+        if (!element.current || !isIntersecting.current) return;
+
+        const rect = element.current.getBoundingClientRect();
         const top = Math.round(rect.top);
         const screenHeight = window.innerHeight;
         const bottom = Math.round(
@@ -41,7 +60,7 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
                 (relativeBottom < 0 ? relativeBottom : 0),
             0,
         );
-        const parameter = {
+        const parameter: ParallaxCallbackProps = {
             screenHeight,
             isVisible,
             visibility,
@@ -50,15 +69,51 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
             center,
         };
 
-        if (onUpdate) onUpdate(parameter);
-        if (styleGetter) setStyle(styleGetter(parameter));
-    };
+        // Only update if values changed significantly
+        const last = lastParams.current;
+        if (
+            !last ||
+            Math.abs(last.top - parameter.top) > 1 ||
+            Math.abs(last.bottom - parameter.bottom) > 1 ||
+            Math.abs(last.center - parameter.center) > 1
+        ) {
+            lastParams.current = parameter;
+            if (onUpdate) onUpdate(parameter);
+            if (styleGetter) setStyle(styleGetter(parameter));
+        }
+    }, [onUpdate, styleGetter]);
 
     useEffect(() => {
-        onScroll();
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+        if (!element.current) return;
+
+        // Use Intersection Observer to only track when element is near viewport
+        intersectionObserver.current = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    isIntersecting.current = entry.isIntersecting;
+                    if (entry.isIntersecting) {
+                        updateScroll();
+                        scrollCallbacks.add(updateScroll);
+                    } else {
+                        scrollCallbacks.delete(updateScroll);
+                    }
+                });
+            },
+            {
+                rootMargin: "200px", // Start tracking 200px before entering viewport
+            },
+        );
+
+        intersectionObserver.current.observe(element.current);
+        updateScroll();
+
+        return () => {
+            if (intersectionObserver.current) {
+                intersectionObserver.current.disconnect();
+            }
+            scrollCallbacks.delete(updateScroll);
+        };
+    }, [updateScroll]);
 
     return (
         <div ref={element} {...props}>

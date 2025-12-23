@@ -1,4 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+
+let fadeInRafId: number | null = null;
+const fadeInScrollCallbacks = new Set<() => void>();
+
+const handleFadeInScroll = () => {
+    if (fadeInRafId !== null) return;
+    fadeInRafId = requestAnimationFrame(() => {
+        fadeInScrollCallbacks.forEach((callback) => callback());
+        fadeInRafId = null;
+    });
+};
+
+if (typeof window !== "undefined") {
+    window.addEventListener("scroll", handleFadeInScroll, { passive: true });
+}
 
 export const FadeIn: React.FC<any> = ({
     children,
@@ -10,26 +25,57 @@ export const FadeIn: React.FC<any> = ({
     const element = useRef<HTMLDivElement | null>(null);
     const [opacity, setOpacity] = useState(0);
     const [height, setHeight] = useState(0);
+    const intersectionObserver = useRef<IntersectionObserver | null>(null);
+    const isIntersecting = useRef(false);
+    const lastOpacity = useRef(0);
 
-    const onScroll = () => {
-        if (!element.current) return;
-        const rect = element.current?.getBoundingClientRect();
+    const onScroll = useCallback(() => {
+        if (!element.current || !isIntersecting.current) return;
+        const rect = element.current.getBoundingClientRect();
         const bottom = window.innerHeight - rect.top * (1 + appearRatio);
-        const height = window.innerHeight * visibleRatio;
-        setHeight(height);
-        let opacity = Math.min(bottom / height);
-        opacity = Math.max(opacity, 0);
-        opacity = Math.min(opacity, 1);
-        setOpacity(opacity);
-    };
+        const calculatedHeight = window.innerHeight * visibleRatio;
+        setHeight(calculatedHeight);
+        let calculatedOpacity = Math.min(bottom / calculatedHeight);
+        calculatedOpacity = Math.max(calculatedOpacity, 0);
+        calculatedOpacity = Math.min(calculatedOpacity, 1);
+
+        // Only update if opacity changed significantly
+        if (Math.abs(lastOpacity.current - calculatedOpacity) > 0.01) {
+            lastOpacity.current = calculatedOpacity;
+            setOpacity(calculatedOpacity);
+        }
+    }, [appearRatio, visibleRatio]);
 
     useEffect(() => {
-        onScroll();
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+        if (!element.current) return;
 
-    useEffect(() => onScroll(), []);
+        intersectionObserver.current = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    isIntersecting.current = entry.isIntersecting;
+                    if (entry.isIntersecting) {
+                        onScroll();
+                        fadeInScrollCallbacks.add(onScroll);
+                    } else {
+                        fadeInScrollCallbacks.delete(onScroll);
+                    }
+                });
+            },
+            {
+                rootMargin: "300px", // Start tracking 300px before entering viewport
+            },
+        );
+
+        intersectionObserver.current.observe(element.current);
+        onScroll();
+
+        return () => {
+            if (intersectionObserver.current) {
+                intersectionObserver.current.disconnect();
+            }
+            fadeInScrollCallbacks.delete(onScroll);
+        };
+    }, [onScroll]);
 
     return (
         <div

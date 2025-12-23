@@ -1,0 +1,12 @@
+.progressLine {
+    position: relative;
+}
+
+.progressLine::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(to right, white, transparent);
+    pointer-events: none;
+}
+

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { ProjectEntry } from "data/definitions";
 import { FadeIn } from "@components/fadeIn";
 import {
@@ -6,6 +6,8 @@ import {
     ParallaxCallbackProps,
 } from "@components/customParallax";
 import { Tooltip } from "@components/tooltip";
+import { RocketIcon } from "@components/rocketIcon";
+import styles from "./project.module.css";
 
 interface Props {
     project: ProjectEntry;
@@ -15,31 +17,51 @@ interface Props {
     lineColor?: string;
 }
 
-export const Project: FC<Props> = ({
-    project,
-    isLast,
-    colorIndex,
-    lineColor,
-}) => {
+const frameworksFirst = ["vue", "react", "angular", "vanilla", "c#"];
+
+const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
     const [relativeScreenPosition, setRelativeScreenPosition] =
         useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(0);
+    const [scrollY, setScrollY] = useState<number>(0);
 
     useEffect(() => {
         // Set initial width
         setWindowWidth(window.innerWidth);
+        setScrollY(window.scrollY);
 
-        // Add resize listener
+        // Add resize listener with throttling
+        let rafId: number | null = null;
         const handleResize = () => {
-            setWindowWidth(window.innerWidth);
+            if (rafId !== null) return;
+            rafId = requestAnimationFrame(() => {
+                setWindowWidth(window.innerWidth);
+                rafId = null;
+            });
         };
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        // Add scroll listener for hue rotation
+        let scrollRafId: number | null = null;
+        const handleScroll = () => {
+            if (scrollRafId !== null) return;
+            scrollRafId = requestAnimationFrame(() => {
+                setScrollY(window.scrollY);
+                scrollRafId = null;
+            });
+        };
+
+        window.addEventListener("resize", handleResize, { passive: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("scroll", handleScroll);
+            if (rafId !== null) cancelAnimationFrame(rafId);
+            if (scrollRafId !== null) cancelAnimationFrame(scrollRafId);
+        };
     }, []);
 
-    function getDateString(date: string) {
-        const fromYear = date.split("/")[1];
+    const dateString = useMemo(() => {
+        const fromYear = project.from.split("/")[1];
         if (!project.to) {
             const now = new Date();
             const currentYear = now.getFullYear();
@@ -51,17 +73,17 @@ export const Project: FC<Props> = ({
         return fromYear === toYear
             ? fromYear
             : `${fromYear} - ${toYear.slice(2)}`;
-    }
+    }, [project.from, project.to]);
 
-    function getMonthsCount(fromDate: string) {
-        const fromParts = fromDate.split("/");
+    const monthsCount = useMemo(() => {
+        const fromParts = project.from.split("/");
         const fromMonth = parseInt(fromParts[0]);
         const fromYear = parseInt(fromParts[1]);
 
         let toMonth, toYear;
         if (!project.to) {
             const now = new Date();
-            toMonth = now.getMonth() + 1; // JavaScript months are 0-indexed
+            toMonth = now.getMonth() + 1;
             toYear = now.getFullYear();
         } else {
             const toParts = project.to.split("/");
@@ -71,34 +93,61 @@ export const Project: FC<Props> = ({
 
         const months = (toYear - fromYear) * 12 + (toMonth - fromMonth);
         return months === 1 ? "1 month" : `${months} months`;
-    }
+    }, [project.from, project.to]);
 
-    const onScrollUpdate = (props: ParallaxCallbackProps) => {
+    const sortedTechnologies = useMemo(() => {
+        if (!project.technologies) return [];
+        return [...project.technologies].sort((a, b) => {
+            const aIsFramework = frameworksFirst.includes(a.name.toLowerCase());
+            const bIsFramework = frameworksFirst.includes(b.name.toLowerCase());
+
+            if (aIsFramework && !bIsFramework) return -1;
+            if (!aIsFramework && bIsFramework) return 1;
+            return 0;
+        });
+    }, [project.technologies]);
+
+    const onScrollUpdate = useCallback((props: ParallaxCallbackProps) => {
         const pos = props.center / props.screenHeight + 0.2;
         const value = Math.round(pos * 100) / 100;
-        setRelativeScreenPosition(value);
-    };
+        setRelativeScreenPosition((prev) => {
+            // Only update if value changed significantly
+            if (Math.abs(prev - value) < 0.01) return prev;
+            return value;
+        });
+    }, []);
 
-    const multiplier = windowWidth <= 768 ? 4 : 3;
-    const pathWidthMultiplier = windowWidth <= 768 ? 100 : 50;
-    const rainbowColors = [
-        "#F44336",
-        "#4CAF50",
-        "#FFC107",
-        "#2196F3",
-        "#FF9800",
-        "#9C27B0",
-    ];
-    const normalizedIndex = colorIndex ?? 0;
-    const computedColor = rainbowColors[normalizedIndex % rainbowColors.length];
-    const progressColor = lineColor ?? computedColor;
+    const multiplier = useMemo(
+        () => (windowWidth <= 768 ? 4 : 3),
+        [windowWidth],
+    );
+    const pathWidthMultiplier = useMemo(
+        () => (windowWidth <= 768 ? 100 : 50),
+        [windowWidth],
+    );
+
+    // Calculate hue rotation based on scroll position
+    // Full rotation (360deg) over 2000px of scroll
+    const hueRotate = useMemo(() => {
+        const rotation = (scrollY / 2000) * 360;
+        return rotation % 360;
+    }, [scrollY]);
+
+    // Base color - use a bright color that works well with hue-rotate
+    const baseColor = lineColor || "#FF0000"; // Red as base, will rotate through all colors
     const lineProgressBase = relativeScreenPosition * pathWidthMultiplier;
     const lineProgress = Math.max(0, Math.min(100, lineProgressBase));
-    const getRevealedText = (text: string) => {
-        const r = relativeScreenPosition * multiplier;
-        const showN = Math.min(Math.ceil(text.length * r), text.length);
-        return text.substring(0, showN) + (showN === text.length ? "" : "_");
-    };
+
+    const getRevealedText = useCallback(
+        (text: string) => {
+            const r = relativeScreenPosition * multiplier;
+            const showN = Math.min(Math.ceil(text.length * r), text.length);
+            return (
+                text.substring(0, showN) + (showN === text.length ? "" : "_")
+            );
+        },
+        [relativeScreenPosition, multiplier],
+    );
 
     return (
         <FadeIn>
@@ -111,10 +160,10 @@ export const Project: FC<Props> = ({
                         {/* Timeline */}
                         <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
                             <span className="font-bold text-sm leading-none">
-                                {getDateString(project.from)}
+                                {dateString}
                             </span>
                             <span className="text-gray-600 text-xs mb-2 mt-6">
-                                {getMonthsCount(project.from)}
+                                {monthsCount}
                             </span>
                         </div>
                         {/* Project Content */}
@@ -129,91 +178,61 @@ export const Project: FC<Props> = ({
                                 </span>
                             </div>
                             <div
-                                className="relative h-[1.5px] my-2 mb-3"
+                                className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
                                 style={{
                                     left: "-120px",
                                     width: `calc(120px + ${lineProgress}%)`,
-                                    backgroundColor: progressColor,
+                                    backgroundColor: baseColor,
+                                    boxShadow: `0 0 4px 0 ${baseColor}`,
+                                    color: baseColor,
+                                    filter: `hue-rotate(${hueRotate}deg)`,
+                                    willChange: "width, filter",
                                 }}
                             >
-                                <div
-                                    className="absolute right-0 top-[-3px] w-0 h-0 
-                                        border-t-[4px] border-t-transparent 
-                                        border-l-[8px] 
-                                        border-b-[4px] border-b-transparent"
+                                <RocketIcon
+                                    className="absolute right-[-22px] top-[-9px] w-5 h-5"
                                     style={{
-                                        borderLeftColor: progressColor,
+                                        transform: "rotate(90deg)",
+                                        willChange: "transform, filter",
                                     }}
-                                ></div>
+                                />
                             </div>
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
-                                {project.technologies
-                                    ?.sort((a, b) => {
-                                        const frameworksFirst = [
-                                            "vue",
-                                            "react",
-                                            "angular",
-                                            "vanilla",
-                                            "c#",
-                                        ];
-                                        const aIsFramework =
-                                            frameworksFirst.includes(
-                                                a.name.toLowerCase(),
-                                            );
-                                        const bIsFramework =
-                                            frameworksFirst.includes(
-                                                b.name.toLowerCase(),
-                                            );
-
-                                        if (aIsFramework && !bIsFramework)
-                                            return -1;
-                                        if (!aIsFramework && bIsFramework)
-                                            return 1;
-                                        return 0;
-                                    })
-                                    .map((tech, i) => (
-                                        <span key={tech.id}>
-                                            <Tooltip
-                                                text={tech.fullName}
-                                                placement="top"
-                                                className="inline-block"
+                                {sortedTechnologies.map((tech, i) => (
+                                    <span key={tech.id}>
+                                        <Tooltip
+                                            text={tech.fullName}
+                                            placement="top"
+                                            className="inline-block"
+                                        >
+                                            <span
+                                                className={
+                                                    frameworksFirst.includes(
+                                                        tech.name.toLowerCase(),
+                                                    )
+                                                        ? "text-primary-600 lowercase"
+                                                        : "text-black lowercase"
+                                                }
                                             >
-                                                <span
-                                                    className={
-                                                        [
-                                                            "vue",
-                                                            "react",
-                                                            "angular",
-                                                            "vanilla",
-                                                            "c#",
-                                                        ].includes(
-                                                            tech.name.toLowerCase(),
-                                                        )
-                                                            ? "text-primary-600 lowercase"
-                                                            : "text-black lowercase"
-                                                    }
-                                                >
-                                                    {tech.url ? (
-                                                        <a
-                                                            href={tech.url}
-                                                            className="text-inherit hover:outline outline-primary-200 rounded-sm px-1 -mx-1 hover:text-primary-600"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            {tech.name}
-                                                        </a>
-                                                    ) : (
-                                                        tech.name
-                                                    )}
-                                                </span>
-                                            </Tooltip>
-                                            {i <
-                                                project.technologies.length -
-                                                    1 && (
-                                                <span className="mx-1">·</span>
-                                            )}
-                                        </span>
-                                    ))}
+                                                {tech.url ? (
+                                                    <a
+                                                        href={tech.url}
+                                                        className="text-inherit hover:outline outline-primary-200 rounded-sm px-1 -mx-1 hover:text-primary-600"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        {tech.name}
+                                                    </a>
+                                                ) : (
+                                                    tech.name
+                                                )}
+                                            </span>
+                                        </Tooltip>
+                                        {i < sortedTechnologies.length - 1 && (
+                                            <span className="mx-1">·</span>
+                                        )}
+                                    </span>
+                                ))}
                             </div>
                             <div className="mb-1">
                                 <span className="mr-2">👉</span>
@@ -271,3 +290,14 @@ export const Project: FC<Props> = ({
         </FadeIn>
     );
 };
+
+export const Project = memo(ProjectComponent, (prevProps, nextProps) => {
+    // Custom comparison function for React.memo
+    return (
+        prevProps.project.id === nextProps.project.id &&
+        prevProps.colorIndex === nextProps.colorIndex &&
+        prevProps.lineColor === nextProps.lineColor &&
+        prevProps.isLast === nextProps.isLast &&
+        prevProps.techFilter === nextProps.techFilter
+    );
+});
