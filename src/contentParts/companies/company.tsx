@@ -1,13 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { RichText, RichTextValue } from "@components/rich-text";
-import {
-    AssetEntry,
-    CompanyEntry,
-    Entry,
-    ProjectEntry,
-} from "data/definitions";
-import cx from "classnames";
-import { FadeIn } from "@components/fadeIn";
+import React from "react";
+import { CompanyEntry, ProjectEntry } from "data/definitions";
 import { Image } from "@components/image";
 
 interface Props extends CompanyEntry {
@@ -24,21 +16,18 @@ export const Company: React.FC<Props> = (props) => {
 
     return (
         <div
-            className={"relative group w-[40%] md:w-[20%] md:p-4"}
+            className={
+                "relative group w-[100px] md:w-[120px] md:p-4 flex-shrink-0"
+            }
             style={{ aspectRatio: "16/9" }}
         >
-            <FadeIn className="w-full h-full">
-                <a
-                    aria-label={`Jump to timeline entry`}
-                    className="absolute inset-0 cursor-pointer"
-                    onClick={onClick}
-                >
-                    <Image
-                        asset={props.logo}
-                        alt={`logo of ${props.fullName}`}
-                    />
-                </a>
-            </FadeIn>
+            <a
+                aria-label={`Jump to timeline entry`}
+                className="absolute inset-0 cursor-pointer"
+                onClick={onClick}
+            >
+                <Image asset={props.logo} alt={`logo of ${props.fullName}`} />
+            </a>
         </div>
     );
 };
