@@ -106,7 +106,7 @@
 .description {
     max-width: 500px;
     margin: 100px auto 80px auto;
-    opacity: 1;
+    opacity: var(--scroll);
 }
 
 @media only screen and (max-width: 799px) {
@@ -172,6 +172,7 @@
 
 .phone {
     display: block;
+    position: relative;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
