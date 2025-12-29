@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+    height: -webkit-fill-available;
+}
+
 html,
 body {
     margin: 0;
@@ -14,20 +19,21 @@ body {
     font-size: 16px;
     font-weight: 300;
     min-width: 320px;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
     color: var(--black);
     overflow-x: hidden;
-    background-color: white;
+    background-color: black;
 }
-/* 
-html.wf-loading * {
-    color: transparent !important;
-} */
 
 .page {
     min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: white;
 }
 
 h1,
