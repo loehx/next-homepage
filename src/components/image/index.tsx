@@ -66,7 +66,6 @@ export const Image: React.FC<ImageProps> = ({
                 objectFit="cover"
                 loader={asset ? srcLoader : undefined}
                 loading={props.priority ? "eager" : "lazy"}
-                priority={props.priority}
                 height={height}
                 alt={asset?.description}
                 {...otherProps}
