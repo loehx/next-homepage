@@ -159,14 +159,16 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                         className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
                         style={{
                             width: `calc(${
-                                lineProgress * (lineProgress * 0.06)
+                                lineProgress *
+                                (lineProgress *
+                                    (windowWidth <= 768 ? 0.02 : 0.07))
                             }%)`,
                             backgroundColor: baseColor,
                             boxShadow: `0 0 4px 0 ${baseColor}`,
                             color: baseColor,
                             filter: `hue-rotate(${hueRotate}deg)`,
                             willChange: "width, filter",
-                            transition: "width 0.08s linear",
+                            transition: "width 0.1s ease-out",
                         }}
                     >
                         <RocketIcon
