@@ -158,11 +158,9 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                     <div
                         className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
                         style={{
-                            width: `calc(${
-                                lineProgress *
-                                (lineProgress *
-                                    (windowWidth <= 768 ? 0.02 : 0.07))
-                            }%)`,
+                            width: lineProgress > 0 ? "125vw" : "0%",
+                            transition:
+                                "width 1.5s cubic-bezier(0.26, 0.53, 0.65, 0.11)",
                             backgroundColor: baseColor,
                             boxShadow: `0 0 4px 0 ${baseColor}`,
                             color: baseColor,
