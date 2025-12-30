@@ -6,10 +6,13 @@
     opacity: 1;
     user-select: none;
     cursor: default;
+    transition: filter 0.5s ease-out 0.5s, opacity 1s ease-out 0.5s;
+    filter: blur(0px);
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .availabilityStatusWrapper.initializing {
-    transform: scale(0.8);
+    filter: blur(500px);
     opacity: 0;
 }
 
@@ -17,7 +20,6 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 20px 35px 70px -10px rgb(0 0 0 / 56%);
-    transition: all 0.2s ease 2s;
     background-color: white;
 }
 
@@ -25,10 +27,6 @@
     .availabilityStatus {
         transform: scale(0.7);
     }
-}
-
-.availabilityStatus.available {
-    margin-bottom: 80px;
 }
 
 .availableText {

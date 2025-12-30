@@ -65,7 +65,14 @@ export const Stage: React.FC<StageProps> = (props) => {
     }, []);
 
     return (
-        <div className={cx(styles.stage, loading && styles.initializing)}>
+        <div
+            className={cx(styles.stage, loading && styles.initializing)}
+            style={
+                {
+                    "--scroll": scrollY / (w.innerHeight / 2),
+                } as React.CSSProperties
+            }
+        >
             <div className={styles.background}>
                 {props.backgroundImage?.url && (
                     <Image
@@ -90,14 +97,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                 )}
             </div>
             <div className={styles.inner}>
-                <div
-                    className={styles.intro}
-                    style={
-                        {
-                            "--scroll": scrollY / (w.innerHeight / 2),
-                        } as React.CSSProperties
-                    }
-                >
+                <div className={styles.intro}>
                     {props.logo && (
                         <div className={styles.logo}>
                             <img
