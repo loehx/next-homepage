@@ -90,21 +90,6 @@
     }
 }
 
-.project:hover {
-    z-index: 1;
-}
-
-@media (hover: hover) {
-    .project:hover,
-    .project.open {
-        padding: 2rem;
-    }
-}
-
-.project:hover:before {
-    opacity: 0.3;
-}
-
 .textWrapper {
     flex: 1;
 }
@@ -131,15 +116,6 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-
-    .project:not(.open):hover {
-        padding-bottom: 3.5rem;
-    }
-
-    .project:not(.open):hover .fromTo {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 .name {
@@ -148,19 +124,6 @@
     font-weight: 400;
     position: relative;
     transition: all 0.2s ease;
-}
-
-@media (hover: hover) {
-    .project:hover .name,
-    .project.open .name {
-        background: -webkit-linear-gradient(
-            45deg,
-            var(--secondary) -40%,
-            var(--primary) 120%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
 }
 
 .description {
@@ -215,30 +178,6 @@
 .filterBar {
     display: flex;
     margin-bottom: 15px;
-}
-
-.filter {
-    margin-right: 5px;
-    padding: 5px;
-    font-size: 16px;
-    line-height: 1;
-    border-radius: 5px;
-    color: var(--project-accent);
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.filter.reset {
-    transform: scale(2);
-}
-
-.filter:hover {
-    color: var(--project-accent);
-}
-
-.filter.active {
-    border: 2px solid var(--project-accent);
-    color: var(--project-accent);
 }
 
 .initHide {

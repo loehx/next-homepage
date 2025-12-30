@@ -6,7 +6,6 @@
     content: "";
     position: absolute;
     inset: -5px;
-    background: linear-gradient(to right, white, transparent);
+    background: linear-gradient(to right, white 75%, transparent 100%);
     pointer-events: none;
 }
-

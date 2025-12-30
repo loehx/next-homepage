@@ -154,14 +154,36 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                 className="cursor-default"
                 onUpdate={onScrollUpdate}
             >
-                <div className="w-full flex flex-col items-center mb-12 cursor-default">
-                    <div className="flex flex-row items-stretch w-full gap-4 md:gap-12">
+                <div className="w-full flex flex-col mb-10 cursor-default">
+                    <div
+                        className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
+                        style={{
+                            width: `calc(${
+                                lineProgress * (lineProgress * 0.06)
+                            }%)`,
+                            backgroundColor: baseColor,
+                            boxShadow: `0 0 4px 0 ${baseColor}`,
+                            color: baseColor,
+                            filter: `hue-rotate(${hueRotate}deg)`,
+                            willChange: "width, filter",
+                            transition: "width 0.08s linear",
+                        }}
+                    >
+                        <RocketIcon
+                            className="absolute right-[-22px] top-[-9px] w-5 h-5"
+                            style={{
+                                transform: "rotate(90deg)",
+                                willChange: "transform, filter",
+                            }}
+                        />
+                    </div>
+                    <div className="flex flex-row items-stretch w-full gap-4 mt-4 md:gap-12">
                         {/* Timeline */}
                         <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
                             <span className="font-bold text-sm leading-none">
                                 {dateString}
                             </span>
-                            <span className="text-gray-600 text-xs mb-2 mt-6">
+                            <span className="text-gray-600 text-xs mb-2 mt-3">
                                 {monthsCount}
                             </span>
                         </div>
@@ -175,26 +197,6 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                 >
                                     {getRevealedText(project.name)}
                                 </span>
-                            </div>
-                            <div
-                                className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
-                                style={{
-                                    left: "-120px",
-                                    width: `calc(120px + ${lineProgress}%)`,
-                                    backgroundColor: baseColor,
-                                    boxShadow: `0 0 4px 0 ${baseColor}`,
-                                    color: baseColor,
-                                    filter: `hue-rotate(${hueRotate}deg)`,
-                                    willChange: "width, filter",
-                                }}
-                            >
-                                <RocketIcon
-                                    className="absolute right-[-22px] top-[-9px] w-5 h-5"
-                                    style={{
-                                        transform: "rotate(90deg)",
-                                        willChange: "transform, filter",
-                                    }}
-                                />
                             </div>
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
                                 {sortedTechnologies.map((tech, i) => (
@@ -211,7 +213,7 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                             {tech.url ? (
                                                 <a
                                                     href={tech.url}
-                                                    className="text-inherit hover:outline outline-primary-200 rounded-sm px-1 -mx-1 hover:text-primary-600"
+                                                    className="text-inherit rounded-sm px-1 -mx-1 lg:hover:outline lg:outline-primary-200 lg:hover:text-primary-600"
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
