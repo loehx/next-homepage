@@ -160,7 +160,7 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                         style={{
                             width: lineProgress > 0 ? "125vw" : "0%",
                             transition:
-                                "width 1.5s cubic-bezier(0.26, 0.53, 0.65, 0.11)",
+                                "width 1.5s cubic-bezier(0.5, 0.18, 0.76, 0.17)",
                             backgroundColor: baseColor,
                             boxShadow: `0 0 4px 0 ${baseColor}`,
                             color: baseColor,
