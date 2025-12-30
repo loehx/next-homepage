@@ -181,9 +181,18 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                         {/* Timeline */}
                         <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
                             <span className="font-bold text-sm leading-none">
-                                {dateString}
+                                {getRevealedText(dateString)}
                             </span>
-                            <span className="text-gray-600 text-xs mb-2 mt-3">
+                            <span
+                                className="text-gray-600 text-xs mb-2 mt-3"
+                                style={{
+                                    transition: "all .2s ease",
+                                    opacity: lineProgress > 10 ? 1 : 0,
+                                    transform: `translateY(${
+                                        lineProgress > 10 ? 0 : -20
+                                    }px)`,
+                                }}
+                            >
                                 {monthsCount}
                             </span>
                         </div>
@@ -229,12 +238,13 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                     </span>
                                 ))}
                             </div>
-                            <div className="mb-1">
-                                <span className="mr-2">👉</span>
-                                {typeof window !== "undefined" &&
-                                window.innerWidth >= 1024
-                                    ? getRevealedText(project.description)
-                                    : project.description}
+                            <div className="mb-1 relative">
+                                <span className="absolute top-0 left-0 w-full h-full">
+                                    {getRevealedText(project.description)}
+                                </span>
+                                <span className="opacity-0">
+                                    {project.description}
+                                </span>
                             </div>
                             <div className="w-full max-w-xl">
                                 <div className="mb-1">
@@ -261,7 +271,7 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                         </a>
                                     </div>  )} */}
                                 <div className="mb-1">
-                                    <span className="mr-2">👾</span>
+                                    <span className="mr-2">🏢</span>
                                     {project.company.url ? (
                                         <a
                                             href={project.company.url}
