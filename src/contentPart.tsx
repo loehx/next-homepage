@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import dynamic from "next/dynamic";
 import LazyHydrate from "react-lazy-hydration";
 import { ConfigEntry, Entry } from "data/definitions";
-const Stage = dynamic(() => import("./contentParts/stage"));
+import Stage from "./contentParts/stage";
 const Text = dynamic(() => import("./contentParts/text"));
 const LinksModule = dynamic(() => import("./contentParts/linksModule"));
 const ImageText = dynamic(() => import("./contentParts/imageText"));

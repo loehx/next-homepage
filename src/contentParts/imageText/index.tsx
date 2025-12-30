@@ -31,6 +31,11 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                             asset={props.image}
                             alt={props.image.name}
                             fixedRatio
+                            sizes={
+                                imageStyle
+                                    ? `(max-width: 1000px) 100vw, ${props.imageWidth}vw`
+                                    : "(max-width: 1000px) 100vw, 40vw"
+                            }
                         />
                     </div>
                     <div className={styles.textWrapper}>

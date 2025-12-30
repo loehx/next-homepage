@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
@@ -27,20 +27,40 @@ export interface StageProps {
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
+    const [phoneFrameLoaded, setPhoneFrameLoaded] = useState(false);
+    const [phoneImageLoaded, setPhoneImageLoaded] = useState(false);
+    const [backgroundLoaded, setBackgroundLoaded] = useState(false);
     const [scrollY, setScrollY] = useState(0);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
-        setTimeout(
-            () => setLoading(false),
-            500 /* Entry animation: set this to 6000ms or so */,
-        );
+        const isBackgroundReady =
+            !props.backgroundImage?.url || backgroundLoaded;
+        const isPhoneReady =
+            !props.phoneImage?.url || (phoneFrameLoaded && phoneImageLoaded);
+
+        if (isBackgroundReady && isPhoneReady) {
+            setLoading(false);
+        }
+    }, [
+        phoneFrameLoaded,
+        phoneImageLoaded,
+        backgroundLoaded,
+        props.backgroundImage?.url,
+        props.phoneImage?.url,
+    ]);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setLoading(false);
+        }, 3000); // Safety timeout
 
         const onScroll = () => setScrollY(window.scrollY);
         window.addEventListener("scroll", onScroll);
 
         return () => {
             window.removeEventListener("scroll", onScroll);
+            clearTimeout(timeout);
         };
     }, []);
 
@@ -52,7 +72,8 @@ export const Stage: React.FC<StageProps> = (props) => {
                         asset={props.backgroundImage}
                         alt="Background Image"
                         sizes="(min-width: 700px) 100vw, 200vw"
-                        onLoadingComplete={() => setLoading(false)}
+                        priority
+                        onLoadingComplete={() => setBackgroundLoaded(true)}
                     />
                 )}
                 {!isMobile && props.backgroundVideo?.url && (
@@ -124,10 +145,21 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     <Image
                                         asset={props.phoneImage}
                                         width={300}
+                                        priority
+                                        onLoadingComplete={() =>
+                                            setPhoneImageLoaded(true)
+                                        }
                                     />
                                 </div>
                             </div>
-                            <Image src={phoneFrameSrc} alt={"iphone frame"} />
+                            <Image
+                                src={phoneFrameSrc}
+                                alt={"iphone frame"}
+                                priority
+                                onLoadingComplete={() =>
+                                    setPhoneFrameLoaded(true)
+                                }
+                            />
                         </div>
                         {props.availableFrom && (
                             <div className={styles.availability}>

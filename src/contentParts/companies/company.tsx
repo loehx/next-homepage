@@ -26,7 +26,11 @@ export const Company: React.FC<Props> = (props) => {
                 className="absolute inset-0 cursor-pointer"
                 onClick={onClick}
             >
-                <Image asset={props.logo} alt={`logo of ${props.fullName}`} />
+                <Image
+                    asset={props.logo}
+                    alt={`logo of ${props.fullName}`}
+                    sizes="(max-width: 768px) 100px, 120px"
+                />
             </a>
         </div>
     );

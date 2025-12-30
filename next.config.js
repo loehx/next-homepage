@@ -18,6 +18,6 @@ module.exports = withPlugins(
             disableStaticImages: true,
         },
         exportTrailingSlash: true,
-        compress: false,
+        compress: true,
     },
 );

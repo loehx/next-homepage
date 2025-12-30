@@ -13,6 +13,7 @@ export interface ImageProps {
     alt?: string;
     fill?: boolean;
     sizes?: string;
+    priority?: boolean;
     onLoadingComplete?: (result: {
         naturalWidth: number;
         naturalHeight: number;
@@ -55,6 +56,7 @@ export const Image: React.FC<ImageProps> = ({
             )}%`,
         };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fixedRatio, ...otherProps } = props;
 
     return (
@@ -63,7 +65,8 @@ export const Image: React.FC<ImageProps> = ({
                 layout={"fill"}
                 objectFit="cover"
                 loader={asset ? srcLoader : undefined}
-                loading="lazy"
+                loading={props.priority ? "eager" : "lazy"}
+                priority={props.priority}
                 height={height}
                 alt={asset?.description}
                 {...otherProps}
