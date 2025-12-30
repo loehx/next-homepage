@@ -146,6 +146,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         asset={props.phoneImage}
                                         width={300}
                                         priority
+                                        sizes="(min-width: 768px) 100px, 200px"
                                         onLoadingComplete={() =>
                                             setPhoneImageLoaded(true)
                                         }

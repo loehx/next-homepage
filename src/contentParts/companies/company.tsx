@@ -25,6 +25,7 @@ export const Company: React.FC<Props> = (props) => {
                 aria-label={`Jump to timeline entry`}
                 className="absolute inset-0 cursor-pointer"
                 onClick={onClick}
+                href={props.url}
             >
                 <Image
                     asset={props.logo}
