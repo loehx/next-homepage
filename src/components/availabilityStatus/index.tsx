@@ -39,12 +39,13 @@ export const AvailabilityStatus: React.FC<AvailabilityStatusProps> = (
             )}
         >
             {isAvailable && (
-                <div className={styles.availableText}>
-                    <span>Available</span>
+                <div className={cx(styles.inner, styles.available)}>
+                    <span>Available in</span>
+                    <span>NOW</span>
                 </div>
             )}
             {!isAvailable && (
-                <div className={styles.daysUntilAvailable}>
+                <div className={styles.inner}>
                     <span>Available in</span>
                     <span>{daysUntilAvailable}</span>
                     <span>days</span>
