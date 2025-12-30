@@ -48,9 +48,25 @@
 }
 
 .logo {
-    display: none;
+    display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+@media only screen and (min-width: 768px) {
+    .logo {
+        margin-bottom: 30px;
+    }
+    .logo img {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 @media only screen and (min-width: 800px) {
@@ -145,7 +161,7 @@
     flex-shrink: 0;
     position: relative;
     opacity: 1;
-    margin: 25vh 0 20px 0;
+    margin: 20vh 0 20px 0;
 }
 
 .initializing .phoneWrapper {

@@ -156,6 +156,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                             <Image
                                 src={phoneFrameSrc}
                                 alt={"iphone frame"}
+                                sizes="(min-width: 768px) 100px, 200px"
                                 priority
                                 onLoadingComplete={() =>
                                     setPhoneFrameLoaded(true)

@@ -193,6 +193,7 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                     transform: `translateY(${
                                         lineProgress > 10 ? 0 : -20
                                     }px)`,
+                                    willChange: "opacity, transform",
                                 }}
                             >
                                 {monthsCount}

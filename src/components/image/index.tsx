@@ -22,8 +22,13 @@ export interface ImageProps {
 }
 
 const srcLoader: ImageLoader = ({ src, width, quality = undefined }) => {
+    // Multiply width by device pixel ratio for retina displays (default to 2x)
+    const devicePixelRatio =
+        typeof window !== "undefined" ? window.devicePixelRatio || 2 : 2;
+    const adjustedWidth = width ? Math.round(width * devicePixelRatio) : width;
+
     const params = {
-        w: width,
+        w: adjustedWidth,
         q: quality,
         fm: !src.includes(".svg") ? "webp" : undefined,
     };
