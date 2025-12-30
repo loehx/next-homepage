@@ -168,7 +168,6 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                             color: baseColor,
                             filter: `hue-rotate(${hueRotate}deg)`,
                             willChange: "width, filter",
-                            transition: "width 0.1s ease-out",
                         }}
                     >
                         <RocketIcon
