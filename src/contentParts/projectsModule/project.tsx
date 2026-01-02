@@ -198,13 +198,18 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                         </div>
                         {/* Project Content */}
                         <div className="flex-1 text-sm">
-                            <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center">
+                            <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-start">
                                 <span className="text-sm">&gt;_&nbsp;</span>
                                 <span
                                     data-to={project.to}
-                                    className="ml-1 truncate max-w-[50vw] inline-block"
+                                    className="ml-1 max-w-[50vw] inline-block relative"
                                 >
-                                    {getRevealedText(project.name)}
+                                    <span className="absolute inset-0">
+                                        {getRevealedText(project.name)}
+                                    </span>
+                                    <span className="opacity-0">
+                                        {project.name}
+                                    </span>
                                 </span>
                             </div>
                             <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
