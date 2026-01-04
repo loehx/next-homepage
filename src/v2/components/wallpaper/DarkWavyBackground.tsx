@@ -448,7 +448,7 @@ export const DarkWavyBackground: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <canvas ref={canvasRef} className={styles.svg} />
+            <canvas ref={canvasRef} className={styles.canvas} />
         </div>
     );
 };
