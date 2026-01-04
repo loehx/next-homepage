@@ -32,7 +32,7 @@ vec3 getGradientColor(vec2 uv) {
     // Gradient from left-top grey to bottom-right black
     // v_uv (0,1) is top-left, (1,0) is bottom-right
     float t = clamp((1.0 - uv.x + uv.y) * 0.5, 0.0, 1.0);
-    return mix(vec3(0.005, 0.005, 0.01), vec3(0.18, 0.18, 0.21), t);
+    return mix(vec3(0.007, 0.007, 0.007), vec3(0.19, 0.19, 0.19), t);
 }
 
 void main() {
@@ -44,7 +44,7 @@ void main() {
     
     // Background radial gradient from top-left grey to bottom-right black - much darker
     float bgDist = length(uv - vec2(0.0, 1.0));
-    vec3 col = mix(vec3(0.08, 0.08, 0.1), vec3(0.005, 0.005, 0.01), clamp(bgDist * 1.2, 0.0, 1.0));
+    vec3 col = mix(vec3(0.09, 0.09, 0.09), vec3(0.007, 0.007, 0.007), clamp(bgDist * 1.2, 0.0, 1.0));
     float finalDepth = 0.0;
     
     // 6 overlapping waves with decreasing size
@@ -94,11 +94,11 @@ void main() {
         
         // 1. Bright drop-shadow ABOVE the top edge
         float brightShadow = smoothstep(0.0, -0.005, distTop) * smoothstep(-0.06, -0.005, distTop);
-        col = mix(col, vec3(0.3, 0.3, 0.35), brightShadow * 0.05);
+        col = mix(col, vec3(0.32, 0.32, 0.32), brightShadow * 0.05);
 
         // 2. Dark drop-shadow BELOW the bottom edge
         float darkShadow = smoothstep(thickness, thickness + 0.005, distBottom) * smoothstep(thickness + 0.08, thickness + 0.005, distBottom);
-        col = mix(col, vec3(0.0, 0.0, 0.02), darkShadow * 0.25);
+        col = mix(col, vec3(0.0, 0.0, 0.0), darkShadow * 0.25);
 
         // 3. The wave band itself
         float edgeSharpness = 2.0 / u_resolution.y;
@@ -195,7 +195,7 @@ void main() {
     color.rgb = depthOfField(uv, focusPoint, FOCUS_SCALE);
 
     // Tone mapping
-    color.rgb = vec3(1.7, 1.8, 1.6) * color.rgb / (1.0 + color.rgb);
+    color.rgb = vec3(1.7) * color.rgb / (1.0 + color.rgb);
     
     // Apply dithering before gamma correction
     float dither = (random(uv + fract(u_time)) - 0.5) / 255.0;
