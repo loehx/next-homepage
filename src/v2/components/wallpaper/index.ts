@@ -1,0 +1,1 @@
+export { DarkWavyBackground } from "./DarkWavyBackground";

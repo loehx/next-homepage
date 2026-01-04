@@ -1,0 +1,29 @@
+.stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+.title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #ff0080, #7928ca);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #888;
+}

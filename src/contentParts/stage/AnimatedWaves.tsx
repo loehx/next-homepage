@@ -47,12 +47,15 @@ export const AnimatedWaves: React.FC = () => {
         canvas.height = height;
 
         const handleResize = () => {
+            const dpr = window.devicePixelRatio || 1;
             width = canvas.parentElement
                 ? canvas.parentElement.offsetWidth
                 : 1440;
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
         };
+        handleResize();
         window.addEventListener("resize", handleResize);
 
         const start = performance.now();

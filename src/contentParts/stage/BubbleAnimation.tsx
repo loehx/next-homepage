@@ -46,16 +46,23 @@ export const BubblesAnimation: React.FC = () => {
         const frameInterval = 1000 / targetFPS;
 
         function resizeCanvas() {
-            canvas.width = container.offsetWidth;
-            canvas.height = container.offsetHeight;
-            backgroundCanvas.width = container.offsetWidth;
-            backgroundCanvas.height = container.offsetHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = container.offsetWidth * dpr;
+            canvas.height = container.offsetHeight * dpr;
+            backgroundCanvas.width = container.offsetWidth * dpr;
+            backgroundCanvas.height = container.offsetHeight * dpr;
+            canvas.style.width = `${container.offsetWidth}px`;
+            canvas.style.height = `${container.offsetHeight}px`;
+            backgroundCanvas.style.width = `${container.offsetWidth}px`;
+            backgroundCanvas.style.height = `${container.offsetHeight}px`;
+            ctx.scale(dpr, dpr);
+            bgCtx.scale(dpr, dpr);
         }
 
         function createBubble() {
             const r = Math.random();
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
+            const x = Math.random() * container.offsetWidth;
+            const y = Math.random() * container.offsetHeight;
             const radius = r * 1 + 0.5;
             const speed = r * 2 + 0.4;
             const angle = Math.random() * Math.PI * 2;
@@ -75,6 +82,8 @@ export const BubblesAnimation: React.FC = () => {
         }
 
         function updateBubbles() {
+            const logicalWidth = container.offsetWidth;
+            const logicalHeight = container.offsetHeight;
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
 
@@ -83,17 +92,19 @@ export const BubblesAnimation: React.FC = () => {
                 bubble.x += Math.sin(bubble.wobble) * bubble.amplitude * 0.1;
 
                 if (bubble.y < -10) {
-                    bubble.y = canvas.height + 10;
-                    bubble.x = Math.random() * canvas.width;
+                    bubble.y = logicalHeight + 10;
+                    bubble.x = Math.random() * logicalWidth;
                 }
 
-                if (bubble.x < 0) bubble.x = canvas.width;
-                if (bubble.x > canvas.width) bubble.x = 0;
+                if (bubble.x < 0) bubble.x = logicalWidth;
+                if (bubble.x > logicalWidth) bubble.x = 0;
             }
         }
 
         function drawBubbles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const logicalWidth = container.offsetWidth;
+            const logicalHeight = container.offsetHeight;
+            ctx.clearRect(0, 0, logicalWidth, logicalHeight);
 
             for (let i = 0; i < bubbles.length; i++) {
                 const bubble = bubbles[i];
@@ -105,6 +116,8 @@ export const BubblesAnimation: React.FC = () => {
         }
 
         function initBackgroundCircles() {
+            const logicalWidth = container.offsetWidth;
+            const logicalHeight = container.offsetHeight;
             const colors = [
                 "rgba(255, 0, 0, 0.15)",
                 "rgba(0, 0, 255, 0.15)",
@@ -115,8 +128,8 @@ export const BubblesAnimation: React.FC = () => {
 
             for (let i = 0; i < 10; i++) {
                 backgroundCircles.current.push({
-                    x: Math.random() * backgroundCanvas.width,
-                    y: Math.random() * backgroundCanvas.height,
+                    x: Math.random() * logicalWidth,
+                    y: Math.random() * logicalHeight,
                     radius: Math.random() * 300 + 200,
                     color: colors[Math.floor(Math.random() * colors.length)],
                     speed: 0,
@@ -126,6 +139,8 @@ export const BubblesAnimation: React.FC = () => {
         }
 
         function updateBackgroundCircles() {
+            const logicalWidth = container.offsetWidth;
+            const logicalHeight = container.offsetHeight;
             backgroundCircles.current.forEach((circle) => {
                 circle.angle += circle.speed * 0.01;
                 circle.x += Math.cos(circle.angle) * circle.speed;
@@ -133,23 +148,20 @@ export const BubblesAnimation: React.FC = () => {
 
                 // Wrap around the canvas
                 if (circle.x < -circle.radius)
-                    circle.x = backgroundCanvas.width + circle.radius;
-                if (circle.x > backgroundCanvas.width + circle.radius)
+                    circle.x = logicalWidth + circle.radius;
+                if (circle.x > logicalWidth + circle.radius)
                     circle.x = -circle.radius;
                 if (circle.y < -circle.radius)
-                    circle.y = backgroundCanvas.height + circle.radius;
-                if (circle.y > backgroundCanvas.height + circle.radius)
+                    circle.y = logicalHeight + circle.radius;
+                if (circle.y > logicalHeight + circle.radius)
                     circle.y = -circle.radius;
             });
         }
 
         function drawBackgroundCircles() {
-            bgCtx.clearRect(
-                0,
-                0,
-                backgroundCanvas.width,
-                backgroundCanvas.height,
-            );
+            const logicalWidth = container.offsetWidth;
+            const logicalHeight = container.offsetHeight;
+            bgCtx.clearRect(0, 0, logicalWidth, logicalHeight);
 
             backgroundCircles.current.forEach((circle) => {
                 bgCtx.beginPath();
