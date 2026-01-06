@@ -4,6 +4,7 @@ import { useScroll, ScrollData } from "../scrollHandler";
 type AreaProps = {
     appear: number;
     disappear: number;
+    appearDistance?: number;
     parallax?: number;
     text?: string;
     className?: string;
@@ -23,6 +24,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ text, className }) => {
 export const Area: React.FC<AreaProps> = ({
     appear,
     disappear,
+    appearDistance = 20, // 20vh
     parallax = 1,
     className,
     wrapperClassName,
@@ -39,12 +41,42 @@ export const Area: React.FC<AreaProps> = ({
         ({ y, vh }: ScrollData) => {
             if (!ref.current) return;
             const rect = ref.current.getBoundingClientRect();
-            const appearPx = (appear / 100) * vh;
-            const disappearPx = (disappear / 100) * vh;
+            const appearStartPx = (appear / 100) * vh;
+            const appearEndPx = appearStartPx + (appearDistance / 100) * vh;
+            const disappearStartPx = (disappear / 100) * vh;
+            const disappearEndPx =
+                disappearStartPx + (appearDistance / 100) * vh;
 
-            const withinAppearWindow = rect.top <= vh + appearPx;
-            const aboveDisappearWindow = rect.bottom >= -disappearPx;
-            const opacity = withinAppearWindow && aboveDisappearWindow ? 1 : 0;
+            // Calculate opacity based on scroll position
+            let opacity = 0;
+
+            // Fade in: element enters from bottom
+            // Start appearing when rect.top reaches vh - appearStartPx
+            // Fully visible when rect.top reaches vh - appearEndPx
+            if (
+                rect.top <= vh - appearStartPx &&
+                rect.top >= vh - appearEndPx
+            ) {
+                const fadeRange = appearEndPx - appearStartPx;
+                opacity = 1 - (rect.top - (vh - appearEndPx)) / fadeRange;
+            }
+            // Fully visible
+            else if (
+                rect.top < vh - appearEndPx &&
+                rect.bottom > disappearEndPx
+            ) {
+                opacity = 1;
+            }
+            // Fade out: element exits from top
+            // Start disappearing when rect.bottom reaches disappearEndPx
+            // Fully hidden when rect.bottom reaches disappearStartPx
+            else if (
+                rect.bottom <= disappearEndPx &&
+                rect.bottom >= disappearStartPx
+            ) {
+                const fadeRange = disappearEndPx - disappearStartPx;
+                opacity = (rect.bottom - disappearStartPx) / fadeRange;
+            }
 
             const offset = (1 - parallax) * y;
 
@@ -57,12 +89,10 @@ export const Area: React.FC<AreaProps> = ({
                     opacity,
                     transform,
                     willChange: "transform, opacity",
-                    transition:
-                        "opacity 0.2s ease-out, transform 0.2s ease-out",
                 };
             });
         },
-        [appear, disappear, parallax],
+        [appear, disappear, appearDistance, parallax],
     );
 
     useScroll(update);
@@ -91,4 +121,3 @@ export const Area: React.FC<AreaProps> = ({
         </div>
     );
 };
-
