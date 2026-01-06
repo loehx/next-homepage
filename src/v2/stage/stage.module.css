@@ -8,6 +8,13 @@
     color: #fff;
     text-align: center;
     padding: 2rem 2rem calc(20vh + 2rem) 2rem;
+    overflow: hidden;
+}
+
+/* Target the wallpaper background */
+.stage > div:first-child {
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.5));
+    will-change: transform;
 }
 
 .container {
@@ -15,6 +22,8 @@
     z-index: 1;
     max-width: 800px;
     max-height: 100vh;
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.25));
+    will-change: transform;
 }
 
 .title {
@@ -23,11 +32,25 @@
     background: linear-gradient(90deg, #ff0080, #7928ca);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.02));
+    display: block;
+    opacity: clamp(
+        0,
+        calc(1 - var(--scroll-y, 0px) / (var(--vh, 1000px) / 1.2)),
+        1
+    );
 }
 
 .subtitle {
     font-size: 1.5rem;
     color: #888;
+    transform: translateY(calc(var(--scroll-y, 0px) * 0));
+    display: block;
+    opacity: clamp(
+        0,
+        calc(1 - var(--scroll-y, 0px) / (var(--vh, 1000px) / 1.5)),
+        1
+    );
 }
 
 .waves {

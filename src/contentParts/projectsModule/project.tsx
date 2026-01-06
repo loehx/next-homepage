@@ -6,6 +6,7 @@ import {
     ParallaxCallbackProps,
 } from "@components/customParallax";
 import { RocketIcon } from "@components/rocketIcon";
+import { useScroll } from "@v2/components/scrollHandler";
 import styles from "./project.module.css";
 
 interface Props {
@@ -24,10 +25,15 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
     const [windowWidth, setWindowWidth] = useState<number>(0);
     const [scrollY, setScrollY] = useState<number>(0);
 
+    useScroll(
+        useCallback((data) => {
+            setScrollY(data.y);
+        }, []),
+    );
+
     useEffect(() => {
         // Set initial width
         setWindowWidth(window.innerWidth);
-        setScrollY(window.scrollY);
 
         // Add resize listener with throttling
         let rafId: number | null = null;
@@ -39,23 +45,10 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
             });
         };
 
-        // Add scroll listener for hue rotation
-        let scrollRafId: number | null = null;
-        const handleScroll = () => {
-            if (scrollRafId !== null) return;
-            scrollRafId = requestAnimationFrame(() => {
-                setScrollY(window.scrollY);
-                scrollRafId = null;
-            });
-        };
-
         window.addEventListener("resize", handleResize, { passive: true });
-        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => {
             window.removeEventListener("resize", handleResize);
-            window.removeEventListener("scroll", handleScroll);
             if (rafId !== null) cancelAnimationFrame(rafId);
-            if (scrollRafId !== null) cancelAnimationFrame(scrollRafId);
         };
     }, []);
 

@@ -1,19 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-
-let fadeInRafId: number | null = null;
-const fadeInScrollCallbacks = new Set<() => void>();
-
-const handleFadeInScroll = () => {
-    if (fadeInRafId !== null) return;
-    fadeInRafId = requestAnimationFrame(() => {
-        fadeInScrollCallbacks.forEach((callback) => callback());
-        fadeInRafId = null;
-    });
-};
-
-if (typeof window !== "undefined") {
-    window.addEventListener("scroll", handleFadeInScroll, { passive: true });
-}
+import { useScroll } from "@v2/components/scrollHandler";
 
 export const FadeIn: React.FC<any> = ({
     children,
@@ -46,6 +32,8 @@ export const FadeIn: React.FC<any> = ({
         }
     }, [appearRatio, visibleRatio]);
 
+    useScroll(onScroll);
+
     useEffect(() => {
         if (!element.current) return;
 
@@ -55,9 +43,6 @@ export const FadeIn: React.FC<any> = ({
                     isIntersecting.current = entry.isIntersecting;
                     if (entry.isIntersecting) {
                         onScroll();
-                        fadeInScrollCallbacks.add(onScroll);
-                    } else {
-                        fadeInScrollCallbacks.delete(onScroll);
                     }
                 });
             },
@@ -73,7 +58,6 @@ export const FadeIn: React.FC<any> = ({
             if (intersectionObserver.current) {
                 intersectionObserver.current.disconnect();
             }
-            fadeInScrollCallbacks.delete(onScroll);
         };
     }, [onScroll]);
 

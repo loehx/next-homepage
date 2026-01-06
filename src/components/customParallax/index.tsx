@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useScroll } from "@v2/components/scrollHandler";
 
 export interface ParallaxCallbackProps {
     screenHeight: number;
@@ -12,21 +13,6 @@ export interface ParallaxCallbackProps {
 export interface CustomParallaxProps {
     styleGetter?: (props: ParallaxCallbackProps) => React.CSSProperties;
     onUpdate?: (props: ParallaxCallbackProps) => void;
-}
-
-let rafId: number | null = null;
-const scrollCallbacks = new Set<() => void>();
-
-const handleScroll = () => {
-    if (rafId !== null) return;
-    rafId = requestAnimationFrame(() => {
-        scrollCallbacks.forEach((callback) => callback());
-        rafId = null;
-    });
-};
-
-if (typeof window !== "undefined") {
-    window.addEventListener("scroll", handleScroll, { passive: true });
 }
 
 export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
@@ -83,6 +69,9 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
         }
     }, [onUpdate, styleGetter]);
 
+    // Use the global scroll handler
+    useScroll(updateScroll);
+
     useEffect(() => {
         if (!element.current) return;
 
@@ -93,9 +82,6 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
                     isIntersecting.current = entry.isIntersecting;
                     if (entry.isIntersecting) {
                         updateScroll();
-                        scrollCallbacks.add(updateScroll);
-                    } else {
-                        scrollCallbacks.delete(updateScroll);
                     }
                 });
             },
@@ -111,7 +97,6 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
             if (intersectionObserver.current) {
                 intersectionObserver.current.disconnect();
             }
-            scrollCallbacks.delete(updateScroll);
         };
     }, [updateScroll]);
 
