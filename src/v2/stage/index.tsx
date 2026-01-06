@@ -1,22 +1,26 @@
 import React from "react";
 import styles from "./stage.module.css";
 import { DarkWavyBackground } from "../components/wallpaper";
-import { AnimatedWaves } from "../../contentParts/stage/AnimatedWaves";
+import { Area } from "../components/Area";
+import { Stats } from "./Stats";
 
 export const Stage: React.FC = () => {
     return (
         <section className={styles.stage}>
             <DarkWavyBackground />
             <div className={styles.container}>
-                <h1 className={styles.title}>Welcome to Version 2</h1>
-                <p className={styles.subtitle}>This is the beginning of the new website.</p>
+                <h1 className={styles.title}>Wanna get shit done?</h1>
+                <Area
+                    appear={10}
+                    disappear={10}
+                    parallax={0.9}
+                    text="Hire a professional"
+                    className={styles.subtitle}
+                />
             </div>
-            <div className={styles.waves}>
-                <AnimatedWaves />
+            <div className={styles.container}>
+                <Stats />
             </div>
         </section>
     );
 };
-
-export default Stage;
-
