@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useScroll, ScrollData } from "../scrollHandler";
-import styles from "./Area.module.css";
+import { BlurryText } from "./BlurryText";
+import { useParallax } from "./useParallax";
 
 type AreaProps = {
     appear: number;
@@ -46,11 +47,14 @@ export const Area: React.FC<AreaProps> = ({
         transform: "translateY(0px)",
     });
     const [letterProgress, setLetterProgress] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
     const initialAnimFrameRef = useRef<number>();
     const [initialAnimComplete, setInitialAnimComplete] = useState(false);
     const initialAnimStartTime = useRef<number>(0);
     const [isAppearing, setIsAppearing] = useState(true);
     const previousOpacityRef = useRef<number>(0);
+
+    const parallaxTransform = useParallax({ parallax, scrollY });
 
     const update = useCallback(
         ({ y, vh }: ScrollData) => {
@@ -97,12 +101,13 @@ export const Area: React.FC<AreaProps> = ({
                 opacity = (rect.bottom - disappearStartPx) / fadeRange;
             }
 
-            const offset = (1 - parallax) * y;
+            // Update scroll position for parallax
+            setScrollY(y);
 
             // Update opacity and transform immediately
             setStyle({
                 opacity,
-                transform: `translateY(${offset}px)`,
+                transform: parallaxTransform,
             });
             setLetterProgress(opacity);
 
@@ -114,7 +119,13 @@ export const Area: React.FC<AreaProps> = ({
             }
             previousOpacityRef.current = opacity;
         },
-        [appear, disappear, appearDistance, parallax, initialAnimComplete],
+        [
+            appear,
+            disappear,
+            appearDistance,
+            parallaxTransform,
+            initialAnimComplete,
+        ],
     );
 
     // Initial appear animation
@@ -177,37 +188,14 @@ export const Area: React.FC<AreaProps> = ({
     const renderContent = () => {
         if (text !== undefined) {
             if (blurryAppear) {
-                const letters = text.split("");
                 return (
-                    <span className={className}>
-                        {letters.map((letter, index) => {
-                            const letterDelay = index / letters.length;
-                            const letterOpacity = Math.max(
-                                0,
-                                Math.min(
-                                    1,
-                                    (letterProgress - letterDelay) *
-                                        letters.length,
-                                ),
-                            );
-                            const blur = blurryAppear * (1 - letterOpacity);
-
-                            return (
-                                <span
-                                    key={index}
-                                    className={
-                                        isAppearing ? styles.blurryLetter : ""
-                                    }
-                                    style={{
-                                        filter: `blur(${blur || 0}px)`,
-                                        display: "inline-block",
-                                    }}
-                                >
-                                    {letter === " " ? "\u00A0" : letter}
-                                </span>
-                            );
-                        })}
-                    </span>
+                    <BlurryText
+                        text={text}
+                        progress={letterProgress}
+                        blurAmount={blurryAppear}
+                        isAppearing={isAppearing}
+                        className={className}
+                    />
                 );
             }
             return <span className={className}>{text}</span>;
