@@ -33,16 +33,8 @@
 .title {
     font-size: 4rem;
     margin-bottom: 1rem;
-    background: linear-gradient(90deg, #ff0080, #7928ca);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transform: translateY(calc(var(--scroll-y, 0px) * 0.02));
     display: block;
-    opacity: clamp(
-        0,
-        calc(1 - var(--scroll-y, 0px) / (var(--vh, 1000px) / 1.2)),
-        1
-    );
+    opacity: 1;
 }
 
 .subtitle {

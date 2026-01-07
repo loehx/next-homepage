@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useScroll, ScrollData } from "../scrollHandler";
+import styles from "./Area.module.css";
 
 type AreaProps = {
     appear: number;
+    blurryAppear?: number; // pixels
     disappear: number;
     appearDistance?: number;
     parallax?: number;
@@ -24,6 +26,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ text, className }) => {
 
 export const Area: React.FC<AreaProps> = ({
     appear,
+    blurryAppear,
     disappear,
     appearDistance = 20, // 20vh
     parallax = 1,
@@ -38,6 +41,11 @@ export const Area: React.FC<AreaProps> = ({
         opacity: 0,
         transform: "translateY(0px)",
     });
+    const [letterProgress, setLetterProgress] = useState(0);
+    const [targetOpacity, setTargetOpacity] = useState(0);
+    const [transform, setTransform] = useState("translateY(0px)");
+    const animationFrameRef = useRef<number>();
+    const lastFrameTimeRef = useRef<number>(0);
 
     const update = useCallback(
         ({ y, vh }: ScrollData) => {
@@ -82,20 +90,64 @@ export const Area: React.FC<AreaProps> = ({
 
             const offset = (1 - parallax) * y;
 
+            // Update target opacity and transform
+            setTargetOpacity(opacity);
+            setTransform(`translateY(${offset}px)`);
+        },
+        [appear, disappear, appearDistance, parallax],
+    );
+
+    // Linear animation loop at 60fps
+    useEffect(() => {
+        const animate = (currentTime: number) => {
+            if (lastFrameTimeRef.current === 0) {
+                lastFrameTimeRef.current = currentTime;
+            }
+
+            const deltaTime = currentTime - lastFrameTimeRef.current;
+            lastFrameTimeRef.current = currentTime;
+
             setStyle((prev) => {
-                const transform = `translateY(${offset}px)`;
-                if (prev.opacity === opacity && prev.transform === transform) {
-                    return prev;
+                const currentOpacity = prev.opacity as number;
+                const diff = targetOpacity - currentOpacity;
+
+                if (Math.abs(diff) < 0.001) {
+                    setLetterProgress(targetOpacity);
+                    return {
+                        opacity: targetOpacity,
+                        transform,
+                    };
                 }
+
+                // Linear increment: 0.6 per second = 0.01 per frame at 60fps
+                const increment = (0.6 / 1000) * deltaTime;
+                const step =
+                    diff > 0
+                        ? Math.min(increment, diff)
+                        : Math.max(-increment, diff);
+                const newOpacity = currentOpacity + step;
+                setLetterProgress(newOpacity);
+
+                animationFrameRef.current = requestAnimationFrame(animate);
+
                 return {
-                    opacity,
+                    opacity: newOpacity,
                     transform,
                     willChange: "transform, opacity",
                 };
             });
-        },
-        [appear, disappear, appearDistance, parallax],
-    );
+        };
+
+        lastFrameTimeRef.current = 0;
+        animationFrameRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+            lastFrameTimeRef.current = 0;
+        };
+    }, [targetOpacity, transform]);
 
     useScroll(update);
 
@@ -110,18 +162,49 @@ export const Area: React.FC<AreaProps> = ({
         });
     }, [update]);
 
-    const content =
-        text !== undefined ? (
-            <span className={className}>{text}</span>
-        ) : (
-            children
-        );
+    const renderContent = () => {
+        if (text !== undefined) {
+            if (blurryAppear) {
+                const letters = text.split("");
+                return (
+                    <span className={className}>
+                        {letters.map((letter, index) => {
+                            const letterDelay = index / letters.length;
+                            const letterOpacity = Math.max(
+                                0,
+                                Math.min(
+                                    1,
+                                    (letterProgress - letterDelay) *
+                                        letters.length,
+                                ),
+                            );
+                            const blur = blurryAppear * (1 - letterOpacity);
+
+                            return (
+                                <span
+                                    key={index}
+                                    className={styles.blurryLetter}
+                                    style={{
+                                        filter: `blur(${blur || 0}px)`,
+                                    }}
+                                >
+                                    {letter === " " ? "\u00A0" : letter}
+                                </span>
+                            );
+                        })}
+                    </span>
+                );
+            }
+            return <span className={className}>{text}</span>;
+        }
+        return children;
+    };
 
     const Tag = tag as any;
 
     return (
         <Tag ref={ref} className={wrapperClassName} style={style}>
-            {content}
+            {renderContent()}
         </Tag>
     );
 };
