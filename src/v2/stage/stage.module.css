@@ -31,22 +31,20 @@
 }
 
 .title {
+    font-family: "Gloock";
     font-size: 4rem;
     margin-bottom: 1rem;
     display: block;
     opacity: 1;
+    background: linear-gradient(90deg, #ff0080, #7928ca);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
     font-size: 1.5rem;
     color: #888;
-    transform: translateY(calc(var(--scroll-y, 0px) * 0));
     display: block;
-    opacity: clamp(
-        0,
-        calc(1 - var(--scroll-y, 0px) / (var(--vh, 1000px) / 1.5)),
-        1
-    );
 }
 
 .waves {

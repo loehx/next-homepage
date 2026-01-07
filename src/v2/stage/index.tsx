@@ -13,13 +13,13 @@ export const Stage: React.FC = () => {
                     tag="h1"
                     appear={10}
                     disappear={10}
-                    blurryAppear={100}
                     text="If you want to get your project done..."
                     className={styles.title}
                 />
                 <Area
                     appear={10}
                     disappear={10}
+                    initialAppearDelay={5000}
                     parallax={0.9}
                     blurryAppear={30}
                     text="Hire a professional"

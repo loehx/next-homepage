@@ -4,6 +4,8 @@ import styles from "./Area.module.css";
 
 type AreaProps = {
     appear: number;
+    initialAppearDelay?: number;
+    initialAppearDuration?: number;
     blurryAppear?: number; // pixels
     disappear: number;
     appearDistance?: number;
@@ -26,6 +28,8 @@ export const TextArea: React.FC<TextAreaProps> = ({ text, className }) => {
 
 export const Area: React.FC<AreaProps> = ({
     appear,
+    initialAppearDelay,
+    initialAppearDuration,
     blurryAppear,
     disappear,
     appearDistance = 20, // 20vh
@@ -44,12 +48,19 @@ export const Area: React.FC<AreaProps> = ({
     const [letterProgress, setLetterProgress] = useState(0);
     const [targetOpacity, setTargetOpacity] = useState(0);
     const [transform, setTransform] = useState("translateY(0px)");
-    const animationFrameRef = useRef<number>();
+    const scrollAnimFrameRef = useRef<number>();
+    const initialAnimFrameRef = useRef<number>();
     const lastFrameTimeRef = useRef<number>(0);
+    const [initialAnimComplete, setInitialAnimComplete] = useState(false);
+    const initialAnimStartTime = useRef<number>(0);
 
     const update = useCallback(
         ({ y, vh }: ScrollData) => {
             if (!ref.current) return;
+
+            // Skip scroll-based updates during initial animation
+            if (!initialAnimComplete) return;
+
             const rect = ref.current.getBoundingClientRect();
             const appearStartPx = (appear / 100) * vh;
             const appearEndPx = appearStartPx + (appearDistance / 100) * vh;
@@ -94,11 +105,57 @@ export const Area: React.FC<AreaProps> = ({
             setTargetOpacity(opacity);
             setTransform(`translateY(${offset}px)`);
         },
-        [appear, disappear, appearDistance, parallax],
+        [appear, disappear, appearDistance, parallax, initialAnimComplete],
     );
 
-    // Linear animation loop at 60fps
+    // Initial appear animation
     useEffect(() => {
+        if (initialAppearDelay === undefined) {
+            setInitialAnimComplete(true);
+            return;
+        }
+
+        const duration = initialAppearDuration ?? 1000; // Default 1000ms
+        let delayTimeout: NodeJS.Timeout;
+
+        delayTimeout = setTimeout(() => {
+            initialAnimStartTime.current = performance.now();
+
+            const animate = () => {
+                const elapsed =
+                    performance.now() - initialAnimStartTime.current;
+                const progress = Math.min(elapsed / duration, 1);
+
+                setStyle({
+                    opacity: progress,
+                    transform: "translateY(0px)",
+                });
+                setLetterProgress(progress);
+                setTargetOpacity(progress);
+
+                if (progress < 1) {
+                    initialAnimFrameRef.current =
+                        requestAnimationFrame(animate);
+                } else {
+                    setInitialAnimComplete(true);
+                }
+            };
+
+            initialAnimFrameRef.current = requestAnimationFrame(animate);
+        }, initialAppearDelay);
+
+        return () => {
+            clearTimeout(delayTimeout);
+            if (initialAnimFrameRef.current !== undefined) {
+                cancelAnimationFrame(initialAnimFrameRef.current);
+            }
+        };
+    }, [initialAppearDelay, initialAppearDuration]);
+
+    // Linear animation loop at 60fps (for scroll-based animations)
+    useEffect(() => {
+        if (!initialAnimComplete) return;
+
         const animate = (currentTime: number) => {
             if (lastFrameTimeRef.current === 0) {
                 lastFrameTimeRef.current = currentTime;
@@ -128,7 +185,7 @@ export const Area: React.FC<AreaProps> = ({
                 const newOpacity = currentOpacity + step;
                 setLetterProgress(newOpacity);
 
-                animationFrameRef.current = requestAnimationFrame(animate);
+                scrollAnimFrameRef.current = requestAnimationFrame(animate);
 
                 return {
                     opacity: newOpacity,
@@ -139,15 +196,15 @@ export const Area: React.FC<AreaProps> = ({
         };
 
         lastFrameTimeRef.current = 0;
-        animationFrameRef.current = requestAnimationFrame(animate);
+        scrollAnimFrameRef.current = requestAnimationFrame(animate);
 
         return () => {
-            if (animationFrameRef.current) {
-                cancelAnimationFrame(animationFrameRef.current);
+            if (scrollAnimFrameRef.current !== undefined) {
+                cancelAnimationFrame(scrollAnimFrameRef.current);
             }
             lastFrameTimeRef.current = 0;
         };
-    }, [targetOpacity, transform]);
+    }, [targetOpacity, transform, initialAnimComplete]);
 
     useScroll(update);
 
