@@ -1,5 +1,100 @@
 .stats {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    will-change: transform, opacity;
+}
+
+.stat:nth-child(1) {
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.15));
+    opacity: clamp(
+        0,
+        calc(
+            (var(--scroll-y, 0px) - var(--vh, 1000px) * 0.5) /
+                (var(--vh, 1000px) * 0.3)
+        ),
+        1
+    );
+}
+
+.stat:nth-child(2) {
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.12));
+    opacity: clamp(
+        0,
+        calc(
+            (var(--scroll-y, 0px) - var(--vh, 1000px) * 0.5) /
+                (var(--vh, 1000px) * 0.3)
+        ),
+        1
+    );
+}
+
+.stat:nth-child(3) {
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.09));
+    opacity: clamp(
+        0,
+        calc(
+            (var(--scroll-y, 0px) - var(--vh, 1000px) * 0.5) /
+                (var(--vh, 1000px) * 0.3)
+        ),
+        1
+    );
+}
+
+.number {
+    font-size: 6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.label {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+.quote {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 50rem;
+    color: #ddd;
+    font-style: italic;
+    will-change: transform, opacity;
+    transform: translateY(calc(var(--scroll-y, 0px) * 0.06));
+    opacity: clamp(
+        0,
+        calc(
+            (var(--scroll-y, 0px) - var(--vh, 1000px) * 0.5) /
+                (var(--vh, 1000px) * 0.3)
+        ),
+        1
+    );
+}
+
+.emphasis {
+    font-weight: 700;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }

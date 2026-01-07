@@ -9,6 +9,7 @@ type AreaProps = {
     text?: string;
     className?: string;
     wrapperClassName?: string;
+    tag?: keyof JSX.IntrinsicElements;
     children?: React.ReactNode;
 };
 
@@ -28,6 +29,7 @@ export const Area: React.FC<AreaProps> = ({
     parallax = 1,
     className,
     wrapperClassName,
+    tag = "div",
     text,
     children,
 }) => {
@@ -115,9 +117,11 @@ export const Area: React.FC<AreaProps> = ({
             children
         );
 
+    const Tag = tag as any;
+
     return (
-        <div ref={ref} className={wrapperClassName} style={style}>
+        <Tag ref={ref} className={wrapperClassName} style={style}>
             {content}
-        </div>
+        </Tag>
     );
 };

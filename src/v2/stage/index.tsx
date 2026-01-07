@@ -9,7 +9,13 @@ export const Stage: React.FC = () => {
         <section className={styles.stage}>
             <DarkWavyBackground />
             <div className={styles.container}>
-                <h1 className={styles.title}>Wanna get shit done?</h1>
+                <Area
+                    tag="h1"
+                    appear={10}
+                    disappear={10}
+                    text="If you want to get your project done..."
+                    className={styles.title}
+                />
                 <Area
                     appear={10}
                     disappear={10}
