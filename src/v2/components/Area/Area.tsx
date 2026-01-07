@@ -46,13 +46,11 @@ export const Area: React.FC<AreaProps> = ({
         transform: "translateY(0px)",
     });
     const [letterProgress, setLetterProgress] = useState(0);
-    const [targetOpacity, setTargetOpacity] = useState(0);
-    const [transform, setTransform] = useState("translateY(0px)");
-    const scrollAnimFrameRef = useRef<number>();
     const initialAnimFrameRef = useRef<number>();
-    const lastFrameTimeRef = useRef<number>(0);
     const [initialAnimComplete, setInitialAnimComplete] = useState(false);
     const initialAnimStartTime = useRef<number>(0);
+    const [isAppearing, setIsAppearing] = useState(true);
+    const previousOpacityRef = useRef<number>(0);
 
     const update = useCallback(
         ({ y, vh }: ScrollData) => {
@@ -101,9 +99,20 @@ export const Area: React.FC<AreaProps> = ({
 
             const offset = (1 - parallax) * y;
 
-            // Update target opacity and transform
-            setTargetOpacity(opacity);
-            setTransform(`translateY(${offset}px)`);
+            // Update opacity and transform immediately
+            setStyle({
+                opacity,
+                transform: `translateY(${offset}px)`,
+            });
+            setLetterProgress(opacity);
+
+            // Track if we're appearing or disappearing
+            if (opacity > previousOpacityRef.current) {
+                setIsAppearing(true);
+            } else if (opacity < previousOpacityRef.current) {
+                setIsAppearing(false);
+            }
+            previousOpacityRef.current = opacity;
         },
         [appear, disappear, appearDistance, parallax, initialAnimComplete],
     );
@@ -131,7 +140,6 @@ export const Area: React.FC<AreaProps> = ({
                     transform: "translateY(0px)",
                 });
                 setLetterProgress(progress);
-                setTargetOpacity(progress);
 
                 if (progress < 1) {
                     initialAnimFrameRef.current =
@@ -152,64 +160,11 @@ export const Area: React.FC<AreaProps> = ({
         };
     }, [initialAppearDelay, initialAppearDuration]);
 
-    // Linear animation loop at 60fps (for scroll-based animations)
-    useEffect(() => {
-        if (!initialAnimComplete) return;
-
-        const animate = (currentTime: number) => {
-            if (lastFrameTimeRef.current === 0) {
-                lastFrameTimeRef.current = currentTime;
-            }
-
-            const deltaTime = currentTime - lastFrameTimeRef.current;
-            lastFrameTimeRef.current = currentTime;
-
-            setStyle((prev) => {
-                const currentOpacity = prev.opacity as number;
-                const diff = targetOpacity - currentOpacity;
-
-                if (Math.abs(diff) < 0.001) {
-                    setLetterProgress(targetOpacity);
-                    return {
-                        opacity: targetOpacity,
-                        transform,
-                    };
-                }
-
-                // Linear increment: 0.6 per second = 0.01 per frame at 60fps
-                const increment = (0.6 / 1000) * deltaTime;
-                const step =
-                    diff > 0
-                        ? Math.min(increment, diff)
-                        : Math.max(-increment, diff);
-                const newOpacity = currentOpacity + step;
-                setLetterProgress(newOpacity);
-
-                scrollAnimFrameRef.current = requestAnimationFrame(animate);
-
-                return {
-                    opacity: newOpacity,
-                    transform,
-                    willChange: "transform, opacity",
-                };
-            });
-        };
-
-        lastFrameTimeRef.current = 0;
-        scrollAnimFrameRef.current = requestAnimationFrame(animate);
-
-        return () => {
-            if (scrollAnimFrameRef.current !== undefined) {
-                cancelAnimationFrame(scrollAnimFrameRef.current);
-            }
-            lastFrameTimeRef.current = 0;
-        };
-    }, [targetOpacity, transform, initialAnimComplete]);
-
     useScroll(update);
 
     useEffect(() => {
         if (typeof window === "undefined") return;
+        if (!initialAnimComplete) return;
         update({
             y: window.scrollY,
             direction: 1,
@@ -217,7 +172,7 @@ export const Area: React.FC<AreaProps> = ({
             vh: window.innerHeight,
             totalHeight: document.documentElement?.scrollHeight ?? 0,
         });
-    }, [update]);
+    }, [update, initialAnimComplete]);
 
     const renderContent = () => {
         if (text !== undefined) {
@@ -240,9 +195,12 @@ export const Area: React.FC<AreaProps> = ({
                             return (
                                 <span
                                     key={index}
-                                    className={styles.blurryLetter}
+                                    className={
+                                        isAppearing ? styles.blurryLetter : ""
+                                    }
                                     style={{
                                         filter: `blur(${blur || 0}px)`,
+                                        display: "inline-block",
                                     }}
                                 >
                                     {letter === " " ? "\u00A0" : letter}
