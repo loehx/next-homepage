@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AppProps } from "next/app";
 import { ScrollHandler } from "@v2/components/scrollHandler";
 import "@styles/fonts.css";
@@ -8,6 +8,10 @@ import "@styles/animations.css";
 import "tailwindcss/tailwind.css";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+    useEffect(() => {
+        document.documentElement.classList.add("loaded");
+    }, []);
+
     return (
         <>
             <ScrollHandler />

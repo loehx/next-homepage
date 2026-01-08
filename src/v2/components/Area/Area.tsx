@@ -36,7 +36,6 @@ export const Area: React.FC<AreaProps> = ({
     appearDistance = 20, // 20vh
     parallax = 1,
     className,
-    wrapperClassName,
     tag = "div",
     text,
     children,
@@ -206,7 +205,7 @@ export const Area: React.FC<AreaProps> = ({
     const Tag = tag as any;
 
     return (
-        <Tag ref={ref} className={wrapperClassName} style={style}>
+        <Tag ref={ref} className={className} style={style}>
             {renderContent()}
         </Tag>
     );
