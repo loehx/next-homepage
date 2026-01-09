@@ -27,7 +27,7 @@ export const useScroll = (callback: ScrollCallback) => {
 
 /**
  * ScrollHandler Component
- * 
+ *
  * This component should be mounted once at the top level (e.g., in _app.tsx).
  * It handles the single global scroll event listener and updates body CSS variables:
  * --scroll-y: Current vertical scroll position in pixels
@@ -47,8 +47,7 @@ export const ScrollHandler: React.FC = () => {
             const y = window.scrollY;
             const vh = window.innerHeight;
             const totalHeight = document.documentElement.scrollHeight;
-            const maxScroll = totalHeight - vh;
-            const progress = maxScroll > 0 ? y / maxScroll : 0;
+            const progress = vh > 0 ? y / vh : 0;
             const direction = y > lastY.current ? 1 : -1;
 
             const data: ScrollData = {
@@ -61,10 +60,16 @@ export const ScrollHandler: React.FC = () => {
 
             // Update body CSS variables
             document.body.style.setProperty("--scroll-y", `${y}px`);
-            document.body.style.setProperty("--scroll-direction", `${direction}`);
+            document.body.style.setProperty(
+                "--scroll-direction",
+                `${direction}`,
+            );
             document.body.style.setProperty("--scroll-progress", `${progress}`);
             document.body.style.setProperty("--vh", `${vh}px`);
-            document.body.style.setProperty("--total-height", `${totalHeight}px`);
+            document.body.style.setProperty(
+                "--total-height",
+                `${totalHeight}px`,
+            );
 
             // Notify subscribers
             scrollCallbacks.forEach((cb) => cb(data));
@@ -102,7 +107,3 @@ export const ScrollHandler: React.FC = () => {
 
     return null; // This component doesn't render anything
 };
-
-
-
-

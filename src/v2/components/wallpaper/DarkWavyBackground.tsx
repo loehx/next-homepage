@@ -206,7 +206,13 @@ void main() {
 }
 `;
 
-export const DarkWavyBackground: React.FC = () => {
+interface DarkWavyBackgroundProps {
+    parallax: number; // 0 ... 1.0 - parallax effect
+}
+
+export const DarkWavyBackground: React.FC<DarkWavyBackgroundProps> = ({
+    parallax,
+}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>();
     const glRef = useRef<WebGLRenderingContext | null>(null);
@@ -447,8 +453,33 @@ export const DarkWavyBackground: React.FC = () => {
     }, []);
 
     return (
-        <div className={styles.container}>
-            <canvas ref={canvasRef} className={styles.canvas} />
+        <div
+            style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                maxHeight: "100vh",
+                overflow: "hidden",
+                isolation: "isolate",
+                pointerEvents: "none",
+            }}
+        >
+            <canvas
+                ref={canvasRef}
+                style={{
+                    transform: `translateY(calc(var(--scroll-y, 0px) * ${parallax}))`,
+                    willChange: "transform",
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    top: 0,
+                    left: 0,
+                    zIndex: 1,
+                }}
+            />
         </div>
     );
 };

@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 10;
+    pointer-events: none;
+    counter-reset: count 0;
+    width: 100%;
+}
+
+.lineWrapper {
+    --pos-invert: 1;
+    height: 33.33vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.lineWrapper:nth-child(2) {
+    --pos-invert: -1;
+}
+
+.text {
+    font-family: sans-serif;
+    font-size: 10rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+
+    opacity: 0;
+    transform: translateX(calc(100px * var(--pos-invert)));
+    will-change: transform;
+    display: inline-block;
+}
+
+.fadeIn .text {
+    transition: all 5s ease-out;
+    transition-delay: var(--delay);
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.scrollPhase .text {
+    opacity: calc(1 - var(--progress));
+    transition-duration: 0s;
+    transform: translateX(calc(var(--progress) * 100px * var(--pos-invert)));
+}

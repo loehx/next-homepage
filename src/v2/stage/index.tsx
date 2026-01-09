@@ -1,36 +1,26 @@
 import React from "react";
 import styles from "./stage.module.css";
 import { DarkWavyBackground } from "../components/wallpaper";
-import { Area } from "../components/Area";
-import { Stats } from "./Stats";
+import { Scene1 } from "./scenes/scene1";
+import { Scene2 } from "./scenes/scene2";
+import { Scene3 } from "./scenes/scene3";
 
 export const Stage: React.FC = () => {
     return (
         <section className={styles.stage}>
-            <DarkWavyBackground />
-            <div className={styles.container}>
-                <Area
-                    tag="h1"
-                    appear={10}
-                    disappear={20}
-                    appearDistance={20}
-                    initialAppearDelay={500}
-                    text="If you want to get your project done..."
-                    className={styles.title}
-                />
-                <Area
-                    appear={10}
-                    disappear={10}
-                    initialAppearDelay={1200}
-                    parallax={0.9}
-                    blurryAppear={30}
-                    text="Hire a professional"
-                    className={styles.subtitle}
-                />
-            </div>
-            <div className={styles.container}>
-                <Stats />
-            </div>
+            <DarkWavyBackground parallax={0.3} />
+            <Scene1
+                delay={500}
+                duration={2000}
+                distance={0.8}
+                onAnimationEnd={() => console.log("Scene1 completed")}
+            />
+            <Scene2
+                delay={1500}
+                duration={2000}
+                lines={["Design", "Develop", "Launch"]}
+            />
+            <Scene3 />
         </section>
     );
 };
