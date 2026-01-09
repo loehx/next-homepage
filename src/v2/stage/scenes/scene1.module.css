@@ -1,0 +1,97 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+    counter-reset: count 0;
+    width: 100%;
+    margin-top: 50px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        justify-content: flex-start;
+        margin-top: 0;
+    }
+}
+
+.lineWrapper {
+    --pos-invert: 1;
+    height: var(--height);
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.lineWrapper:nth-child(2) {
+    --pos-invert: -1;
+}
+
+.lineWrapper:nth-child(3) {
+    --pos-invert: 2;
+}
+
+.lineWrapper {
+    font-family: "Vank";
+    font-size: 100px;
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    height: 150px;
+    opacity: 0;
+    transform: translateX(calc(100px * var(--pos-invert)));
+    will-change: transform;
+    display: inline-block;
+    background-clip: text;
+}
+
+@media (min-width: 768px) {
+    .lineWrapper {
+        height: 33.33vh !important;
+        font-size: 40vh;
+        text-align: left;
+    }
+}
+
+.fadeIn .lineWrapper {
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1),
+        opacity 1s cubic-bezier(0.19, 1, 0.22, 1),
+        filter 1s cubic-bezier(0.19, 1, 0.22, 1),
+        height 3s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: calc(var(--delay) * 2);
+    opacity: 1;
+    transform: translateX(0px);
+    height: 70px;
+}
+
+.scrollPhase .lineWrapper {
+    transition-delay: 0s;
+    transition-duration: calc(1s * var(--progress));
+    opacity: calc(1 - var(--progress) * 2);
+    transition-duration: 0s;
+    transform: translateX(calc(var(--progress) * 100px * var(--pos-invert)));
+}
+
+.text {
+    background: linear-gradient(
+        var(--mouse-direction, 90deg),
+        var(--primary) 0%,
+        white 200%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: brightness(10) drop-shadow(0px 0px 0px var(--primary));
+    transition: filter 0.1s linear calc(1s + var(--delay));
+}
+
+.fadeIn .text {
+    filter: brightness(1.5) drop-shadow(0px 0px 10px var(--primary));
+}
+
+.scrollPhase .text {
+    transition-delay: 0s;
+    filter: brightness(clamp(1.5, calc(5 * var(--progress)), 10))
+        drop-shadow(0px 0px 10px var(--primary));
+}

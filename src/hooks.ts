@@ -1,6 +1,29 @@
 import data from "data";
 import { ConfigEntry } from "data/definitions";
-import { useEffect, useState } from "react";
+import { useEffect, useState, RefObject } from "react";
+
+export const useMouseDirection = (ref: RefObject<HTMLElement>) => {
+    const [direction, setDirection] = useState(0);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!ref.current) return;
+            const rect = ref.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const x = e.clientX - centerX;
+            const y = e.clientY - centerY;
+            let angle = Math.atan2(y, x) * (180 / Math.PI);
+            if (angle < 0) angle += 360;
+            setDirection(Math.round(angle * 100) / 100);
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, [ref]);
+
+    return direction;
+};
 
 export const useInitializeClass = (
     initClass: string,

@@ -455,22 +455,21 @@ export const DarkWavyBackground: React.FC<DarkWavyBackgroundProps> = ({
     return (
         <div
             style={{
+                transform: `translateY(calc(var(--scroll-y, 0px) * ${parallax}))`,
+                willChange: "transform",
                 position: "absolute",
-                top: 0,
+                top: "60vh",
                 left: 0,
                 width: "100%",
                 height: "100%",
                 maxHeight: "100vh",
                 overflow: "hidden",
                 isolation: "isolate",
-                pointerEvents: "none",
             }}
         >
             <canvas
                 ref={canvasRef}
                 style={{
-                    transform: `translateY(calc(var(--scroll-y, 0px) * ${parallax}))`,
-                    willChange: "transform",
                     position: "absolute",
                     inset: 0,
                     width: "100%",
