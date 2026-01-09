@@ -41,7 +41,16 @@ export const Scene2: React.FC<Scene2Props> = ({ lines }) => {
         >
             {lines.map((line, index) => (
                 <div key={index} className={styles.lineWrapper}>
-                    <span className={styles.text}>{line}</span>
+                    <span
+                        className={styles.text}
+                        style={
+                            {
+                                "--delay": `${(counter += 0.1)}s`,
+                            } as React.CSSProperties
+                        }
+                    >
+                        {line}
+                    </span>
                 </div>
             ))}
         </div>

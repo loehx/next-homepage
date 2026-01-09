@@ -21,13 +21,12 @@
 }
 
 .text {
-    font-family: sans-serif;
-    font-size: 10rem;
+    font-family: "Vank";
+    font-size: 33vh;
     font-weight: 800;
     line-height: 1;
     color: #ffffff;
     line-height: 1;
-    letter-spacing: -0.02em;
 
     opacity: 0;
     transform: translateX(calc(100px * var(--pos-invert)));
@@ -36,13 +35,15 @@
 }
 
 .fadeIn .text {
-    transition: all 5s ease-out;
+    transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
     transition-delay: var(--delay);
     opacity: 1;
     transform: translateX(0px);
 }
 
 .scrollPhase .text {
+    transition-delay: 0s;
+    transition-duration: calc(1s * var(--progress));
     opacity: calc(1 - var(--progress));
     transition-duration: 0s;
     transform: translateX(calc(var(--progress) * 100px * var(--pos-invert)));
