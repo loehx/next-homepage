@@ -27,9 +27,7 @@ export const Scene2: React.FC = () => {
         useActivationOnElement({
             elementRef: detail.ref,
             enter: 0.4 + index * 0.1,
-            exit: 1.2 + index * 0.1,
             transition: 0.3,
-            transitionOut: 0.2,
             extensions: [useTypewriter()],
         });
     });

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useScroll } from "./index";
-import { typewriter } from "./extensions/typewriter";
 
 export enum Phase {
     Unknown = -1,
@@ -12,7 +11,7 @@ export enum Phase {
 
 export type UseActivationOptions = {
     enter: number;
-    exit: number;
+    exit?: number;
     transition: number;
     transitionOut?: number;
     changed?: (activation: number, oldActivation: number, phase: Phase) => void;
@@ -34,22 +33,24 @@ export const useActivation = (options: UseActivationOptions): number => {
     const [activation, setActivation] = useState(0);
     const [phase, setPhase] = useState<Phase>(Phase.Idle);
 
-    if (options.enter > options.exit) {
+    const exit = options.exit ?? Infinity;
+
+    if (options.enter > exit) {
         throw new Error("Enter point must be before exit point");
     }
 
-    const transitionOut = Math.max(
+    const transitionOut = Math.min(
         options.transitionOut || options.transition,
-        options.enter - options.exit - options.transition,
+        Math.max(0, exit - options.enter - options.transition),
     );
 
     useScroll((scrollData) => {
         const { progress: scrollProgress } = scrollData;
         const enterFully = options.enter + options.transition;
-        const startExit = options.exit - transitionOut;
+        const startExit = exit - transitionOut;
 
         let currentActivation = scrollProgress;
-        if (scrollProgress > options.enter && scrollProgress < options.exit) {
+        if (scrollProgress > options.enter && scrollProgress < exit) {
             if (currentActivation < enterFully) {
                 setPhase(Phase.Entering);
                 currentActivation =
