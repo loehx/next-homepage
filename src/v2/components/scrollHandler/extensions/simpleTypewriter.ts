@@ -9,7 +9,9 @@ import styles from "./typewriter.module.css";
  * @returns A function that accepts an elementRef and returns an object with a `changed` callback
  *          for handling scroll activation changes.
  */
-export const useTypewriter = (): ((elementRef: RefObject<HTMLElement>) => {
+export const useSimpleTypewriter = (): ((
+    elementRef: RefObject<HTMLElement>,
+) => {
     changed: (activation: number, oldActivation: number, phase: Phase) => void;
 }) => {
     const target = useRef<HTMLElement | null>(null);
@@ -52,8 +54,10 @@ function setupTypewriterElement(
         element = element.querySelector("[data-typewriter]") || element;
     }
 
-    element.style.setProperty("--color", getComputedStyle(element).color);
+    element.setAttribute("data-content", element.textContent || "");
+
     element.classList.add(styles.typewriter);
+    element.classList.add(styles.simple);
     target.current = element;
 }
 
@@ -71,24 +75,23 @@ function createTypewriterCallback(
     return (activation: number, _: number, phase: Phase): void => {
         const element = target.current;
         if (!element) return;
-        const innerContents = element.textContent || "";
+        const actualContent = element.getAttribute("data-content") || "";
 
         switch (phase) {
             case Phase.Entering:
             case Phase.Exiting: {
-                element.classList.add(styles.changing);
-                let newContent = innerContents.slice(
+                let newContent = actualContent.slice(
                     0,
-                    Math.floor(activation * innerContents.length),
+                    Math.floor(activation * actualContent.length),
                 );
                 if (
                     newContent.length &&
-                    newContent.length < innerContents.length - 1
+                    newContent.length < actualContent.length
                 ) {
                     newContent += "_";
                 }
-                if (newContent !== element.getAttribute("data-content")) {
-                    element.setAttribute("data-content", newContent);
+                if (newContent !== element.textContent) {
+                    element.textContent = newContent;
                 }
                 break;
             }

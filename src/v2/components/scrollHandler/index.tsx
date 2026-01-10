@@ -63,35 +63,22 @@ export const ScrollHandler: React.FC = () => {
             // Update body CSS variables
             document.body.style.setProperty("--scroll-y", `${y}px`);
             document.body.style.setProperty("--progress", `${progress}`);
+            document.body.style.setProperty("--vh", `${vh}px`);
+            document.body.style.setProperty(
+                "--total-height",
+                `${totalHeight}px`,
+            );
 
             // Notify subscribers
             scrollCallbacks.forEach((cb) => cb(data));
 
             lastY.current = y;
-            rafId.current = null;
+            rafId.current = requestAnimationFrame(update);
         };
 
-        const onScroll = () => {
-            if (rafId.current === null) {
-                rafId.current = requestAnimationFrame(update);
-            }
-        };
-
-        const onResize = () => {
-            if (rafId.current === null) {
-                rafId.current = requestAnimationFrame(update);
-            }
-        };
-
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", onResize, { passive: true });
-
-        // Initial update
-        update();
+        rafId.current = requestAnimationFrame(update);
 
         return () => {
-            window.removeEventListener("scroll", onScroll);
-            window.removeEventListener("resize", onResize);
             if (rafId.current !== null) {
                 cancelAnimationFrame(rafId.current);
             }

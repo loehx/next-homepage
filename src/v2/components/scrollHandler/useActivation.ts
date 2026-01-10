@@ -108,7 +108,6 @@ export function useActivationOnElement(
         ...rest,
         changed: (activation, oldActivation, phase) => {
             if (!elementRef.current) return;
-            console.log("changed", activation, oldActivation, phase);
             const element = elementRef.current;
             const style = element.style;
             style.setProperty("--progress", activation.toString());

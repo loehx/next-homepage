@@ -1,4 +1,4 @@
-.typewriter {
+.typewriter:not(.simple) {
     position: relative;
     width: fit-content;
     color: transparent;

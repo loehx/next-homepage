@@ -1,0 +1,30 @@
+---
+alwaysApply: false
+description: Load when working with javascript that is not a component and not a util.
+---
+
+# Composables
+
+When working on composables, move complex blocks of code into subcomposables. Each composable should have several subcomposables which act like microservices - handling specific responsibilities independently.
+
+**Extract complex logic into sub-composable**: Move bigger blocks of code into their own composable and move it below the main composable.
+
+```typescript
+// Before
+const useHook = () => {
+  return {
+    changed: (activation, phase) => { /* complex logic */ }
+  };
+};
+
+// After
+const useHook = () => {
+  return { changed: useCallbackHandler(target) };
+};
+
+function useCallbackHandler(target: MutableRefObject<T>) {
+  return (activation, phase) => { /* logic */ };
+}
+```
+
+**Documentation**: Add JSDoc comments to all composables and sub-composables describing purpose and parameters.

@@ -1,11 +1,11 @@
 .container {
     display: flex;
+    gap: 100px;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     pointer-events: none;
     width: 100%;
-    height: 100vh;
 }
 
 .logo {
@@ -14,7 +14,7 @@
 }
 
 .logo svg {
-    --custom-progress: clamp(0, calc(var(--progress) * 1.6), 1);
+    --custom-progress: clamp(0, calc(var(--progress) * 2), 1);
     width: 60px;
     height: 60px;
     margin: 0 auto;
@@ -22,7 +22,6 @@
     transform: scale(calc(0.2 + var(--custom-progress) * 0.8))
         rotate(calc((1 - var(--custom-progress)) * 360deg));
     filter: blur(calc((1 - var(--custom-progress)) * 10px));
-    /* Gradient on path: use SVG 'stroke' or 'fill' as a url(#gradient); here we style it via CSS for global color control */
 }
 
 .title {
@@ -49,13 +48,12 @@
     transform: translateY(calc(var(--invert) * 100%));
 }
 
-.titleSeparator {
-    width: calc(var(--progress, 1) * 90%);
-    margin: 10px auto;
+.separator {
+    width: min(calc(var(--progress, 1) * 90vw), 360px);
+    margin: 15px auto;
     height: 1px;
     background: white;
     border: none;
-    transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
     z-index: 1;
     position: relative;
@@ -63,9 +61,9 @@
 
 .titleSub {
     font-family: "Righteous";
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
-    letter-spacing: -0.05em;
+    letter-spacing: 2px;
     display: block;
     overflow: hidden;
     text-transform: uppercase;
@@ -84,18 +82,48 @@
 }
 
 .detail {
-    --offset: -1;
     --invert: calc(1 - var(--progress));
-
-    font-family: "Vank";
-    font-size: 16px;
+    font-family: "JetBrains Mono";
+    line-height: 1.4;
     color: #fff;
     text-align: center;
-    will-change: transform, opacity;
-    transform: translateY(calc(var(--invert) * 50px));
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    max-width: 300px;
+    position: relative;
 }
 
-.detail:nth-child(2n) {
-    --offset: 1;
+@media (min-width: 768px) {
+    .detail:nth-child(2n) {
+        transform: translateX(-20vw);
+    }
+    .detail:nth-child(2n + 1) {
+        transform: translateX(20vw);
+    }
+}
+
+.detail .separator {
+    margin: 10px auto;
+    width: calc(var(--progress, 0) * 150px);
+    opacity: var(--progress);
+}
+
+.detailTitle {
+    font-size: 20px;
+    display: block;
+    font-weight: bold;
+    overflow: hidden;
+    opacity: var(--progress);
+}
+
+.detailTitle span {
+    --custom-progress: clamp(0, calc(var(--progress) * 2) - 0.2, 1);
+    --invert: calc(1 - var(--custom-progress));
+    display: block;
+    transform: translateY(calc(var(--invert) * 100%));
+}
+
+.detailLabel {
+    font-size: 14px;
+    text-align: center;
+    height: 1em;
+    overflow: visible;
 }
