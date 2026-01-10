@@ -8,7 +8,7 @@ import { Scene2 } from "./scenes/scene2";
 export const Stage: React.FC = () => {
     return (
         <section className={styles.stage}>
-            {/* <DarkWavyBackground parallax={0.4} /> */}
+            <DarkWavyBackground parallax={0.4} />
             <Scene1
                 delay={1500}
                 duration={2000}

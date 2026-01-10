@@ -5,17 +5,75 @@
     justify-content: space-between;
     pointer-events: none;
     width: 100%;
-    padding: 50px 0;
+    height: 100vh;
+}
+
+.logo {
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.logo svg {
+    --custom-progress: clamp(0, calc(var(--progress) * 1.6), 1);
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    opacity: var(--custom-progress);
+    transform: scale(calc(0.2 + var(--custom-progress) * 0.8))
+        rotate(calc((1 - var(--custom-progress)) * 360deg));
+    filter: blur(calc((1 - var(--custom-progress)) * 10px));
+    /* Gradient on path: use SVG 'stroke' or 'fill' as a url(#gradient); here we style it via CSS for global color control */
 }
 
 .title {
-    --invert: calc(1 - var(--progress));
-    font-family: "Righteous";
-    font-size: 50px;
+    text-align: center;
+    overflow: hidden;
     color: #fff;
     text-align: center;
     opacity: var(--progress);
-    transform: translateY(calc(var(--invert) * -100px));
+}
+
+.titleInner {
+    font-family: "Righteous";
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    display: block;
+    overflow: hidden;
+}
+
+.titleInner span {
+    --custom-progress: clamp(0, calc(var(--progress) * 1.5) - 0.2, 1);
+    --invert: calc(1 - var(--custom-progress));
+    display: block;
+    transform: translateY(calc(var(--invert) * 100%));
+}
+
+.titleSeparator {
+    width: calc(var(--progress, 1) * 90%);
+    margin: 10px auto;
+    height: 1px;
+    background: white;
+    border: none;
+    transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    position: relative;
+}
+
+.titleSub {
+    font-family: "Righteous";
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    display: block;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.titleSub span {
+    display: block;
+    transform: translateY(calc((1 - var(--progress)) * -200%));
 }
 
 .description {
@@ -30,12 +88,11 @@
     --invert: calc(1 - var(--progress));
 
     font-family: "Vank";
-    font-size: 1.5rem;
+    font-size: 16px;
     color: #fff;
     text-align: center;
     will-change: transform, opacity;
-    transform: translateX(calc(var(--offset) * 20vw))
-        translateY(calc(var(--invert) * 50px));
+    transform: translateY(calc(var(--invert) * 50px));
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
