@@ -43,6 +43,7 @@ export const Scene1: React.FC<Scene1Props> = ({ lines }) => {
                 )}
                 style={
                     {
+                        "--lines": lines.length,
                         "--progress": progress,
                         "--mouse-direction": `${mouseDirection}deg`,
                     } as React.CSSProperties

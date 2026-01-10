@@ -11,7 +11,7 @@ export const Stage: React.FC = () => {
             <Scene1
                 delay={1500}
                 duration={2000}
-                lines={["Design", "Develop", "Launch"]}
+                lines={"Code Design Web".split(" ")}
             />
             <Scene2 />
         </section>

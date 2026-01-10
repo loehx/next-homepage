@@ -32,6 +32,10 @@
     --pos-invert: 2;
 }
 
+.lineWrapper:nth-child(4) {
+    --pos-invert: -2;
+}
+
 .lineWrapper {
     font-family: "Vank";
     font-size: 100px;
@@ -49,8 +53,8 @@
 
 @media (min-width: 768px) {
     .lineWrapper {
-        height: 33.33vh !important;
-        font-size: 40vh;
+        height: calc(100vh / var(--lines)) !important;
+        font-size: calc(120vh / var(--lines));
         text-align: left;
     }
 }
