@@ -60,7 +60,7 @@ export const Scene: React.FC<SceneProps> = ({
         <div
             ref={ref}
             className={className}
-            style={{ height: `${height}vh` }}
+            style={{ height: `${height}vh`, width: "100%" }}
             data-progress={progress}
         >
             {children}

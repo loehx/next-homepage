@@ -1,0 +1,13 @@
+.typewriter {
+    position: relative;
+    width: fit-content;
+    color: transparent;
+}
+
+.changing::after {
+    position: absolute;
+    text-align: left;
+    inset: 0;
+    content: attr(data-content);
+    color: var(--color);
+}

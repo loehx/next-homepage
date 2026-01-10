@@ -1,0 +1,28 @@
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.line {
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 1px;
+    background-color: yellow;
+}
+
+.label {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: yellow;
+    white-space: nowrap;
+    font-family: monospace;
+}

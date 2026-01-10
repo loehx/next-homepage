@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
+export * from "./useActivation";
+
 export type ScrollData = {
     y: number;
     direction: number;
@@ -16,7 +18,7 @@ const scrollCallbacks = new Set<ScrollCallback>();
  * Hook to subscribe to global scroll events.
  * The callback receives the current scroll data on every frame (via RAF).
  */
-export const useScroll = (callback: ScrollCallback) => {
+export const useScroll = (callback: ScrollCallback): void => {
     useEffect(() => {
         scrollCallbacks.add(callback);
         return () => {
@@ -60,16 +62,7 @@ export const ScrollHandler: React.FC = () => {
 
             // Update body CSS variables
             document.body.style.setProperty("--scroll-y", `${y}px`);
-            document.body.style.setProperty(
-                "--scroll-direction",
-                `${direction}`,
-            );
-            document.body.style.setProperty("--scroll-progress", `${progress}`);
-            document.body.style.setProperty("--vh", `${vh}px`);
-            document.body.style.setProperty(
-                "--total-height",
-                `${totalHeight}px`,
-            );
+            document.body.style.setProperty("--progress", `${progress}`);
 
             // Notify subscribers
             scrollCallbacks.forEach((cb) => cb(data));
