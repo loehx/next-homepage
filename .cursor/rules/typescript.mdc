@@ -1,0 +1,296 @@
+---
+description: USE WHEN writing or modifying TypeScript code
+globs: 
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: false
+---
+
+# TypeScript Standards
+
+## Type Strictness
+
+**Module boundaries must use explicit types.** Public functions, exports, and API endpoints require full type annotations—no implicit returns.
+
+```typescript
+// ✅ Correct: Explicit at boundaries
+export function getUserById(id: string): Promise<User | null> {
+  return db.users.findUnique({ where: { id } });
+}
+
+// ❌ Wrong: Implicit return type
+export function getUserById(id: string) {
+  return db.users.findUnique({ where: { id } });
+}
+```
+
+**Infer types within function bodies.** Let TypeScript deduce local variables, intermediate values, and simple transformations.
+
+```typescript
+function processUsers(users: User[]): ProcessedUser[] {
+  // ✅ Infer local variables
+  const activeUsers = users.filter(u => u.isActive);
+  const mapped = activeUsers.map(u => ({
+    id: u.id,
+    displayName: `${u.firstName} ${u.lastName}`
+  }));
+  return mapped;
+}
+```
+
+## Any / Unknown Policy
+
+**Zero tolerance for `any`.** Use `unknown` and narrow the type with runtime checks.
+
+```typescript
+// ❌ Never do this
+function parseResponse(data: any) {
+  return data.result.items;
+}
+
+// ✅ Use unknown with type guards
+function parseResponse(data: unknown): Item[] {
+  if (!isValidResponse(data)) {
+    throw new Error("Invalid response structure");
+  }
+  return data.result.items;
+}
+
+function isValidResponse(data: unknown): data is ApiResponse {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "result" in data &&
+    typeof data.result === "object" &&
+    data.result !== null &&
+    "items" in data.result &&
+    Array.isArray(data.result.items)
+  );
+}
+```
+
+**Exception:** Third-party library types with incorrect definitions may require `any` with explicit suppression comment.
+
+```typescript
+// @ts-expect-error: Library types are incorrect - verified returns string[]
+const result: string[] = legacyLibrary.getData() as any;
+```
+
+## Types vs Interfaces
+
+**Default to `type` for most cases.** Types are more flexible and compose better.
+
+```typescript
+// ✅ Preferred: Type aliases
+type User = {
+  id: string;
+  name: string;
+  role: "admin" | "user";
+};
+
+type AdminUser = User & {
+  permissions: string[];
+};
+```
+
+**Use `interface` only when:**
+
+1. **Declaration merging is required** (extending third-party types)
+2. **Defining public API contracts** (library exports)
+
+```typescript
+// ✅ Valid interface usage: Extending library types
+declare global {
+  interface Window {
+    analytics?: Analytics;
+  }
+}
+
+// ✅ Valid interface usage: Public API
+export interface Plugin {
+  name: string;
+  install(app: App): void;
+}
+```
+
+## Enums
+
+**Prefer const objects or union types over enums.** Enums generate runtime code and have counterintuitive behavior.
+
+```typescript
+// ❌ Avoid: Enum with runtime overhead
+enum UserRole {
+  Admin = "ADMIN",
+  User = "USER",
+  Guest = "GUEST"
+}
+
+// ✅ Preferred: Const object with type
+const UserRole = {
+  Admin: "ADMIN",
+  User: "USER",
+  Guest: "GUEST"
+} as const;
+
+type UserRole = typeof UserRole[keyof typeof UserRole];
+
+// ✅ Also good: Simple union type
+type UserRole = "ADMIN" | "USER" | "GUEST";
+```
+
+**Exception:** Enums are allowed if already established in the same module to maintain consistency.
+
+## Nullability
+
+**Avoid chaining optional operators beyond 2 levels.** Deep chains obscure bugs.
+
+```typescript
+// ❌ Wrong: Unreadable chain
+const city = user?.profile?.address?.city;
+
+// ✅ Correct: Guard clause with early return
+function getUserCity(user: User | null): string | null {
+  if (!user?.profile?.address) {
+    return null;
+  }
+  return user.profile.address.city;
+}
+```
+
+**Prefer early returns over nested null checks.**
+
+```typescript
+// ❌ Avoid: Nested conditions
+function processOrder(order: Order | null) {
+  if (order) {
+    if (order.isPaid) {
+      if (order.items.length > 0) {
+        // Process order
+      }
+    }
+  }
+}
+
+// ✅ Preferred: Guard clauses
+function processOrder(order: Order | null): void {
+  if (!order) return;
+  if (!order.isPaid) return;
+  if (order.items.length === 0) return;
+  
+  // Process order - happy path is clear
+}
+```
+
+## Generics
+
+**Maximum 2 generic parameters per function or type.** More indicates the abstraction is too complex.
+
+```typescript
+// ✅ Acceptable: 2 generics
+function mapAsync<T, U>(
+  items: T[],
+  mapper: (item: T) => Promise<U>
+): Promise<U[]> {
+  return Promise.all(items.map(mapper));
+}
+
+// ❌ Too complex: 4 generics
+function transform<T, U, V, W>(/* ... */) {
+  // Refactor into smaller, focused functions
+}
+```
+
+**Single-letter generics only for conventional cases.** Use descriptive names for domain-specific types.
+
+```typescript
+// ✅ Conventional: T, U, K, V are clear
+function groupBy<T, K extends keyof T>(items: T[], key: K): Record<T[K], T[]> {
+  // Implementation
+}
+
+// ✅ Descriptive: Domain-specific types
+function validateSchema<TSchema extends ZodSchema, TOutput = z.infer<TSchema>>(
+  schema: TSchema,
+  data: unknown
+): TOutput {
+  return schema.parse(data);
+}
+
+// ❌ Wrong: Unclear single letters in complex domains
+function process<A, B, C>(/* ... */) {
+  // What do A, B, C represent?
+}
+```
+
+## Type Assertions
+
+**`as` assertions require justification.** Only use when you have runtime guarantees that TypeScript cannot infer.
+
+```typescript
+// ✅ Valid: DOM element with runtime check
+const input = document.getElementById("email-input");
+if (input instanceof HTMLInputElement) {
+  input.value = ""; // No assertion needed
+}
+
+// ✅ Valid: API response with validation + comment
+const response = await fetch("/api/user");
+const data = await response.json();
+// Runtime validation ensures User shape
+const user = validateUser(data) as User;
+
+// ❌ Wrong: No guarantee, hiding type error
+const user = data as User; // Dangerous!
+```
+
+**Non-null assertions (`!`) are banned.** Use explicit null checks instead.
+
+```typescript
+// ❌ Never use non-null assertion
+const name = user!.profile!.name;
+
+// ✅ Use optional chaining + fallback
+const name = user?.profile?.name ?? "Unknown";
+
+// ✅ Or guard clause
+if (!user?.profile) {
+  throw new Error("Profile required");
+}
+const name = user.profile.name;
+```
+
+## Additional TypeScript Patterns
+
+**Use discriminated unions for complex states.**
+
+```typescript
+type AsyncData<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: Error };
+
+function render<T>(state: AsyncData<T>) {
+  switch (state.status) {
+    case "idle":
+      return <div>Click to load</div>;
+    case "loading":
+      return <div>Loading...</div>;
+    case "success":
+      return <div>{state.data}</div>; // TypeScript knows data exists
+    case "error":
+      return <div>Error: {state.error.message}</div>;
+  }
+}
+```
+
+**Leverage utility types before creating custom ones.**
+
+```typescript
+// ✅ Use built-in utilities
+type UserUpdate = Partial<User>;
+type UserKeys = keyof User;
+type UserName = Pick<User, "firstName" | "lastName">;
+type UserWithoutId = Omit<User, "id">;
+type ReadonlyUser = Readonly<User>;
+```

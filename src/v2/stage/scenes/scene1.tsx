@@ -14,9 +14,10 @@ interface Scene1Props {
 export const Scene1: React.FC<Scene1Props> = ({ lines }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState(-1);
+    const [colorIndex, setSecondLineColorIndex] = useState(-1);
+    const colors = ["#f635df", "#35f686", "#bef635", "#f64b4b", "#4b9bf6"];
 
     useScroll(({ progress: newProgress }) => {
-        console.log(newProgress);
         // bring progress into range: 0 - 1
         newProgress = Math.min(Math.max(newProgress, 0), 1);
         setProgress(newProgress * 1.2);
@@ -30,6 +31,26 @@ export const Scene1: React.FC<Scene1Props> = ({ lines }) => {
             setProgress(0);
         }, 1000);
     }, []);
+
+    useEffect(() => {
+        const handleInteraction = throttle(() => {
+            setSecondLineColorIndex((prev) => (prev + 1) % colors.length);
+        }, 1000);
+
+        window.addEventListener("mousemove", handleInteraction);
+        window.addEventListener("touchstart", handleInteraction);
+
+        return () => {
+            window.removeEventListener("mousemove", handleInteraction);
+            window.removeEventListener("touchstart", handleInteraction);
+        };
+    }, [colors.length]);
+
+    const getColorByIndex = (index: number): string => {
+        if (index === 1) {
+            return colors[colorIndex];
+        }
+    };
 
     return (
         <>
@@ -55,6 +76,7 @@ export const Scene1: React.FC<Scene1Props> = ({ lines }) => {
                         className={styles.lineWrapper}
                         style={
                             {
+                                color: getColorByIndex(index),
                                 "--delay": `${index * 0.1}s`,
                             } as React.CSSProperties
                         }
@@ -66,3 +88,13 @@ export const Scene1: React.FC<Scene1Props> = ({ lines }) => {
         </>
     );
 };
+
+function throttle(func: () => void, wait: number) {
+    let lastTime = 0;
+    return function (...args: any[]) {
+        const now = Date.now();
+        if (now - lastTime < wait) return;
+        lastTime = now;
+        func.apply(this, args);
+    };
+}

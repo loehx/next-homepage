@@ -37,8 +37,10 @@
 
 .lineWrapper {
     font-family: "Vank";
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
     font-size: 100px;
-    font-weight: 800;
+    font-weight: 500;
     line-height: 1;
     color: #ffffff;
     text-align: center;
@@ -72,16 +74,7 @@
 }
 
 .text {
-    background: linear-gradient(
-        var(--mouse-direction, 90deg),
-        var(--primary) 0%,
-        white 200%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: brightness(10) drop-shadow(0px 0px 0px var(--primary));
-    transition: filter 0.01s linear calc(1.5s + var(--delay)),
-        transform 0.5s cubic-bezier(0, 0, 0, 1) 2s;
+    transition: transform 0.5s cubic-bezier(0, 0, 0, 1) 2s;
 }
 
 @media (min-width: 768px) {
@@ -91,10 +84,8 @@
 }
 
 .fadeIn .text {
-    filter: brightness(1.5) drop-shadow(0px 0px 10px var(--primary));
     transform: scale(1);
 }
 
 .scrollPhase .text {
-    transition-delay: 0s;
 }

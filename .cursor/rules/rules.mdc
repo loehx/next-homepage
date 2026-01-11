@@ -1,0 +1,683 @@
+---
+description: USE WHEN creating, modifying, or organizing Cursor rule files
+globs: 
+  - "**/.cursor/rules/**/*.mdc"
+  - "**/.cursorrules"
+alwaysApply: false
+---
+
+# Cursor Rules Management Guide
+
+**Purpose:** Standards for creating, editing, and organizing `.mdc` rule files in the `.cursor/rules/` directory.
+
+---
+
+## Rule File Creation
+
+### When to Create a New Rule File
+
+**Create a new rule file when:**
+
+1. **Domain-specific guidance is needed** (TypeScript, React, testing, security, API design)
+2. **File pattern targeting is required** (apply only to specific file types)
+3. **Contextual rules for subdirectories** (feature-specific conventions)
+4. **Workflow or behavioral guidance** (how AI should approach tasks)
+
+**Do NOT create a new rule file when:**
+
+- Adding 1-2 simple guidelines (add to existing relevant file)
+- Duplicating existing rule content
+- Creating rules for temporary project phases
+- Rule would be <20 lines (too granular)
+
+### Rule File Naming Conventions
+
+```
+.cursor/rules/
+├── core.mdc              # Universal standards (alwaysApply: true)
+├── typescript.mdc        # Language-specific
+├── react.mdc             # Framework-specific
+├── testing.mdc           # Domain-specific
+├── api-design.mdc        # Architecture-specific
+└── features/
+    └── auth.mdc          # Feature-specific (nested)
+```
+
+**Naming rules:**
+- Use **kebab-case** for all file names
+- Be **descriptive but concise**: `api-security.mdc` not `api.mdc`
+- Group related rules: `react-hooks.mdc`, `react-components.mdc`
+- Avoid generic names: `standards.mdc` → `code-style.mdc`
+
+---
+
+## MDC File Structure
+
+Every `.mdc` file must follow this structure:
+
+```markdown
+---
+description: USE WHEN [clear trigger condition]
+globs: 
+  - "pattern1"
+  - "pattern2"
+alwaysApply: false
+---
+
+# [Descriptive Title]
+
+**Purpose:** [One-sentence explanation of what this rule covers]
+
+---
+
+## [Major Section]
+
+[Explanation paragraph]
+
+```[language]
+// ❌ Wrong: [Why this is wrong]
+[bad example code]
+
+// ✅ Correct: [Why this is right]
+[good example code]
+```
+
+## [Next Section]
+
+...
+```
+
+### Frontmatter Requirements
+
+**`description` field (required for Agent Requested rules):**
+- Start with "USE WHEN" for clarity
+- Be specific about trigger conditions
+- Use action-based language
+
+```yaml
+# ✅ Good descriptions
+description: USE WHEN writing or modifying React components
+description: USE WHEN handling authentication or user sessions
+description: USE WHEN creating API endpoints or routes
+description: USE WHEN writing test files
+
+# ❌ Bad descriptions
+description: React rules
+description: Security stuff
+description: General standards
+```
+
+**`globs` field (required for Auto Attached rules):**
+- Use specific patterns to avoid over-attachment
+- Test patterns to ensure they match intended files
+
+```yaml
+# ✅ Good globs - specific targeting
+globs: 
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.ts"
+
+# ✅ Good globs - framework-specific
+globs:
+  - "**/app/**/*.tsx"      # Next.js App Router
+  - "**/pages/**/*.tsx"    # Next.js Pages Router
+
+# ❌ Bad globs - too broad
+globs:
+  - "**/*"                 # Matches everything
+  - "*.ts"                 # Misses nested files
+
+# ❌ Bad globs - missing related extensions
+globs:
+  - "**/*.tsx"             # Missing .jsx
+```
+
+**`alwaysApply` field:**
+- Set `true` for **core universal standards only**
+- Maximum 1-2 rules should use `alwaysApply: true`
+- Most rules should be `false` (auto-attached or agent-requested)
+
+```yaml
+# ✅ Appropriate alwaysApply: true
+# File: core.mdc
+alwaysApply: true  # Universal behavior standards
+
+# ✅ Appropriate alwaysApply: false  
+# File: react.mdc
+alwaysApply: false  # Only needed for React files
+
+# ❌ Wrong: Too many alwaysApply
+# If 5+ rules have alwaysApply: true, you're bloating context
+```
+
+---
+
+## Writing Effective Rule Content
+
+### The Example-First Principle
+
+**Every rule must include concrete code examples.** Abstract principles without examples are ineffective.
+
+```markdown
+# ❌ Wrong: Abstract guidance only
+## Error Handling
+
+Always handle errors properly and provide meaningful error messages.
+
+# ✅ Correct: Concrete examples
+## Error Handling
+
+**Every API call must handle failure states explicitly.**
+
+```typescript
+// ❌ Wrong: No error handling
+async function fetchUser(id: string) {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+}
+
+// ✅ Correct: Explicit error handling
+async function fetchUser(id: string): Promise<User> {
+  try {
+    const response = await fetch(`/api/users/${id}`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user: ${response.statusText}`);
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('User fetch failed:', error);
+    throw error;
+  }
+}
+```
+```
+
+### The ✅ ❌ Pattern
+
+Use visual indicators consistently:
+
+```markdown
+// ✅ Correct: [Brief explanation]
+[good code example]
+
+// ❌ Wrong: [Brief explanation]  
+[bad code example]
+
+// ✅ Also acceptable: [Alternative approach]
+[another good example]
+```
+
+**Benefits:**
+- AI models recognize this pattern instantly
+- Makes scanning rules faster for humans
+- Clearly shows desired vs undesired behavior
+
+### Context Over Rules
+
+**Explain *why* not just *what*.** The AI makes better edge-case decisions with reasoning.
+
+```markdown
+# ❌ Wrong: No context
+Prefer composition over inheritance.
+
+# ✅ Correct: Includes reasoning
+**Prefer composition over inheritance** because our components need to be easily testable in isolation and allow flexible behavior combination without rigid class hierarchies.
+```
+
+### Quantify When Possible
+
+Replace vague terms with specific thresholds:
+
+```markdown
+# ❌ Vague
+Keep functions small.
+
+# ✅ Specific  
+**Function soft limit: 50 lines.** Split required at 100+ lines or 3+ responsibilities.
+
+# ❌ Vague
+Don't create too many props.
+
+# ✅ Specific
+**Target maximum 10 props per component.** Beyond this, group related props into objects or split the component.
+```
+
+### Avoid Redundancy Across Files
+
+**Check existing rules before adding new ones.** Duplicate guidance confuses the AI.
+
+```markdown
+# ❌ Wrong: Duplicates core.mdc
+# In react.mdc
+Do not make changes to unrelated code.
+
+# ✅ Correct: React-specific guidance
+# In react.mdc
+Extract complex JSX into subcomponents rather than nested ternaries.
+```
+
+**If overlap is necessary, reference the other file:**
+
+```markdown
+# In api-design.mdc
+For general error handling patterns, see core.mdc. API-specific requirements:
+- Return 4xx for client errors, 5xx for server errors
+- Include error codes in response body
+```
+
+---
+
+## Editing Existing Rules
+
+### Making Changes Safely
+
+**Before editing any rule file:**
+
+1. **Read the entire file** to understand its current scope
+2. **Check for dependencies** (other rules referencing it)
+3. **Verify glob patterns** still match intended files
+4. **Test changes** on a sample file to ensure AI behavior improves
+
+### Adding Content to Existing Files
+
+**Preserve existing structure and format:**
+
+```markdown
+# ✅ Correct: Match existing format
+# Existing content uses ## for sections, code blocks with ✅ ❌
+
+## [Your New Section]
+
+[Match the explanation style]
+
+```typescript
+// ✅ Correct: [Explanation]
+[example matching existing code style]
+
+// ❌ Wrong: [Explanation]
+[example matching existing code style]
+```
+
+# ❌ Wrong: Different format
+### Your New Section (wrong heading level)
+
+Your new rule without examples (inconsistent)
+```
+
+### Removing Outdated Rules
+
+**Delete rules when:**
+- Technology version changed (e.g., removed deprecated API)
+- Project no longer uses the pattern
+- Rule contradicts updated best practices
+
+**Mark deprecated rather than delete if:**
+- Old pattern still exists in codebase
+- Migration is in progress
+
+```markdown
+## ~~Old Pattern (DEPRECATED)~~
+
+**Do not use `getServerSideProps` in new code.** Use Server Components with `async` functions instead.
+
+Old pattern still exists in `/pages` directory but will be migrated.
+
+// For reference only - do not use in new code
+export function getServerSideProps() { ... }
+```
+
+### Version-Specific Rules
+
+**When upgrading frameworks, update rules immediately:**
+
+```markdown
+# ✅ Good: Version-specific
+# React Rules (React 18+)
+
+Use concurrent features like `useTransition` and `useDeferredValue` for non-urgent updates.
+
+```typescript
+// ✅ React 18+: Concurrent features
+function SearchResults() {
+  const [isPending, startTransition] = useTransition();
+  const [query, setQuery] = useState('');
+  
+  const handleChange = (e) => {
+    startTransition(() => {
+      setQuery(e.target.value); // Non-urgent update
+    });
+  };
+}
+```
+
+# ❌ Bad: No version specified
+Use hooks (could mean React 16.8 or React 18 patterns)
+```
+
+---
+
+## Organizing Rules Across Files
+
+### Single Responsibility Per File
+
+Each rule file should cover one coherent domain:
+
+```
+✅ Good organization:
+├── typescript.mdc        # All TS type system rules
+├── react-components.mdc  # Component structure, props, JSX
+├── react-hooks.mdc       # Hook-specific patterns
+└── react-state.mdc       # State management patterns
+
+❌ Bad organization:
+├── rules1.mdc            # Random mix of TS and React rules
+├── frontend.mdc          # Too broad - TS, React, CSS, HTML
+└── myRules.mdc           # Non-descriptive name
+```
+
+### Nested Rules for Features
+
+**Use subdirectories for feature-specific rules:**
+
+```
+.cursor/rules/
+├── core.mdc
+├── typescript.mdc
+├── react.mdc
+└── features/
+    ├── auth/
+    │   └── auth.mdc          # Auth-specific patterns
+    ├── payments/
+    │   └── stripe.mdc        # Payment integration rules
+    └── admin/
+        └── admin-ui.mdc      # Admin-specific UI patterns
+```
+
+**Nested rules automatically apply when files in that directory are referenced.**
+
+---
+
+## Testing Your Rules
+
+### Verification Process
+
+**After creating or editing a rule:**
+
+1. **Create a test file** matching the glob pattern
+2. **Ask the AI** to perform a task covered by your rule
+3. **Verify the AI** follows the rule correctly
+4. **Iterate** if the AI misinterprets or ignores guidance
+
+**Example test workflow:**
+
+```markdown
+# Created rule in testing.mdc
+
+# Test 1: Create matching file
+# Create: src/utils/api.test.ts
+
+# Test 2: Request AI action
+"Write a test for the getUserById function"
+
+# Test 3: Verify behavior
+- Does it follow AAA pattern? ✅
+- Does it use descriptive test names? ✅  
+- Does it test error cases? ✅
+
+# Test 4: If issues found
+- Rule was too vague → Add concrete example
+- AI ignored rule → Check frontmatter (description/globs)
+- Rule conflicted with another → Resolve contradiction
+```
+
+### Common Issues and Fixes
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| AI ignores rule | Missing `description` or poor `globs` | Add clear description with "USE WHEN" |
+| AI misinterprets rule | Abstract guidance without examples | Add concrete code examples |
+| Rule applied too broadly | Glob pattern too generic | Narrow globs to specific files |
+| Rule never activates | Glob pattern too specific or wrong | Test glob patterns, broaden if needed |
+| Contradicting behavior | Multiple rules conflict | Audit all rules for consistency |
+
+---
+
+## Rule Maintenance
+
+### Regular Review Schedule
+
+**Monthly:**
+- Check if rules match current codebase patterns
+- Remove rules for deleted/deprecated features
+- Update examples to match current syntax
+
+**After major updates:**
+- Framework version changes → Update rules immediately
+- Architecture changes → Review all affected rules
+- New team members → Verify rules are clear to newcomers
+
+### Documentation
+
+**Include a README in `.cursor/rules/`:**
+
+```markdown
+# Cursor Rules Documentation
+
+## File Overview
+
+- `core.mdc` - Universal standards (always applied)
+- `typescript.mdc` - TypeScript type system (auto-attached to .ts/.tsx)
+- `react.mdc` - React components (auto-attached to .tsx/.jsx)
+- `testing.mdc` - Test patterns (auto-attached to .test/.spec files)
+
+## Adding New Rules
+
+1. Create `.mdc` file in appropriate location
+2. Follow structure in this guide
+3. Test with sample files
+4. Commit with descriptive message
+
+## Editing Rules
+
+- Preserve existing format
+- Add examples for new guidance
+- Update version references
+- Test changes before committing
+
+Last updated: [Date]
+```
+
+---
+
+## Migration from Legacy .cursorrules
+
+**If you have an existing `.cursorrules` file:**
+
+```bash
+# 1. Create new directory structure
+mkdir -p .cursor/rules
+
+# 2. Split .cursorrules into focused files
+# - Universal standards → core.mdc (alwaysApply: true)
+# - Language-specific → typescript.mdc, javascript.mdc
+# - Framework-specific → react.mdc, vue.mdc
+# - Domain-specific → testing.mdc, api-design.mdc
+
+# 3. Add frontmatter to each file
+# See structure section above
+
+# 4. Test each rule file individually
+
+# 5. Optional: Keep .cursorrules for backward compatibility
+# Or delete once migration confirmed working
+```
+
+**Migration checklist:**
+
+- [ ] Created `.cursor/rules/` directory
+- [ ] Split rules into focused files (<500 lines each)
+- [ ] Added proper frontmatter to all files
+- [ ] Included code examples for abstract rules
+- [ ] Tested each rule file activates correctly
+- [ ] Updated glob patterns for accuracy
+- [ ] Removed duplicated guidance across files
+- [ ] Committed changes with migration notes
+
+---
+
+## Best Practices Summary
+
+**DO:**
+- ✅ Create focused, single-responsibility rule files
+- ✅ Use "USE WHEN" in descriptions for Agent Requested rules
+- ✅ Include concrete code examples (✅ ❌ pattern)
+- ✅ Explain the "why" behind rules
+- ✅ Test rules with actual file changes
+- ✅ Keep individual files under 500 lines
+- ✅ Use specific glob patterns
+- ✅ Version control your rules
+- ✅ Review and update rules regularly
+
+**DON'T:**
+- ❌ Create generic, catch-all rule files
+- ❌ Write abstract principles without examples
+- ❌ Duplicate guidance across multiple files
+- ❌ Use overly broad glob patterns (`**/*`)
+- ❌ Set `alwaysApply: true` on most rules
+- ❌ Include outdated framework patterns
+- ❌ Create rules for temporary situations
+- ❌ Forget to test rules after editing
+
+---
+
+## Quick Reference: Rule File Template
+
+```markdown
+---
+description: USE WHEN [specific trigger condition]
+globs: 
+  - "**/*.specific.extension"
+alwaysApply: false
+---
+
+# [Descriptive Title]
+
+**Purpose:** [One sentence explaining the scope]
+
+---
+
+## [Major Section]
+
+**[Key principle or requirement]**
+
+```typescript
+// ❌ Wrong: [Why this is wrong]
+[bad example]
+
+// ✅ Correct: [Why this is right]
+[good example]
+```
+
+**[Additional guidance or context]**
+
+## [Next Section]
+
+...
+
+---
+
+## Verification Checklist
+
+Before considering [task type] complete:
+
+- [ ] Requirement 1
+- [ ] Requirement 2
+- [ ] Requirement 3
+```
+
+---
+
+## Common Rule File Patterns
+
+### Always Apply Core Standards
+
+```yaml
+---
+description: Core AI behavior standards for all code changes
+globs: []
+alwaysApply: true
+---
+```
+
+### Auto-Attached Language Rules
+
+```yaml
+---
+description: USE WHEN writing or modifying TypeScript code
+globs: 
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: false
+---
+```
+
+### Agent Requested Domain Rules
+
+```yaml
+---
+description: USE WHEN writing test files or adding test coverage
+globs: 
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.ts"
+alwaysApply: false
+---
+```
+
+### Manual Reference Only
+
+```yaml
+---
+description: ""
+globs: []
+alwaysApply: false
+---
+# Use @ruleName to manually activate
+```
+
+---
+
+## Troubleshooting
+
+### Rule Not Activating
+
+**Check:**
+1. Frontmatter syntax is valid YAML
+2. Description is clear and relevant
+3. Glob patterns match your file paths
+4. File is in `.cursor/rules/` directory
+5. File has `.mdc` extension
+
+### Rule Conflicting with Others
+
+**Resolution:**
+1. Identify which rules conflict
+2. Determine which is more specific
+3. Update the broader rule to reference the specific one
+4. Or consolidate into single rule file
+
+### AI Ignoring Rule Content
+
+**Fixes:**
+1. Add concrete code examples
+2. Make guidance more specific (avoid "should", "prefer", "consider")
+3. Use stronger language ("must", "never", "always")
+4. Add quantifiable thresholds
+5. Verify rule isn't contradicted by another file
+
+---
+
+This guide itself should be saved as `.cursor/rules/rule-management.mdc` for self-reference when working with rules.

@@ -1,0 +1,386 @@
+---
+description: Core AI behavior standards for all code changes
+globs: []
+alwaysApply: true
+---
+
+# Core AI Code Change Standards
+
+**Purpose:** Guide AI code modifications when project context is unclear, patterns conflict, or changes risk breaking existing behavior. These rules apply universally across the codebase.
+
+The AI agent already understands web development fundamentals and can inspect the codebase—these standards address decision-making when context is ambiguous.
+
+---
+
+## Change Scope & Minimal Diff Principle
+
+**Touch only files strictly required for the requested change.** Do not refactor, reformat, or "improve" unrelated code.
+
+```typescript
+// ❌ Wrong: User asked to fix button onClick, but you reformatted everything
+export const Button = ({ onClick, label }: ButtonProps) => {
+  // Reformatted unrelated code, changed quotes, added spacing
+  const handleClick = useCallback(
+    (e: MouseEvent) => {
+      onClick?.(e);
+    },
+    [onClick]
+  );
+  
+  return <button onClick={handleClick}>{label}</button>;
+};
+
+// ✅ Correct: Only fixed the requested onClick issue
+export const Button = ({ onClick, label }: ButtonProps) => {
+  return (
+    <button onClick={onClick}>  {/* Only this line changed */}
+      {label}
+    </button>
+  );
+}
+```
+
+**Target maximum 10% line changes per file** unless explicit refactoring is requested.
+
+**Never rename variables, functions, or files** unless the rename is the specific task or required for correctness.
+
+---
+
+## Local Consistency Over Global Best Practices
+
+**Follow existing patterns in the same directory** even if they differ from your training or external standards.
+
+```typescript
+// Scenario: Existing files in src/components/dashboard/ use this pattern
+export default function UserCard() { ... }
+
+// ❌ Wrong: Applying "best practice" named exports
+export const UserCard = () => { ... };
+
+// ✅ Correct: Match local pattern
+export default function RevenueCard() { ... }
+```
+
+**If multiple patterns exist in the same directory:**
+1. Count usage of each pattern
+2. Choose the pattern used in >50% of files
+3. If no clear majority, choose the simpler pattern (fewer characters, less abstraction)
+
+**Example conflict resolution:**
+
+```typescript
+// Directory has 6 files total:
+// - 4 files use: const Component = () => {}
+// - 2 files use: function Component() {}
+
+// ✅ Use arrow functions (4/6 = 66% usage)
+const NewComponent = () => {
+  // implementation
+};
+```
+
+---
+
+## No Assumptions About Architecture
+
+**Do not introduce new concepts** unless they already exist in the project:
+
+- ❌ Do not add new libraries without explicit permission
+- ❌ Do not create new architectural layers (services, repositories, adapters)
+- ❌ Do not introduce new patterns (HOCs, render props, custom hooks) if not already present
+- ❌ Do not add new tooling (linters, formatters, test runners)
+
+```typescript
+// ❌ Wrong: Project has no service layer, but you added one
+class UserService {
+  async getUser(id: string) { ... }
+}
+
+// ✅ Correct: Follow existing direct API call pattern
+export async function getUser(id: string) {
+  return fetch(`/api/users/${id}`).then(r => r.json());
+}
+```
+
+**If the codebase uses a pattern, continue using it** even if you think a different approach is better.
+
+---
+
+## Duplication & Abstraction Rules
+
+**Extract shared logic only when duplicated 2+ times.** Single use = keep inline.
+
+```typescript
+// ❌ Wrong: Premature abstraction for single use
+function formatUserName(user: User) {
+  return `${user.firstName} ${user.lastName}`;
+}
+const name = formatUserName(user);
+
+// ✅ Correct: Inline for single use
+const name = `${user.firstName} ${user.lastName}`;
+
+// ✅ Extract when used 2+ times
+// File A: const name = formatUserName(user);
+// File B: const name = formatUserName(author);
+// Now extraction is justified
+```
+
+**Create abstraction only if:**
+1. Reused 2+ times **AND**
+2. Reduces total lines of code by 20%+
+
+```typescript
+// Before: 15 lines duplicated in 2 places = 30 total lines
+// After abstraction: 15 lines in function + 2 call sites (2 lines each) = 19 total lines
+// Reduction: (30 - 19) / 30 = 36% → Justified ✅
+
+// Before: 3 lines duplicated in 2 places = 6 total lines  
+// After abstraction: 3 lines in function + 2 call sites (2 lines each) = 7 total lines
+// Increase: Not justified ❌
+```
+
+**Prefer deletion over refactoring.** Removing code is always safer than transforming it.
+
+- Dead code = delete immediately (zero tolerance)
+- Unused imports = delete
+- Commented code = delete (version control preserves history)
+
+---
+
+## Naming Conventions
+
+**When naming conflicts exist in the codebase:**
+
+1. Choose the convention used in the **same directory**
+2. If equal usage, choose the **shorter name**
+3. If still ambiguous, default to the table below
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| **Booleans** | Prefix: `is`, `has`, `can`, `should` | `isLoading`, `hasError`, `canSubmit` |
+| **Event handlers (internal)** | Prefix: `handle` | `handleClick`, `handleSubmit` |
+| **Event props (external API)** | Prefix: `on` | `onClick`, `onSubmit` |
+| **Async functions** | Suffix or context implies async | `fetchUser`, `loadData` |
+| **Constants** | SCREAMING_SNAKE_CASE | `MAX_RETRY_COUNT`, `API_BASE_URL` |
+| **Private variables** | Prefix: `_` (only if codebase uses this) | `_cache`, `_internalState` |
+
+**Target name length: 3–20 characters** for variables and functions.
+
+```typescript
+// ✅ Good names
+const isValid = checkValidity(input);
+const handleFormSubmit = () => { ... };
+const onUserClick = () => { ... }; // For props
+
+// ❌ Too short
+const v = checkValidity(input);
+
+// ❌ Too long  
+const isUserInputValidAccordingToSchema = checkValidity(input);
+```
+
+---
+
+## Behavior Preservation (Critical)
+
+**All changes must preserve existing behavior 100%** unless explicitly requested otherwise.
+
+**Visual changes are forbidden** unless the specific task is UI modification.
+
+```typescript
+// Task: "Fix the form validation bug"
+
+// ❌ Wrong: Changed visual spacing, added borders
+<form className="space-y-4 border border-gray-200 p-4">
+  <input className="rounded-md" />
+</form>
+
+// ✅ Correct: Only fixed validation, no visual changes
+<form className="space-y-2"> {/* Preserved existing spacing */}
+  <input />
+</form>
+```
+
+**API stability rules:**
+
+- **Public APIs** (exported functions, components): Breaking changes forbidden (0% risk)
+- **Internal APIs** (non-exported): Acceptable risk ≤5% if required for fix
+
+```typescript
+// ❌ Wrong: Breaking change to public API
+export function getUser(id: string, options: FetchOptions) { ... }
+// Previously: export function getUser(id: string) { ... }
+
+// ✅ Correct: Backward compatible
+export function getUser(id: string, options?: FetchOptions) { ... }
+```
+
+**Before moving or refactoring logic:**
+
+1. Check how many files import/use it
+2. Verify execution order dependencies
+3. Identify implicit dependencies (global state, side effects)
+
+```typescript
+// ❌ Dangerous: Moving this breaks initialization order
+// File: init.ts
+export const config = loadConfig(); // Must run before API calls
+
+// File: api.ts  
+import { config } from './init'; // Implicit dependency on init order
+```
+
+---
+
+## Comments & Documentation
+
+**Add single-line comments only for non-obvious decisions.**
+
+```typescript
+// ✅ Good: Explains non-obvious behavior
+// Safari requires explicit width for flex items to prevent overflow
+const containerStyle = { width: '100%' };
+
+// ❌ Bad: Restates code
+// Set the width to 100%
+const containerStyle = { width: '100%' };
+```
+
+**Never comment:**
+- Obvious logic (`// increment counter` above `count++`)
+- Code that restates itself (`// return user` above `return user`)
+- Stylistic preferences (`// using const for immutability`)
+
+**If explaining "why" requires >1 line, the code likely needs refactoring.**
+
+---
+
+## Default Decisions (When Context Missing)
+
+When you lack clear project context, use these defaults:
+
+| Decision Area | Default Choice | Example |
+|--------------|----------------|---------|
+| **Pattern choice** | Existing local pattern | Match same-directory files |
+| **Complexity** | Simplest option | Inline over abstraction |
+| **File organization** | Fewer files | Combine related code |
+| **Abstraction level** | Inline first | Extract only at 2+ uses |
+| **Risk tolerance** | Zero behavior change | Preserve 100% of existing behavior |
+| **Naming conflict** | Shorter name | `user` over `currentUser` |
+| **Import style** | Match existing | Named vs default follows codebase |
+
+---
+
+## Absolute Prohibitions
+
+These are **never** acceptable without explicit user request:
+
+- ❌ Speculative optimizations ("this might be slow later")
+- ❌ Future-proofing ("we might need this eventually")
+- ❌ Unsolicited cleanup ("fixed some old code while here")
+- ❌ Framework evangelism ("you should use X instead of Y")
+- ❌ Architectural recommendations ("consider restructuring to...")
+- ❌ Performance micro-optimizations without profiling data
+- ❌ Adding dependencies "just in case"
+
+```typescript
+// ❌ Wrong: Unsolicited optimization
+const memoizedValue = useMemo(() => computeValue(), []); // No evidence it's slow
+
+// ✅ Correct: Direct implementation
+const value = computeValue();
+```
+
+---
+
+## Priority Hierarchy
+
+When multiple valid approaches exist, optimize in this order:
+
+1. **Readability (50%)** – Code should be obvious to humans
+2. **Simplicity (30%)** – Fewer concepts, less abstraction
+3. **Redundancy reduction (20%)** – DRY only when justified
+
+```typescript
+// Scenario: Can either inline or extract
+
+// Option A: Inline (higher readability, lower DRY)
+const fullName = `${user.firstName} ${user.lastName}`;
+const authorName = `${author.firstName} ${author.lastName}`;
+
+// Option B: Extract (lower readability, higher DRY)
+const formatName = (p: Person) => `${p.firstName} ${p.lastName}`;
+const fullName = formatName(user);
+const authorName = formatName(author);
+
+// Choose Option A unless used 3+ times
+```
+
+**Readability beats cleverness 100% of the time.**
+
+```typescript
+// ❌ Clever but unclear
+const sum = arr.reduce((a, b) => a + b, 0);
+
+// ✅ Readable and obvious
+let sum = 0;
+for (const num of arr) {
+  sum += num;
+}
+```
+
+---
+
+## Error Handling Requirements
+
+**Every user-facing operation must handle failure states** unless explicitly building a prototype.
+
+```typescript
+// ❌ Wrong: No error handling
+async function saveUser(user: User) {
+  await fetch('/api/users', {
+    method: 'POST',
+    body: JSON.stringify(user)
+  });
+}
+
+// ✅ Correct: Handle errors explicitly
+async function saveUser(user: User): Promise<Result> {
+  try {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify(user)
+    });
+    
+    if (!response.ok) {
+      return { success: false, error: 'Failed to save user' };
+    }
+    
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: 'Network error' };
+  }
+}
+```
+
+**Use type-safe error handling patterns when available** (Result types, Either, etc.).
+
+---
+
+## Verification Checklist
+
+Before considering any change complete:
+
+- [ ] Only modified files required for the task
+- [ ] No unrelated formatting or refactoring changes
+- [ ] Existing behavior preserved (no visual or functional changes)
+- [ ] No new dependencies added
+- [ ] No new architectural patterns introduced
+- [ ] Followed local directory conventions
+- [ ] Added comments only for non-obvious decisions
+- [ ] Error cases handled appropriately
+- [ ] Code compiles without new TypeScript errors
+- [ ] No unused imports or variables introduced
+
+**If you cannot verify all items, explain what's unclear and ask for guidance.**

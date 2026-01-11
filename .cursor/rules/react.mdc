@@ -1,0 +1,657 @@
+---
+description: USE WHEN writing or modifying React components
+globs: 
+  - "**/*.tsx"
+  - "**/*.jsx"
+alwaysApply: false
+---
+
+# React Component Standards
+
+## Component Size & Complexity
+
+**Soft limit: 200 lines per component.** Beyond this, evaluate if the component has multiple responsibilities.
+
+**Hard split required when:**
+- Component exceeds 300 lines **OR**
+- Component handles 3+ distinct responsibilities
+
+```typescript
+// ❌ Wrong: 350 lines, handles auth + data fetching + UI + validation
+export function UserDashboard() {
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // ... 340+ more lines
+}
+
+// ✅ Correct: Split into focused components
+export function UserDashboard() {
+  return (
+    <AuthGuard>
+      <UserProfile />
+      <UserPosts />
+    </AuthGuard>
+  );
+}
+```
+
+**Identify responsibilities by asking:**
+1. Data fetching/management
+2. User interaction handling
+3. Layout/presentation
+4. Business logic/validation
+
+If a component does 3+, split it.
+
+---
+
+## Custom Hooks
+
+**Extract custom hooks only when reused 2+ times.** Single use = keep logic inline within component.
+
+```typescript
+// ❌ Wrong: Premature extraction for single use
+function useUserData(userId: string) {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetchUser(userId).then(setUser);
+  }, [userId]);
+  return user;
+}
+
+function UserProfile({ userId }: Props) {
+  const user = useUserData(userId); // Only used here
+}
+
+// ✅ Correct: Keep inline for single use
+function UserProfile({ userId }: Props) {
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    fetchUser(userId).then(setUser);
+  }, [userId]);
+}
+
+// ✅ Extract when used 2+ times
+function UserProfile({ userId }: Props) {
+  const user = useUserData(userId);
+}
+
+function UserSettings({ userId }: Props) {
+  const user = useUserData(userId); // Second usage justifies extraction
+}
+```
+
+**Create new hook file only if it reduces total lines by 20%+.**
+
+```typescript
+// Before extraction: 15 lines × 2 components = 30 total lines
+// After extraction: 15 lines (hook) + 2 lines (call) × 2 = 19 total lines
+// Reduction: 36% → Justified ✅
+
+// Before extraction: 5 lines × 2 components = 10 total lines  
+// After extraction: 5 lines (hook) + 2 lines (call) × 2 = 9 total lines
+// Reduction: 10% → Keep inline ❌
+```
+
+---
+
+## State Placement
+
+**Default to local state.** Prefer `useState` in the component that needs it (70%+ of cases).
+
+**Lift state only when:**
+- Shared by 2+ sibling components **OR**
+- Parent needs to control child state
+
+```typescript
+// ❌ Wrong: Unnecessary state lifting
+function Parent() {
+  const [searchTerm, setSearchTerm] = useState(''); // Only used by SearchBar
+  
+  return (
+    <div>
+      <SearchBar value={searchTerm} onChange={setSearchTerm} />
+      <OtherComponent /> {/* Doesn't need searchTerm */}
+    </div>
+  );
+}
+
+// ✅ Correct: Local state
+function SearchBar() {
+  const [searchTerm, setSearchTerm] = useState(''); // Kept local
+  
+  return <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />;
+}
+
+function Parent() {
+  return (
+    <div>
+      <SearchBar />
+      <OtherComponent />
+    </div>
+  );
+}
+
+// ✅ Lift when shared by siblings
+function Parent() {
+  const [searchTerm, setSearchTerm] = useState(''); // Shared state
+  
+  return (
+    <div>
+      <SearchBar value={searchTerm} onChange={setSearchTerm} />
+      <SearchResults query={searchTerm} /> {/* 2nd consumer */}
+    </div>
+  );
+}
+```
+
+**Server Components default:** If using React Server Components, prefer server-side data fetching over client state.
+
+```typescript
+// ✅ Server Component (preferred)
+async function UserProfile({ userId }: Props) {
+  const user = await db.user.findUnique({ where: { id: userId } });
+  return <div>{user.name}</div>;
+}
+
+// ❌ Client Component (only if interactivity required)
+'use client';
+function UserProfile({ userId }: Props) {
+  const [user, setUser] = useState(null);
+  useEffect(() => { /* fetch */ }, [userId]);
+  return <div>{user?.name}</div>;
+}
+```
+
+---
+
+## useEffect Rules
+
+**`useEffect` is only for side effects and subscriptions.** Zero tolerance for derived state calculations.
+
+```typescript
+// ❌ Wrong: Derived state in useEffect
+function UserGreeting({ user }: Props) {
+  const [greeting, setGreeting] = useState('');
+  
+  useEffect(() => {
+    setGreeting(`Hello, ${user.name}!`); // Derived value
+  }, [user.name]);
+  
+  return <h1>{greeting}</h1>;
+}
+
+// ✅ Correct: Derive during render
+function UserGreeting({ user }: Props) {
+  const greeting = `Hello, ${user.name}!`; // Direct derivation
+  return <h1>{greeting}</h1>;
+}
+
+// ✅ Valid useEffect: Side effects
+function ChatRoom({ roomId }: Props) {
+  useEffect(() => {
+    const connection = createConnection(roomId);
+    connection.connect(); // Side effect: external subscription
+    
+    return () => connection.disconnect(); // Cleanup
+  }, [roomId]);
+}
+
+// ✅ Valid useEffect: DOM manipulation
+function AutofocusInput() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    inputRef.current?.focus(); // Side effect: DOM mutation
+  }, []);
+}
+```
+
+**Valid `useEffect` use cases:**
+- Network requests (unless using React Query/SWR/Server Components)
+- Setting up subscriptions (WebSocket, event listeners)
+- DOM manipulation (focus, scroll, measurements)
+- Synchronizing with external systems (localStorage, third-party libraries)
+- Analytics tracking
+
+**Invalid `useEffect` use cases:**
+- Calculating derived values from props/state
+- Transforming data for rendering
+- Filtering or sorting lists
+- Formatting strings
+
+---
+
+## Props Design
+
+**Boolean props must have clear prefixes:** `is`, `has`, `can`, `should`.
+
+```typescript
+// ❌ Wrong: Ambiguous boolean props
+type ButtonProps = {
+  disabled: boolean;
+  loading: boolean;
+  primary: boolean;
+};
+
+// ✅ Correct: Explicitly named booleans
+type ButtonProps = {
+  isDisabled: boolean;
+  isLoading: boolean;
+  isPrimary: boolean;
+};
+```
+
+**Target maximum 10 props per component.** More indicates the component does too much.
+
+```typescript
+// ❌ Wrong: 15 props indicates component needs splitting
+type FormProps = {
+  title: string;
+  subtitle: string;
+  fields: Field[];
+  onSubmit: () => void;
+  onCancel: () => void;
+  isLoading: boolean;
+  errors: Errors;
+  submitLabel: string;
+  cancelLabel: string;
+  showCancel: boolean;
+  // ... 5 more props
+};
+
+// ✅ Correct: Group related props into objects
+type FormProps = {
+  header: {
+    title: string;
+    subtitle: string;
+  };
+  fields: Field[];
+  actions: {
+    onSubmit: () => void;
+    onCancel?: () => void;
+    submitLabel?: string;
+    cancelLabel?: string;
+  };
+  state: {
+    isLoading: boolean;
+    errors: Errors;
+  };
+};
+
+// ✅ Or split into smaller components
+function Form({ fields, onSubmit }: FormProps) {
+  return (
+    <div>
+      <FormHeader title="..." subtitle="..." />
+      <FormFields fields={fields} />
+      <FormActions onSubmit={onSubmit} />
+    </div>
+  );
+}
+```
+
+**Props object patterns:**
+
+```typescript
+// ✅ Good: Rest props for HTML attributes
+type ButtonProps = {
+  children: ReactNode;
+  variant?: 'primary' | 'secondary';
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+function Button({ children, variant = 'primary', ...props }: ButtonProps) {
+  return <button className={variant} {...props}>{children}</button>;
+}
+
+// Usage: <Button onClick={...} disabled type="submit">Click</Button>
+```
+
+---
+
+## Memoization
+
+**Zero tolerance for premature memoization.** Use `useMemo` and `useCallback` only when:
+
+1. **Measured performance issue** (React DevTools Profiler shows excessive renders) **OR**
+2. **Obvious expensive computation** (complex calculations, large array processing)
+
+```typescript
+// ❌ Wrong: Premature optimization
+function UserList({ users }: Props) {
+  const sortedUsers = useMemo(
+    () => users.sort((a, b) => a.name.localeCompare(b.name)),
+    [users]
+  ); // Unnecessary - no evidence it's slow
+  
+  return <div>{sortedUsers.map(u => <UserCard key={u.id} user={u} />)}</div>;
+}
+
+// ✅ Correct: Direct computation
+function UserList({ users }: Props) {
+  const sortedUsers = users.sort((a, b) => a.name.localeCompare(b.name));
+  return <div>{sortedUsers.map(u => <UserCard key={u.id} user={u} />)}</div>;
+}
+
+// ✅ Valid useMemo: Expensive computation
+function DataVisualization({ data }: Props) {
+  const processedData = useMemo(() => {
+    // Complex calculation over 10k+ items
+    return data.map(item => ({
+      ...item,
+      computed: expensiveCalculation(item), // Proven slow
+      aggregated: data.filter(d => d.category === item.category)
+    }));
+  }, [data]);
+}
+
+// ✅ Valid useCallback: Prevents child re-renders
+const MemoizedChild = memo(Child);
+
+function Parent() {
+  const handleClick = useCallback(() => {
+    // Stable reference prevents MemoizedChild re-render
+  }, []);
+  
+  return <MemoizedChild onClick={handleClick} />;
+}
+```
+
+**When to measure:**
+- Component renders 10+ times per second
+- User reports UI lag
+- Profiler shows >16ms render time
+
+**Prefer these alternatives first:**
+1. Move expensive computation outside component
+2. Use React Server Components
+3. Virtualize long lists (react-window, react-virtualized)
+4. Split component to isolate re-renders
+
+---
+
+## JSX Complexity
+
+**Maximum ternary nesting: 1 level.** Extract complex conditional logic to functions or components.
+
+```typescript
+// ❌ Wrong: Nested ternaries
+function Status({ user }: Props) {
+  return (
+    <div>
+      {user.isActive ? (
+        user.isPremium ? (
+          <PremiumBadge />
+        ) : (
+          <FreeBadge />
+        )
+      ) : (
+        <InactiveBadge />
+      )}
+    </div>
+  );
+}
+
+// ✅ Correct: Extract to function
+function Status({ user }: Props) {
+  const getBadge = () => {
+    if (!user.isActive) return <InactiveBadge />;
+    if (user.isPremium) return <PremiumBadge />;
+    return <FreeBadge />;
+  };
+  
+  return <div>{getBadge()}</div>;
+}
+
+// ✅ Or extract to component
+function Status({ user }: Props) {
+  return <div><UserBadge user={user} /></div>;
+}
+```
+
+**Complex inline logic must be extracted:**
+
+```typescript
+// ❌ Wrong: Complex calculations in JSX
+function ProductCard({ product }: Props) {
+  return (
+    <div>
+      <h2>{product.name}</h2>
+      <p>
+        ${(product.price * (1 - product.discount) * (1 + product.tax)).toFixed(2)}
+      </p>
+    </div>
+  );
+}
+
+// ✅ Correct: Extract calculation
+function ProductCard({ product }: Props) {
+  const finalPrice = calculateFinalPrice(product);
+  
+  return (
+    <div>
+      <h2>{product.name}</h2>
+      <p>${finalPrice}</p>
+    </div>
+  );
+}
+
+function calculateFinalPrice(product: Product): string {
+  const withDiscount = product.price * (1 - product.discount);
+  const withTax = withDiscount * (1 + product.tax);
+  return withTax.toFixed(2);
+}
+```
+
+**Single-level ternaries are acceptable:**
+
+```typescript
+// ✅ Good: Simple, readable ternary
+function Button({ isLoading, children }: Props) {
+  return (
+    <button>
+      {isLoading ? <Spinner /> : children}
+    </button>
+  );
+}
+```
+
+---
+
+## List Keys
+
+**Zero tolerance for array index as key.** Keys must be stable and unique.
+
+```typescript
+// ❌ Wrong: Index as key
+function UserList({ users }: Props) {
+  return (
+    <div>
+      {users.map((user, index) => (
+        <UserCard key={index} user={user} /> // Breaks on reorder/filter
+      ))}
+    </div>
+  );
+}
+
+// ✅ Correct: Stable unique identifier
+function UserList({ users }: Props) {
+  return (
+    <div>
+      {users.map((user) => (
+        <UserCard key={user.id} user={user} />
+      ))}
+    </div>
+  );
+}
+
+// ✅ Fallback: Composite key if no ID
+function CommentList({ comments }: Props) {
+  return (
+    <div>
+      {comments.map((comment) => (
+        <Comment key={`${comment.userId}-${comment.timestamp}`} comment={comment} />
+      ))}
+    </div>
+  );
+}
+```
+
+**When items have no stable ID:**
+
+```typescript
+// ✅ Generate stable IDs on data load
+const [items, setItems] = useState<Item[]>([]);
+
+useEffect(() => {
+  fetchItems().then(data => {
+    const itemsWithIds = data.map((item, idx) => ({
+      ...item,
+      _id: `${item.name}-${idx}` // Generate once
+    }));
+    setItems(itemsWithIds);
+  });
+}, []);
+
+return items.map(item => <ItemCard key={item._id} item={item} />);
+```
+
+**Why index keys break:**
+- Reordering: `key={0}` might point to different item after sort
+- Filtering: Indexes change, causing wrong component reuse
+- Inserting/deleting: React reuses wrong components
+
+---
+
+## Additional React Patterns
+
+**Avoid prop drilling beyond 2 levels.** Use context or composition instead.
+
+```typescript
+// ❌ Wrong: Prop drilling through 3+ levels
+function App() {
+  const [user, setUser] = useState(null);
+  return <Layout user={user} />;
+}
+
+function Layout({ user }: Props) {
+  return <Sidebar user={user} />;
+}
+
+function Sidebar({ user }: Props) {
+  return <UserMenu user={user} />;
+}
+
+function UserMenu({ user }: Props) {
+  return <div>{user.name}</div>;
+}
+
+// ✅ Correct: Context for deeply shared data
+const UserContext = createContext<User | null>(null);
+
+function App() {
+  const [user, setUser] = useState(null);
+  return (
+    <UserContext.Provider value={user}>
+      <Layout />
+    </UserContext.Provider>
+  );
+}
+
+function UserMenu() {
+  const user = useContext(UserContext);
+  return <div>{user?.name}</div>;
+}
+```
+
+**Event handlers should use descriptive names:**
+
+```typescript
+// ❌ Wrong: Generic names
+<button onClick={handler}>Submit</button>
+
+// ✅ Correct: Descriptive names
+<button onClick={handleSubmit}>Submit</button>
+<input onChange={handleEmailChange} />
+<div onMouseEnter={handleCardHover} />
+```
+
+**Prefer composition over configuration:**
+
+```typescript
+// ❌ Wrong: Configuration props
+<DataTable
+  showHeader
+  showFooter
+  showPagination
+  enableSorting
+  enableFiltering
+/>
+
+// ✅ Correct: Composition
+<DataTable>
+  <DataTable.Header />
+  <DataTable.Body />
+  <DataTable.Footer>
+    <Pagination />
+  </DataTable.Footer>
+</DataTable>
+```
+
+---
+
+## Type Safety for Components
+
+**Always type component props explicitly.**
+
+```typescript
+// ❌ Wrong: Implicit any
+function Button({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>;
+}
+
+// ✅ Correct: Explicit types
+type ButtonProps = {
+  onClick: () => void;
+  children: ReactNode;
+  variant?: 'primary' | 'secondary';
+};
+
+function Button({ onClick, children, variant = 'primary' }: ButtonProps) {
+  return <button onClick={onClick} className={variant}>{children}</button>;
+}
+```
+
+**Use discriminated unions for component variants:**
+
+```typescript
+type ButtonProps =
+  | { variant: 'link'; href: string }
+  | { variant: 'button'; onClick: () => void };
+
+function Button(props: ButtonProps) {
+  if (props.variant === 'link') {
+    return <a href={props.href}>Link</a>;
+  }
+  return <button onClick={props.onClick}>Button</button>;
+}
+```
+
+---
+
+## Verification Checklist
+
+Before considering a React component complete:
+
+- [ ] Component under 300 lines (or split if multiple responsibilities)
+- [ ] Custom hooks extracted only when reused 2+ times
+- [ ] State kept local unless shared by 2+ siblings
+- [ ] No derived state in `useEffect`
+- [ ] Boolean props use `is`/`has`/`can`/`should` prefix
+- [ ] Props count ≤ 10 (or grouped into objects)
+- [ ] No `useMemo`/`useCallback` without measured need
+- [ ] Maximum 1 level of ternary nesting
+- [ ] All list items have stable, unique keys (no index)
+- [ ] All props explicitly typed
