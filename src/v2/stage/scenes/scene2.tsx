@@ -5,14 +5,13 @@ import styles from "./scene2.module.css";
 import {
     useActivationOnElement,
     useActivationOnElementShorthand,
-} from "@v2/components/scrollHandler";
-import { useSimpleTypewriter } from "@v2/components/scrollHandler/extensions/simpleTypewriter";
+} from "@v2/components/scrollHandler/useAnimatedActivation";
 
 export const Scene2: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
 
-    useActivationOnElementShorthand(containerRef, 0.3, 0.4, 0.5, 0.3);
+    useActivationOnElementShorthand(containerRef, styles.active, 0.5, 1.5);
 
     function newDetail(title: string, label: string) {
         return { title, label, ref: useRef<HTMLParagraphElement>(null) };
@@ -48,9 +47,9 @@ export const Scene2: React.FC = () => {
     details.forEach((detail, index) => {
         useActivationOnElement({
             elementRef: detail.ref,
+            className: styles.active,
             enter: 0.6 + index * 0.1,
-            transition: 0.3,
-            extensions: [useSimpleTypewriter()],
+            exit: 0.9 + index * 0.1,
         });
     });
 
@@ -63,9 +62,9 @@ export const Scene2: React.FC = () => {
 
                 <h1 ref={titleRef} className={styles.title}>
                     <span className={styles.titleInner}>
-                        <span>{"Alexander Löhn"}</span>
+                        <span>{"Alexander"}</span>
+                        <span>{"Löhn"}</span>
                     </span>
-                    <hr className={styles.separator} />
                     <span className={styles.titleSub}>
                         <span>{"Frontend Developer"}</span>
                     </span>

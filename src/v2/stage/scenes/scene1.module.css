@@ -11,7 +11,7 @@
 
 @media (min-width: 768px) {
     .container {
-        justify-content: flex-start;
+        justify-content: center;
     }
 }
 
@@ -39,23 +39,20 @@
     font-family: "Vank";
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    font-size: 100px;
+    font-size: 75px;
     font-weight: 500;
     line-height: 1;
-    color: #ffffff;
+    color: #ddd;
     text-align: center;
     height: 70px;
     opacity: 1;
-    transform: translateX(calc(100vw * var(--pos-invert)));
-    will-change: transform;
     display: inline-block;
-    background-clip: text;
 }
 
 @media (min-width: 768px) {
     .lineWrapper {
-        height: calc(100vh / var(--lines)) !important;
-        font-size: calc(120vh / var(--lines));
+        height: calc(85vh / var(--lines)) !important;
+        font-size: calc(95vh / var(--lines));
         text-align: left;
         transform: 0px;
     }
@@ -63,7 +60,6 @@
 
 .fadeIn .lineWrapper {
     transform: translateX(0px);
-    transition-delay: calc(var(--delay) * 5);
 }
 
 .scrollPhase .lineWrapper {
@@ -74,6 +70,7 @@
 }
 
 .text {
+    white-space: nowrap;
     transition: transform 0.5s cubic-bezier(0, 0, 0, 1) 2s;
 }
 
@@ -88,4 +85,29 @@
 }
 
 .scrollPhase .text {
+}
+
+.progressBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    background-color: var(--color);
+    width: 0;
+    animation: progress var(--duration) linear infinite;
+    z-index: 100;
+    transition: background-color 0.5s ease;
+}
+
+.paused {
+    animation-play-state: paused;
+}
+
+@keyframes progress {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
 }
