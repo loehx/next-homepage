@@ -9,6 +9,18 @@
     height: 100vh;
 }
 
+.container:before {
+    --invert: calc(1 - var(--progress));
+    content: "";
+    position: absolute;
+    top: -100vh;
+    left: 0;
+    bottom: -100vh;
+    right: 0;
+    background-color: black;
+    opacity: var(--invert);
+}
+
 @media (min-width: 768px) {
     .container {
         justify-content: center;
@@ -66,7 +78,7 @@
     transition-delay: 0s;
     transition-duration: calc(var(--progress));
     opacity: calc(1 - var(--progress) * 2);
-    transform: translateX(calc(var(--progress) * 100px * var(--pos-invert)));
+    transform: translateX(calc(var(--progress) * 100vw * var(--pos-invert)));
 }
 
 .text {
@@ -97,6 +109,7 @@
     animation: progress var(--duration) linear infinite;
     z-index: 100;
     transition: background-color 0.5s ease;
+    transform: translateY(calc(var(--progress) * 500%));
 }
 
 .paused {

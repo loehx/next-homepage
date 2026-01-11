@@ -1,15 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./scene1.module.css";
 import { useScroll } from "@v2/components/scrollHandler";
-import { useMouseDirection } from "src/hooks";
 import cx from "classnames";
-import { Background1 } from "./background1";
-
-interface Scene1Props {
-    delay: number;
-    duration: number;
-    lines: string[];
-}
 
 const LINES = [
     ["Heyo", getCurrentSalutation(), "Welcome"],
@@ -25,7 +17,7 @@ const CUSTOM_SEEDS = [23, 32, 43];
 const COLORS = ["#f635df", "#35f686", "#bef635", "#f64b4b", "#4b9bf6"];
 const ALTERNATE_COLORS_INTERVAL = 2500;
 
-export const Scene1: React.FC<Scene1Props> = ({ duration }) => {
+export const Scene1: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState(-1);
     const [cycleIndex, setCycleIndex] = useState(0);
@@ -121,7 +113,6 @@ export const Scene1: React.FC<Scene1Props> = ({ duration }) => {
 
     return (
         <>
-            <Background1 progress={progress} distance={0.8} />
             <div
                 ref={containerRef}
                 className={cx(

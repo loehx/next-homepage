@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Logo } from "@components/logo";
-
+import { DarkWavyBackground } from "@v2/components/wallpaper";
 import styles from "./scene2.module.css";
 import {
     useActivationOnElement,
@@ -9,7 +9,6 @@ import {
 
 export const Scene2: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
 
     useActivationOnElementShorthand(containerRef, styles.active, 0.5, 1.5);
 
@@ -55,21 +54,7 @@ export const Scene2: React.FC = () => {
 
     return (
         <div ref={containerRef} className={styles.container}>
-            <div>
-                <div className={styles.logo}>
-                    <Logo aria-label="Logo" />
-                </div>
-
-                <h1 ref={titleRef} className={styles.title}>
-                    <span className={styles.titleInner}>
-                        <span>{"Alexander"}</span>
-                        <span>{"Löhn"}</span>
-                    </span>
-                    <span className={styles.titleSub}>
-                        <span>{"Frontend Developer"}</span>
-                    </span>
-                </h1>
-            </div>
+            <DarkWavyBackground parallax={0.4} />
 
             {details.map((detail, index) => (
                 <div key={index} className={styles.detail} ref={detail.ref}>
