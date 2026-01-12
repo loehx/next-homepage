@@ -1,16 +1,25 @@
-import React, { useRef } from "react";
-import { Logo } from "@components/logo";
+import React, { useRef, useState } from "react";
 import { DarkWavyBackground } from "@v2/components/wallpaper";
 import styles from "./scene2.module.css";
-import {
-    useActivationOnElement,
-    useActivationOnElementShorthand,
-} from "@v2/components/scrollHandler/useAnimatedActivation";
+import { useActivationOnElement } from "@v2/components/scrollHandler/useActivation";
+import { useAnimatedActivationOnElementShorthand } from "@v2/components/scrollHandler/useAnimatedActivation";
+import { useSimpleTypewriter } from "@v2/components/scrollHandler/extensions/simpleTypewriter";
+import { useScroll } from "@v2/components/scrollHandler";
 
 export const Scene2: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [showBackground, setShowBackground] = useState(false);
 
-    useActivationOnElementShorthand(containerRef, styles.active, 0.5, 1.5);
+    useScroll((scrollData) => {
+        setShowBackground(showBackground || scrollData.progress > 0.5);
+    });
+
+    useAnimatedActivationOnElementShorthand(
+        containerRef,
+        styles.active,
+        0.5,
+        1.5,
+    );
 
     function newDetail(title: string, label: string) {
         return { title, label, ref: useRef<HTMLParagraphElement>(null) };
@@ -46,15 +55,19 @@ export const Scene2: React.FC = () => {
     details.forEach((detail, index) => {
         useActivationOnElement({
             elementRef: detail.ref,
-            className: styles.active,
             enter: 0.6 + index * 0.1,
-            exit: 0.9 + index * 0.1,
+            transition: 0.2,
+            includePhase: true,
+            extensions: [useSimpleTypewriter()],
+            changed: (activation, oldActivation, phase) => {
+                console.log(activation, phase);
+            },
         });
     });
 
     return (
         <div ref={containerRef} className={styles.container}>
-            <DarkWavyBackground parallax={0.4} />
+            {/* <DarkWavyBackground parallax={0.4} /> */}
 
             {details.map((detail, index) => (
                 <div key={index} className={styles.detail} ref={detail.ref}>

@@ -89,16 +89,19 @@ type ActivationExtension = (elementRef: React.RefObject<HTMLElement>) => {
  * Hook to get the activation of the scroll on an element.
  * @param options - The options for the activation.
  * @param options.elementRef - The reference to the element.
- * @param options.includePhase - Whether to include the phase in the activation.
+ * @param options.activeClass - The class to add when the activation is active.
+ * @param options.enterClass - The class to add when the activation is entering.
  */
 export function useActivationOnElement(
     options: UseActivationOptions & {
         elementRef: React.RefObject<HTMLElement>;
         extensions?: ActivationExtension[];
+        activeClass?: string;
+        enterClass?: string;
         includePhase?: boolean;
     },
 ): void {
-    const { elementRef, changed, ...rest } = options;
+    const { elementRef, changed, includePhase = false, ...rest } = options;
     const [currentPhase, setCurrentPhase] = useState<Phase>(Phase.Unknown);
     const extensions = options.extensions?.map((extension) =>
         extension(elementRef),
@@ -112,21 +115,39 @@ export function useActivationOnElement(
             const style = element.style;
             style.setProperty("--progress", activation.toString());
 
-            if (options.includePhase && phase !== currentPhase) {
-                style.setProperty("--idle", phase === Phase.Idle ? "1" : "0");
-                style.setProperty(
-                    "--enter",
-                    phase === Phase.Entering ? "1" : "0",
-                );
-                style.setProperty(
-                    "--active",
-                    phase === Phase.Active ? "1" : "0",
-                );
-                style.setProperty(
-                    "--exit",
-                    phase === Phase.Exiting ? "1" : "0",
-                );
-                setCurrentPhase(phase);
+            if (phase !== currentPhase) {
+                if (options.enterClass) {
+                    element.classList.toggle(
+                        options.enterClass,
+                        phase === Phase.Entering,
+                    );
+                }
+                if (options.activeClass) {
+                    element.classList.toggle(
+                        options.activeClass,
+                        phase === Phase.Active,
+                    );
+                }
+
+                if (includePhase) {
+                    style.setProperty(
+                        "--idle",
+                        phase === Phase.Idle ? "1" : "0",
+                    );
+                    style.setProperty(
+                        "--enter",
+                        phase === Phase.Entering ? "1" : "0",
+                    );
+                    style.setProperty(
+                        "--active",
+                        phase === Phase.Active ? "1" : "0",
+                    );
+                    style.setProperty(
+                        "--exit",
+                        phase === Phase.Exiting ? "1" : "0",
+                    );
+                    setCurrentPhase(phase);
+                }
             }
 
             if (changed) changed(activation, oldActivation, phase);
@@ -143,6 +164,8 @@ export const useActivationOnElementShorthand = (
     enterPhase: number,
     activePhase: number,
     exitPhase: number,
+    activeClass?: string,
+    enterClass?: string,
     includePhase?: boolean,
     changed?: (activation: number, oldActivation: number, phase: Phase) => void,
 ): void => {
@@ -152,6 +175,8 @@ export const useActivationOnElementShorthand = (
         exit: enter + enterPhase + activePhase + exitPhase,
         transition: enterPhase,
         transitionOut: exitPhase,
+        activeClass,
+        enterClass,
         includePhase,
         changed,
     });

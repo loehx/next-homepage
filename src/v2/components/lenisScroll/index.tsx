@@ -30,7 +30,7 @@ export const LenisScroll: React.FC<LenisScrollProps> = ({
         <ReactLenis
             root
             options={{
-                lerp: 0.2,
+                lerp: 0.8,
                 smoothWheel: true,
                 smoothTouch: false, // TODO: Test this setting.
             }}

@@ -1,14 +1,14 @@
 import { useScroll } from "./index";
 
-export type UseActivationOnElementOptions = {
+export type UseAnimatedActivationOnElementOptions = {
     elementRef: React.RefObject<HTMLElement>;
     className: string;
     enter: number;
     exit?: number;
 };
 
-export function useActivationOnElement(
-    options: UseActivationOnElementOptions,
+export function useAnimatedActivationOnElement(
+    options: UseAnimatedActivationOnElementOptions,
 ): void {
     const { elementRef, className, enter, exit = Infinity } = options;
 
@@ -20,16 +20,18 @@ export function useActivationOnElement(
     });
 }
 
-export const useActivationOnElementShorthand = (
+export const useAnimatedActivationOnElementShorthand = (
     elementRef: React.RefObject<HTMLElement>,
     className: string,
     enter: number,
     exit: number,
+    changed?: (activation: number, oldActivation: number, phase: Phase) => void,
 ): void => {
-    return useActivationOnElement({
+    return useAnimatedActivationOnElement({
         elementRef,
         className,
         enter,
         exit,
+        changed,
     });
 };

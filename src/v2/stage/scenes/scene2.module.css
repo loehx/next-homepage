@@ -8,17 +8,6 @@
     width: 100%;
 }
 
-.separator {
-    width: min(calc(var(--progress, 1) * 90vw), 360px);
-    margin: 15px auto;
-    height: 1px;
-    background: white;
-    border: none;
-    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
-    z-index: 1;
-    position: relative;
-}
-
 .detail {
     --invert: calc(1 - var(--progress));
     font-family: "JetBrains Mono";
@@ -38,9 +27,15 @@
     }
 }
 
-.detail .separator {
+.separator {
+    margin: 15px auto;
+    height: 1px;
+    background: white;
+    border: none;
+    box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.5);
+    position: relative;
     margin: 10px auto;
-    width: calc(var(--progress, 0) * 150px);
+    width: calc(var(--progress) * 20vw);
     opacity: var(--progress);
 }
 
@@ -50,14 +45,12 @@
     display: block;
     font-weight: bold;
     overflow: hidden;
-    opacity: var(--progress);
 }
 
 .detailTitle span {
-    --custom-progress: clamp(0, calc(var(--progress) * 2) - 0.2, 1);
-    --invert: calc(1 - var(--custom-progress));
     display: block;
-    transform: translateY(calc(var(--invert) * 100%));
+    transform: translateY(calc((1 - var(--enter, 0)) * 100%));
+    opacity: var(--enter, 0);
 }
 
 .detailLabel {
