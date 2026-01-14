@@ -76,14 +76,18 @@ export const useActivation = (options: UseActivationOptions): number => {
         }
     };
 
-    const startAnimation = (target: number, duration: number, newPhase: Phase) => {
+    const startAnimation = (
+        target: number,
+        duration: number,
+        newPhase: Phase,
+    ) => {
         animationRef.current = {
             startTime: Date.now(),
             startActivation: activation,
             targetActivation: target,
             duration,
         };
-        
+
         const frameInterval = 1000 / fps;
         let lastUpdate = Date.now();
 
@@ -98,9 +102,15 @@ export const useActivation = (options: UseActivationOptions): number => {
             if (!animationRef.current) return;
 
             const elapsed = now - animationRef.current.startTime;
-            const progress = Math.min(elapsed / animationRef.current.duration, 1);
-            const current = animationRef.current.startActivation + 
-                (animationRef.current.targetActivation - animationRef.current.startActivation) * progress;
+            const progress = Math.min(
+                elapsed / animationRef.current.duration,
+                1,
+            );
+            const current =
+                animationRef.current.startActivation +
+                (animationRef.current.targetActivation -
+                    animationRef.current.startActivation) *
+                    progress;
 
             updateActivation(current, newPhase);
 
@@ -132,7 +142,8 @@ export const useActivation = (options: UseActivationOptions): number => {
                 if (currentActivation < enterFully) {
                     currentPhase = Phase.Entering;
                     currentActivation =
-                        (currentActivation - options.enter) / options.transition;
+                        (currentActivation - options.enter) /
+                        options.transition;
                 } else if (currentActivation > startExit) {
                     currentPhase = Phase.Exiting;
                     currentActivation =
@@ -153,9 +164,16 @@ export const useActivation = (options: UseActivationOptions): number => {
                 if (phase === Phase.Idle || phase === Phase.Unknown) {
                     // Just entered, start entering animation
                     startAnimation(1, options.transition, Phase.Entering);
-                } else if (scrollProgress >= exit - transitionOut && phase !== Phase.Exiting) {
+                } else if (
+                    scrollProgress >= exit - transitionOut &&
+                    phase !== Phase.Exiting
+                ) {
                     // Start exit animation
-                    startAnimation(0, options.transitionOut || options.transition, Phase.Exiting);
+                    startAnimation(
+                        0,
+                        options.transitionOut || options.transition,
+                        Phase.Exiting,
+                    );
                 }
             } else if (scrollProgress < options.enter) {
                 // Before enter point

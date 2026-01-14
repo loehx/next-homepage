@@ -1,4 +1,5 @@
 import { useScroll } from "./index";
+import { Phase } from "./useActivation";
 
 export type UseAnimatedActivationOnElementOptions = {
     elementRef: React.RefObject<HTMLElement>;
@@ -25,13 +26,11 @@ export const useAnimatedActivationOnElementShorthand = (
     className: string,
     enter: number,
     exit: number,
-    changed?: (activation: number, oldActivation: number, phase: Phase) => void,
 ): void => {
     return useAnimatedActivationOnElement({
         elementRef,
         className,
         enter,
         exit,
-        changed,
     });
 };

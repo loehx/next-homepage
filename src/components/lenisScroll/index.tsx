@@ -32,7 +32,7 @@ export const LenisScroll: React.FC<LenisScrollProps> = ({
             options={{
                 lerp: 0.8,
                 smoothWheel: true,
-                smoothTouch: false, // TODO: Test this setting.
+                syncTouch: false,
             }}
         >
             {children}

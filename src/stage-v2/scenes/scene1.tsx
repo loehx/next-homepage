@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./scene1.module.css";
-import { useScroll } from "@v2/components/scrollHandler";
+import { useScroll } from "@components/scrollHandler";
 import cx from "classnames";
 
 const LINES = [

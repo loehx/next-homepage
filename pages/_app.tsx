@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { AppProps } from "next/app";
-import { ScrollHandler } from "@v2/components/scrollHandler";
-import { LenisScroll } from "@v2/components/lenisScroll";
+import { ScrollHandler } from "@components/scrollHandler";
+import { LenisScroll } from "@components/lenisScroll";
 import "@styles/fonts.css";
 import "@styles/global.css";
 import "@styles/theme.css";

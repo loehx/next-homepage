@@ -1,4 +1,3 @@
-declare module "*.png";
-declare module "*.jpg";
-declare module "*.mp4";
-declare module "*.css";
+declare module "lenis/react" {
+    export * from "lenis/dist/lenis-react";
+}

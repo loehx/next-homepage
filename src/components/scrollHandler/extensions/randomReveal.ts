@@ -32,12 +32,24 @@ export const useRandomReveal = (
         ) => void;
     } => {
         useEffect(
-            () => setupRandomRevealElement(elementRef, target, originalText, revealOrder, options),
+            () =>
+                setupRandomRevealElement(
+                    elementRef,
+                    target,
+                    originalText,
+                    revealOrder,
+                    options,
+                ),
             [elementRef],
         );
 
         return {
-            changed: createRandomRevealCallback(target, originalText, revealOrder, options),
+            changed: createRandomRevealCallback(
+                target,
+                originalText,
+                revealOrder,
+                options,
+            ),
         };
     };
 };
@@ -61,7 +73,7 @@ function setupRandomRevealElement(
 
     target.current = element;
     originalText.current = element.textContent || "";
-    
+
     const length = originalText.current.length;
     revealOrder.current = options.randomOrder
         ? generateRandomOrder(length)
@@ -101,8 +113,9 @@ function createRandomRevealCallback(
         if (!element) return;
 
         const text = originalText.current;
+        if (!text) return;
         const length = text.length;
-        
+
         if (activation === 0) {
             if (element.textContent !== "") {
                 element.textContent = "";
@@ -111,10 +124,10 @@ function createRandomRevealCallback(
         }
 
         const revealCount = Math.floor(activation * length);
-        
-        const revealedIndices = new Set(
-            revealOrder.current.slice(0, revealCount)
-        );
+
+        const order = revealOrder.current;
+        if (!order) return;
+        const revealedIndices = new Set(order.slice(0, revealCount));
 
         let newContent = "";
         for (let i = 0; i < length; i++) {

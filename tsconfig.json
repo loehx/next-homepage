@@ -22,9 +22,7 @@
             "@public/*": ["public/*"],
             "@public": ["public"],
             "@styles/*": ["src/styles/*"],
-            "@styles": ["src/styles"],
-            "@v2/*": ["src/v2/*"],
-            "@v2": ["src/v2"]
+            "@styles": ["src/styles"]
         },
         "incremental": true,
         "noImplicitAny": false

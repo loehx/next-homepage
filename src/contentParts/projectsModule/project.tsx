@@ -6,7 +6,7 @@ import {
     ParallaxCallbackProps,
 } from "@components/customParallax";
 import { RocketIcon } from "@components/rocketIcon";
-import { useScroll } from "@v2/components/scrollHandler";
+import { useScroll } from "@components/scrollHandler";
 import styles from "./project.module.css";
 
 interface Props {

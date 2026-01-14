@@ -1,6 +1,6 @@
 import React from "react";
-import { V2Layout } from "../../src/v2/layout";
-import { Stage } from "../../src/v2/stage";
+import { V2Layout } from "../src/layout";
+import { Stage } from "../src/stage-v2";
 
 const V2Page: React.FC = () => {
     return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useScroll } from "@v2/components/scrollHandler";
+import { useScroll } from "@components/scrollHandler";
 
 export const FadeIn: React.FC<any> = ({
     children,

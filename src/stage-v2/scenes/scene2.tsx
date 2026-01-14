@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
-import { DarkWavyBackground } from "@v2/components/wallpaper";
+import { DarkWavyBackground } from "@components/wallpaper";
 import styles from "./scene2.module.css";
-import { useActivationOnElement } from "@v2/components/scrollHandler/useActivation";
-import { useAnimatedActivationOnElementShorthand } from "@v2/components/scrollHandler/useAnimatedActivation";
-import { useSimpleTypewriter } from "@v2/components/scrollHandler/extensions/simpleTypewriter";
-import { useRandomReveal } from "@v2/components/scrollHandler/extensions/randomReveal";
-import { useMinTransitionTime } from "@v2/components/scrollHandler/extensions/minTransitionTime";
-import { useScroll } from "@v2/components/scrollHandler";
+import { useActivationOnElement } from "@components/scrollHandler/useActivation";
+import { useAnimatedActivationOnElementShorthand } from "@components/scrollHandler/useAnimatedActivation";
+import { useSimpleTypewriter } from "@components/scrollHandler/extensions/simpleTypewriter";
+import { useRandomReveal } from "@components/scrollHandler/extensions/randomReveal";
+import { useMinTransitionTime } from "@components/scrollHandler/extensions/minTransitionTime";
+import { useScroll } from "@components/scrollHandler";
 
 export const Scene2: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
