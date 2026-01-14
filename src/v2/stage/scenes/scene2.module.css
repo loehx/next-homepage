@@ -49,8 +49,8 @@
 
 .detailTitle span {
     display: block;
+    transition: transform 0.5s ease;
     transform: translateY(calc((1 - var(--enter, 0)) * 100%));
-    opacity: var(--enter, 0);
 }
 
 .detailLabel {

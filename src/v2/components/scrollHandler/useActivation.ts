@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useScroll } from "./index";
 
 export enum Phase {
@@ -14,6 +14,8 @@ export type UseActivationOptions = {
     exit?: number;
     transition: number;
     transitionOut?: number;
+    syncScroll?: boolean;
+    fps?: number;
     changed?: (activation: number, oldActivation: number, phase: Phase) => void;
 };
 
@@ -32,8 +34,17 @@ export type UseActivationOptions = {
 export const useActivation = (options: UseActivationOptions): number => {
     const [activation, setActivation] = useState(0);
     const [phase, setPhase] = useState<Phase>(Phase.Idle);
+    const animationRef = useRef<{
+        startTime: number;
+        startActivation: number;
+        targetActivation: number;
+        duration: number;
+    } | null>(null);
+    const frameRef = useRef<number>();
 
     const exit = options.exit ?? Infinity;
+    const syncScroll = options.syncScroll ?? true;
+    const fps = options.fps ?? 60;
 
     if (options.enter > exit) {
         throw new Error("Enter point must be before exit point");
@@ -44,37 +55,118 @@ export const useActivation = (options: UseActivationOptions): number => {
         Math.max(0, exit - options.enter - options.transition),
     );
 
+    useEffect(() => {
+        return () => {
+            if (frameRef.current) {
+                cancelAnimationFrame(frameRef.current);
+            }
+        };
+    }, []);
+
+    const updateActivation = (newActivation: number, newPhase: Phase) => {
+        const rounded = Math.round(newActivation * 1000) / 1000;
+        if (rounded !== activation) {
+            if (options.changed) {
+                options.changed(rounded, activation, newPhase);
+            }
+            setActivation(rounded);
+        }
+        if (newPhase !== phase) {
+            setPhase(newPhase);
+        }
+    };
+
+    const startAnimation = (target: number, duration: number, newPhase: Phase) => {
+        animationRef.current = {
+            startTime: Date.now(),
+            startActivation: activation,
+            targetActivation: target,
+            duration,
+        };
+        
+        const frameInterval = 1000 / fps;
+        let lastUpdate = Date.now();
+
+        const animate = () => {
+            const now = Date.now();
+            if (now - lastUpdate < frameInterval) {
+                frameRef.current = requestAnimationFrame(animate);
+                return;
+            }
+            lastUpdate = now;
+
+            if (!animationRef.current) return;
+
+            const elapsed = now - animationRef.current.startTime;
+            const progress = Math.min(elapsed / animationRef.current.duration, 1);
+            const current = animationRef.current.startActivation + 
+                (animationRef.current.targetActivation - animationRef.current.startActivation) * progress;
+
+            updateActivation(current, newPhase);
+
+            if (progress < 1) {
+                frameRef.current = requestAnimationFrame(animate);
+            } else {
+                animationRef.current = null;
+            }
+        };
+
+        if (frameRef.current) {
+            cancelAnimationFrame(frameRef.current);
+        }
+        frameRef.current = requestAnimationFrame(animate);
+    };
+
     useScroll((scrollData) => {
         const { progress: scrollProgress } = scrollData;
-        const enterFully = options.enter + options.transition;
-        const startExit = exit - transitionOut;
 
-        let currentActivation = scrollProgress;
-        if (scrollProgress > options.enter && scrollProgress < exit) {
-            if (currentActivation < enterFully) {
-                setPhase(Phase.Entering);
-                currentActivation =
-                    (currentActivation - options.enter) / options.transition;
-            } else if (currentActivation > startExit) {
-                setPhase(Phase.Exiting);
-                currentActivation =
-                    1 - (currentActivation - startExit) / transitionOut;
+        if (syncScroll) {
+            // Original scroll-based behavior
+            const enterFully = options.enter + options.transition;
+            const startExit = exit - transitionOut;
+
+            let currentActivation = scrollProgress;
+            let currentPhase = Phase.Idle;
+
+            if (scrollProgress > options.enter && scrollProgress < exit) {
+                if (currentActivation < enterFully) {
+                    currentPhase = Phase.Entering;
+                    currentActivation =
+                        (currentActivation - options.enter) / options.transition;
+                } else if (currentActivation > startExit) {
+                    currentPhase = Phase.Exiting;
+                    currentActivation =
+                        1 - (currentActivation - startExit) / transitionOut;
+                } else {
+                    currentPhase = Phase.Active;
+                    currentActivation = 1;
+                }
             } else {
-                setPhase(Phase.Active);
-                currentActivation = 1;
+                currentPhase = Phase.Idle;
+                currentActivation = 0;
             }
+
+            updateActivation(currentActivation, currentPhase);
         } else {
-            setPhase(Phase.Idle);
-            currentActivation = 0;
-        }
-
-        currentActivation = Math.round(currentActivation * 1000) / 1000;
-
-        if (currentActivation !== activation) {
-            if (options.changed) {
-                options.changed(currentActivation, activation, phase);
+            // Time-based animation mode
+            if (scrollProgress >= options.enter && scrollProgress < exit) {
+                if (phase === Phase.Idle || phase === Phase.Unknown) {
+                    // Just entered, start entering animation
+                    startAnimation(1, options.transition, Phase.Entering);
+                } else if (scrollProgress >= exit - transitionOut && phase !== Phase.Exiting) {
+                    // Start exit animation
+                    startAnimation(0, options.transitionOut || options.transition, Phase.Exiting);
+                }
+            } else if (scrollProgress < options.enter) {
+                // Before enter point
+                if (phase !== Phase.Idle) {
+                    animationRef.current = null;
+                    if (frameRef.current) {
+                        cancelAnimationFrame(frameRef.current);
+                    }
+                    updateActivation(0, Phase.Idle);
+                }
             }
-            setActivation(currentActivation);
         }
     });
 

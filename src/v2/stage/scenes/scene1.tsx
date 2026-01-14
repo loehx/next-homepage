@@ -6,7 +6,7 @@ import cx from "classnames";
 const LINES = [
     ["Heyo", getCurrentSalutation(), "Welcome"],
     ["I am", "Alexander", "Loehn"],
-    ["Freelance", "Developer", "Senior"],
+    ["Freelance", "Developer", "With Passion"],
 ];
 const DURATION = 500;
 const STOP_INTERVAL = 500;

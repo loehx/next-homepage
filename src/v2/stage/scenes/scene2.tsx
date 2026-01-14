@@ -4,6 +4,8 @@ import styles from "./scene2.module.css";
 import { useActivationOnElement } from "@v2/components/scrollHandler/useActivation";
 import { useAnimatedActivationOnElementShorthand } from "@v2/components/scrollHandler/useAnimatedActivation";
 import { useSimpleTypewriter } from "@v2/components/scrollHandler/extensions/simpleTypewriter";
+import { useRandomReveal } from "@v2/components/scrollHandler/extensions/randomReveal";
+import { useMinTransitionTime } from "@v2/components/scrollHandler/extensions/minTransitionTime";
 import { useScroll } from "@v2/components/scrollHandler";
 
 export const Scene2: React.FC = () => {
@@ -53,12 +55,14 @@ export const Scene2: React.FC = () => {
     ];
 
     details.forEach((detail, index) => {
+        const reveal = useRandomReveal({ randomOrder: true });
+        const minTransition = useMinTransitionTime({ durationMs: 1000 });
         useActivationOnElement({
             elementRef: detail.ref,
             enter: 0.6 + index * 0.1,
             transition: 0.2,
             includePhase: true,
-            extensions: [useSimpleTypewriter()],
+            extensions: [useSimpleTypewriter(), reveal, minTransition],
             changed: (activation, oldActivation, phase) => {
                 console.log(activation, phase);
             },
@@ -72,7 +76,7 @@ export const Scene2: React.FC = () => {
             {details.map((detail, index) => (
                 <div key={index} className={styles.detail} ref={detail.ref}>
                     <h3 className={styles.detailTitle}>
-                        <span>{detail.title}</span>
+                        <span data-random-reveal>{detail.title}</span>
                     </h3>
                     <hr className={styles.separator} />
                     <p className={styles.detailLabel} data-typewriter>
