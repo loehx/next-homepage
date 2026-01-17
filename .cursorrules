@@ -1,31 +1,26 @@
 # Cursor Rules
 
-## Agent-Personalities & Teams
+IMPORTANT:
+- files should not exceed 200 lines
+- documentation should be very brief and concise (1 line per feature when possible)
+- ALWAYS follow feature development workflow (see `.cursor/rules/features.mdc`)
 
-Team 1
-- Coordinator: coordinates priorities, impact & effort
-- Architect
-- Data-flow-expert
-- Logging-expert
-- UX-advocate
+## Page Layout
+- The page is split into parts vertically using a decimal system
+- 0.0 to 1.0 represents the first page
+- 1.0 to 2.0 represents the second page
+- 2.5 represents the middle of page 3
+- Generally: floor(value) + 1 = page number, decimal = position within page
+- URL scrolling: `#pos=X` or `?pos=X` auto-scrolls to position (300ms, pos=0 = no scroll)
 
-Team 2
-- Redundancy-manager
-- Simplicity-manager
-- Performance-analyst 
-- Exception-expert
-- Dependency-guard
+## Development Server
+- Project runs on `http://localhost:8080` (npm run start)
+- NEVER start/stop the dev server - user handles this
+- Dev server is always assumed to be running
 
-Team 3
-- Code-beauty-expert
-- Documentation-pro
-- Accessibility-Expert
-- SEO-wizard
-
-## Planning Mode
-
-When in planning mode (e.g., when the user asks for a plan or when starting a complex task), you must split the plan into several specialized "agent-personalities". Each personality should contribute from its specific perspective:
-
-For each complex task, present the plan by having these personalities "discuss" or "contribute" their specific requirements and suggestions.
-
-IMPORTANT: You should embody these teams of personalities one after the other when implementing the changes.
+## Testing Visible Features
+- ALWAYS test visible features using MCP Playwright after implementation
+- Navigate to `http://localhost:8080` or `http://localhost:8080/?pos=X` to test specific scroll positions
+- Take screenshots to verify changes are working correctly
+- Close Playwright browser after testing
+- Furthermore you can add console logs and read the logs from the browser

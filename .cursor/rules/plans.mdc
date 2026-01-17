@@ -1,0 +1,292 @@
+---
+alwaysApply: false
+---
+# Project Planning Guide
+
+**Purpose:** Standards for creating structured, actionable project plans that AI agents can execute reliably.
+
+---
+
+## Draft-Based Planning Workflow
+
+**Plans evolve through drafts before reaching final form.** Each draft serves a specific purpose in the planning process.
+
+### File Naming Convention
+
+```
+{ticket-number}-draft-1.md   # Requirements gathering
+{ticket-number}-draft-2.md   # Technical analysis
+{ticket-number}-draft-3.md   # Research (optional)
+{ticket-number}.md           # Final plan
+{ticket-number}-progress.md  # Execution progress log
+```
+
+**Example:**
+```
+TICKET-123-draft-1.md
+TICKET-123-draft-2.md
+TICKET-123-draft-3.md
+TICKET-123.md
+TICKET-123-progress.md
+```
+
+---
+
+### Draft 1: Requirements Gathering
+
+**Purpose:** Define what needs to be done without implementation details.
+
+**Required contents:**
+- Branch name
+- Ticket requirements (checklist format)
+- General requirements (checklist format)
+
+```markdown
+# Draft 1: Requirements Gathering
+
+## Branch Name
+`feature/TICKET-123-user-authentication`
+
+## Ticket Requirements
+- [ ] User can log in with email and password
+- [ ] System validates credentials against database
+- [ ] Invalid credentials show error message
+- [ ] Successful login redirects to dashboard
+
+## General Requirements
+- [ ] Agent can verify login flow by creating test user and attempting login
+- [ ] Agent can test error cases by providing invalid credentials
+- [ ] Agent can confirm UI feedback matches requirements
+- [ ] Changes preserve existing session management behavior
+```
+
+---
+
+### Draft 2: Technical Analysis
+
+**Purpose:** Identify which files need modification without specifying exact changes.
+
+**Required contents:**
+- List of files to modify
+- Brief reason why each file needs changes
+
+```markdown
+# Draft 2: Technical Analysis
+
+## Files to Modify
+
+### Authentication Flow
+- `layers/base/composables/useAuth.ts` – Add login function
+- `layers/base/components/LoginForm.vue` – Create login UI component
+- `layers/base/types/auth.ts` – Define authentication types
+
+### API Integration
+- `layers/base/server/api/auth/login.post.ts` – Handle login endpoint
+- `layers/base/server/middleware/auth.ts` – Add session validation
+
+### Testing
+- `layers/base/composables/useAuth.spec.ts` – Unit tests for auth composable
+```
+
+**DO NOT include:**
+- Specific code changes
+- Implementation details
+- Exact line numbers
+
+**ONLY include:**
+- File paths
+- Brief description of why the file needs changes
+- Grouped by logical area (authentication, API, testing, etc.)
+
+**Ensure optimization loop:**
+- How agent can test the implementation
+- How agent can verify correctness
+- How agent can continuously improve the result
+- Non-functional requirements (performance, security, accessibility)
+
+---
+
+### Draft 3: Research (Optional)
+
+**Purpose:** Investigate best practices and existing patterns before implementation.
+
+**Agent decides if research is necessary based on:**
+- Unfamiliar domain or technology
+- Multiple valid implementation approaches
+- Risk of breaking existing patterns
+- Need for external library or tool selection
+
+```markdown
+# Draft 3: Research
+
+## Research Topics
+
+### Authentication Best Practices
+- Reviewed Nuxt auth module documentation
+- Checked existing auth patterns in `layers/storefront-boilerplate-nuxt-public`
+- Found composable pattern: `useAuth()` with `login()`, `logout()`, `user` ref
+
+### Session Management
+- Existing implementation uses server-side sessions
+- Sessions stored in Redis via `@nes-base/server/utils/session`
+- Pattern: middleware validates session token on protected routes
+
+## Recommended Approach
+Follow existing `useAuth()` pattern from boilerplate. Extend rather than replace.
+```
+
+**Include:**
+- What was researched
+- What was found
+- Key patterns or libraries discovered
+- Recommended approach based on findings
+
+**Skip this draft if:**
+- Implementation is straightforward
+- Patterns are already clear
+- No significant architectural decisions needed
+
+---
+
+### Final Plan
+
+**Purpose:** Condense all information into actionable task list.
+
+**Must include all sections from "Plan Structure" below** (Goals, Requirements, Implementation Plan, Tasks).
+
+**Task list requirements:**
+- Each task has clear status: `TODO`, `In Progress`, `Done`, `Blocked`
+- Tasks are ordered by dependency (prerequisite tasks first)
+- Each task references Draft 2 file list
+- Each task includes testing instructions
+
+```markdown
+# Final Plan: TICKET-123 User Authentication
+
+## Goals
+- Implement secure user login functionality
+- Maintain existing session management
+
+## Requirements
+[User stories with acceptance criteria as defined in Draft 1]
+
+## Implementation Plan
+1. Create authentication types (Req #1)
+2. Implement login API endpoint (Req #1)
+3. Create login UI component (Req #1, #2)
+4. Add authentication composable (Req #1, #2)
+5. Write tests (All requirements)
+
+## Tasks
+
+### Task 1: Create Authentication Types
+**Status:** TODO
+
+**Files to modify:**
+- `layers/base/types/auth.ts`
+
+**Changes:**
+[Specific implementation details]
+
+#### Testing:
+[Agent and Human test steps]
+```
+
+---
+
+### Progress Tracking
+
+**After completing each task, agent logs progress in `{ticket-number}-progress.md`.**
+
+**Progress log format:**
+
+```markdown
+# Progress Log: TICKET-123
+
+## Task 1: Create Authentication Types
+**Completed:** 2026-01-16 14:30
+**Agent:** agent-session-abc123
+
+Created `auth.ts` with `User`, `LoginCredentials`, `AuthState` types.
+Files modified: `layers/base/types/auth.ts`
+
+## Task 2: Implement Login API Endpoint  
+**Completed:** 2026-01-16 15:15
+**Agent:** agent-session-def456
+
+Implemented `/api/auth/login` endpoint. Validates credentials against database, creates session on success.
+Files modified: `layers/base/server/api/auth/login.post.ts`
+Issue encountered: Session middleware required update to handle new token format. Fixed in same commit.
+```
+
+**Each entry must include:**
+- Task name and number
+- Completion timestamp
+- Agent session ID
+- Brief summary of what was done (2-4 sentences)
+- Files modified
+- Issues encountered and resolutions (if any)
+
+**Purpose:**
+- Enables different agents to continue work seamlessly
+- Provides context for debugging
+- Documents decisions made during implementation
+- Tracks actual vs planned changes
+
+---
+
+### Draft 1 Checklist
+
+Before proceeding to Draft 2:
+
+- [ ] Branch name is specified
+- [ ] Ticket requirements listed in checklist format
+- [ ] General requirements include agent testing instructions
+- [ ] Requirements are clear and verifiable
+- [ ] No implementation details included
+
+### Draft 2 Checklist
+
+Before proceeding to Draft 3 or Final Plan:
+
+- [ ] All relevant files identified
+- [ ] Each file has brief reason for modification
+- [ ] Files grouped by logical area
+- [ ] No specific code changes included
+- [ ] No line numbers specified
+
+### Draft 3 Checklist (if created)
+
+Before proceeding to Final Plan:
+
+- [ ] Research topics clearly defined
+- [ ] Findings documented with sources
+- [ ] Recommended approach specified
+- [ ] Research justifies architectural decisions
+
+### Final Plan Checklist
+
+Before considering a plan complete:
+
+- [ ] Plan has labeled sections (Goals, Requirements, Implementation Plan, Tasks)
+- [ ] Each requirement includes user story and acceptance criteria
+- [ ] Technical specifications include exact function signatures and versions
+- [ ] Tasks are headline-formatted with Status field (TODO/In Progress/Done/Blocked)
+- [ ] Each task includes Files to modify and Changes sections
+- [ ] Each task includes Testing section with Agent and Human subsections
+- [ ] Error handling instructions are explicit
+- [ ] Output examples or schemas are provided
+- [ ] All tasks link back to requirements
+- [ ] Plan covers all stated goals
+- [ ] Progress tracking file created (`{ticket-number}-progress.md`)
+
+### Progress Log Checklist
+
+After completing each task:
+
+- [ ] Task completion logged with timestamp
+- [ ] Agent session ID recorded
+- [ ] Brief summary provided (2-4 sentences)
+- [ ] Files modified listed
+- [ ] Issues and resolutions documented (if any)
+- [ ] Next agent can understand what was done

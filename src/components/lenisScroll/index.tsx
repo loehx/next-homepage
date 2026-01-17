@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { ReactLenis } from "lenis/react";
+import { useUrlPositionScroll } from "../../hooks/useUrlPositionScroll";
 
 type LenisScrollProps = PropsWithChildren<{
     enabled?: boolean;
@@ -35,7 +36,13 @@ export const LenisScroll: React.FC<LenisScrollProps> = ({
                 syncTouch: false,
             }}
         >
+            <ScrollPositionHandler />
             {children}
         </ReactLenis>
     );
+};
+
+const ScrollPositionHandler: React.FC = () => {
+    useUrlPositionScroll(300);
+    return null;
 };
