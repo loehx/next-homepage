@@ -80,7 +80,7 @@ const COLORS = ["#f635df", "#35f686", "#f64b4b", "#bef635", "#4b9bf6"];
 
 const DETAILS = [
     {
-        title: "Hi, I'm *Alex*",
+        title: "Front-*End*",
         label: "I'm a *frontend developer* with focus on vue and react. I have 16+ years of experience in web development. 4 of which as a freelancer. I delivered 18+ website projects for clients all over the world.",
         accentColor: COLORS[0],
         hueRotate: 320,
@@ -295,13 +295,9 @@ export const Scene2: React.FC = () => {
         };
 
         container.addEventListener("mousedown", handleClick);
-        container.addEventListener("touchstart", handleClick, {
-            passive: true,
-        });
 
         return () => {
             container.removeEventListener("mousedown", handleClick);
-            container.removeEventListener("touchstart", handleClick);
         };
     }, [togglePlaying]);
 

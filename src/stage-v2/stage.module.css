@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 500vh;
-    background: radial-gradient(circle at 0% 0%, #333 0%, #07080b 100%);
+    background-color: #111;
     color: #fff;
     text-align: center;
     overflow: hidden;

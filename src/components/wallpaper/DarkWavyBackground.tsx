@@ -1,6 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./DarkWavyBackground.module.css";
 
+const BRIGHTNESS = 1.6; // 0.0 - 2.0
+const POS_TOP = "100vh";
+const WIDTH = 1; // 0.0 - 2.0
+const WAVES = 5; // 1 - 5
+const SPEED = 1.2; // 0.0 - 2.0 - how fast the waves are "wavy"
+
 const vertexShaderSource = `
 attribute vec2 a_position;
 varying vec2 v_uv;
@@ -19,6 +25,10 @@ precision highp float;
 
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform float u_brightness;
+uniform float u_width;
+uniform float u_waves;
+uniform float u_speed;
 
 varying vec2 v_uv;
 
@@ -47,18 +57,19 @@ void main() {
     vec3 col = mix(vec3(0.09, 0.09, 0.09), vec3(0.007, 0.007, 0.007), clamp(bgDist * 1.2, 0.0, 1.0));
     float finalDepth = 0.0;
     
-    // 6 overlapping waves with decreasing size
-    float numWaves = 5.0;
+    // Overlapping waves with decreasing size (controlled by u_waves uniform)
+    float numWaves = u_waves;
     
     for (int i = 0; i < 5; i++) {
+        if (float(i) >= u_waves) break;
         // Reduced vertical wobble for a "less wavy" / calmer look
-        float verticalWobble = 0.015 * sin(u_time * 0.1 + float(i) * 1.5);
+        float verticalWobble = 0.015 * u_width * sin(u_time * 0.1 + float(i) * 1.5);
         
         // Base thickness decreases with i, matching the previous spread
-        float thickness = 0.9 - float(i) * 0.15;
+        float thickness = (0.9 - float(i) * 0.15) * u_width;
         if (i < 4) thickness *= 0.7;
         
-        float amp = 0.32 - float(i) * 0.04;
+        float amp = (0.32 - float(i) * 0.04) * u_width;
         float freq = 0.7 + float(i) * 0.5;
 
         // f centers the wave band vertically at initialUvY = 0
@@ -71,8 +82,8 @@ void main() {
         float freqTop = freq;
         float freqBottom = freq * 0.8; // 20% longer wavelength for the bottom
         
-        // Speeds halved again to 50% of previous
-        float speed = (0.1 + float(i) * 0.05) * (mod(float(i), 2.0) == 0.0 ? 1.0 : -1.0) * 0.5;
+        // Speed controlled by u_speed uniform
+        float speed = (0.1 + float(i) * 0.05) * (mod(float(i), 2.0) == 0.0 ? 1.0 : -1.0) * 0.5 * u_speed;
         float phase = float(i) * 3.7;
         
         // Simplified waves with much less interference for a smoother appearance
@@ -111,6 +122,9 @@ void main() {
             finalDepth = mix(finalDepth, float(i) / numWaves, mask);
         }
     }
+    
+    // Apply brightness
+    col *= u_brightness;
     
     // Apply dithering to reduce banding in dark gradients
     // We add a tiny amount of noise (1/255th) to smooth out the steps
@@ -419,8 +433,28 @@ export const DarkWavyBackground: React.FC<DarkWavyBackgroundProps> = ({
                 sceneProgram,
                 "u_resolution",
             );
+            const sceneBrightnessLocation = gl.getUniformLocation(
+                sceneProgram,
+                "u_brightness",
+            );
+            const sceneWidthLocation = gl.getUniformLocation(
+                sceneProgram,
+                "u_width",
+            );
+            const sceneWavesLocation = gl.getUniformLocation(
+                sceneProgram,
+                "u_waves",
+            );
+            const sceneSpeedLocation = gl.getUniformLocation(
+                sceneProgram,
+                "u_speed",
+            );
             gl.uniform1f(sceneTimeLocation, time * 0.5);
             gl.uniform2f(sceneResolutionLocation, canvas.width, canvas.height);
+            gl.uniform1f(sceneBrightnessLocation, BRIGHTNESS);
+            gl.uniform1f(sceneWidthLocation, WIDTH);
+            gl.uniform1f(sceneWavesLocation, WAVES);
+            gl.uniform1f(sceneSpeedLocation, SPEED);
 
             gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -458,7 +492,7 @@ export const DarkWavyBackground: React.FC<DarkWavyBackgroundProps> = ({
                 transform: `translateY(calc(var(--scroll-y, 0px) * ${parallax}))`,
                 willChange: "transform",
                 position: "absolute",
-                top: "60vh",
+                top: POS_TOP,
                 left: 0,
                 width: "100%",
                 height: "100%",
