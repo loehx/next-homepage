@@ -1,3 +1,4 @@
+import { useActivation } from "@components/scrollHandler";
 import React from "react";
 
 const curtainStyle: React.CSSProperties = {
