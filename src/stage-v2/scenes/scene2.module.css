@@ -111,6 +111,22 @@
     display: block;
     margin-top: -1vw;
     text-transform: uppercase;
+    overflow: hidden;
+}
+
+.detailTitleInner {
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    transition:
+        transform 3s cubic-bezier(0.19,1,0.22,1),
+        opacity 2s cubic-bezier(0.33,1,0.68,1) .2s;
+    will-change: transform, opacity, filter;
+}
+
+.detail.active .detailTitleInner {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
 }
 
 @media (min-width: 768px) {

@@ -117,7 +117,7 @@ const DETAILS = [
     },
 ];
 
-const INTERVAL_MS = 3000;
+const INTERVAL_MS = 5000;
 const TYPE_DURATION_MS = INTERVAL_MS / 2;
 
 function stripAsterisks(text: string): string {
@@ -171,6 +171,7 @@ interface DetailProps {
     label: string;
     isPlaying: boolean;
     accentColor: string;
+    index: number;
 }
 
 const Detail: React.FC<DetailProps> = ({
@@ -178,15 +179,15 @@ const Detail: React.FC<DetailProps> = ({
     label,
     isPlaying,
     accentColor,
+    index,
 }) => {
+    const [isActive, setIsActive] = useState(false);
+
     // Calculate speed based on clean text length (without asterisks)
     const cleanTitleLength = stripAsterisks(title).length;
     const cleanLabelLength = stripAsterisks(label).length;
-    const speedTitle = TYPE_DURATION_MS / cleanTitleLength / 2;
     const speedLabel = TYPE_DURATION_MS / cleanLabelLength;
 
-    const { displayedText: displayedTitle, isTyping: isTitleTyping } =
-        useTypewriter(title, true, isPlaying, speedTitle);
     const { displayedText: displayedLabel, isTyping: isLabelTyping } =
         useTypewriter(label, true, isPlaying, speedLabel);
 
@@ -194,19 +195,29 @@ const Detail: React.FC<DetailProps> = ({
     const titleSegments = parseTextSegments(title);
     const labelSegments = parseTextSegments(label);
 
+    useEffect(() => {
+        if (isPlaying) {
+            setTimeout(() => {
+                setIsActive(true);
+            }, 100);
+        }
+    }, []);
+
     return (
         <div
             className={cx(styles.detailContainer, !isPlaying && styles.paused)}
             style={{ "--accent-color": accentColor } as React.CSSProperties}
+            data-index={index}
         >
-            <div className={styles.detail}>
+            <div className={cx(styles.detail, isActive && styles.active)}>
                 <span className={styles.detailTitle}>
-                    {renderTextSegments(
-                        titleSegments,
-                        displayedTitle.length,
-                        accentColor,
-                    )}
-                    {isTitleTyping && <span className={styles.cursor}></span>}
+                    <span className={styles.detailTitleInner}>
+                        {renderTextSegments(
+                            titleSegments,
+                            title.length,
+                            accentColor,
+                        )}
+                    </span>
                 </span>
                 <p className={styles.detailLabel}>
                     {renderTextSegments(
@@ -360,6 +371,7 @@ export const Scene2: React.FC = () => {
                             label={DETAILS[activeIndex].label}
                             isPlaying={isPlaying}
                             accentColor={DETAILS[activeIndex].accentColor}
+                            index={activeIndex}
                         />
                     )}
                 </div>
