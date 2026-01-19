@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./DarkWavyBackground.module.css";
 
-const BRIGHTNESS = 1.6; // 0.0 - 2.0
+const BRIGHTNESS = .5; // 0.0 - 2.0
 const POS_TOP = "100vh";
 const WIDTH = 1; // 0.0 - 2.0
 const WAVES = 5; // 1 - 5

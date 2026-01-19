@@ -81,24 +81,24 @@ const COLORS = ["#f635df", "#35f686", "#f64b4b", "#bef635", "#4b9bf6"];
 const DETAILS = [
     {
         title: "Front-*End*",
-        label: "I'm a *frontend developer* with focus on vue and react. I have 16+ years of experience in web development. 4 of which as a freelancer. I delivered 18+ website projects for clients all over the world.",
+        label: "developer with focus on *vue* and *react*. *16+* years of experience in web development (*4* as a freelancer). *18+* websites for clients worldwide.",
         accentColor: COLORS[0],
         hueRotate: 320,
     },
     {
         title: "Professional",
-        label: "I'm highly efficient and can adapt my speed and quality to match the projects needs.",
+        label: "focussed and *highly efficient* - adjusting speed and quality to match the client's requirements, deadlines and budget.",
         accentColor: COLORS[1],
         hueRotate: 100,
     },
     {
-        title: "Agile",
-        label: "I'm highly agile and flexible. I can adapt to new projects and requirements very quickly. In 2019 I did an intensive Agile Coach Training at Judith Andresen.",
+        title: "Flexi",
+        label: "Highly agile at coding and social skills. Certified *Agile Coach* and *Scrum* Master.",
         accentColor: COLORS[2],
         hueRotate: 0,
     },
     {
-        title: "E-Commerce(d)",
+        title: "E-Commerce",
         label: "Since I started freelancing in 2022, I've delivered 10+ webshops, all built with the Storefront Boilerplate (by SCAYLE).",
         accentColor: COLORS[3],
         hueRotate: 100,
