@@ -1,9 +1,7 @@
 ---
-description: Core AI behavior standards for all code changes
 globs: []
-alwaysApply: true
+alwaysApply: false
 ---
-
 # Core AI Code Change Standards
 
 **Purpose:** Guide AI code modifications when project context is unclear, patterns conflict, or changes risk breaking existing behavior. These rules apply universally across the codebase.
@@ -384,3 +382,10 @@ Before considering any change complete:
 - [ ] No unused imports or variables introduced
 
 **If you cannot verify all items, explain what's unclear and ask for guidance.**
+
+---
+
+## Testing & Debugging
+
+- **ALWAYS test visible UI changes with Playwright after EVERY task** (not just at end)
+- **Add debug borders to layout elements** during development: `border: 2px solid rgba(255, 0, 0, 0.5);`

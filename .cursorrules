@@ -1,7 +1,7 @@
 # Cursor Rules
 
 IMPORTANT:
-- files should not exceed 200 lines
+- files should not exceed 150 lines
 - documentation should be very brief and concise (1 line per feature when possible)
 - ALWAYS follow feature development workflow (see `.cursor/rules/features.mdc`)
 
@@ -24,3 +24,10 @@ IMPORTANT:
 - Take screenshots to verify changes are working correctly
 - Close Playwright browser after testing
 - Furthermore you can add console logs and read the logs from the browser
+- Add debug borders or background to layout elements during development
+
+
+## IMPORTANT
+- ONLY 1 task at a time; after each task stop and wait for input
+- ALWAYS test visible features with Playwright after EVERY task (not just at end)
+- ALWAYS take screenshots and check console logs during testing

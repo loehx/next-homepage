@@ -174,11 +174,23 @@ path/to/feature/
 
 ## Rules
 
-- ONLY 1 task at a time; after each task stop and wait for input
-- ALWAYS test visible features with Playwright after EVERY task (not just at end)
-- ALWAYS take screenshots and check console logs during testing
+<IMPORTANT>
+- ALWAYS update progress log when modifying files
+- ALWAYS update progress log when modifying files
 - ALWAYS update progress log when modifying files
 - ALWAYS update tasks checklist at end of work session
+- ALWAYS update tasks checklist at end of work session
+- ALWAYS update tasks checklist at end of work session
+- Keep progress entries concise but informative
+- Keep progress entries concise but informative
 - Keep progress entries concise but informative
 - Include "why" not just "what" in progress log
+- Include "why" not just "what" in progress log
+- Include "why" not just "what" in progress log
 - Never delete completed tasks, mark them `[x]`
+- Never delete completed tasks, mark them `[x]`
+- Never delete completed tasks, mark them `[x]`
+- A task is only finished after you've tested it in the browser
+- A task is only finished after you've tested it in the browser
+- A task is only finished after you've tested it in the browser
+</IMPORTANT>
