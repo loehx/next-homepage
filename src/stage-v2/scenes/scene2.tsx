@@ -2,9 +2,21 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import styles from "./scene2.module.css";
 import { useAnimatedActivationOnElementShorthand } from "@components/scrollHandler/useAnimatedActivation";
 import { useScroll } from "@components/scrollHandler";
-import phoneFrameSrc from "../../contentParts/stage/phone-frame.webp";
 import cx from "classnames";
 import { DarkWavyBackground } from "@components/wallpaper/DarkWavyBackground";
+import dynamic from "next/dynamic";
+
+/*+
+ * FOR TESTING IN THE BROWSER:
+ * http://localhost:8080/?pos=1
+ */
+
+// Dynamic import with SSR disabled for Three.js component
+const ThreepipePhone = dynamic(
+    () =>
+        import("./components/ThreepipePhone").then((mod) => mod.ThreepipePhone),
+    { ssr: false },
+);
 
 interface TextSegment {
     text: string;
@@ -338,27 +350,15 @@ export const Scene2: React.FC = () => {
                         )}
                         style={
                             {
-                                "--hue-rotate": `${DETAILS[activeIndex].hueRotate}deg`,
                                 "--entrance-duration": `${PHONE_ENTRANCE_DURATION_MS}ms`,
                             } as React.CSSProperties
                         }
                     >
-                        <img
-                            src="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"
-                            alt="Profile"
-                            className={styles.phoneImage}
+                        <ThreepipePhone
+                            imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"
+                            hueRotate={DETAILS[activeIndex].hueRotate}
+                            isVisible={phoneEntranceTriggered}
                             onLoad={() => setPhoneImageLoaded(true)}
-                        />
-                        <div
-                            className={cx(
-                                styles.phoneOverlay,
-                                phoneImageLoaded && styles.hide,
-                            )}
-                        ></div>
-                        <img
-                            src={phoneFrameSrc}
-                            alt="Phone frame"
-                            className={styles.phoneFrame}
                         />
                     </div>
                 </div>
