@@ -262,37 +262,26 @@ const Detail: React.FC<DetailProps> = ({
 
 const TOTAL_DURATION_MS = INTERVAL_MS * DETAILS.length;
 
-const PHONE_ENTRANCE_DURATION_MS = 1000;
-
 export const Scene2: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const phoneRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [cycleCount, setCycleCount] = useState(0);
     const [isPlaying, setIsPlaying] = useState(true);
-    const [phoneEntranceTriggered, setPhoneEntranceTriggered] = useState(false);
-    const [phoneEntranceComplete, setPhoneEntranceComplete] = useState(false);
-    const [phoneImageLoaded, setPhoneImageLoaded] = useState(false);
+    const [isInViewRange, setIsInViewRange] = useState(false);
+    const [phoneLoaded, setPhoneLoaded] = useState(false);
+
+    // Phone is ready when loaded AND in view range
+    const phoneReady = phoneLoaded && isInViewRange;
 
     const togglePlaying = useCallback(() => {
         setIsPlaying((prev) => !prev);
     }, []);
 
-    // Trigger phone entrance animation at scroll position 0.5
+    // Track when scroll is in view range
     useScroll(({ progress }) => {
-        const entranceStart = 0.5;
-
-        if (progress >= entranceStart && !phoneEntranceTriggered) {
-            setPhoneEntranceTriggered(true);
-
-            // Mark entrance as complete after animation duration
-            setTimeout(() => {
-                setPhoneEntranceComplete(true);
-            }, PHONE_ENTRANCE_DURATION_MS);
-        } else if (progress < entranceStart) {
-            setPhoneEntranceTriggered(false);
-            setPhoneEntranceComplete(false);
-        }
+        const inRange = progress >= 0.5;
+        setIsInViewRange(inRange);
     });
 
     useAnimatedActivationOnElementShorthand(
@@ -325,7 +314,7 @@ export const Scene2: React.FC = () => {
     }, [togglePlaying]);
 
     useEffect(() => {
-        if (!isPlaying || !phoneEntranceComplete) return;
+        if (!isPlaying || !phoneReady) return;
 
         const interval = setInterval(() => {
             setActiveIndex((prev) => {
@@ -335,7 +324,7 @@ export const Scene2: React.FC = () => {
             });
         }, INTERVAL_MS);
         return () => clearInterval(interval);
-    }, [isPlaying, phoneEntranceComplete]);
+    }, [isPlaying, phoneReady]);
 
     return (
         <>
@@ -344,27 +333,20 @@ export const Scene2: React.FC = () => {
                 <div className={styles.leftContainer}>
                     <div
                         ref={phoneRef}
-                        className={cx(
-                            styles.phone,
-                            phoneEntranceTriggered && styles.phoneEnter,
-                        )}
-                        style={
-                            {
-                                "--entrance-duration": `${PHONE_ENTRANCE_DURATION_MS}ms`,
-                            } as React.CSSProperties
-                        }
+                        className={cx(styles.phone, phoneReady && styles.phoneLoaded)}
                     >
                         <ThreepipePhone
                             imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"
                             hueRotate={DETAILS[activeIndex].hueRotate}
-                            isVisible={phoneEntranceTriggered}
-                            onLoad={() => setPhoneImageLoaded(true)}
+                            isVisible={true}
+                            flipKey={activeIndex}
+                            onLoad={() => setPhoneLoaded(true)}
                         />
                     </div>
                 </div>
 
                 <div className={styles.rightContainer}>
-                    {phoneEntranceComplete && (
+                    {phoneReady && (
                         <Detail
                             key={activeIndex}
                             title={DETAILS[activeIndex].title}
@@ -376,7 +358,7 @@ export const Scene2: React.FC = () => {
                     )}
                 </div>
             </div>
-            {phoneEntranceComplete && (
+            {phoneReady && (
                 <div
                     key={cycleCount}
                     className={cx(

@@ -1,21 +1,61 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef, useEffect, useCallback } from "react";
 import { Canvas, useLoader, useFrame, useThree } from "@react-three/fiber";
-import { PerspectiveCamera, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 import styles from "./ThreepipePhone.module.css";
 
-interface PhoneModelProps {
-    imageUrl: string;
+// Shared pointer state (normalized -1 to 1)
+const pointerState = { x: 0, y: 0 };
+
+// Camera controller that follows pointer with smooth interpolation
+function PointerCameraController() {
+    const { camera } = useThree();
+    const targetPos = useRef({ x: 0, y: 0 });
+
+    useFrame(() => {
+        // Smooth interpolation towards target
+        targetPos.current.x += (pointerState.x - targetPos.current.x) * 0.05;
+        targetPos.current.y += (pointerState.y - targetPos.current.y) * 0.05;
+
+        // Apply camera offset based on pointer position
+        camera.position.x = targetPos.current.x * 2.5;
+        camera.position.y = targetPos.current.y * 1.8;
+        camera.position.z = 5;
+        camera.lookAt(0, 0, 0);
+    });
+
+    return null;
 }
 
-// Professional iPhone Model with floating animation
-function RealPhoneModel({ imageUrl }: PhoneModelProps) {
+interface PhoneModelProps {
+    imageUrl: string;
+    flipKey: number;
+}
+
+interface PhoneModelInnerProps extends PhoneModelProps {
+    onModelReady?: () => void;
+}
+
+// Professional iPhone Model with floating animation and flip
+function RealPhoneModel({ imageUrl, flipKey, onModelReady }: PhoneModelInnerProps) {
     const { scene } = useGLTF("/models/tabletop_macbook_iphone.glb");
     const texture = useLoader(TextureLoader, imageUrl);
     const [iphone, setIphone] = React.useState<THREE.Object3D | null>(null);
     const groupRef = useRef<THREE.Group>(null);
     const { gl } = useThree();
+    const hasNotifiedRef = useRef(false);
+
+    // Track flip animation
+    const flipState = useRef({ target: 0, current: 0, lastKey: flipKey });
+
+    // Trigger flip when flipKey changes
+    React.useEffect(() => {
+        if (flipState.current.lastKey !== flipKey) {
+            flipState.current.target += Math.PI * 2; // Add 360 degrees
+            flipState.current.lastKey = flipKey;
+        }
+    }, [flipKey]);
 
     React.useEffect(() => {
         if (!scene) return;
@@ -61,17 +101,29 @@ function RealPhoneModel({ imageUrl }: PhoneModelProps) {
                 });
                 screenMesh.material = basicMaterial;
             }
-        }
-    }, [scene, texture, gl]);
 
-    // Floating animation - subtle movement to show it's 3D
+            // Notify parent that model is ready
+            if (!hasNotifiedRef.current && onModelReady) {
+                hasNotifiedRef.current = true;
+                onModelReady();
+            }
+        }
+    }, [scene, texture, gl, onModelReady]);
+
+    // Floating animation + flip animation
     useFrame((state) => {
         if (!groupRef.current) return;
         const t = state.clock.elapsedTime;
+
+        // Animate flip rotation (smooth easing)
+        const flipDiff = flipState.current.target - flipState.current.current;
+        flipState.current.current += flipDiff * 0.08;
+
         // Subtle floating up/down
         groupRef.current.position.y = Math.sin(t * 0.8) * 0.08;
-        // Gentle rotation wobble (small offsets only)
-        groupRef.current.rotation.y = Math.sin(t * 0.5) * 0.04;
+        // Combine flip rotation with gentle wobble
+        groupRef.current.rotation.y =
+            flipState.current.current + Math.sin(t * 0.5) * 0.04;
         groupRef.current.rotation.x = Math.sin(t * 0.7) * 0.03;
     });
 
@@ -93,6 +145,7 @@ interface ThreepipePhoneProps {
     imageUrl: string;
     hueRotate: number;
     isVisible: boolean;
+    flipKey?: number;
     onLoad?: () => void;
 }
 
@@ -100,25 +153,59 @@ export const ThreepipePhone: React.FC<ThreepipePhoneProps> = ({
     imageUrl,
     hueRotate,
     isVisible,
+    flipKey = 0,
     onLoad,
 }) => {
-    const [isLoaded, setIsLoaded] = React.useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isCanvasReady, setIsCanvasReady] = React.useState(false);
+    const [isModelReady, setIsModelReady] = React.useState(false);
 
-    const handleLoad = React.useCallback(() => {
-        setIsLoaded(true);
+    const handleCanvasReady = useCallback(() => {
+        setIsCanvasReady(true);
+    }, []);
+
+    const handleModelReady = useCallback(() => {
+        setIsModelReady(true);
         onLoad?.();
     }, [onLoad]);
 
-    if (!isVisible) return null;
+    // Track pointer position (mouse and touch)
+    useEffect(() => {
+        const updatePointer = (clientX: number, clientY: number) => {
+            // Normalize to -1 to 1 based on screen center
+            pointerState.x = (clientX / window.innerWidth) * 2 - 1;
+            pointerState.y = -((clientY / window.innerHeight) * 2 - 1);
+        };
+
+        const handleMouseMove = (e: MouseEvent) =>
+            updatePointer(e.clientX, e.clientY);
+        const handleTouchMove = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("touchmove", handleTouchMove, {
+            passive: true,
+        });
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("touchmove", handleTouchMove);
+        };
+    }, []);
 
     return (
-        <div className={styles.container}>
+        <div
+            ref={containerRef}
+            className={styles.container}
+            style={{ visibility: isVisible ? "visible" : "hidden" }}
+        >
             <Canvas
                 className={styles.canvas}
                 style={
-                    {
-                        "--hue-rotate": `${hueRotate}deg`,
-                    } as React.CSSProperties
+                    { "--hue-rotate": `${hueRotate}deg` } as React.CSSProperties
                 }
                 dpr={[1, 2]}
                 gl={{
@@ -126,9 +213,10 @@ export const ThreepipePhone: React.FC<ThreepipePhoneProps> = ({
                     alpha: true,
                     powerPreference: "high-performance",
                 }}
-                onCreated={handleLoad}
+                camera={{ position: [0, 0, 5], fov: 40 }}
+                onCreated={handleCanvasReady}
             >
-                <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={40} />
+                <PointerCameraController />
                 <ambientLight intensity={0.4} />
                 <directionalLight position={[5, 5, 8]} intensity={1.8} />
                 <directionalLight position={[-5, -3, -5]} intensity={0.4} />
@@ -145,10 +233,14 @@ export const ThreepipePhone: React.FC<ThreepipePhoneProps> = ({
                         </mesh>
                     }
                 >
-                    <RealPhoneModel imageUrl={imageUrl} />
+                    <RealPhoneModel
+                        imageUrl={imageUrl}
+                        flipKey={flipKey}
+                        onModelReady={handleModelReady}
+                    />
                 </Suspense>
             </Canvas>
-            {!isLoaded && (
+            {!isModelReady && (
                 <div className={styles.loader}>Loading 3D iPhone...</div>
             )}
         </div>
