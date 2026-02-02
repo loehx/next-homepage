@@ -1,0 +1,61 @@
+.item {
+    font-family: "Vank", sans-serif;
+    font-size: 10vh;
+    line-height: 1;
+    color: white;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    user-select: none;
+    text-decoration: none;
+    padding: 1vh 0;
+}
+
+.char {
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    white-space: pre;
+    text-align: center;
+}
+
+.charInner {
+    overflow: hidden;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.hidden {
+    opacity: 0;
+    grid-template-columns: 0fr;
+}
+
+.item .expanded {
+    opacity: 1;
+    grid-template-columns: 1fr;
+}
+
+.isActive {
+    /* Optional: add some indicator for active item if needed, 
+     but requirement says it should look like hovered state */
+}
+
+.item:focus {
+    outline: none;
+}
+
+.item:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
+}

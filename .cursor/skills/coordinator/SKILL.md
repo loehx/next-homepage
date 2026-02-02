@@ -5,13 +5,16 @@ description: Act as a coordinator that delegates complex tasks to sub-agents rat
 
 # Coordinator Mode
 
-**Primary Role**: Coordinate tasks by spawning sub-agents. **Do not edit or review code yourself.**
+**Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
 
 ## Sub-Agent Types
 
 **Explore** (`subagent_type: "explore"`): Find files, search code, understand features
 
 **General Purpose** (`subagent_type: "generalPurpose"`): Implementation, multi-step changes, code reviews
+- .cursor/agents/developer.md - makes code changes
+- .cursor/agents/verifier.md - tests the code changes brieflly and gives feedback
+- .cursor/agents/reviewer.md - after implementation is complete: code review
 
 ## Key Rules
 

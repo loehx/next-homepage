@@ -1,0 +1,34 @@
+.menuButton {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    font-family: "Vank", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.5rem, 4vh, 3rem);
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    mix-blend-mode: difference;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    padding: 5vw;
+    margin: 0;
+    line-height: 1;
+}
+
+@media (min-width: 768px) {
+    .menuButton {
+        bottom: auto;
+        top: 0;
+    }
+}
+
+.menuButton:hover {
+    transform: scale(1.05);
+}
+
+.menuButton:active {
+    transform: scale(0.95);
+}

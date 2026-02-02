@@ -1,0 +1,54 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.75);
+    /* backdrop-filter: blur(8px); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 500ms ease, visibility 500ms ease;
+    pointer-events: none;
+}
+
+.isOpen {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.itemWrapper {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.isOpen .itemWrapper {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered animation */
+.itemWrapper:nth-child(1) {
+    transition-delay: 100ms;
+}
+.itemWrapper:nth-child(2) {
+    transition-delay: 200ms;
+}
+.itemWrapper:nth-child(3) {
+    transition-delay: 300ms;
+}
+.itemWrapper:nth-child(4) {
+    transition-delay: 400ms;
+}
+.itemWrapper:nth-child(5) {
+    transition-delay: 500ms;
+}
