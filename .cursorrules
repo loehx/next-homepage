@@ -4,6 +4,7 @@ IMPORTANT:
 - files should not exceed 150 lines
 - documentation should be very brief and concise (1 line per feature when possible)
 - ALWAYS follow feature development workflow (see `.cursor/rules/features.mdc`)
+- keep commit messages very brief (e.g., "work on menu", "bug fix: missing click event in navigation")
 
 ## Page Layout
 - The page is split into parts vertically using a decimal system
