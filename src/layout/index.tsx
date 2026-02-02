@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from "react";
 import Head from "next/head";
+import { GrainOverlay } from "../components/grain-overlay";
 
 interface V2LayoutProps {
     children: ReactNode;
@@ -21,6 +22,7 @@ export const V2Layout: FC<V2LayoutProps> = ({
                 />
             </Head>
             <div className="v2-layout">{children}</div>
+            <GrainOverlay />
         </>
     );
 };
