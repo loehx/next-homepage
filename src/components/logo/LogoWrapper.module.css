@@ -1,0 +1,29 @@
+.logoWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    mix-blend-mode: difference;
+    transition: opacity 0.3s ease;
+    padding: 4vw;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .logoWrapper {
+        padding: 2vw;
+    }
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.logo {
+    width: 8vh;
+    height: auto;
+    color: white;
+}

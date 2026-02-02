@@ -12,6 +12,10 @@ html {
 
 html,
 body {
+    --darkness: clamp(0, calc(1 - var(--progress)), 1);
+    --color: white;
+    --bg-color: black;
+
     margin: 0;
     padding: 0;
     font-family: "Nunito", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
@@ -21,9 +25,9 @@ body {
     min-width: 320px;
     min-height: 100%;
     min-height: -webkit-fill-available;
-    color: var(--black);
+    color: var(--color);
     overflow-x: hidden;
-    background-color: black;
+    background-color: var(--bg-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: auto;

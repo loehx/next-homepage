@@ -61,30 +61,46 @@ export const Menu: React.FC = () => {
         () => Math.round(scrollPos / vh),
         [scrollPos, vh],
     );
-    
+
     const shouldBeVisible = useMemo(
         () => scrollPos / vh >= 0.99,
         [scrollPos, vh],
     ); // 0.99 to be a bit more forgiving
-    
+
     useEffect(() => {
         if (shouldBeVisible && !hasBeenVisible) {
             setHasBeenVisible(true);
         }
     }, [shouldBeVisible, hasBeenVisible]);
-    
+
     const isButtonVisible = useMemo(
         () => hasBeenVisible || shouldBeVisible,
         [hasBeenVisible, shouldBeVisible],
     );
 
-    const handleToggleMenu = useCallback(() => {
-        setIsMenuOpen((prev) => !prev);
+    const plopAudio = useMemo(() => {
+        if (typeof window === "undefined") return null;
+        const a = new Audio("/sounds/plop.mp3");
+        a.volume = 0.4;
+        return a;
     }, []);
 
+    const playPlop = useCallback(() => {
+        if (plopAudio) {
+            plopAudio.currentTime = 0;
+            plopAudio.play().catch(() => {});
+        }
+    }, [plopAudio]);
+
+    const handleToggleMenu = useCallback(() => {
+        playPlop();
+        setIsMenuOpen((prev) => !prev);
+    }, [playPlop]);
+
     const handleCloseMenu = useCallback(() => {
+        playPlop();
         setIsMenuOpen(false);
-    }, []);
+    }, [playPlop]);
 
     const handleItemClick = useCallback(
         (targetPos: number) => {
@@ -98,11 +114,12 @@ export const Menu: React.FC = () => {
             lenis.scrollTo(scrollTarget, {
                 duration: 1.2,
                 onComplete: () => {
+                    playPlop();
                     setIsMenuOpen(false);
                 },
             });
         },
-        [lenis],
+        [lenis, playPlop],
     );
 
     return (

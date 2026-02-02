@@ -7,6 +7,7 @@
 - [x] Create `src/components/menu/MenuButton.stories.tsx`
 - [x] Test `MenuButton` in Storybook using Playwright
 - [x] Iterate until visual and code-wise perfect (mix-blend-mode: difference, color: white, no filter)
+- [x] Implement abbreviation logic (MN -> MENU, CLS -> CLOSE) with hover expansion
 
 ### MenuItem
 - [x] Create `src/components/menu/MenuItem.tsx` and `MenuItem.module.css`

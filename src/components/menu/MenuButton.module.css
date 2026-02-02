@@ -6,22 +6,60 @@
     font-family: "Vank", sans-serif;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: clamp(1.5rem, 4vh, 3rem);
+    font-size: 5vh;
     color: white;
     background: transparent;
     border: none;
     cursor: pointer;
     mix-blend-mode: difference;
     transition: transform 0.3s ease, opacity 0.3s ease;
-    padding: 5vw;
+    padding: 3vw;
     margin: 0;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.char {
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    white-space: pre;
+    text-align: center;
+}
+
+.charInner {
+    overflow: hidden;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.hidden {
+    opacity: 0;
+    grid-template-columns: 0fr;
+}
+
+.menuButton .expanded {
+    opacity: 1;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
     .menuButton {
         bottom: auto;
         top: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .menuButton .hidden {
+        opacity: 1;
+        grid-template-columns: 1fr;
     }
 }
 

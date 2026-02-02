@@ -328,12 +328,14 @@ export const Scene2: React.FC = () => {
 
     return (
         <>
-            <DarkWavyBackground parallax={0.3} />
             <div ref={containerRef} className={styles.container}>
                 <div className={styles.leftContainer}>
                     <div
                         ref={phoneRef}
-                        className={cx(styles.phone, phoneReady && styles.phoneLoaded)}
+                        className={cx(
+                            styles.phone,
+                            phoneReady && styles.phoneLoaded,
+                        )}
                     >
                         <ThreepipePhone
                             imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"

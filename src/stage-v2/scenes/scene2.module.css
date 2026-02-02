@@ -62,7 +62,7 @@
     position: absolute;
     inset: 0;
     line-height: 1.4;
-    color: #fff;
+    color: var(--color);
     text-align: left;
     pointer-events: auto;
     text-align: center;
@@ -85,7 +85,7 @@
     height: 1.2em;
     margin-top: -0.2em;
     width: 0.5em;
-    background-color: var(--accent-color);
+    background-color: var(--accent-color, var(--color));
     transform: translateY(0.2em);
     border-radius: 5%;
     position: relative;
@@ -197,7 +197,7 @@
     bottom: 0;
     left: 0;
     height: 5px;
-    background-color: var(--accent-color, #fff);
+    background-color: var(--accent-color, var(--bg-color));
     width: 0;
     animation: progress var(--duration) linear;
     z-index: 100;

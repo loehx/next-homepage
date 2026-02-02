@@ -12,6 +12,10 @@ Provide a global navigation overlay that allows users to quickly access differen
 - Visible from page 2 onwards (position >= 1.0)
 - Once visible, stays visible even when scrolling back to top
 - Transforms to "close" when menu is open
+- Use abbreviation logic:
+    - "MN" -> "MENU"
+    - "CLS" -> "CLOSE"
+- Only show abbreviations initially, expand to full word on hover/active
 - Responsive spacing using vw/vh units from edges
 
 ### Menu Overlay
