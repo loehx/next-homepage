@@ -338,7 +338,8 @@ export const Scene2: React.FC = () => {
                         )}
                     >
                         <ThreepipePhone
-                            imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"
+                            imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/3IHwMjWi6r9pP28SfPvTEi/5a1e9274f7c7a75f8018861e79d276f1/Tallow_Sans_Pen__1_.jpg"
+                            // imageUrl="https://images.ctfassets.net/sn5a22dgyyrk/2sDFtEHMmlKhFnKAzJlIHN/5265dfe8f4a4ebbac35f8d0cd48e1292/_ALX6588.jpg"
                             hueRotate={DETAILS[activeIndex].hueRotate}
                             isVisible={true}
                             flipKey={activeIndex}

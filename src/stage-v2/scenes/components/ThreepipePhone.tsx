@@ -38,7 +38,11 @@ interface PhoneModelInnerProps extends PhoneModelProps {
 }
 
 // Professional iPhone Model with floating animation and flip
-function RealPhoneModel({ imageUrl, flipKey, onModelReady }: PhoneModelInnerProps) {
+function RealPhoneModel({
+    imageUrl,
+    flipKey,
+    onModelReady,
+}: PhoneModelInnerProps) {
     const { scene } = useGLTF("/models/tabletop_macbook_iphone.glb");
     const texture = useLoader(TextureLoader, imageUrl);
     const [iphone, setIphone] = React.useState<THREE.Object3D | null>(null);
@@ -204,9 +208,6 @@ export const ThreepipePhone: React.FC<ThreepipePhoneProps> = ({
         >
             <Canvas
                 className={styles.canvas}
-                style={
-                    { "--hue-rotate": `${hueRotate}deg` } as React.CSSProperties
-                }
                 dpr={[1, 2]}
                 gl={{
                     antialias: true,
