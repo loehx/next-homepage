@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import cx from "classnames";
-import styles from "./MenuButton.module.css";
+import "./MenuButton.css";
 
 export interface MenuButtonProps {
     isOpen: boolean;
@@ -21,7 +21,7 @@ export const MenuButton = ({
 
     return (
         <button
-            className={cx(styles.menuButton, className)}
+            className={cx("menu-button", className)}
             onClick={onClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -34,13 +34,13 @@ export const MenuButton = ({
                 return (
                     <span
                         key={index}
-                        className={cx(styles.char, {
-                            [styles.hidden]: isHidden && !isExpanded,
-                            [styles.visible]: !isHidden,
-                            [styles.expanded]: isHidden && isExpanded,
+                        className={cx("menu-button__char", {
+                            "menu-button__char--hidden": isHidden && !isExpanded,
+                            "menu-button__char--visible": !isHidden,
+                            "menu-button__char--expanded": isHidden && isExpanded,
                         })}
                     >
-                        <span className={styles.charInner}>{char}</span>
+                        <span className="menu-button__char-inner">{char}</span>
                     </span>
                 );
             })}

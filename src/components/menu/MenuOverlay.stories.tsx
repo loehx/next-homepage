@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/preact";
 import { MenuOverlay } from "./MenuOverlay";
 
 const meta: Meta<typeof MenuOverlay> = {
-  title: "Components/MenuOverlay",
+  title: "Components/Menu/MenuOverlay",
   component: MenuOverlay,
   parameters: {
     layout: "fullscreen",

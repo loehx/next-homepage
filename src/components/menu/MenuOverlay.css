@@ -1,8 +1,8 @@
-.overlay {
+.menu-overlay {
     position: fixed;
     inset: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.9);
     /* backdrop-filter: blur(8px); */
     display: flex;
     justify-content: center;
@@ -13,46 +13,42 @@
     pointer-events: none;
 }
 
-body.dark .overlay {
-    background: rgba(26, 26, 26, 0.95);
-}
-
-.isOpen {
+.menu-overlay--open {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
 
-.container {
+.menu-overlay__container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.itemWrapper {
+.menu-overlay__item-wrapper {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 500ms ease, transform 500ms ease;
 }
 
-.isOpen .itemWrapper {
+.menu-overlay--open .menu-overlay__item-wrapper {
     opacity: 1;
     transform: translateY(0);
 }
 
 /* Staggered animation */
-.itemWrapper:nth-child(1) {
+.menu-overlay__item-wrapper:nth-child(1) {
     transition-delay: 100ms;
 }
-.itemWrapper:nth-child(2) {
+.menu-overlay__item-wrapper:nth-child(2) {
     transition-delay: 200ms;
 }
-.itemWrapper:nth-child(3) {
+.menu-overlay__item-wrapper:nth-child(3) {
     transition-delay: 300ms;
 }
-.itemWrapper:nth-child(4) {
+.menu-overlay__item-wrapper:nth-child(4) {
     transition-delay: 400ms;
 }
-.itemWrapper:nth-child(5) {
+.menu-overlay__item-wrapper:nth-child(5) {
     transition-delay: 500ms;
 }

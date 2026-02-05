@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "preact/hooks";
 import classNames from "classnames";
-import styles from "./MenuItem.module.css";
+import "./MenuItem.css";
 
 interface MenuItemProps {
     label: string;
@@ -49,11 +49,11 @@ export const MenuItem = ({
 
     return (
         <button
-            className={classNames(styles.item, { [styles.isActive]: isActive })}
+            className={classNames("menu-item", { "menu-item--active": isActive })}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={onMouseLeave}
-            style={{ color: isActive ? hoverColor : "white" }}
+            style={{ color: isActive ? hoverColor : "var(--color-text)" }}
             aria-label={label}
         >
             {label.split("").map((char, index) => {
@@ -61,13 +61,13 @@ export const MenuItem = ({
                 return (
                     <span
                         key={index}
-                        className={classNames(styles.char, {
-                            [styles.hidden]: isHidden,
-                            [styles.visible]: !isHidden,
-                            [styles.expanded]: isHidden && isActive,
+                        className={classNames("menu-item__char", {
+                            "menu-item__char--hidden": isHidden,
+                            "menu-item__char--visible": !isHidden,
+                            "menu-item__char--expanded": isHidden && isActive,
                         })}
                     >
-                        <span className={styles.charInner}>{char}</span>
+                        <span className="menu-item__char-inner">{char}</span>
                     </span>
                 );
             })}

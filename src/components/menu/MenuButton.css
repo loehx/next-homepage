@@ -1,4 +1,4 @@
-.menuButton {
+.menu-button {
     position: fixed;
     right: 0;
     bottom: 0;
@@ -7,7 +7,7 @@
     font-weight: 800;
     text-transform: uppercase;
     font-size: 3vh;
-    color: white;
+    color: var(--color-text);
     background: transparent;
     border: none;
     cursor: pointer;
@@ -21,12 +21,7 @@
     justify-content: flex-end;
 }
 
-body.dark .menuButton {
-    mix-blend-mode: normal;
-    color: var(--color-text);
-}
-
-.char {
+.menu-button__char {
     display: grid;
     grid-template-columns: 1fr;
     transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -36,42 +31,42 @@ body.dark .menuButton {
     text-align: center;
 }
 
-.charInner {
+.menu-button__char-inner {
     overflow: hidden;
 }
 
-.visible {
+.menu-button__char--visible {
     opacity: 1;
 }
 
-.hidden {
+.menu-button__char--hidden {
     opacity: 0;
     grid-template-columns: 0fr;
 }
 
-.menuButton .expanded {
+.menu-button__char--expanded {
     opacity: 1;
     grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
-    .menuButton {
+    .menu-button {
         bottom: auto;
         top: 0;
     }
 }
 
 @media (max-width: 767px) {
-    .menuButton .hidden {
+    .menu-button__char--hidden {
         opacity: 1;
         grid-template-columns: 1fr;
     }
 }
 
-.menuButton:hover {
+.menu-button:hover {
     transform: scale(1.05);
 }
 
-.menuButton:active {
+.menu-button:active {
     transform: scale(0.95);
 }

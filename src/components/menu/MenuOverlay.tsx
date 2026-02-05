@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from "preact/hooks";
 import classNames from "classnames";
 import { MenuItem } from "./MenuItem";
-import styles from "./MenuOverlay.module.css";
+import "./MenuOverlay.css";
 
 interface MenuOverlayProps {
   isOpen: boolean;
@@ -62,17 +62,17 @@ export const MenuOverlay = ({
 
   return (
     <div
-      className={classNames(styles.overlay, { [styles.isOpen]: isOpen })}
+      className={classNames("menu-overlay", { "menu-overlay--open": isOpen })}
       onClick={handleBackdropClick}
       aria-hidden={!isOpen}
       onMouseLeave={handleMouseLeave}
     >
-      <nav className={styles.container} role="navigation">
+      <nav className="menu-overlay__container" role="navigation">
         {ITEMS.map((item, index) => {
           const visualActiveIndex = hoveredIndex !== null ? hoveredIndex : activeItemIndex;
 
           return (
-            <div key={item.label} className={styles.itemWrapper}>
+            <div key={item.label} className="menu-overlay__item-wrapper">
               <MenuItem
                 label={item.label}
                 hiddenIndexes={item.hiddenIndexes}

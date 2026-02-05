@@ -1,8 +1,8 @@
-.item {
+.menu-item {
     font-family: "Vank", sans-serif;
     font-size: 10vh;
     line-height: 1;
-    color: white;
+    color: var(--color-text);
     background: none;
     border: none;
     padding: 0;
@@ -18,7 +18,7 @@
     padding: 1vh 0;
 }
 
-.char {
+.menu-item__char {
     display: grid;
     grid-template-columns: 1fr;
     transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -28,34 +28,34 @@
     text-align: center;
 }
 
-.charInner {
+.menu-item__char-inner {
     overflow: hidden;
 }
 
-.visible {
+.menu-item__char--visible {
     opacity: 1;
 }
 
-.hidden {
+.menu-item__char--hidden {
     opacity: 0;
     grid-template-columns: 0fr;
 }
 
-.item .expanded {
+.menu-item__char--expanded {
     opacity: 1;
     grid-template-columns: 1fr;
 }
 
-.isActive {
+.menu-item--active {
     /* Optional: add some indicator for active item if needed, 
      but requirement says it should look like hovered state */
 }
 
-.item:focus {
+.menu-item:focus {
     outline: none;
 }
 
-.item:focus-visible {
-    outline: 2px solid white;
+.menu-item:focus-visible {
+    outline: 2px solid var(--color-text);
     outline-offset: 4px;
 }

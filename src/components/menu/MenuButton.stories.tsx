@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/preact";
 import { MenuButton } from "./MenuButton";
 
 const meta: Meta<typeof MenuButton> = {
-    title: "Components/MenuButton",
+    title: "Components/Menu/MenuButton",
     component: MenuButton,
     parameters: {
         layout: "centered",
