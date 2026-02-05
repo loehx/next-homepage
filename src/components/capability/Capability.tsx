@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "preact/hooks";
+import type { JSX } from "preact";
 import classNames from "classnames";
 import "./Capability.css";
 import { Detail } from "./Detail";
@@ -9,13 +10,16 @@ type CapabilityProps = {
   activeIndex?: number;
   isPlaying?: boolean;
   progress?: number;
+  renderPhone?: (props: { isLoaded: boolean }) => JSX.Element;
 };
 
 export const Capability = ({
   activeIndex: externalActiveIndex,
   isPlaying: externalIsPlaying = true,
   progress: externalProgress,
+  renderPhone,
 }: CapabilityProps) => {
+  const PhoneComponent = renderPhone || Phone;
   const [activeIndex, setActiveIndex] = useState(externalActiveIndex ?? 0);
   const [cycleCount, setCycleCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(externalIsPlaying);
@@ -77,7 +81,7 @@ export const Capability = ({
     <>
       <div className="capability">
         <div className="capability__left-container">
-          <Phone isLoaded={phoneReady} />
+          <PhoneComponent isLoaded={phoneReady} />
         </div>
 
         <div className="capability__right-container">

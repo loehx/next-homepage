@@ -1,12 +1,5 @@
-import type { Preview } from "@storybook/preact";
+import type { Preview } from "@storybook/react";
 import '../src/styles/global.css';
-
-// Fix for "React is not defined" error in Storybook autodocs with Preact
-import * as preact from 'preact';
-
-if (typeof window !== 'undefined') {
-  (window as any).React = preact;
-}
 
 const preview: Preview = {
   parameters: {

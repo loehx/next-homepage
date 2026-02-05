@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/preact";
+import type { Meta, StoryObj } from "@storybook/react";
 import { MenuOverlay } from "./MenuOverlay";
 
 const meta: Meta<typeof MenuOverlay> = {

@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { iPhone3D } from '../components/capability/iPhone3D';
+---
+
+<Layout title="3D Test">
+  <div style="width: 100vw; height: 100vh; background: #000;">
+    <iPhone3D client:only="preact" />
+  </div>
+</Layout>

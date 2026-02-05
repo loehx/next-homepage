@@ -1,4 +1,4 @@
-import type { StorybookConfig } from '@storybook/preact-vite';
+import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'path';
 
 const config: StorybookConfig = {
@@ -13,28 +13,28 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   framework: {
-    name: "@storybook/preact-vite",
+    name: "@storybook/react-vite",
     options: {},
   },
   async viteFinal(config) {
     const { mergeConfig } = await import('vite');
     return mergeConfig(config, {
+      esbuild: {
+        jsx: 'automatic',
+        jsxImportSource: 'react',
+      },
       resolve: {
         alias: {
-          'react': 'preact/compat',
-          'react-dom': 'preact/compat',
-          'react-dom/test-utils': 'preact/compat/test-utils',
-          'react/jsx-runtime': 'preact/jsx-runtime',
           'lenis/react': path.resolve(process.cwd(), '.storybook/lenis-react-mock.tsx'),
         },
       },
       optimizeDeps: {
         include: [
-          'preact/compat',
-          'preact/hooks',
-          'preact',
           'react',
           'react-dom',
+          '@react-three/fiber',
+          '@react-three/drei',
+          'three',
         ],
       },
       server: {
