@@ -1,0 +1,16 @@
+# npm
+node_modules
+# next.js build files
+.next
+# environment variables
+.env
+.env.*
+!.env.example
+# Local Netlify folder
+.netlify
+build
+out
+.DS_Store
+imagekit.json
+*storybook.log
+storybook-static

@@ -1,0 +1,21 @@
+{
+  "site": {
+    "title": "My Portfolio",
+    "description": "A modern portfolio website built with Astro and Preact",
+    "author": "Your Name"
+  },
+  "navigation": [
+    { "label": "Home", "url": "/" },
+    { "label": "About", "url": "/about" },
+    { "label": "Projects", "url": "/projects" },
+    { "label": "Contact", "url": "/contact" }
+  ],
+  "hero": {
+    "title": "Welcome to My Portfolio",
+    "subtitle": "Full-stack developer creating modern web experiences",
+    "cta": {
+      "text": "View My Work",
+      "url": "/projects"
+    }
+  }
+}

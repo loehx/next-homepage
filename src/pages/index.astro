@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Button } from '../components/Button';
+import siteData from '../data/site.json';
+---
+
+<Layout title={siteData.site.title} description={siteData.site.description}>
+  <main class="u-container">
+    <section class="hero">
+      <h1>{siteData.hero.title}</h1>
+      <p class="hero__subtitle">{siteData.hero.subtitle}</p>
+      <Button
+        label={siteData.hero.cta.text}
+        client:load
+        onClick={() => console.log('Button clicked!')}
+      />
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-2xl);
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero__subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-xl);
+    max-width: 600px;
+  }
+</style>
