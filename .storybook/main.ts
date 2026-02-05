@@ -1,11 +1,7 @@
+import type { StorybookConfig } from '@storybook/preact-vite';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-/** @type { import('@storybook/preact-vite').StorybookConfig } */
-const config = {
+const config: StorybookConfig = {
   stories: [
     "../stories/**/*.mdx",
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
@@ -29,7 +25,7 @@ const config = {
           'react-dom': 'preact/compat',
           'react-dom/test-utils': 'preact/compat/test-utils',
           'react/jsx-runtime': 'preact/jsx-runtime',
-          'lenis/react': path.resolve(__dirname, './lenis-react-mock.tsx'),
+          'lenis/react': path.resolve(process.cwd(), '.storybook/lenis-react-mock.tsx'),
         },
       },
       optimizeDeps: {
