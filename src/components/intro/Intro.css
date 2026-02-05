@@ -1,0 +1,120 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+  counter-reset: count 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.intro::before {
+  --invert: calc(1 - var(--progress));
+  content: "";
+  position: absolute;
+  top: -100vh;
+  left: 0;
+  bottom: -100vh;
+  right: 0;
+  background-color: black;
+  opacity: var(--invert);
+}
+
+@media (min-width: 768px) {
+  .intro {
+    justify-content: center;
+  }
+}
+
+.intro__line {
+  --pos-invert: 1;
+  height: var(--height);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: "Vank";
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  font-size: 75px;
+  font-weight: 500;
+  line-height: 1;
+  color: #ddd;
+  text-align: center;
+  height: 70px;
+  opacity: 1;
+  display: inline-block;
+}
+
+.intro__line:nth-child(2) {
+  --pos-invert: -1;
+}
+
+.intro__line:nth-child(3) {
+  --pos-invert: 2;
+}
+
+.intro__line:nth-child(4) {
+  --pos-invert: -2;
+}
+
+@media (min-width: 768px) {
+  .intro__line {
+    height: calc(85vh / var(--lines)) !important;
+    font-size: calc(95vh / var(--lines));
+    text-align: left;
+    transform: 0px;
+  }
+}
+
+.intro--fade-in .intro__line {
+  transform: translateX(0px);
+}
+
+.intro--scrolling .intro__line {
+  transition-delay: 0s;
+  transition-duration: calc(var(--progress));
+  opacity: calc(1 - var(--progress) * 2);
+  transform: translateX(calc(var(--progress) * 100vw * var(--pos-invert)));
+}
+
+.intro__text {
+  white-space: nowrap;
+  transition: transform 0.5s cubic-bezier(0, 0, 0, 1) 2s;
+}
+
+@media (min-width: 768px) {
+  .intro__text {
+    transform: scale(0.6);
+  }
+}
+
+.intro--fade-in .intro__text {
+  transform: scale(1);
+}
+
+.intro__progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  background-color: var(--color);
+  width: 0;
+  animation: progress var(--duration) linear infinite;
+  z-index: 100;
+  transition: background-color 0.5s ease;
+  transform: translateY(calc(var(--progress) * 500%));
+}
+
+.intro__progress-bar--paused {
+  animation-play-state: paused;
+}
+
+@keyframes progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
