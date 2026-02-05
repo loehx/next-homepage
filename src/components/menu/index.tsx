@@ -1,0 +1,142 @@
+import {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useRef,
+} from "preact/hooks";
+import { useLenis } from "lenis/react";
+import { MenuButton } from "./MenuButton";
+import { MenuOverlay } from "./MenuOverlay";
+
+export const Menu = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrollPos, setScrollPos] = useState(0);
+    const [hasBeenVisible, setHasBeenVisible] = useState(false);
+    const lenis = useLenis();
+    const requestRef = useRef<number>();
+
+    const updateScroll = useCallback((pos: number) => {
+        setScrollPos((prev) => {
+            // Only update if difference is significant to avoid micro-renders
+            if (Math.abs(prev - pos) < 0.5) return prev;
+            return pos;
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!lenis) {
+            const handleScroll = () => {
+                if (requestRef.current)
+                    cancelAnimationFrame(requestRef.current);
+                requestRef.current = requestAnimationFrame(() => {
+                    updateScroll(window.scrollY);
+                });
+            };
+            window.addEventListener("scroll", handleScroll, { passive: true });
+            updateScroll(window.scrollY);
+            return () => {
+                window.removeEventListener("scroll", handleScroll);
+                if (requestRef.current)
+                    cancelAnimationFrame(requestRef.current);
+            };
+        }
+
+        const handleScroll = (e: { scroll: number }) => {
+            updateScroll(e.scroll);
+        };
+
+        lenis.on("scroll", handleScroll);
+        updateScroll(lenis.scroll);
+
+        return () => {
+            lenis.off("scroll", handleScroll);
+        };
+    }, [lenis, updateScroll]);
+
+    const vh = typeof window !== "undefined" ? window.innerHeight : 1;
+
+    // Memoize derived values to prevent child re-renders
+    const activeItemIndex = useMemo(
+        () => Math.round(scrollPos / vh),
+        [scrollPos, vh],
+    );
+
+    const shouldBeVisible = useMemo(
+        () => scrollPos / vh >= 0.99,
+        [scrollPos, vh],
+    ); // 0.99 to be a bit more forgiving
+
+    useEffect(() => {
+        if (shouldBeVisible && !hasBeenVisible) {
+            setHasBeenVisible(true);
+        }
+    }, [shouldBeVisible, hasBeenVisible]);
+
+    const isButtonVisible = useMemo(
+        () => hasBeenVisible || shouldBeVisible,
+        [hasBeenVisible, shouldBeVisible],
+    );
+
+    const plopAudio = useMemo(() => {
+        if (typeof window === "undefined") return null;
+        const a = new Audio("/sounds/plop.mp3");
+        a.volume = 0.4;
+        return a;
+    }, []);
+
+    const playPlop = useCallback(() => {
+        if (plopAudio) {
+            plopAudio.currentTime = 0;
+            plopAudio.play().catch(() => {});
+        }
+    }, [plopAudio]);
+
+    const handleToggleMenu = useCallback(() => {
+        playPlop();
+        setIsMenuOpen((prev) => !prev);
+    }, [playPlop]);
+
+    const handleCloseMenu = useCallback(() => {
+        playPlop();
+        setIsMenuOpen(false);
+    }, [playPlop]);
+
+    const handleItemClick = useCallback(
+        (targetPos: number) => {
+            if (!lenis) return;
+
+            const scrollTarget =
+                targetPos === 999
+                    ? document.documentElement.scrollHeight
+                    : targetPos * window.innerHeight;
+
+            lenis.scrollTo(scrollTarget, {
+                duration: 1.2,
+                onComplete: () => {
+                    playPlop();
+                    setIsMenuOpen(false);
+                },
+            });
+        },
+        [lenis, playPlop],
+    );
+
+    return (
+        <>
+            {isButtonVisible && (
+                <MenuButton
+                    isOpen={isMenuOpen}
+                    onClick={handleToggleMenu}
+                    className="fixed bottom-[2vh] right-[2vw] z-[1001]"
+                />
+            )}
+            <MenuOverlay
+                isOpen={isMenuOpen}
+                onClose={handleCloseMenu}
+                onItemClick={handleItemClick}
+                activeItemIndex={activeItemIndex}
+            />
+        </>
+    );
+};

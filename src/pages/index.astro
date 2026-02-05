@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Button } from '../components/Button';
 import siteData from '../data/site.json';
 ---
 
@@ -9,11 +8,6 @@ import siteData from '../data/site.json';
     <section class="hero">
       <h1>{siteData.hero.title}</h1>
       <p class="hero__subtitle">{siteData.hero.subtitle}</p>
-      <Button
-        label={siteData.hero.cta.text}
-        client:load
-        onClick={() => console.log('Button clicked!')}
-      />
     </section>
   </main>
 </Layout>
