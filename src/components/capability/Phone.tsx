@@ -3,9 +3,10 @@ import "./Capability.css";
 
 type PhoneProps = {
   isLoaded: boolean;
+  imageUrl?: string;
 };
 
-export const Phone = ({ isLoaded }: PhoneProps) => {
+export const Phone = ({ isLoaded, imageUrl }: PhoneProps) => {
   return (
     <div
       className={classNames(

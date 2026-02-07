@@ -1,6 +1,5 @@
-// Mock lenis/react for Storybook Preact compatibility
-import { createContext } from "preact";
-import { useEffect, useState, useContext } from "preact/hooks";
+// Mock lenis/react for Storybook React compatibility
+import { createContext, useEffect, useState, useContext } from "react";
 import Lenis from "lenis";
 
 type LenisContextType = {

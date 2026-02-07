@@ -1,0 +1,38 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Default background if not provided by parent or theme */
+  background-color: var(--background-color, #ffffff);
+  cursor: crosshair;
+}
+
+.gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Theme support */
+:global(.dark) .container {
+  background-color: #1a1a1a;
+}
+
+:global(.light) .container {
+  background-color: #ffffff;
+}

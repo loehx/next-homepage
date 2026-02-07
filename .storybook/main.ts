@@ -26,9 +26,14 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           'lenis/react': path.resolve(process.cwd(), '.storybook/lenis-react-mock.tsx'),
+          'preact/hooks': 'react',
+          'preact/jsx-runtime': 'react/jsx-runtime',
+          'preact': 'react',
         },
       },
       optimizeDeps: {
+        force: true,
+        exclude: ['preact', 'preact/hooks'],
         include: [
           'react',
           'react-dom',

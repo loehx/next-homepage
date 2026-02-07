@@ -10,7 +10,7 @@ type CapabilityProps = {
   activeIndex?: number;
   isPlaying?: boolean;
   progress?: number;
-  renderPhone?: (props: { isLoaded: boolean }) => JSX.Element;
+  renderPhone?: (props: { isLoaded: boolean; imageUrl?: string; flipKey?: number }) => JSX.Element;
 };
 
 export const Capability = ({
@@ -19,7 +19,7 @@ export const Capability = ({
   progress: externalProgress,
   renderPhone,
 }: CapabilityProps) => {
-  const PhoneComponent = renderPhone || Phone;
+  const PhoneComponent = renderPhone || (Phone as any); // Type cast for simplicity with preact/react mismatch if any
   const [activeIndex, setActiveIndex] = useState(externalActiveIndex ?? 0);
   const [cycleCount, setCycleCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(externalIsPlaying);
@@ -81,7 +81,11 @@ export const Capability = ({
     <>
       <div className="capability">
         <div className="capability__left-container">
-          <PhoneComponent isLoaded={phoneReady} />
+          <PhoneComponent 
+            isLoaded={phoneReady} 
+            imageUrl={DETAILS[activeIndex].imageUrl}
+            flipKey={activeIndex}
+          />
         </div>
 
         <div className="capability__right-container">
@@ -108,7 +112,7 @@ export const Capability = ({
             {
               "--duration": `${TOTAL_DURATION_MS}ms`,
               "--accent-color": DETAILS[activeIndex].accentColor,
-            } as Record<string, unknown>
+            } as any
           }
         />
       )}

@@ -4,9 +4,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import styles from "./iPhone3D.module.css";
 
-// Shared pointer state (normalized -1 to 1)
-const pointerState = { x: 0, y: 0 };
-
 type iPhone3DProps = {
   imageUrl?: string;
   hueRotate?: number;
@@ -17,7 +14,7 @@ type iPhone3DProps = {
 };
 
 export function iPhone3D({
-  imageUrl = "https://placehold.co/400x800/1a1a1a/ffffff?text=Screen",
+  imageUrl = "/storybook-iphone-screenshot.png",
   hueRotate = 0,
   isVisible = true,
   isLoaded,
@@ -33,7 +30,11 @@ export function iPhone3D({
   const groupRef = useRef<THREE.Group | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const flipStateRef = useRef({ target: 0, current: 0, lastKey: flipKey });
-  const cameraTargetRef = useRef({ x: 0, y: 0 });
+  const rotationRef = useRef({ x: 0.1, y: Math.PI + 0.08 });
+  const targetRotationRef = useRef({ x: 0.1, y: Math.PI + 0.08 });
+  const isDraggingRef = useRef(false);
+  const lastPointerRef = useRef({ x: 0, y: 0 });
+  const horizontalDragAccumulatorRef = useRef(0);
   const clockRef = useRef(new THREE.Clock());
   const textureRef = useRef<THREE.Texture | null>(null);
   const screenMeshRef = useRef<THREE.Mesh | null>(null);
@@ -50,26 +51,49 @@ export function iPhone3D({
     }
   }, [flipKey]);
 
-  // Track pointer position (mouse and touch)
+  // Handle pointer events for rotation
   useEffect(() => {
-    const updatePointer = (clientX: number, clientY: number) => {
-      pointerState.x = (clientX / window.innerWidth) * 2 - 1;
-      pointerState.y = -((clientY / window.innerHeight) * 2 - 1);
+    const handlePointerDown = (e: PointerEvent) => {
+      isDraggingRef.current = true;
+      lastPointerRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseMove = (e: MouseEvent) => updatePointer(e.clientX, e.clientY);
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+
+      const deltaX = e.clientX - lastPointerRef.current.x;
+      const deltaY = e.clientY - lastPointerRef.current.y;
+
+      // Horizontal drag: accumulate and trigger flips
+      horizontalDragAccumulatorRef.current += deltaX;
+      const flipThreshold = 100; // pixels to trigger a full flip
+      
+      if (Math.abs(horizontalDragAccumulatorRef.current) >= flipThreshold) {
+        const flipDirection = horizontalDragAccumulatorRef.current > 0 ? 1 : -1;
+        flipStateRef.current.target += Math.PI * 2 * flipDirection;
+        horizontalDragAccumulatorRef.current = 0;
       }
+
+      // Vertical movement: rotate on X-axis (keep as is)
+      const sensitivity = 0.005;
+      targetRotationRef.current.x += deltaY * sensitivity;
+
+      lastPointerRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    const handlePointerUp = () => {
+      isDraggingRef.current = false;
+      horizontalDragAccumulatorRef.current = 0;
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
     };
   }, []);
 
@@ -113,14 +137,16 @@ export function iPhone3D({
       imageUrl,
       (texture) => {
         textureRef.current = texture;
-        applyTexture(texture, rendererRef.current!);
+        if (isModelReady && rendererRef.current) {
+          applyTexture(texture, rendererRef.current);
+        }
       },
       undefined,
       (error) => {
         console.error("Failed to load texture:", error);
       }
     );
-  }, [imageUrl, applyTexture]);
+  }, [imageUrl, applyTexture, isModelReady]);
 
   // Main Three.js setup
   useEffect(() => {
@@ -185,22 +211,46 @@ export function iPhone3D({
     dracoLoaderRef.current = dracoLoader;
     
     gltfLoader.load(
-      "/models/tabletop_macbook_iphone.glb",
+      "/models/iphone_only.glb",
       (gltf) => {
         // Add the entire loaded scene to our group
         const model = gltf.scene;
         group.add(model);
         
-        // Log what we loaded for debugging
-        console.log('[iPhone3D] Model loaded:', model);
-        console.log('[iPhone3D] Children:', model.children.map(c => c.name));
-        
         // Find screen mesh for texture
         let screenMesh: THREE.Mesh | null = null;
+        let bestScreenScore = -1;
         model.traverse((obj) => {
-          console.log('[iPhone3D] Object:', obj.name, obj.type);
-          if (obj instanceof THREE.Mesh && !screenMesh) {
-            screenMesh = obj;
+          if (obj instanceof THREE.Mesh) {
+            const materialName = obj.material.name || '';
+            obj.geometry.computeBoundingBox();
+            const size = new THREE.Vector3();
+            obj.geometry.boundingBox?.getSize(size);
+            
+            // Identification score
+            let score = 0;
+            if (obj.name.toLowerCase().includes('screen')) score += 100;
+            if (obj.name.toLowerCase().includes('display')) score += 100;
+            if (materialName.toLowerCase().includes('screen')) score += 100;
+            if (materialName.toLowerCase().includes('display')) score += 100;
+            if (materialName.toLowerCase().includes('wallpaper')) score += 100;
+            if (obj.name === 'Object_7') score += 50;
+
+            // Physical characteristics score (for iPhone model)
+            const isFlat = size.z < 0.01;
+            const isPortrait = size.y > size.x;
+            const isRightSize = size.y > 10 && size.y < 16 && size.x > 5 && size.x < 8;
+            
+            if (isFlat && isPortrait && isRightSize) {
+              score += 200;
+              // Prefer the "inner" mesh (slightly smaller than full frame)
+              if (size.x < 7.4) score += 50;
+            }
+
+            if (score > bestScreenScore) {
+              bestScreenScore = score;
+              screenMesh = obj;
+            }
           }
         });
         
@@ -228,23 +278,24 @@ export function iPhone3D({
 
       const t = clockRef.current.getElapsedTime();
 
-      // Camera interpolation
-      cameraTargetRef.current.x += (pointerState.x - cameraTargetRef.current.x) * 0.05;
-      cameraTargetRef.current.y += (pointerState.y - cameraTargetRef.current.y) * 0.05;
-
-      camera.position.x = cameraTargetRef.current.x * 2.5;
-      camera.position.y = cameraTargetRef.current.y * 1.8;
-      camera.position.z = 5;
+      // Camera position fixed
+      camera.position.set(0, 0, 5);
       camera.lookAt(0, 0, 0);
+
+      // Smooth rotation interpolation
+      rotationRef.current.x += (targetRotationRef.current.x - rotationRef.current.x) * 0.1;
+      rotationRef.current.y += (targetRotationRef.current.y - rotationRef.current.y) * 0.1;
 
       // Flip animation
       const flipDiff = flipStateRef.current.target - flipStateRef.current.current;
       flipStateRef.current.current += flipDiff * 0.08;
 
-      // Floating animation
+      // Floating animation + base rotation
       group.position.y = Math.sin(t * 0.8) * 0.08;
-      group.rotation.y = flipStateRef.current.current + Math.sin(t * 0.5) * 0.04;
-      group.rotation.x = Math.sin(t * 0.7) * 0.03;
+      
+      // Apply smooth rotation to group
+      group.rotation.x = rotationRef.current.x + Math.sin(t * 0.7) * 0.03;
+      group.rotation.y = rotationRef.current.y + flipStateRef.current.current + Math.sin(t * 0.5) * 0.04;
 
       renderer.render(scene, camera);
     };

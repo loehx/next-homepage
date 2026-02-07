@@ -6,6 +6,8 @@ description: Act as a coordinator that delegates complex tasks to sub-agents rat
 # Coordinator Mode
 
 **Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
+**Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
+**Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
 
 ## Sub-Agent Types
 

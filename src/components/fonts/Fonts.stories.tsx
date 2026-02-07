@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
-  title: "Typography/Fonts",
+  title: "Utilities/Fonts",
 };
 
 export default meta;
