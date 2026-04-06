@@ -231,13 +231,19 @@ const ProjectComponent: FC<Props> = ({
         });
     }, []);
 
+    const isMobile = useMemo(() => windowWidth <= 768, [windowWidth]);
+
     const multiplier = useMemo(
-        () => (windowWidth <= 768 ? 4 : 3),
-        [windowWidth],
+        () => (isMobile ? 4 : 3),
+        [isMobile],
     );
 
     const getRevealState = useCallback(
         (text: string): { revealed: string; showCursor: boolean } => {
+            // On mobile without CustomParallax, show all text immediately
+            if (isMobile && relativeScreenPosition === 0) {
+                return { revealed: text, showCursor: false };
+            }
             const r = relativeScreenPosition * multiplier;
             const showN = Math.min(Math.ceil(text.length * r), text.length);
             return {
@@ -245,7 +251,7 @@ const ProjectComponent: FC<Props> = ({
                 showCursor: showN < text.length,
             };
         },
-        [relativeScreenPosition, multiplier],
+        [relativeScreenPosition, multiplier, isMobile],
     );
 
     const hoverAccent = getProjectCardAccent(projectIndex);
@@ -268,7 +274,7 @@ const ProjectComponent: FC<Props> = ({
     const alignPhase = projectIndex % 2;
 
     const rowMotionStyle = useMemo((): CSSProperties => {
-        if (windowWidth <= 768) {
+        if (isMobile) {
             return {};
         }
         const p = viewportProgress;
@@ -277,27 +283,25 @@ const ProjectComponent: FC<Props> = ({
                 -p * DESKTOP_SCROLL_MARGIN_BOTTOM_PX
             }px)`,
         };
-    }, [viewportProgress, windowWidth]);
+    }, [viewportProgress, isMobile]);
 
     const isMobileCenterFocused =
-        windowWidth <= 768 && scrollFocus?.activeProjectId === project.id;
+        isMobile && scrollFocus?.activeProjectId === project.id;
 
     const cardMotionStyle = useMemo((): CSSProperties => {
         const base = {
             "--project-accent": hoverAccent,
+            willChange: isMobile ? "transform" : undefined,
         } as CSSProperties;
         const p = viewportProgress;
         const { rowW: R, cardW: C } = layoutSizes;
         let extraPx = 0;
         if (R > 0 && C > 0) {
-            const inset =
-                windowWidth <= 768
-                    ? MOBILE_CONTAINER_INSET_PX
-                    : CONTAINER_INSET_PX;
+            const inset = isMobile ? MOBILE_CONTAINER_INSET_PX : CONTAINER_INSET_PX;
             const deltaLeft = inset - R / 2 + C / 2;
             const deltaRight = R / 2 - inset - C / 2;
             const deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
-            if (windowWidth <= 768) {
+            if (isMobile) {
                 const deltaOpposite = alignPhase === 0 ? deltaRight : deltaLeft;
                 extraPx = p * deltaFinal + (1 - p) * deltaOpposite;
             } else {
@@ -305,8 +309,7 @@ const ProjectComponent: FC<Props> = ({
             }
         }
         const translate = `translateX(calc(-50% + ${extraPx}px))`;
-        const transform =
-            windowWidth <= 768 ? `${translate} scale(0.9)` : translate;
+        const transform = isMobile ? `${translate} scale(0.9)` : translate;
         return { ...base, transform, opacity: 1 };
     }, [
         hoverAccent,
@@ -314,149 +317,139 @@ const ProjectComponent: FC<Props> = ({
         viewportProgress,
         layoutSizes.rowW,
         layoutSizes.cardW,
-        windowWidth,
+        isMobile,
     ]);
 
-    return (
-        <FadeIn className="pointer-events-none">
-            <CustomParallax onUpdate={onScrollUpdate}>
-                <div
-                    ref={rowRef}
-                    className={styles.projectCardRow}
-                    style={rowMotionStyle}
-                >
-                    <div
-                        ref={cardRef}
-                        role="button"
-                        tabIndex={0}
-                        aria-haspopup="dialog"
-                        aria-label={`Open project details: ${project.name}`}
-                        className={`${
-                            styles.projectCard
-                        } flex flex-col cursor-pointer${
-                            isMobileCenterFocused
-                                ? ` ${styles.projectCardFocused}`
-                                : ""
-                        }`}
-                        style={cardMotionStyle}
-                        onClick={handleOpenDetails}
-                        onKeyDown={handleCardKeyDown}
-                    >
-                        <div className="flex flex-row items-stretch w-full gap-3 md:gap-8">
-                            {/* Timeline */}
-                            <div className="flex flex-col items-start shrink-0 min-w-[4.5rem] md:min-w-[5.5rem] pl-0 pr-1 text-left mt-[5px] relative">
-                                <span className="font-bold text-sm leading-none">
+    const cardContent = (
+        <div
+            ref={rowRef}
+            className={styles.projectCardRow}
+            style={rowMotionStyle}
+        >
+            <div
+                ref={cardRef}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-label={`Open project details: ${project.name}`}
+                className={`${
+                    styles.projectCard
+                } flex flex-col cursor-pointer${
+                    isMobileCenterFocused
+                        ? ` ${styles.projectCardFocused}`
+                        : ""
+                }`}
+                style={cardMotionStyle}
+                onClick={handleOpenDetails}
+                onKeyDown={handleCardKeyDown}
+            >
+                <div className="flex flex-row items-stretch w-full gap-3 md:gap-8">
+                    {/* Timeline */}
+                    <div className="flex flex-col items-start shrink-0 min-w-[4.5rem] md:min-w-[5.5rem] pl-0 pr-1 text-left mt-[5px] relative">
+                        <span className="font-bold text-sm leading-none">
+                            <RevealedWithCursor
+                                text={dateString}
+                                reveal={getRevealState}
+                            />
+                        </span>
+                        <span
+                            className={`${styles.projectCardMuted} text-xs mb-2 mt-3`}
+                        >
+                            {monthsCount}
+                        </span>
+                    </div>
+                    {/* Project Content */}
+                    <div className="flex-1 text-sm">
+                        <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center gap-2">
+                            <span
+                                className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
+                            >
+                                &gt;_
+                            </span>
+                            <span
+                                data-to={project.to}
+                                className={`-mr-6 inline-block relative font-mono ${styles.projectCardTitleName}`}
+                            >
+                                <span className="absolute inset-0">
                                     <RevealedWithCursor
-                                        text={dateString}
+                                        text={project.name}
                                         reveal={getRevealState}
                                     />
                                 </span>
-                                <span
-                                    className={`${styles.projectCardMuted} text-xs mb-2 mt-3`}
-                                >
-                                    {monthsCount}
+                                <span className="opacity-0">
+                                    {project.name}
+                                </span>
+                            </span>
+                        </div>
+                        <div className={styles.projectCardContent}>
+                            <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
+                                {sortedTechnologies.map((tech, i) => (
+                                    <span key={tech.id}>
+                                        <span
+                                            className={
+                                                frameworksFirst.includes(
+                                                    tech.name.toLowerCase(),
+                                                )
+                                                    ? `${styles.projectCardTechFw} lowercase`
+                                                    : `${styles.projectCardTechOther} lowercase`
+                                            }
+                                        >
+                                            {tech.name}
+                                        </span>
+                                        {i <
+                                            sortedTechnologies.length -
+                                                1 && (
+                                            <span className="mx-1">
+                                                ·
+                                            </span>
+                                        )}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="mb-1 relative">
+                                <span className="absolute top-0 left-0 w-full h-full">
+                                    <RevealedWithCursor
+                                        text={project.description}
+                                        reveal={getRevealState}
+                                    />
+                                </span>
+                                <span className="opacity-0">
+                                    {project.description}
                                 </span>
                             </div>
-                            {/* Project Content */}
-                            <div className="flex-1 text-sm">
-                                <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center gap-2">
-                                    <span
-                                        className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
-                                    >
-                                        &gt;_
-                                    </span>
-                                    <span
-                                        data-to={project.to}
-                                        className={`-mr-6 inline-block relative font-mono ${styles.projectCardTitleName}`}
-                                    >
-                                        <span className="absolute inset-0">
-                                            <RevealedWithCursor
-                                                text={project.name}
-                                                reveal={getRevealState}
-                                            />
-                                        </span>
-                                        <span className="opacity-0">
-                                            {project.name}
-                                        </span>
-                                    </span>
+                            <div className="w-full max-w-xl">
+                                <div className="mb-1">
+                                    <span className="mr-2">👨‍💻</span>
+                                    <RevealedWithCursor
+                                        text={project.role}
+                                        reveal={getRevealState}
+                                    />
                                 </div>
-                                <div className={styles.projectCardContent}>
-                                    <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
-                                        {sortedTechnologies.map((tech, i) => (
-                                            <span key={tech.id}>
-                                                <span
-                                                    className={
-                                                        frameworksFirst.includes(
-                                                            tech.name.toLowerCase(),
-                                                        )
-                                                            ? `${styles.projectCardTechFw} lowercase`
-                                                            : `${styles.projectCardTechOther} lowercase`
-                                                    }
-                                                >
-                                                    {tech.name}
-                                                </span>
-                                                {i <
-                                                    sortedTechnologies.length -
-                                                        1 && (
-                                                    <span className="mx-1">
-                                                        ·
-                                                    </span>
-                                                )}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div className="mb-1 relative">
-                                        <span className="absolute top-0 left-0 w-full h-full">
-                                            <RevealedWithCursor
-                                                text={project.description}
-                                                reveal={getRevealState}
-                                            />
-                                        </span>
-                                        <span className="opacity-0">
-                                            {project.description}
-                                        </span>
-                                    </div>
-                                    <div className="w-full max-w-xl">
-                                        <div className="mb-1">
-                                            <span className="mr-2">👨‍💻</span>
-                                            <RevealedWithCursor
-                                                text={project.role}
-                                                reveal={getRevealState}
-                                            />
-                                        </div>
-                                        {/* {project.url && (
-                                        <div className="mb-1">
-                                            <span className="mr-2">👀</span>
-                                            <a
-                                                href={project.url}
-                                                className="text-black hover:underline"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <RevealedWithCursor
-                                                    text={project.url
-                                                        .replace(
-                                                            /^https?:\/\//g,
-                                                            "",
-                                                        )
-                                                        .split("/")[0]}
-                                                    reveal={getRevealState}
-                                                />
-                                            </a>
-                                        </div>  )} */}
-                                        <div className="mb-1">
-                                            <span className="mr-2">🏢</span>
-                                            <RevealedWithCursor
-                                                text={project.company.name}
-                                                reveal={getRevealState}
-                                            />
-                                        </div>
-                                    </div>
+                                <div className="mb-1">
+                                    <span className="mr-2">🏢</span>
+                                    <RevealedWithCursor
+                                        text={project.company.name}
+                                        reveal={getRevealState}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    );
+
+    // On mobile: skip FadeIn and CustomParallax to reduce animated layers
+    // On desktop: keep full animation stack
+    if (isMobile) {
+        return cardContent;
+    }
+
+    return (
+        <FadeIn className="pointer-events-none">
+            <CustomParallax onUpdate={onScrollUpdate}>
+                {cardContent}
             </CustomParallax>
         </FadeIn>
     );
