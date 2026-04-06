@@ -2,6 +2,8 @@ import { FC } from "react";
 import { Entry, ProjectEntry, TechnologyEntry } from "data/definitions";
 import { Project } from "./project";
 import { FadeIn } from "@components/fadeIn";
+import { TerminalCursor } from "@components/terminalCursor";
+import styles from "./projectsModule.module.css";
 
 export interface ProjectsModuleProps extends Entry {
     name: string;
@@ -18,10 +20,15 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
         <div className="container mx-auto px-4 py-12">
             <FadeIn>
                 {props.title && (
-                    <h2 className="text-3xl mb-12">
-                        <span className="text-2xl">&gt;_ </span>
-                        {props.title}
-                    </h2>
+                    <div className={styles.headlineSection}>
+                        <h2 className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-3xl font-bold text-black">
+                            <span className="font-mono text-2xl text-primary-600">
+                                &gt;_
+                            </span>
+                            <span>{props.title}</span>
+                            <TerminalCursor />
+                        </h2>
+                    </div>
                 )}
             </FadeIn>
             <div className="flex flex-col">
@@ -31,7 +38,6 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             key={project.id}
                             project={project}
                             isLast={index === projects.length - 1}
-                            colorIndex={index}
                         />
                     ))}
             </div>

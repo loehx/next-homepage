@@ -1,33 +1,41 @@
 import { FC, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { ProjectEntry } from "data/definitions";
 import { FadeIn } from "@components/fadeIn";
+import { TerminalCursor } from "@components/terminalCursor";
 import {
     CustomParallax,
     ParallaxCallbackProps,
 } from "@components/customParallax";
-import { RocketIcon } from "@components/rocketIcon";
-import styles from "./project.module.css";
+
+const RevealedWithCursor: FC<{
+    text: string;
+    reveal: (text: string) => { revealed: string; showCursor: boolean };
+}> = ({ text, reveal }) => {
+    const { revealed, showCursor } = reveal(text);
+    return (
+        <>
+            {revealed}
+            {showCursor && <TerminalCursor />}
+        </>
+    );
+};
 
 interface Props {
     project: ProjectEntry;
     techFilter?: string;
     isLast?: boolean;
-    colorIndex?: number;
-    lineColor?: string;
 }
 
 const frameworksFirst = ["vue", "react", "angular", "vanilla", "c#"];
 
-const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
+const ProjectComponent: FC<Props> = ({ project }) => {
     const [relativeScreenPosition, setRelativeScreenPosition] =
         useState<number>(0);
     const [windowWidth, setWindowWidth] = useState<number>(0);
-    const [scrollY, setScrollY] = useState<number>(0);
 
     useEffect(() => {
         // Set initial width
         setWindowWidth(window.innerWidth);
-        setScrollY(window.scrollY);
 
         // Add resize listener with throttling
         let rafId: number | null = null;
@@ -39,23 +47,10 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
             });
         };
 
-        // Add scroll listener for hue rotation
-        let scrollRafId: number | null = null;
-        const handleScroll = () => {
-            if (scrollRafId !== null) return;
-            scrollRafId = requestAnimationFrame(() => {
-                setScrollY(window.scrollY);
-                scrollRafId = null;
-            });
-        };
-
         window.addEventListener("resize", handleResize, { passive: true });
-        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => {
             window.removeEventListener("resize", handleResize);
-            window.removeEventListener("scroll", handleScroll);
             if (rafId !== null) cancelAnimationFrame(rafId);
-            if (scrollRafId !== null) cancelAnimationFrame(scrollRafId);
         };
     }, []);
 
@@ -120,30 +115,15 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
         () => (windowWidth <= 768 ? 4 : 3),
         [windowWidth],
     );
-    const pathWidthMultiplier = useMemo(
-        () => (windowWidth <= 768 ? 100 : 50),
-        [windowWidth],
-    );
 
-    // Calculate hue rotation based on scroll position
-    // Full rotation (360deg) over 2000px of scroll
-    const hueRotate = useMemo(() => {
-        const rotation = (scrollY / 2000) * 360;
-        return rotation % 360;
-    }, [scrollY]);
-
-    // Base color - use a bright color that works well with hue-rotate
-    const baseColor = lineColor || "#FF0000"; // Red as base, will rotate through all colors
-    const lineProgressBase = relativeScreenPosition * pathWidthMultiplier;
-    const lineProgress = Math.max(0, Math.min(100, lineProgressBase));
-
-    const getRevealedText = useCallback(
-        (text: string) => {
+    const getRevealState = useCallback(
+        (text: string): { revealed: string; showCursor: boolean } => {
             const r = relativeScreenPosition * multiplier;
             const showN = Math.min(Math.ceil(text.length * r), text.length);
-            return (
-                text.substring(0, showN) + (showN === text.length ? "" : "_")
-            );
+            return {
+                revealed: text.substring(0, showN),
+                showCursor: showN < text.length,
+            };
         },
         [relativeScreenPosition, multiplier],
     );
@@ -155,44 +135,16 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                 onUpdate={onScrollUpdate}
             >
                 <div className="w-full flex flex-col mb-10 cursor-default">
-                    <div
-                        className={`relative h-[1px] my-2 mb-3 ${styles.progressLine}`}
-                        style={{
-                            width: lineProgress > 0 ? "125vw" : "0%",
-                            transition:
-                                "width 2s cubic-bezier(0.5, 0.18, 0.76, 0.17)",
-                            backgroundColor: baseColor,
-                            boxShadow: `0 0 4px 0 ${baseColor}`,
-                            color: baseColor,
-                            filter: `hue-rotate(${hueRotate}deg)`,
-                            willChange: "width, filter",
-                        }}
-                    >
-                        <RocketIcon
-                            className="absolute right-[-22px] top-[-9px] w-5 h-5"
-                            style={{
-                                transform: "rotate(90deg)",
-                                willChange: "transform, filter",
-                            }}
-                        />
-                    </div>
-                    <div className="flex flex-row items-stretch w-full gap-4 mt-4 md:gap-12">
+                    <div className="flex flex-row items-stretch w-full gap-4 md:gap-12">
                         {/* Timeline */}
                         <div className="flex flex-col items-start min-w-[70px] md:pl-20 md:min-w-[150px] text-left mt-[5px] relative">
                             <span className="font-bold text-sm leading-none">
-                                {getRevealedText(dateString)}
+                                <RevealedWithCursor
+                                    text={dateString}
+                                    reveal={getRevealState}
+                                />
                             </span>
-                            <span
-                                className="text-gray-600 text-xs mb-2 mt-3"
-                                style={{
-                                    transition: "all .2s ease",
-                                    opacity: lineProgress > 10 ? 1 : 0,
-                                    transform: `translateY(${
-                                        lineProgress > 10 ? 0 : -20
-                                    }px)`,
-                                    willChange: "opacity, transform",
-                                }}
-                            >
+                            <span className="text-gray-600 text-xs mb-2 mt-3">
                                 {monthsCount}
                             </span>
                         </div>
@@ -205,7 +157,10 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                     className="ml-1 max-w-[50vw] inline-block relative"
                                 >
                                     <span className="absolute inset-0">
-                                        {getRevealedText(project.name)}
+                                        <RevealedWithCursor
+                                            text={project.name}
+                                            reveal={getRevealState}
+                                        />
                                     </span>
                                     <span className="opacity-0">
                                         {project.name}
@@ -245,7 +200,10 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                             </div>
                             <div className="mb-1 relative">
                                 <span className="absolute top-0 left-0 w-full h-full">
-                                    {getRevealedText(project.description)}
+                                    <RevealedWithCursor
+                                        text={project.description}
+                                        reveal={getRevealState}
+                                    />
                                 </span>
                                 <span className="opacity-0">
                                     {project.description}
@@ -254,7 +212,10 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                             <div className="w-full max-w-xl">
                                 <div className="mb-1">
                                     <span className="mr-2">👨‍💻</span>
-                                    {getRevealedText(project.role)}
+                                    <RevealedWithCursor
+                                        text={project.role}
+                                        reveal={getRevealState}
+                                    />
                                 </div>
                                 {/* {project.url && (
                                     <div className="mb-1">
@@ -265,14 +226,15 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {getRevealedText(
-                                                project.url
+                                            <RevealedWithCursor
+                                                text={project.url
                                                     .replace(
                                                         /^https?:\/\//g,
                                                         "",
                                                     )
-                                                    .split("/")[0],
-                                            )}
+                                                    .split("/")[0]}
+                                                reveal={getRevealState}
+                                            />
                                         </a>
                                     </div>  )} */}
                                 <div className="mb-1">
@@ -284,12 +246,16 @@ const ProjectComponent: FC<Props> = ({ project, lineColor }) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {getRevealedText(
-                                                project.company.name,
-                                            )}
+                                            <RevealedWithCursor
+                                                text={project.company.name}
+                                                reveal={getRevealState}
+                                            />
                                         </a>
                                     ) : (
-                                        getRevealedText(project.company.name)
+                                        <RevealedWithCursor
+                                            text={project.company.name}
+                                            reveal={getRevealState}
+                                        />
                                     )}
                                 </div>
                             </div>
@@ -305,8 +271,6 @@ export const Project = memo(ProjectComponent, (prevProps, nextProps) => {
     // Custom comparison function for React.memo
     return (
         prevProps.project.id === nextProps.project.id &&
-        prevProps.colorIndex === nextProps.colorIndex &&
-        prevProps.lineColor === nextProps.lineColor &&
         prevProps.isLast === nextProps.isLast &&
         prevProps.techFilter === nextProps.techFilter
     );
