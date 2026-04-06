@@ -304,6 +304,10 @@
 /* Mobile uses same left: 50% + translateX (project.tsx) as desktop for scroll slide */
 
 @media (max-width: 768px) {
+    .projectCardRow {
+        margin-bottom: 0;
+    }
+
     .projectCardFocused {
         border-color: var(--project-accent);
         background-color: #fff;

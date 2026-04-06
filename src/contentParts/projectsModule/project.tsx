@@ -43,7 +43,7 @@ export function getProjectCardAccent(projectIndex: number): string {
     return PROJECT_HOVER_ACCENTS[projectIndex % PROJECT_HOVER_ACCENTS.length];
 }
 
-/** projectCardRow margin-bottom with scroll progress (0 → -80px). */
+/** projectCardRow margin-bottom with scroll progress (0 → -80px); tablet/desktop only. */
 const DESKTOP_SCROLL_MARGIN_BOTTOM_PX = 80;
 
 /**
@@ -268,13 +268,16 @@ const ProjectComponent: FC<Props> = ({
     const alignPhase = projectIndex % 2;
 
     const rowMotionStyle = useMemo((): CSSProperties => {
+        if (windowWidth <= 768) {
+            return { };
+        }
         const p = viewportProgress;
         return {
             marginBottom: `calc(2.5rem + ${
                 -p * DESKTOP_SCROLL_MARGIN_BOTTOM_PX
             }px)`,
         };
-    }, [viewportProgress]);
+    }, [viewportProgress, windowWidth]);
 
     const isMobileCenterFocused =
         windowWidth <= 768 && scrollFocus?.activeProjectId === project.id;
@@ -294,7 +297,13 @@ const ProjectComponent: FC<Props> = ({
             const deltaLeft = inset - R / 2 + C / 2;
             const deltaRight = R / 2 - inset - C / 2;
             const deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
-            extraPx = p * deltaFinal;
+            if (windowWidth <= 768) {
+                const deltaOpposite =
+                    alignPhase === 0 ? deltaRight : deltaLeft;
+                extraPx = p * deltaFinal + (1 - p) * deltaOpposite;
+            } else {
+                extraPx = p * deltaFinal;
+            }
         }
         const translate = `translateX(calc(-50% + ${extraPx}px))`;
         const transform =
