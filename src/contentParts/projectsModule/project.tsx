@@ -233,10 +233,7 @@ const ProjectComponent: FC<Props> = ({
 
     const isMobile = useMemo(() => windowWidth <= 768, [windowWidth]);
 
-    const multiplier = useMemo(
-        () => (isMobile ? 4 : 3),
-        [isMobile],
-    );
+    const multiplier = useMemo(() => (isMobile ? 4 : 3), [isMobile]);
 
     const getRevealState = useCallback(
         (text: string): { revealed: string; showCursor: boolean } => {
@@ -297,7 +294,9 @@ const ProjectComponent: FC<Props> = ({
         const { rowW: R, cardW: C } = layoutSizes;
         let extraPx = 0;
         if (R > 0 && C > 0) {
-            const inset = isMobile ? MOBILE_CONTAINER_INSET_PX : CONTAINER_INSET_PX;
+            const inset = isMobile
+                ? MOBILE_CONTAINER_INSET_PX
+                : CONTAINER_INSET_PX;
             const deltaLeft = inset - R / 2 + C / 2;
             const deltaRight = R / 2 - inset - C / 2;
             const deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
@@ -332,12 +331,8 @@ const ProjectComponent: FC<Props> = ({
                 tabIndex={0}
                 aria-haspopup="dialog"
                 aria-label={`Open project details: ${project.name}`}
-                className={`${
-                    styles.projectCard
-                } flex flex-col cursor-pointer${
-                    isMobileCenterFocused
-                        ? ` ${styles.projectCardFocused}`
-                        : ""
+                className={`${styles.projectCard} flex flex-col cursor-pointer${
+                    isMobileCenterFocused ? ` ${styles.projectCardFocused}` : ""
                 }`}
                 style={cardMotionStyle}
                 onClick={handleOpenDetails}
@@ -396,12 +391,8 @@ const ProjectComponent: FC<Props> = ({
                                         >
                                             {tech.name}
                                         </span>
-                                        {i <
-                                            sortedTechnologies.length -
-                                                1 && (
-                                            <span className="mx-1">
-                                                ·
-                                            </span>
+                                        {i < sortedTechnologies.length - 1 && (
+                                            <span className="mx-1">·</span>
                                         )}
                                     </span>
                                 ))}
