@@ -36,9 +36,8 @@ function buildProjectMarkdown(project: ProjectEntry): string {
         const u = project.url.trim();
         const display = u.replace(/^https?:\/\//i, "").split("/")[0];
         lines.push(`[${display}](${u})`, "");
-    }
-    else {
-        lines.push('', "");
+    } else {
+        lines.push("", "");
     }
 
     lines.push(`Timeline · ${period}`);

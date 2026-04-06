@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef, type RefObject } from "react";
  * the section is fully in view, but ends it as soon as the section leaves.
  */
 const CORRIDOR_TOP_FRAC = 0.5;
-const CORRIDOR_BOTTOM_FRAC = .5;
+const CORRIDOR_BOTTOM_FRAC = 0.5;
 
 function isInCorridor(rect: DOMRect, vh: number): boolean {
     const bandTop = vh * CORRIDOR_TOP_FRAC;
@@ -23,9 +23,7 @@ const ATTR = "data-dark-corridor";
  * the projects section enters/exits the viewport corridor. CSS handles the
  * transition using custom properties that switch between light/dark values.
  */
-export function useProjectsPageBlend(
-    ref: RefObject<HTMLElement | null>,
-): void {
+export function useProjectsPageBlend(ref: RefObject<HTMLElement | null>): void {
     const lastRef = useRef<boolean | null>(null);
 
     useLayoutEffect(() => {

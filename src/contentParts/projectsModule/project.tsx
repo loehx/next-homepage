@@ -269,7 +269,7 @@ const ProjectComponent: FC<Props> = ({
 
     const rowMotionStyle = useMemo((): CSSProperties => {
         if (windowWidth <= 768) {
-            return { };
+            return {};
         }
         const p = viewportProgress;
         return {
@@ -298,8 +298,7 @@ const ProjectComponent: FC<Props> = ({
             const deltaRight = R / 2 - inset - C / 2;
             const deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
             if (windowWidth <= 768) {
-                const deltaOpposite =
-                    alignPhase === 0 ? deltaRight : deltaLeft;
+                const deltaOpposite = alignPhase === 0 ? deltaRight : deltaLeft;
                 extraPx = p * deltaFinal + (1 - p) * deltaOpposite;
             } else {
                 extraPx = p * deltaFinal;
@@ -399,7 +398,9 @@ const ProjectComponent: FC<Props> = ({
                                                 {i <
                                                     sortedTechnologies.length -
                                                         1 && (
-                                                    <span className="mx-1">·</span>
+                                                    <span className="mx-1">
+                                                        ·
+                                                    </span>
                                                 )}
                                             </span>
                                         ))}
