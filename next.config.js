@@ -13,8 +13,7 @@ module.exports = withPlugins(
     ],
     {
         images: {
-            loader: "akamai",
-            path: "",
+            unoptimized: true,
             disableStaticImages: true,
         },
         exportTrailingSlash: true,
