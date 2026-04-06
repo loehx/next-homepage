@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Intro } from "./Intro";
 
 const meta: Meta<typeof Intro> = {
-  title: "Components/Intro",
+  title: "Page Sections/Intro",
   component: Intro,
   parameters: {
     layout: "fullscreen",

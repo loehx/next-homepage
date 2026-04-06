@@ -5,7 +5,7 @@ import { Gradients, GrainOverlay } from "./Gradients";
 import styles from "./Gradients.module.css";
 
 const meta: Meta<typeof Gradients> = {
-  title: "Gradients",
+  title: "Visual Effects/Gradients",
   component: Gradients,
   parameters: {
     layout: "fullscreen",

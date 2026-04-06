@@ -1,6 +1,7 @@
 # Cursor Rules
 
 IMPORTANT:
+- SUB AGENTS should ALWAYS be with model: "composer-1"!
 - files should not exceed 150 lines
 - documentation should be very brief and concise (1 line per feature when possible)
 - ALWAYS follow feature development workflow (see `.cursor/rules/features.mdc`)

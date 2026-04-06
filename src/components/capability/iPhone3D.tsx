@@ -6,19 +6,15 @@ import styles from "./iPhone3D.module.css";
 
 type iPhone3DProps = {
   imageUrl?: string;
-  hueRotate?: number;
   isVisible?: boolean;
   isLoaded?: boolean;
-  flipKey?: number;
   onLoad?: () => void;
 };
 
 export function iPhone3D({
   imageUrl = "/storybook-iphone-screenshot.png",
-  hueRotate = 0,
   isVisible = true,
   isLoaded,
-  flipKey = 0,
   onLoad,
 }: iPhone3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,73 +25,192 @@ export function iPhone3D({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const groupRef = useRef<THREE.Group | null>(null);
   const animationFrameRef = useRef<number | null>(null);
-  const flipStateRef = useRef({ target: 0, current: 0, lastKey: flipKey });
-  const rotationRef = useRef({ x: 0.1, y: Math.PI + 0.08 });
-  const targetRotationRef = useRef({ x: 0.1, y: Math.PI + 0.08 });
-  const isDraggingRef = useRef(false);
-  const lastPointerRef = useRef({ x: 0, y: 0 });
-  const horizontalDragAccumulatorRef = useRef(0);
+  const rotationRef = useRef({ x: 0, y: 0 });
+  const targetRotationRef = useRef({ x: 0, y: 0 });
   const clockRef = useRef(new THREE.Clock());
+  const isDraggingRef = useRef(false);
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const dragStartRotationRef = useRef({ x: 0, y: 0 });
+  const velocityRef = useRef({ x: 0, y: 0 });
+  const lastMoveTimeRef = useRef<number | null>(null);
+  const lastPointerPosRef = useRef({ x: 0, y: 0 });
+  const lastTargetRotationRef = useRef({ x: 0, y: 0 });
+  
+  // Rotation settings
+  const rotationLerpSpeed = 0.15; // Smooth interpolation speed (0-1, higher = faster)
+  const floatingAmplitude = { x: 0.03, y: 0.04 };
+  const dragSensitivity = 0.01; // Sensitivity for delta-based rotation
+  const frictionFactor = 0.92; // Friction for momentum (0-1, lower = more friction)
+  const minVelocity = 0.0005; // Minimum velocity threshold to stop momentum
+  const zLerpSpeed = 0.1; // Smooth interpolation speed for Z position animation
+  const zFarDistance = -50; // Z position when iPhone is far away (not visible)
+  
+  // Use isLoaded if provided, otherwise use isVisible
+  const visible = isLoaded !== undefined ? isLoaded : isVisible;
+  
+  // Initialize refs based on visible state (not just isVisible)
+  const zPositionRef = useRef(visible ? 0 : zFarDistance);
+  const targetZPositionRef = useRef(visible ? 0 : zFarDistance);
+  const baseYRotationRef = useRef(visible ? 0 : -Math.PI / 4);
+  const targetBaseYRotationRef = useRef(visible ? 0 : -Math.PI / 4);
   const textureRef = useRef<THREE.Texture | null>(null);
   const screenMeshRef = useRef<THREE.Mesh | null>(null);
   const dracoLoaderRef = useRef<DRACOLoader | null>(null);
 
-  // Use isLoaded if provided, otherwise use isVisible
-  const visible = isLoaded !== undefined ? isLoaded : isVisible;
-
-  // Handle flipKey changes
+  // Handle pointer events for drag-based rotation
   useEffect(() => {
-    if (flipStateRef.current.lastKey !== flipKey) {
-      flipStateRef.current.target += Math.PI * 2;
-      flipStateRef.current.lastKey = flipKey;
-    }
-  }, [flipKey]);
+    const container = containerRef.current;
+    if (!container) return;
 
-  // Handle pointer events for rotation
-  useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      
+      // Check if pointer is within container bounds
+      const isInside = 
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+      
+      if (!isInside) return;
+
       isDraggingRef.current = true;
-      lastPointerRef.current = { x: e.clientX, y: e.clientY };
+      dragStartRef.current.x = e.clientX;
+      dragStartRef.current.y = e.clientY;
+      
+      // Store current rotation state when drag starts
+      dragStartRotationRef.current.x = rotationRef.current.x;
+      dragStartRotationRef.current.y = rotationRef.current.y;
+      
+      // Reset velocity tracking for new drag
+      velocityRef.current.x = 0;
+      velocityRef.current.y = 0;
+      lastMoveTimeRef.current = performance.now();
+      lastPointerPosRef.current = { x: e.clientX, y: e.clientY };
+      lastTargetRotationRef.current.x = targetRotationRef.current.x;
+      lastTargetRotationRef.current.y = targetRotationRef.current.y;
+      
+      // Prevent default to avoid text selection
+      e.preventDefault();
     };
 
     const handlePointerMove = (e: PointerEvent) => {
-      if (!isDraggingRef.current) return;
+      if (!isDraggingRef.current || !containerRef.current) return;
 
-      const deltaX = e.clientX - lastPointerRef.current.x;
-      const deltaY = e.clientY - lastPointerRef.current.y;
+      const currentTime = performance.now();
+      const currentPos = { x: e.clientX, y: e.clientY };
 
-      // Horizontal drag: accumulate and trigger flips
-      horizontalDragAccumulatorRef.current += deltaX;
-      const flipThreshold = 100; // pixels to trigger a full flip
+      // Calculate delta from start position
+      const deltaX = e.clientX - dragStartRef.current.x;
+      const deltaY = e.clientY - dragStartRef.current.y;
       
-      if (Math.abs(horizontalDragAccumulatorRef.current) >= flipThreshold) {
-        const flipDirection = horizontalDragAccumulatorRef.current > 0 ? 1 : -1;
-        flipStateRef.current.target += Math.PI * 2 * flipDirection;
-        horizontalDragAccumulatorRef.current = 0;
+      // Apply rotation based on delta from start position
+      // Drag right → rotate right (positive Y rotation)
+      // Drag left → rotate left (negative Y rotation)
+      // Drag down → tilt down (positive X rotation)
+      // Drag up → tilt up (negative X rotation)
+      const newRotationY = dragStartRotationRef.current.y + deltaX * dragSensitivity;
+      const newRotationX = dragStartRotationRef.current.x + deltaY * dragSensitivity;
+      
+      // Calculate velocity for momentum based on target rotation change
+      if (lastMoveTimeRef.current !== null) {
+        const deltaTime = (currentTime - lastMoveTimeRef.current) / 1000; // Convert to seconds
+        if (deltaTime > 0 && deltaTime < 0.1) { // Only calculate if deltaTime is reasonable (avoid spikes)
+          const rotationDeltaX = newRotationX - lastTargetRotationRef.current.x;
+          const rotationDeltaY = newRotationY - lastTargetRotationRef.current.y;
+          
+          // Calculate velocity (radians per second)
+          const newVelocityX = rotationDeltaX / deltaTime;
+          const newVelocityY = rotationDeltaY / deltaTime;
+          
+          // Smooth velocity using exponential moving average (0.7 = 70% new, 30% old)
+          // This helps handle irregular pointer events and provides smoother momentum
+          const smoothingFactor = 0.7;
+          velocityRef.current.x = velocityRef.current.x * (1 - smoothingFactor) + newVelocityX * smoothingFactor;
+          velocityRef.current.y = velocityRef.current.y * (1 - smoothingFactor) + newVelocityY * smoothingFactor;
+          
+        }
       }
-
-      // Vertical movement: rotate on X-axis (keep as is)
-      const sensitivity = 0.005;
-      targetRotationRef.current.x += deltaY * sensitivity;
-
-      lastPointerRef.current = { x: e.clientX, y: e.clientY };
+      
+      lastMoveTimeRef.current = currentTime;
+      lastPointerPosRef.current = currentPos;
+      
+      // Apply rotation without limits (infinite rotation)
+      targetRotationRef.current.y = newRotationY;
+      targetRotationRef.current.x = newRotationX;
+      
+      // Update last target rotation for next velocity calculation
+      lastTargetRotationRef.current.x = newRotationX;
+      lastTargetRotationRef.current.y = newRotationY;
     };
 
     const handlePointerUp = () => {
       isDraggingRef.current = false;
-      horizontalDragAccumulatorRef.current = 0;
+      // Keep velocity for momentum - don't reset it
+      if (Math.abs(velocityRef.current.x) > minVelocity || Math.abs(velocityRef.current.y) > minVelocity) {
+        console.log('Momentum started:', { 
+          vx: velocityRef.current.x.toFixed(4), 
+          vy: velocityRef.current.y.toFixed(4) 
+        });
+      }
+      // Reset lastMoveTimeRef so next drag starts fresh
+      lastMoveTimeRef.current = null;
     };
 
-    window.addEventListener("pointerdown", handlePointerDown);
+    container.addEventListener("pointerdown", handlePointerDown);
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
 
     return () => {
-      window.removeEventListener("pointerdown", handlePointerDown);
+      container.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
     };
   }, []);
+
+  // Update target Z position and base Y rotation based on visible state
+  useEffect(() => {
+    const newTargetZ = visible ? 0 : zFarDistance;
+    const newTargetBaseY = visible ? 0 : -Math.PI / 4;
+    
+    const prevTargetBaseY = targetBaseYRotationRef.current;
+    const prevBaseY = baseYRotationRef.current;
+    
+    console.log('[iPhone3D] Visibility changed:', {
+      visible,
+      isLoaded,
+      isVisible,
+      newTargetZ,
+      newTargetBaseY: `${(newTargetBaseY * 180 / Math.PI).toFixed(1)}°`,
+      currentBaseY: `${(baseYRotationRef.current * 180 / Math.PI).toFixed(1)}°`,
+      currentTargetBaseY: `${(targetBaseYRotationRef.current * 180 / Math.PI).toFixed(1)}°`,
+      prevTargetBaseY: `${(prevTargetBaseY * 180 / Math.PI).toFixed(1)}°`,
+      willChange: newTargetBaseY !== prevTargetBaseY,
+    });
+    
+    targetZPositionRef.current = newTargetZ;
+    targetBaseYRotationRef.current = newTargetBaseY;
+    
+    console.log('[iPhone3D] Targets updated:', {
+      targetZPosition: targetZPositionRef.current,
+      targetBaseYRotation: `${(targetBaseYRotationRef.current * 180 / Math.PI).toFixed(1)}°`,
+      currentBaseY: `${(baseYRotationRef.current * 180 / Math.PI).toFixed(1)}°`,
+      difference: `${(Math.abs(baseYRotationRef.current - targetBaseYRotationRef.current) * 180 / Math.PI).toFixed(1)}°`,
+    });
+    
+    // Force immediate application if group is ready (for testing)
+    if (groupRef.current) {
+      const testY = baseYRotationRef.current + rotationRef.current.y;
+      console.log('[iPhone3D] Group rotation test:', {
+        groupRotationY: `${(groupRef.current.rotation.y * 180 / Math.PI).toFixed(2)}°`,
+        calculatedY: `${(testY * 180 / Math.PI).toFixed(2)}°`,
+      });
+    }
+  }, [visible, isLoaded, isVisible]);
 
   // Apply texture to screen
   const applyTexture = useCallback((texture: THREE.Texture, renderer: THREE.WebGLRenderer) => {
@@ -197,7 +312,7 @@ export function iPhone3D({
     const group = new THREE.Group();
     group.scale.set(1, 1, 1);
     group.position.set(0.1, 0, 0);
-    group.rotation.set(0.1, Math.PI + 0.08, 0.02);
+    group.rotation.set(0, 0, 0.02);
     scene.add(group);
     groupRef.current = group;
 
@@ -282,20 +397,97 @@ export function iPhone3D({
       camera.position.set(0, 0, 5);
       camera.lookAt(0, 0, 0);
 
-      // Smooth rotation interpolation
-      rotationRef.current.x += (targetRotationRef.current.x - rotationRef.current.x) * 0.1;
-      rotationRef.current.y += (targetRotationRef.current.y - rotationRef.current.y) * 0.1;
+      // Apply momentum when not dragging
+      if (!isDraggingRef.current) {
+        const deltaTime = clockRef.current.getDelta();
+        
+        // Apply velocity to target rotation
+        if (Math.abs(velocityRef.current.x) > minVelocity || Math.abs(velocityRef.current.y) > minVelocity) {
+          const prevTargetX = targetRotationRef.current.x;
+          const prevTargetY = targetRotationRef.current.y;
+          
+          targetRotationRef.current.x += velocityRef.current.x * deltaTime;
+          targetRotationRef.current.y += velocityRef.current.y * deltaTime;
+          
+          // Apply friction to gradually slow down
+          velocityRef.current.x *= frictionFactor;
+          velocityRef.current.y *= frictionFactor;
+          
+          // Stop momentum when velocity is very small
+          if (Math.abs(velocityRef.current.x) < minVelocity) {
+            velocityRef.current.x = 0;
+          }
+          if (Math.abs(velocityRef.current.y) < minVelocity) {
+            velocityRef.current.y = 0;
+          }
+        }
+      }
 
-      // Flip animation
-      const flipDiff = flipStateRef.current.target - flipStateRef.current.current;
-      flipStateRef.current.current += flipDiff * 0.08;
+      // Smoothly interpolate current rotation toward target rotation
+      rotationRef.current.x = THREE.MathUtils.lerp(
+        rotationRef.current.x,
+        targetRotationRef.current.x,
+        rotationLerpSpeed
+      );
+      rotationRef.current.y = THREE.MathUtils.lerp(
+        rotationRef.current.y,
+        targetRotationRef.current.y,
+        rotationLerpSpeed
+      );
+
+      // Smoothly interpolate Z position toward target Z position
+      zPositionRef.current = THREE.MathUtils.lerp(
+        zPositionRef.current,
+        targetZPositionRef.current,
+        zLerpSpeed
+      );
+
+      // Smoothly interpolate base Y rotation toward target base Y rotation
+      const prevBaseY = baseYRotationRef.current;
+      baseYRotationRef.current = THREE.MathUtils.lerp(
+        baseYRotationRef.current,
+        targetBaseYRotationRef.current,
+        zLerpSpeed
+      );
+      
+      // Debug logging when base Y rotation changes significantly or every 60 frames
+      const frameCount = Math.floor(t * 60);
+      if (Math.abs(baseYRotationRef.current - prevBaseY) > 0.001 || frameCount % 60 === 0) {
+        console.log('[Animation Loop] Base Y rotation interpolated:', {
+          prev: `${(prevBaseY * 180 / Math.PI).toFixed(2)}°`,
+          current: `${(baseYRotationRef.current * 180 / Math.PI).toFixed(2)}°`,
+          target: `${(targetBaseYRotationRef.current * 180 / Math.PI).toFixed(2)}°`,
+          zPosition: zPositionRef.current.toFixed(2),
+          targetZPosition: targetZPositionRef.current.toFixed(2),
+          lerpSpeed: zLerpSpeed,
+          difference: `${(Math.abs(baseYRotationRef.current - targetBaseYRotationRef.current) * 180 / Math.PI).toFixed(2)}°`,
+        });
+      }
 
       // Floating animation + base rotation
       group.position.y = Math.sin(t * 0.8) * 0.08;
+      group.position.z = zPositionRef.current;
       
-      // Apply smooth rotation to group
-      group.rotation.x = rotationRef.current.x + Math.sin(t * 0.7) * 0.03;
-      group.rotation.y = rotationRef.current.y + flipStateRef.current.current + Math.sin(t * 0.5) * 0.04;
+      // Apply rotation to group - DIRECTLY in animation loop to ensure refs are current
+      const baseY = baseYRotationRef.current;
+      const userY = rotationRef.current.y;
+      const floatY = Math.sin(t * 0.5) * floatingAmplitude.y;
+      const finalY = baseY + userY + floatY;
+      
+      group.rotation.x = rotationRef.current.x + Math.sin(t * 0.5) * floatingAmplitude.x;
+      group.rotation.y = finalY;
+      
+      // Debug logging every 60 frames (~1 second at 60fps)
+      if (Math.floor(t * 60) % 60 === 0) {
+        console.log('[Animation Loop] Y rotation applied:', {
+          baseY: `${(baseY * 180 / Math.PI).toFixed(2)}°`,
+          userY: `${(userY * 180 / Math.PI).toFixed(2)}°`,
+          floatY: `${(floatY * 180 / Math.PI).toFixed(2)}°`,
+          finalY: `${(finalY * 180 / Math.PI).toFixed(2)}°`,
+          groupRotationY: `${(group.rotation.y * 180 / Math.PI).toFixed(2)}°`,
+          targetBaseY: `${(targetBaseYRotationRef.current * 180 / Math.PI).toFixed(2)}°`,
+        });
+      }
 
       renderer.render(scene, camera);
     };
@@ -365,7 +557,6 @@ export function iPhone3D({
       className={styles.container}
       style={{
         visibility: visible ? "visible" : "hidden",
-        filter: `hue-rotate(${hueRotate}deg)`,
       }}
     >
       {!isModelReady && (

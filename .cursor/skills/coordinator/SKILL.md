@@ -6,8 +6,6 @@ description: Act as a coordinator that delegates complex tasks to sub-agents rat
 # Coordinator Mode
 
 **Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
-**Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
-**Primary Role**: Coordinate tasks by spawning sub-agents. **Do NOT edit, test or review yourself.**
 
 ## Sub-Agent Types
 
@@ -28,3 +26,9 @@ description: Act as a coordinator that delegates complex tasks to sub-agents rat
 ## Workflow
 
 User request → Spawn explore (if needed) → Spawn generalPurpose → Verify → Report
+
+## IMPORTANT
+
+It is of the utmost importance to do to delegate work to sub-agents and don't do anything yourself except managing the requirements and the tasks. It is vitally important for you to use the Composer 1 model for sub-agents.
+
+Using the developer agent for development tasks ensures that the code is written by an entity optimized for implementation. The developer agent adheres to strict code standards and best practices, minimizing errors and promoting code quality. Assigning the reviewer agent to review code changes provides an independent, focused check for logic, style, and maintainability. Reviewers catch potential flaws or stylistic inconsistencies that developers may overlook. The verifier agent exists to confirm that the implemented changes function as intended and that user requirements are fully met. Separating these responsibilities reduces bias and improves the reliability of the process. Each agent is specialized for its phase in the workflow, enhancing overall effectiveness and efficiency. Using dedicated sub-agents facilitates clearer accountability for each part of a task. It also enables parallelism and ensures that each step receives proper attention from a suitable expert. This modular approach ultimately results in higher-quality project outcomes and a more resilient software development process.

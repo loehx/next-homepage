@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { iPhone3D } from "./iPhone3D";
 
 const meta: Meta<typeof iPhone3D> = {
-  title: "Components/Capability/iPhone3D",
+  title: "3D Components/iPhone3D",
   component: iPhone3D,
   parameters: {
     layout: "fullscreen",
@@ -20,17 +20,9 @@ const meta: Meta<typeof iPhone3D> = {
       control: "text",
       description: "URL of the image to display on the iPhone screen",
     },
-    hueRotate: {
-      control: { type: "range", min: 0, max: 360, step: 1 },
-      description: "Hue rotation in degrees",
-    },
     isVisible: {
       control: "boolean",
       description: "Whether the component is visible",
-    },
-    flipKey: {
-      control: { type: "number", min: 0, step: 1 },
-      description: "Key to trigger flip animation",
     },
   },
 };
@@ -52,13 +44,6 @@ export const CustomImage: Story = {
   },
 };
 
-export const WithHueRotate: Story = {
-  args: {
-    imageUrl: "https://picsum.photos/400/800",
-    hueRotate: 180,
-    isVisible: true,
-  },
-};
 
 export const Hidden: Story = {
   args: {

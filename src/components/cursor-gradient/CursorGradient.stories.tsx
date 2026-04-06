@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { CursorGradient } from "./CursorGradient";
 
 const meta: Meta<typeof CursorGradient> = {
-  title: "Components/CursorGradient",
+  title: "Visual Effects/CursorGradient",
   component: CursorGradient,
   parameters: {
     layout: "fullscreen",

@@ -17,7 +17,7 @@ function iPhone3DWrapper({ isLoaded }: { isLoaded: boolean }) {
 }
 
 const meta: Meta<typeof Capability> = {
-  title: "Components/Capability/Capability3D",
+  title: "3D Components/Capability3D",
   component: Capability,
   parameters: {
     layout: "fullscreen",

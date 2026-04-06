@@ -1,7 +1,7 @@
 ---
 name: Developer
-description: Implements features, fixes bugs, and writes production code
 model: composer-1
+description: Implements features, fixes bugs, and writes production code
 ---
 
 # Developer Agent

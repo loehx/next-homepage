@@ -1,5 +1,0 @@
-- [x] Create feature documentation (.cursor/features/logo-wrapper.*)
-- [x] Create `src/components/logo/LogoWrapper.module.css`
-- [x] Create `src/components/logo/LogoWrapper.tsx`
-- [x] Create `src/components/logo/LogoWrapper.stories.tsx`
-- [x] Verify in Storybook

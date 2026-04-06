@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { MenuOverlay } from "./MenuOverlay";
 
 const meta: Meta<typeof MenuOverlay> = {
-  title: "Components/Menu/MenuOverlay",
+  title: "UI Components/Menu/MenuOverlay",
   component: MenuOverlay,
   parameters: {
     layout: "fullscreen",

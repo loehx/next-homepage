@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { MenuButton } from "./MenuButton";
 
 const meta: Meta<typeof MenuButton> = {
-    title: "Components/Menu/MenuButton",
+    title: "UI Components/Menu/MenuButton",
     component: MenuButton,
     parameters: {
         layout: "centered",

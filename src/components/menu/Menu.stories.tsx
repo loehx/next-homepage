@@ -3,7 +3,7 @@ import { Menu } from "./index";
 import { ReactLenis } from "lenis/react";
 
 const meta: Meta<typeof Menu> = {
-    title: "Components/Menu/Menu",
+    title: "UI Components/Menu/Menu",
     component: Menu,
     decorators: [
         (Story) => (
