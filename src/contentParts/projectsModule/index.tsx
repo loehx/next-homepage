@@ -70,9 +70,23 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             <span>{props.title}</span>
                             <TerminalCursor />
                         </h2>
-                        <FadeIn appearRatio={.9} visibleRatio={.2} disableTransform>
-                            <p className={`hidden md:block text-sm mt-2 ${styles.projectsSubline}`}>
-                                press <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">↓</kbd> or <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">space</kbd> to scroll through projects
+                        <FadeIn
+                            appearRatio={0.9}
+                            visibleRatio={0.2}
+                            disableTransform
+                        >
+                            <p
+                                className={`hidden md:block text-sm mt-2 ${styles.projectsSubline}`}
+                            >
+                                press{" "}
+                                <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                    ↓
+                                </kbd>{" "}
+                                or{" "}
+                                <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                    space
+                                </kbd>{" "}
+                                to scroll through projects
                             </p>
                         </FadeIn>
                     </div>
@@ -98,7 +112,10 @@ interface ProjectsListProps {
     openProjectDetails: (id: string) => void;
 }
 
-const ProjectsList: FC<ProjectsListProps> = ({ projects, openProjectDetails }) => {
+const ProjectsList: FC<ProjectsListProps> = ({
+    projects,
+    openProjectDetails,
+}) => {
     const scrollFocus = useProjectsScrollFocus();
 
     useEffect(() => {
@@ -119,9 +136,7 @@ const ProjectsList: FC<ProjectsListProps> = ({ projects, openProjectDetails }) =
             if (projectIds.length === 0) return;
 
             const currentId = scrollFocus.activeProjectId;
-            let currentIndex = currentId
-                ? projectIds.indexOf(currentId)
-                : -1;
+            let currentIndex = currentId ? projectIds.indexOf(currentId) : -1;
 
             if (currentIndex === -1) {
                 // No project is currently focused, find the one closest to center

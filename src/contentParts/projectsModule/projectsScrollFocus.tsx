@@ -87,7 +87,8 @@ export const ProjectsScrollFocusProvider: FC<{ children: ReactNode }> = ({
         // The natural center is (visual center - transformOffset), so we need to
         // scroll by (visualOffset + transformOffset) to bring the natural center
         // to viewport center.
-        const targetScroll = window.scrollY + visualOffset - transformOffset + 100 ;
+        const targetScroll =
+            window.scrollY + visualOffset - transformOffset + 100;
         const startScroll = window.scrollY;
         const distance = targetScroll - startScroll;
 

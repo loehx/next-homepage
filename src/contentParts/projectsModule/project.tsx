@@ -44,7 +44,6 @@ export function getProjectCardAccent(projectIndex: number): string {
     return PROJECT_HOVER_ACCENTS[projectIndex % PROJECT_HOVER_ACCENTS.length];
 }
 
-
 /**
  * 0 = horizontally centered (just entering / top of band).
  * 1 = full slide to left/right edge (20px inset).
@@ -283,7 +282,7 @@ const ProjectComponent: FC<Props> = ({
             const entryDirection = alignPhase === 0 ? -1 : 1;
             const slideProgress = 1 - p; // 1 when entering, 0 when centered
             const translateX = entryDirection * 50 * slideProgress;
-            const translateY =  100 * slideProgress;
+            const translateY = 100 * slideProgress;
             return {
                 ...base,
                 transform: `translate(${translateX}vw, ${translateY}vw)`,
@@ -324,10 +323,7 @@ const ProjectComponent: FC<Props> = ({
     ]);
 
     const cardContent = (
-        <div
-            ref={rowRef}
-            className={styles.projectCardRow}
-        >
+        <div ref={rowRef} className={styles.projectCardRow}>
             <div
                 ref={cardRef}
                 role="button"
