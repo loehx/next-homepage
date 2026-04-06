@@ -319,7 +319,7 @@ const ProjectComponent: FC<Props> = ({
     ]);
 
     return (
-        <FadeIn>
+        <FadeIn className="pointer-events-none">
             <CustomParallax onUpdate={onScrollUpdate}>
                 <div
                     ref={rowRef}
@@ -368,7 +368,7 @@ const ProjectComponent: FC<Props> = ({
                                     </span>
                                     <span
                                         data-to={project.to}
-                                        className={`max-w-[50vw] inline-block relative font-mono ${styles.projectCardTitleName}`}
+                                        className={`-mr-6 inline-block relative font-mono ${styles.projectCardTitleName}`}
                                     >
                                         <span className="absolute inset-0">
                                             <RevealedWithCursor
@@ -381,73 +381,75 @@ const ProjectComponent: FC<Props> = ({
                                         </span>
                                     </span>
                                 </div>
-                                <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
-                                    {sortedTechnologies.map((tech, i) => (
-                                        <span key={tech.id}>
-                                            <span
-                                                className={
-                                                    frameworksFirst.includes(
-                                                        tech.name.toLowerCase(),
-                                                    )
-                                                        ? `${styles.projectCardTechFw} lowercase`
-                                                        : `${styles.projectCardTechOther} lowercase`
-                                                }
-                                            >
-                                                {tech.name}
+                                <div className={styles.projectCardContent}>
+                                    <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
+                                        {sortedTechnologies.map((tech, i) => (
+                                            <span key={tech.id}>
+                                                <span
+                                                    className={
+                                                        frameworksFirst.includes(
+                                                            tech.name.toLowerCase(),
+                                                        )
+                                                            ? `${styles.projectCardTechFw} lowercase`
+                                                            : `${styles.projectCardTechOther} lowercase`
+                                                    }
+                                                >
+                                                    {tech.name}
+                                                </span>
+                                                {i <
+                                                    sortedTechnologies.length -
+                                                        1 && (
+                                                    <span className="mx-1">·</span>
+                                                )}
                                             </span>
-                                            {i <
-                                                sortedTechnologies.length -
-                                                    1 && (
-                                                <span className="mx-1">·</span>
-                                            )}
-                                        </span>
-                                    ))}
-                                </div>
-                                <div className="mb-1 relative">
-                                    <span className="absolute top-0 left-0 w-full h-full">
-                                        <RevealedWithCursor
-                                            text={project.description}
-                                            reveal={getRevealState}
-                                        />
-                                    </span>
-                                    <span className="opacity-0">
-                                        {project.description}
-                                    </span>
-                                </div>
-                                <div className="w-full max-w-xl">
-                                    <div className="mb-1">
-                                        <span className="mr-2">👨‍💻</span>
-                                        <RevealedWithCursor
-                                            text={project.role}
-                                            reveal={getRevealState}
-                                        />
+                                        ))}
                                     </div>
-                                    {/* {project.url && (
-                                    <div className="mb-1">
-                                        <span className="mr-2">👀</span>
-                                        <a
-                                            href={project.url}
-                                            className="text-black hover:underline"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
+                                    <div className="mb-1 relative">
+                                        <span className="absolute top-0 left-0 w-full h-full">
                                             <RevealedWithCursor
-                                                text={project.url
-                                                    .replace(
-                                                        /^https?:\/\//g,
-                                                        "",
-                                                    )
-                                                    .split("/")[0]}
+                                                text={project.description}
                                                 reveal={getRevealState}
                                             />
-                                        </a>
-                                    </div>  )} */}
-                                    <div className="mb-1">
-                                        <span className="mr-2">🏢</span>
-                                        <RevealedWithCursor
-                                            text={project.company.name}
-                                            reveal={getRevealState}
-                                        />
+                                        </span>
+                                        <span className="opacity-0">
+                                            {project.description}
+                                        </span>
+                                    </div>
+                                    <div className="w-full max-w-xl">
+                                        <div className="mb-1">
+                                            <span className="mr-2">👨‍💻</span>
+                                            <RevealedWithCursor
+                                                text={project.role}
+                                                reveal={getRevealState}
+                                            />
+                                        </div>
+                                        {/* {project.url && (
+                                        <div className="mb-1">
+                                            <span className="mr-2">👀</span>
+                                            <a
+                                                href={project.url}
+                                                className="text-black hover:underline"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <RevealedWithCursor
+                                                    text={project.url
+                                                        .replace(
+                                                            /^https?:\/\//g,
+                                                            "",
+                                                        )
+                                                        .split("/")[0]}
+                                                    reveal={getRevealState}
+                                                />
+                                            </a>
+                                        </div>  )} */}
+                                        <div className="mb-1">
+                                            <span className="mr-2">🏢</span>
+                                            <RevealedWithCursor
+                                                text={project.company.name}
+                                                reveal={getRevealState}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
