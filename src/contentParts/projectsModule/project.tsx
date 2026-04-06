@@ -311,9 +311,7 @@ const ProjectComponent: FC<Props> = ({
 
     return (
         <FadeIn>
-            <CustomParallax
-                onUpdate={onScrollUpdate}
-            >
+            <CustomParallax onUpdate={onScrollUpdate}>
                 <div
                     ref={rowRef}
                     className={styles.projectCardRow}
