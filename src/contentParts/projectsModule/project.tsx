@@ -397,7 +397,7 @@ const ProjectComponent: FC<Props> = ({
                                 ))}
                             </div>
                             {/* Desktop only: description, role, company */}
-                            <div className="hidden sm:block">
+                            <div className="block">
                                 <div className="my-2 relative">
                                     <span className="absolute top-0 left-0 w-full h-full">
                                         <RevealedWithCursor

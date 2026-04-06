@@ -315,7 +315,6 @@
         box-shadow 0.35s ease,
         background-color 0.35s ease,
         color 0.35s ease,
-        transform 0.14s ease-out,
         opacity 0.14s ease-out,
         margin 0.35s ease;
 }
