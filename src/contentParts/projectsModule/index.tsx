@@ -1,6 +1,8 @@
-import { FC } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { Entry, ProjectEntry, TechnologyEntry } from "data/definitions";
-import { Project } from "./project";
+import { Project, getProjectCardAccent } from "./project";
+import { ProjectsScrollFocusProvider } from "./projectsScrollFocus";
+import { ProjectDetailOverlay } from "./projectDetailOverlay";
 import { FadeIn } from "@components/fadeIn";
 import { TerminalCursor } from "@components/terminalCursor";
 import styles from "./projectsModule.module.css";
@@ -15,6 +17,36 @@ export interface ProjectsModuleProps extends Entry {
 
 export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     const { projects } = props;
+    const [detailProjectId, setDetailProjectId] = useState<string | null>(null);
+
+    const openProjectDetails = useCallback((id: string) => {
+        setDetailProjectId(id);
+    }, []);
+
+    const closeProjectDetails = useCallback(() => {
+        setDetailProjectId(null);
+    }, []);
+
+    const detailProject = useMemo(
+        () =>
+            detailProjectId
+                ? projects.find((p) => p.id === detailProjectId) ?? null
+                : null,
+        [detailProjectId, projects],
+    );
+
+    const detailProjectIndex = useMemo(
+        () =>
+            detailProjectId
+                ? projects.findIndex((p) => p.id === detailProjectId)
+                : -1,
+        [detailProjectId, projects],
+    );
+
+    const detailBackdropAccent =
+        detailProjectIndex >= 0
+            ? getProjectCardAccent(detailProjectIndex)
+            : undefined;
 
     return (
         <div className="container mx-auto px-4 py-12">
@@ -31,16 +63,25 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                     </div>
                 )}
             </FadeIn>
-            <div className="flex flex-col">
-                {projects &&
-                    projects.map((project, index) => (
-                        <Project
-                            key={project.id}
-                            project={project}
-                            isLast={index === projects.length - 1}
-                        />
-                    ))}
-            </div>
+            <ProjectsScrollFocusProvider>
+                <div className="flex flex-col">
+                    {projects &&
+                        projects.map((project, index) => (
+                            <Project
+                                key={project.id}
+                                project={project}
+                                projectIndex={index}
+                                isLast={index === projects.length - 1}
+                                onOpenDetails={openProjectDetails}
+                            />
+                        ))}
+                </div>
+            </ProjectsScrollFocusProvider>
+            <ProjectDetailOverlay
+                project={detailProject}
+                backdropAccent={detailBackdropAccent}
+                onClose={closeProjectDetails}
+            />
         </div>
     );
 };

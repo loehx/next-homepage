@@ -117,9 +117,17 @@ export const CustomParallax: React.FC<CustomParallaxProps & any> = ({
 
     return (
         <div ref={element} {...props}>
-            {React.Children.map(children, (child) =>
-                React.cloneElement(child, { style }),
-            )}
+            {React.Children.map(children, (child) => {
+                if (!React.isValidElement(child)) return child;
+                const prevStyle = (
+                    child.props as { style?: React.CSSProperties }
+                ).style;
+                const mergedStyle: React.CSSProperties | undefined =
+                    style != null ? { ...prevStyle, ...style } : prevStyle;
+                return React.cloneElement(child, {
+                    style: mergedStyle,
+                } as Parameters<typeof React.cloneElement>[1]);
+            })}
         </div>
     );
 };

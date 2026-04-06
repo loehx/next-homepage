@@ -269,3 +269,203 @@
     text-align: center;
     margin-bottom: 3rem;
 }
+
+/*
+ * Row is positioning context. translateX driven in JS (project.tsx).
+ * Row: margin-bottom animates with scroll. Card: horizontal transform only.
+ */
+.projectCardRow {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2.5rem;
+    transition: margin-bottom 0.14s ease-out;
+}
+
+.projectCard {
+    --project-accent: var(--primary);
+    position: relative;
+    left: 50%;
+    width: 450px;
+    max-width: 100%;
+    padding: 1.25rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--grey-4) 22%, transparent);
+    border-radius: 0.875rem;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(39, 44, 53, 0.04);
+    transition:
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease,
+        transform 0.14s ease-out,
+        opacity 0.14s ease-out,
+        margin 0.35s ease;
+}
+
+/* Mobile uses same left: 50% + translateX (project.tsx) as desktop for scroll slide */
+
+@media (max-width: 768px) {
+    .projectCardFocused {
+        border-color: var(--project-accent);
+        background-color: #fff;
+        box-shadow:
+            0 0 0 1px var(--project-accent),
+            0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
+            0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
+    }
+}
+
+.projectCardTitlePrompt,
+.projectCardTitleName,
+.projectCardTitleName span {
+    transition:
+        color 0.35s ease,
+        text-shadow 0.35s ease;
+}
+
+@media (hover: hover) {
+    .projectCard:hover {
+        border-color: var(--project-accent);
+        background-color: #fff;
+        box-shadow:
+            0 0 0 1px var(--project-accent),
+            0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
+            0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
+    }
+
+    .projectCard:hover .projectCardTitlePrompt,
+    .projectCard:hover .projectCardTitleName span {
+        color: var(--project-accent);
+        text-shadow:
+            0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
+            0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
+    }
+}
+
+@media (max-width: 768px) {
+    .projectCardFocused .projectCardTitlePrompt,
+    .projectCardFocused .projectCardTitleName span {
+        color: var(--project-accent);
+        text-shadow:
+            0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
+            0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
+    }
+}
+
+/* —— Project detail overlay (Window) —— */
+.projectDetailSrOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.projectDetailBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: max(16px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    background: color-mix(
+        in srgb,
+        var(--project-detail-backdrop, var(--primary)) 50%,
+        transparent
+    );
+    backdrop-filter: blur(5px) saturate(1.15);
+    -webkit-backdrop-filter: blur(5px) saturate(1.15);
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.projectDetailBackdropVisible {
+    opacity: 1;
+}
+
+.projectDetailStage {
+    position: relative;
+    width: min(92vw, 640px);
+    max-height: min(85vh, 720px);
+    display: flex;
+    flex-direction: column;
+    transform: perspective(1400px) rotateX(10deg) scale(0.94) translateY(16px);
+    transform-origin: 50% 50%;
+    opacity: 0;
+    filter: blur(6px);
+    transition:
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.projectDetailStage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.04) 0%,
+        transparent 38%,
+        transparent 62%,
+        rgba(6, 182, 212, 0.06) 100%
+    );
+    pointer-events: none;
+    opacity: 0.9;
+    animation: projectDetailScan 4.5s ease-in-out infinite;
+}
+
+@keyframes projectDetailScan {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+    50% {
+        opacity: 0.85;
+    }
+}
+
+.projectDetailStageVisible {
+    transform: perspective(1400px) rotateX(0deg) scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+}
+
+.projectDetailWindow {
+    width: 100%;
+    max-height: min(85vh, 720px);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 25px 80px -20px rgba(0, 0, 0, 0.65),
+        0 0 120px -30px rgba(59, 130, 246, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .projectDetailBackdrop {
+        transition: opacity 0.2s ease;
+    }
+
+    .projectDetailStage {
+        transform: none;
+        filter: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .projectDetailStage::after {
+        animation: none;
+        opacity: 0.5;
+    }
+
+    .projectDetailStageVisible {
+        transform: none;
+        filter: none;
+    }
+}
