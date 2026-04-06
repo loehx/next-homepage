@@ -280,6 +280,12 @@
     transition: color 0.35s ease;
 }
 
+.projectsSubline {
+    color: var(--muted-color);
+    font-family: var(--font-mono);
+    opacity: 0.7;
+}
+
 /*
  * Row is positioning context. translateX driven in JS (project.tsx).
  * Row: margin-bottom animates with scroll. Card: horizontal transform only.
@@ -287,8 +293,8 @@
 .projectCardRow {
     position: relative;
     width: 100%;
-    margin-bottom: 2.5rem;
-    transition: margin-bottom 0.14s ease-out;
+    /* Fixed margin - animation handled by transform on .projectCard */
+    margin-bottom: -2rem;
 }
 
 .projectCard {
@@ -314,20 +320,42 @@
         margin 0.35s ease;
 }
 
-/* Mobile uses same left: 50% + translateX (project.tsx) as desktop for scroll slide */
+.projectCardFocused {
+    border-color: var(--project-accent);
+    background-color: var(--card-bg-hover);
+    box-shadow:
+        0 0 0 1px var(--project-accent),
+        0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
+        0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
+}
 
-@media (max-width: 768px) {
+.projectCardFocused .projectCardTitlePrompt,
+.projectCardFocused .projectCardTitleName span {
+    color: var(--project-accent) !important;
+    text-shadow:
+        0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
+        0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
+}
+
+/* Ensure full opacity for focused card content (like hover state) */
+.projectCardFocused .projectCardContent {
+    opacity: 1;
+}
+
+@media (max-width: 767px) {
     .projectCardRow {
-        margin-bottom: 0;
+        margin-bottom: -1rem;
     }
 
-    .projectCardFocused {
-        border-color: var(--project-accent);
-        background-color: var(--card-bg-hover);
-        box-shadow:
-            0 0 0 1px var(--project-accent),
-            0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
-            0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
+    .projectCard {
+        width: 100%;
+        left: 0;
+        padding: 1.2rem 1.2rem;
+    }
+
+    /* On mobile, content is always full opacity (tech stack is main content) */
+    .projectCard .projectCardContent {
+        opacity: 1;
     }
 }
 
@@ -384,20 +412,6 @@
     }
 
     .projectCard:hover .projectCardContent {
-        opacity: 1;
-    }
-}
-
-@media (max-width: 768px) {
-    .projectCardFocused .projectCardTitlePrompt,
-    .projectCardFocused .projectCardTitleName span {
-        color: var(--project-accent);
-        text-shadow:
-            0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
-            0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
-    }
-
-    .projectCardFocused .projectCardContent {
         opacity: 1;
     }
 }

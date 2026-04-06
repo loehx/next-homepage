@@ -15,11 +15,21 @@ if (typeof window !== "undefined") {
     window.addEventListener("scroll", handleFadeInScroll, { passive: true });
 }
 
-export const FadeIn: React.FC<any> = ({
+export interface FadeInProps {
+    children: React.ReactNode;
+    appearRatio?: number;
+    visibleRatio?: number;
+    className?: string;
+    disableTransform?: boolean;
+    [key: string]: any;
+}
+
+export const FadeIn: React.FC<FadeInProps> = ({
     children,
     appearRatio = 0.0,
     visibleRatio = 0.3,
     className,
+    disableTransform = false,
     ...props
 }) => {
     const element = useRef<HTMLDivElement | null>(null);
@@ -84,7 +94,9 @@ export const FadeIn: React.FC<any> = ({
             className={className}
             style={{
                 opacity: opacity,
-                transform: `translateY(${(1 - opacity) * height * 0.2}px)`,
+                transform: disableTransform
+                    ? undefined
+                    : `translateY(${(1 - opacity) * height * 0.2}px)`,
             }}
         >
             {children}

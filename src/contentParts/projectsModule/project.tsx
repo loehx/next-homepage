@@ -37,14 +37,13 @@ const PROJECT_HOVER_ACCENTS = [
 
 /** Inset from container (row) left/right edge when a box is fully aligned. */
 const CONTAINER_INSET_PX = 60;
-const MOBILE_CONTAINER_INSET_PX = 30;
+/** When row width ≈ card width, geometric slide → ~0; keep L/R offset visible within slack. */
+const MIN_DESKTOP_SLIDE_PX = 60;
 
 export function getProjectCardAccent(projectIndex: number): string {
     return PROJECT_HOVER_ACCENTS[projectIndex % PROJECT_HOVER_ACCENTS.length];
 }
 
-/** projectCardRow margin-bottom with scroll progress (0 → -80px); tablet/desktop only. */
-const DESKTOP_SCROLL_MARGIN_BOTTOM_PX = 80;
 
 /**
  * 0 = horizontally centered (just entering / top of band).
@@ -231,7 +230,7 @@ const ProjectComponent: FC<Props> = ({
         });
     }, []);
 
-    const isMobile = useMemo(() => windowWidth <= 768, [windowWidth]);
+    const isMobile = useMemo(() => windowWidth < 768, [windowWidth]);
 
     const multiplier = useMemo(() => (isMobile ? 4 : 3), [isMobile]);
 
@@ -270,46 +269,51 @@ const ProjectComponent: FC<Props> = ({
     /** 0 → left, 1 → right (repeats: left–right–left–right–…) */
     const alignPhase = projectIndex % 2;
 
-    const rowMotionStyle = useMemo((): CSSProperties => {
-        if (isMobile) {
-            return {};
-        }
-        const p = viewportProgress;
-        return {
-            marginBottom: `calc(2.5rem + ${
-                -p * DESKTOP_SCROLL_MARGIN_BOTTOM_PX
-            }px)`,
-        };
-    }, [viewportProgress, isMobile]);
-
-    const isMobileCenterFocused =
-        isMobile && scrollFocus?.activeProjectId === project.id;
+    const isCenterFocused = scrollFocus?.activeProjectId === project.id;
 
     const cardMotionStyle = useMemo((): CSSProperties => {
         const base = {
             "--project-accent": hoverAccent,
-            willChange: isMobile ? "transform" : undefined,
         } as CSSProperties;
         const p = viewportProgress;
         const { rowW: R, cardW: C } = layoutSizes;
+
+        if (isMobile) {
+            // Mobile: slide in from sides (-50vw or +50vw based on alignment) + fade in
+            const entryDirection = alignPhase === 0 ? -1 : 1;
+            const slideProgress = 1 - p; // 1 when entering, 0 when centered
+            const translateX = entryDirection * 50 * slideProgress;
+            const translateY =  100 * slideProgress;
+            return {
+                ...base,
+                transform: `translate(${translateX}vw, ${translateY}vw)`,
+                opacity: p,
+            };
+        }
+
+        // Desktop: slide between centered (p=0) and left/right inset (p=1).
+        // Inset is capped to half the horizontal slack so targets stay in-row; if the
+        // geometric delta is still tiny (common on tablet), nudge by phase so L/R reads.
         let extraPx = 0;
         if (R > 0 && C > 0) {
-            const inset = isMobile
-                ? MOBILE_CONTAINER_INSET_PX
-                : CONTAINER_INSET_PX;
-            const deltaLeft = inset - R / 2 + C / 2;
+            const halfGap = Math.max(0, (R - C) / 2);
+            const inset = Math.min(CONTAINER_INSET_PX, halfGap);
+            const deltaLeft = inset + C / 2 - R / 2;
             const deltaRight = R / 2 - inset - C / 2;
-            const deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
-            if (isMobile) {
-                const deltaOpposite = alignPhase === 0 ? deltaRight : deltaLeft;
-                extraPx = p * deltaFinal + (1 - p) * deltaOpposite;
-            } else {
-                extraPx = p * deltaFinal;
+            let deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
+            if (halfGap >= 1 && Math.abs(deltaFinal) < MIN_DESKTOP_SLIDE_PX) {
+                const cap = Math.min(MIN_DESKTOP_SLIDE_PX, halfGap);
+                const dir = alignPhase === 0 ? -1 : 1;
+                deltaFinal = dir * cap;
             }
+            extraPx = p * deltaFinal;
         }
-        const translate = `translateX(calc(-50% + ${extraPx}px))`;
-        const transform = isMobile ? `${translate} scale(0.9)` : translate;
-        return { ...base, transform, opacity: 1 };
+        // Subtle vertical drift: starts higher, settles to 0
+        const translateY = (1 - p) * 50;
+        const xPx = Math.round(extraPx * 100) / 100;
+        const yVh = Math.round(translateY * 100) / 100;
+        const translate = `translate(calc(-50% + ${xPx}px), ${yVh}vh)`;
+        return { ...base, transform: translate, opacity: (p * p).toFixed(2) };
     }, [
         hoverAccent,
         alignPhase,
@@ -323,7 +327,6 @@ const ProjectComponent: FC<Props> = ({
         <div
             ref={rowRef}
             className={styles.projectCardRow}
-            style={rowMotionStyle}
         >
             <div
                 ref={cardRef}
@@ -332,7 +335,7 @@ const ProjectComponent: FC<Props> = ({
                 aria-haspopup="dialog"
                 aria-label={`Open project details: ${project.name}`}
                 className={`${styles.projectCard} flex flex-col cursor-pointer${
-                    isMobileCenterFocused ? ` ${styles.projectCardFocused}` : ""
+                    isCenterFocused ? ` ${styles.projectCardFocused}` : ""
                 }`}
                 style={cardMotionStyle}
                 onClick={handleOpenDetails}
@@ -348,14 +351,14 @@ const ProjectComponent: FC<Props> = ({
                             />
                         </span>
                         <span
-                            className={`${styles.projectCardMuted} text-xs mb-2 mt-3`}
+                            className={`${styles.projectCardMuted} text-xs mb-2 mt-2 md:mt-3`}
                         >
                             {monthsCount}
                         </span>
                     </div>
                     {/* Project Content */}
                     <div className="flex-1 text-sm">
-                        <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center gap-2">
+                        <div className="md:text-base font-bold text-left w-full mb-1 flex flex-row items-center gap-2">
                             <span
                                 className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
                             >
@@ -377,7 +380,7 @@ const ProjectComponent: FC<Props> = ({
                             </span>
                         </div>
                         <div className={styles.projectCardContent}>
-                            <div className="w-full mb-2 font-mono text-xs flex flex-wrap">
+                            <div className="w-full font-mono text-xs flex flex-wrap mt-2">
                                 {sortedTechnologies.map((tech, i) => (
                                     <span key={tech.id}>
                                         <span
@@ -397,31 +400,34 @@ const ProjectComponent: FC<Props> = ({
                                     </span>
                                 ))}
                             </div>
-                            <div className="mb-1 relative">
-                                <span className="absolute top-0 left-0 w-full h-full">
-                                    <RevealedWithCursor
-                                        text={project.description}
-                                        reveal={getRevealState}
-                                    />
-                                </span>
-                                <span className="opacity-0">
-                                    {project.description}
-                                </span>
-                            </div>
-                            <div className="w-full max-w-xl">
-                                <div className="mb-1">
-                                    <span className="mr-2">👨‍💻</span>
-                                    <RevealedWithCursor
-                                        text={project.role}
-                                        reveal={getRevealState}
-                                    />
+                            {/* Desktop only: description, role, company */}
+                            <div className="hidden sm:block">
+                                <div className="my-2 relative">
+                                    <span className="absolute top-0 left-0 w-full h-full">
+                                        <RevealedWithCursor
+                                            text={project.description}
+                                            reveal={getRevealState}
+                                        />
+                                    </span>
+                                    <span className="opacity-0">
+                                        {project.description}
+                                    </span>
                                 </div>
-                                <div className="mb-1">
-                                    <span className="mr-2">🏢</span>
-                                    <RevealedWithCursor
-                                        text={project.company.name}
-                                        reveal={getRevealState}
-                                    />
+                                <div className="w-full max-w-xl">
+                                    <div className="mb-1">
+                                        <span className="mr-2">👨‍💻</span>
+                                        <RevealedWithCursor
+                                            text={project.role}
+                                            reveal={getRevealState}
+                                        />
+                                    </div>
+                                    <div className="mb-1">
+                                        <span className="mr-2">🏢</span>
+                                        <RevealedWithCursor
+                                            text={project.company.name}
+                                            reveal={getRevealState}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -438,7 +444,7 @@ const ProjectComponent: FC<Props> = ({
     }
 
     return (
-        <FadeIn className="pointer-events-none">
+        <FadeIn className="pointer-events-none" disableTransform>
             <CustomParallax onUpdate={onScrollUpdate}>
                 {cardContent}
             </CustomParallax>
