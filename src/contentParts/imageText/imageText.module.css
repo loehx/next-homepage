@@ -1,4 +1,20 @@
 .wrapper {
+    transition: color 0.35s ease;
+}
+
+.imageTextHeadline {
+    color: var(--headline-color);
+    transition: color 0.35s ease;
+}
+
+.textWrapper .imageTextRich {
+    color: var(--body-color);
+    transition: color 0.35s ease;
+}
+
+.textWrapper .imageTextRich :global(a) {
+    color: var(--link-color);
+    transition: color 0.35s ease;
 }
 
 .inner {
@@ -27,6 +43,8 @@
         -webkit-animation: spin 30s linear infinite;
         -moz-animation: spin 30s linear infinite;
         animation: spin 30s linear infinite;
+        opacity: var(--decor-opacity);
+        transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .inner:after {
@@ -42,6 +60,8 @@
         -webkit-animation: spin 20s linear infinite;
         -moz-animation: spin 20s linear infinite;
         animation: spin 20s linear infinite;
+        opacity: var(--decor-opacity);
+        transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
 }
 

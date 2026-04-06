@@ -24,7 +24,11 @@
 .tilt {
     transform-style: preserve-3d;
     border-radius: 5px;
-    border: 1px solid var(--grey-2);
+    border: 1px solid var(--border-color);
+    background-color: var(--links-card-bg);
+    transition:
+        border-color 0.35s ease,
+        background-color 0.35s ease;
 }
 
 @media (hover: hover) and (min-width: 800px) {
@@ -76,10 +80,17 @@
     }
 }
 
+.linksHeadline {
+    color: var(--headline-color);
+    transition: color 0.35s ease;
+}
+
 .name {
     display: block;
     font-size: 18px;
     font-weight: 400;
+    color: var(--body-color);
+    transition: color 0.35s ease;
 }
 
 .description {
@@ -87,8 +98,12 @@
     width: 360px;
     display: block;
     font-size: 14px;
-    opacity: 0.6;
+    opacity: 0.8;
     word-wrap: break-word;
+    color: var(--muted-color);
+    transition:
+        color 0.35s ease,
+        opacity 0.35s ease;
 }
 
 @media only screen and (min-width: 1000px) {

@@ -59,29 +59,31 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
         >
             <div>
                 <div
-                    className={`w-4 absolute top-0 bottom-0 transition-all ${
-                        showActiveState && "!bg-secondary-500"
-                    } ${
-                        mainJob
-                            ? oddMainJob
-                                ? "bg-secondary-200"
-                                : "bg-secondary-200"
-                            : "bg-secondary-100"
-                    } left-[50%] translate-x-[-50%]`}
+                    className={cx(
+                        "w-4 absolute top-0 bottom-0 transition-all left-[50%] translate-x-[-50%]",
+                        showActiveState
+                            ? styles.timelineVBarActive
+                            : mainJob
+                            ? styles.timelineVBarMain
+                            : styles.timelineVBarSub,
+                    )}
                     style={{ right: 0, left }}
                     onClick={() => setIsCentered(!isCentered)}
                 >
                     {isLatest && (
                         <div
                             className={cx(
-                                "absolute flex items-center gap-1 text-[10px] uppercase tracking-wide text-secondary-500 -top-2",
+                                "absolute flex items-center gap-1 text-[10px] uppercase tracking-wide -top-2",
                                 "left-0",
+                                styles.timelineToday,
                             )}
                         >
                             <div
                                 className={cx(
-                                    "w-6 border-t-2 border-secondary",
-                                    isCentered && "!border-secondary-500",
+                                    "w-6 border-t-2",
+                                    styles.timelineTodayTick,
+                                    isCentered &&
+                                        styles.timelineTodayTickActive,
                                 )}
                             ></div>
                             <span>Today</span>
@@ -89,12 +91,12 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     )}
                     <div
                         className={cx(
-                            "absolute w-[50%] bottom-0 border-b-2 border-secondary",
+                            "absolute w-[50%] bottom-0 border-b-2 border-transparent",
                             mainJob
-                                ? "border-secondary-200"
-                                : "border-secondary-100",
+                                ? styles.timelineHRuleMain
+                                : styles.timelineHRuleSub,
                             odd ? "left-full" : "right-full",
-                            isCentered && "!border-secondary-500",
+                            isCentered && styles.timelineHRuleActive,
                         )}
                     ></div>
                 </div>
@@ -106,6 +108,7 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                     }}
                     className={cx(
                         "absolute w-auto bottom-0",
+                        styles.timelineEntryBlock,
                         !odd && "text-right",
                         odd ? "right-0 pl-6" : "left-0 pr-6",
                     )}
@@ -115,7 +118,12 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                         appearRatio={0.1}
                         visibleRatio={0.4}
                     >
-                        <div className="text-xs md:text-sm transition-all duration-300 relative bg-white -mb-2">
+                        <div
+                            className={cx(
+                                "text-xs md:text-sm transition-all duration-300 relative -mb-2",
+                                styles.timelineEntryBlock,
+                            )}
+                        >
                             <div className="hidden md:block relative left-0 right-0 mb-1 min-h-[2.5rem]">
                                 <div
                                     className={cx(
@@ -131,7 +139,9 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                     )}
                                     {hint ||
                                         (company?.companyType && (
-                                            <div>
+                                            <div
+                                                className={styles.timelineMeta}
+                                            >
                                                 {hint || company?.companyType}
                                             </div>
                                         ))}
@@ -150,14 +160,14 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                 )}
                                 {hint ||
                                     (company?.companyType && (
-                                        <div>
+                                        <div className={styles.timelineMeta}>
                                             {hint || company?.companyType}
                                         </div>
                                     ))}
                             </div>
                             <div
                                 className={cx(
-                                    "md:inline font-bold text-sm md:text-base transition-color mt-1 md:!text-black",
+                                    "md:inline font-bold text-sm md:text-base transition-color mt-1",
                                     mainJob && "text-base md:text-lg",
                                     showActiveState && styles.titleOpen,
                                 )}
@@ -179,7 +189,12 @@ export const TimelineEntry: React.FC<BootstrapedTimelineEntry> = (props) => {
                                     {Math.floor(yearFrom)}
                                 </span>
                                 {freelance && (
-                                    <span className="px-1 leading-none text-2xs tracking-wide opacity-50">
+                                    <span
+                                        className={cx(
+                                            "px-1 leading-none text-2xs tracking-wide opacity-50",
+                                            styles.timelineFreelanceBadge,
+                                        )}
+                                    >
                                         FREELANCE
                                     </span>
                                 )}

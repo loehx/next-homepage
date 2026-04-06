@@ -7,6 +7,8 @@ export type RichTextValue = Document;
 interface Props {
     document: RichTextValue;
     darkBackground?: boolean;
+    /** Merged with the root wrapper (e.g. blend-aware colors from a parent module). */
+    className?: string;
 }
 
 export const RichText: React.FC<Props> = (props: Props) => {
@@ -26,6 +28,7 @@ export const RichText: React.FC<Props> = (props: Props) => {
             className={cx(
                 styles.wrapper,
                 props.darkBackground && styles.darkBackground,
+                props.className,
             )}
             dangerouslySetInnerHTML={{ __html: html }}
         ></div>

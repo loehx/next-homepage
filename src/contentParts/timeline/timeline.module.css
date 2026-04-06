@@ -21,3 +21,63 @@
     filter: brightness(1);
     font-weight: bold;
 }
+
+/* —— Page dark corridor (with projects): driven by CSS custom properties on html —— */
+
+/** Default text for the whole entry column; children (meta, gradients) override where needed. */
+.timelineEntryBlock {
+    color: var(--body-color);
+    transition: color 0.35s ease;
+}
+
+.timelineVBarMain {
+    background-color: var(--vbar-main);
+    transition: background-color 0.35s ease;
+}
+
+.timelineVBarSub {
+    background-color: var(--vbar-sub);
+    transition: background-color 0.35s ease;
+}
+
+.timelineVBarActive {
+    background-color: var(--vbar-active) !important;
+}
+
+.timelineToday {
+    color: var(--secondary-text);
+    transition: color 0.35s ease;
+}
+
+.timelineTodayTick {
+    border-color: var(--secondary-tick);
+    transition: border-color 0.35s ease;
+}
+
+.timelineTodayTickActive {
+    border-color: var(--secondary-tick-active) !important;
+}
+
+.timelineHRuleMain {
+    border-bottom-color: var(--hrule-main);
+    transition: border-bottom-color 0.35s ease;
+}
+
+.timelineHRuleSub {
+    border-bottom-color: var(--hrule-sub);
+    transition: border-bottom-color 0.35s ease;
+}
+
+.timelineHRuleActive {
+    border-bottom-color: var(--hrule-active) !important;
+}
+
+.timelineMeta {
+    color: var(--muted-color);
+    transition: color 0.35s ease;
+}
+
+.timelineFreelanceBadge {
+    color: var(--freelance-color);
+    transition: color 0.35s ease;
+}

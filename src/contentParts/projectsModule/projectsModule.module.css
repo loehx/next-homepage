@@ -270,6 +270,16 @@
     margin-bottom: 3rem;
 }
 
+.projectsHeadline {
+    color: var(--headline-color);
+    transition: color 0.35s ease;
+}
+
+.projectsHeadlinePrompt {
+    color: var(--link-color);
+    transition: color 0.35s ease;
+}
+
 /*
  * Row is positioning context. translateX driven in JS (project.tsx).
  * Row: margin-bottom animates with scroll. Card: horizontal transform only.
@@ -288,14 +298,16 @@
     width: 450px;
     max-width: 100%;
     padding: 1.25rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--grey-4) 22%, transparent);
+    border: 1px solid var(--border-color);
     border-radius: 0.875rem;
-    background-color: #fff;
+    background-color: var(--card-bg);
+    color: var(--body-color);
     box-shadow: 0 1px 2px rgba(39, 44, 53, 0.04);
     transition:
         border-color 0.35s ease,
         box-shadow 0.35s ease,
-        background 0.35s ease,
+        background-color 0.35s ease,
+        color 0.35s ease,
         transform 0.14s ease-out,
         opacity 0.14s ease-out,
         margin 0.35s ease;
@@ -310,7 +322,7 @@
 
     .projectCardFocused {
         border-color: var(--project-accent);
-        background-color: #fff;
+        background-color: var(--card-bg-hover);
         box-shadow:
             0 0 0 1px var(--project-accent),
             0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
@@ -326,10 +338,30 @@
         text-shadow 0.35s ease;
 }
 
+.projectCard .projectCardTitlePrompt {
+    color: var(--link-color);
+}
+
+.projectCard .projectCardTitleName span {
+    color: var(--body-color);
+}
+
+.projectCardMuted {
+    color: var(--muted-color);
+}
+
+.projectCardTechFw {
+    color: var(--link-color);
+}
+
+.projectCardTechOther {
+    color: var(--body-color);
+}
+
 @media (hover: hover) {
     .projectCard:hover {
         border-color: var(--project-accent);
-        background-color: #fff;
+        background-color: var(--card-bg-hover);
         box-shadow:
             0 0 0 1px var(--project-accent),
             0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),

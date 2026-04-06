@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./imageText.module.css";
 import { RichText, RichTextValue } from "@components/rich-text";
 import { AssetEntry, Entry } from "data/definitions";
@@ -24,7 +24,11 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
     return (
         <div className={cx(styles.wrapper, "container")}>
             <FadeIn className={styles.inner}>
-                {props.h2 && <h2 className="text-3xl mb-6">{props.h2}</h2>}
+                {props.h2 && (
+                    <h2 className={`text-3xl mb-6 ${styles.imageTextHeadline}`}>
+                        {props.h2}
+                    </h2>
+                )}
                 <div className={props.imageRight ? styles.imageRight : ""}>
                     <div className={styles.imageWrapper} style={imageStyle}>
                         <Image
@@ -40,9 +44,16 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                     </div>
                     <div className={styles.textWrapper}>
                         {props.h2 && (
-                            <h2 className="text-3xl mb-6">{props.h2}</h2>
+                            <h2
+                                className={`text-3xl mb-6 ${styles.imageTextHeadline}`}
+                            >
+                                {props.h2}
+                            </h2>
                         )}
-                        <RichText document={props.text} />
+                        <RichText
+                            document={props.text}
+                            className={styles.imageTextRich}
+                        />
                     </div>
                 </div>
             </FadeIn>

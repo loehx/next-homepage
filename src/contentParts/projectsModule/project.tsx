@@ -352,7 +352,9 @@ const ProjectComponent: FC<Props> = ({
                                         reveal={getRevealState}
                                     />
                                 </span>
-                                <span className="text-gray-600 text-xs mb-2 mt-3">
+                                <span
+                                    className={`${styles.projectCardMuted} text-xs mb-2 mt-3`}
+                                >
                                     {monthsCount}
                                 </span>
                             </div>
@@ -360,7 +362,7 @@ const ProjectComponent: FC<Props> = ({
                             <div className="flex-1 text-sm">
                                 <div className="text-base font-bold text-left w-full mb-2 flex flex-row items-center gap-2">
                                     <span
-                                        className={`shrink-0 font-mono text-base text-primary-600 ${styles.projectCardTitlePrompt}`}
+                                        className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
                                     >
                                         &gt;_
                                     </span>
@@ -387,8 +389,8 @@ const ProjectComponent: FC<Props> = ({
                                                     frameworksFirst.includes(
                                                         tech.name.toLowerCase(),
                                                     )
-                                                        ? "text-primary-600 lowercase"
-                                                        : "text-black lowercase"
+                                                        ? `${styles.projectCardTechFw} lowercase`
+                                                        : `${styles.projectCardTechOther} lowercase`
                                                 }
                                             >
                                                 {tech.name}

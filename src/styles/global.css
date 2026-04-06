@@ -1,13 +1,85 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 * {
     box-sizing: border-box;
+}
+
+/*
+ * Dark corridor color variables: default (light mode) values.
+ * When html has data-dark-corridor, these switch to dark values.
+ * Using CSS transitions on custom properties is much more performant
+ * than animating color-mix() across 30+ elements.
+ */
+:root {
+    /* Page background */
+    --page-bg: #ffffff;
+    /* Headlines */
+    --headline-color: var(--black);
+    /* Body text */
+    --body-color: var(--black);
+    /* Muted/meta text */
+    --muted-color: #4b5563;
+    /* Links */
+    --link-color: #d02f82;
+    /* Card backgrounds */
+    --card-bg: #ffffff;
+    --card-bg-hover: #ffffff;
+    /* Borders */
+    --border-color: var(--grey-2);
+    /* Timeline bars */
+    --vbar-main: var(--secondary-200);
+    --vbar-sub: var(--secondary-100);
+    --vbar-active: var(--secondary-500);
+    --hrule-main: var(--secondary-200);
+    --hrule-sub: var(--secondary-100);
+    --hrule-active: var(--secondary-500);
+    /* Secondary colors */
+    --secondary-text: var(--secondary-500);
+    --secondary-tick: var(--secondary);
+    --secondary-tick-active: var(--secondary-500);
+    /* Link card background */
+    --links-card-bg: transparent;
+    /* Decorative opacity */
+    --decor-opacity: 1;
+    /* Freelance badge */
+    --freelance-color: inherit;
+}
+
+html[data-dark-corridor] {
+    --page-bg: #000000;
+    --headline-color: #f9fafb;
+    --body-color: #f3f4f6;
+    --muted-color: #9ca3af;
+    --link-color: var(--primary-300);
+    --card-bg: #141414;
+    --card-bg-hover: #1f2937;
+    --border-color: rgba(255, 255, 255, 0.14);
+    --vbar-main: rgba(148, 163, 184, 0.4);
+    --vbar-sub: rgba(148, 163, 184, 0.28);
+    --vbar-active: var(--secondary-400);
+    --hrule-main: rgba(148, 163, 184, 0.55);
+    --hrule-sub: rgba(148, 163, 184, 0.4);
+    --hrule-active: var(--secondary-400);
+    --secondary-text: var(--secondary-300);
+    --secondary-tick: var(--secondary-300);
+    --secondary-tick-active: var(--secondary-400);
+    --links-card-bg: rgba(20, 20, 22, 0.92);
+    --decor-opacity: 0.35;
+    --freelance-color: #9ca3af;
 }
 
 html {
     height: 100%;
     height: -webkit-fill-available;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html,
+    .page {
+        transition: none !important;
+    }
 }
 
 html,
@@ -33,7 +105,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: white;
+    background-color: var(--page-bg);
+    transition: background-color 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 h1,
