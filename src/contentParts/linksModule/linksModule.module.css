@@ -35,7 +35,8 @@
     .tilt:hover {
         background: linear-gradient(var(--secondary) -60%, var(--primary) 140%);
     }
-    .tilt:hover a {
+    .tilt:hover a * {
+        transition: none;
         color: white !important;
     }
     .tilt:hover:before {
