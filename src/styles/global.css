@@ -48,11 +48,11 @@
 }
 
 html[data-dark-corridor] {
-    --page-bg: #000000;
+    --page-bg: #111111;
     --headline-color: #f9fafb;
     --body-color: #f3f4f6;
     --muted-color: #9ca3af;
-    --link-color: var(--primary-300);
+    --link-color: var(--primary-300);   
     --card-bg: #141414;
     --card-bg-hover: #1f2937;
     --border-color: rgba(255, 255, 255, 0.14);

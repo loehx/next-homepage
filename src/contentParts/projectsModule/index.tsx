@@ -58,38 +58,33 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
         <div ref={sectionRef} className="container mx-auto px-4 py-12">
             <FadeIn>
                 {props.title && (
-                    <div className={styles.headlineSection}>
-                        <h2
-                            className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-3xl font-bold ${styles.projectsHeadline}`}
-                        >
-                            <span
-                                className={`font-mono text-2xl ${styles.projectsHeadlinePrompt}`}
+                    <>
+                        <div className={styles.headlineSection}>
+                            <h2
+                                className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-3xl font-bold ${styles.projectsHeadline}`}
                             >
-                                &gt;_
-                            </span>
-                            <span>{props.title}</span>
-                            <TerminalCursor />
-                        </h2>
-                        <FadeIn
-                            appearRatio={0.9}
-                            visibleRatio={0.2}
-                            disableTransform
-                        >
-                            <p
-                                className={`hidden md:block text-sm mt-2 ${styles.projectsSubline}`}
-                            >
-                                press{" "}
-                                <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
-                                    ↓
-                                </kbd>{" "}
-                                or{" "}
-                                <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
-                                    space
-                                </kbd>{" "}
-                                to scroll through projects
-                            </p>
-                        </FadeIn>
-                    </div>
+                                <span
+                                    className={`font-mono text-2xl ${styles.projectsHeadlinePrompt}`}
+                                >
+                                    &gt;_
+                                </span>
+                                <span>{props.title}</span>
+                                <TerminalCursor />
+                            </h2>
+                        </div>
+                        <p className={`hidden md:block text-sm mt-2 text-center ${styles.projectsSubline}`}>
+                            press{" "}
+                            <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                ↓
+                            </kbd>{" "}
+                            or{" "}
+                            <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                space
+                            </kbd>{" "}
+                            to scroll through projects
+                        </p>
+                    </>
+                    
                 )}
             </FadeIn>
             <ProjectsScrollFocusProvider>

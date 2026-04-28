@@ -44,7 +44,6 @@
     .project.hide {
         display: none;
         /* filter: blur(3px);
-        opacity: 0.7;
         user-select: none;
         pointer-events: none;
         cursor: default; */
@@ -267,7 +266,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .projectsHeadline {
@@ -283,7 +282,7 @@
 .projectsSubline {
     color: var(--muted-color);
     font-family: var(--font-mono);
-    opacity: 0.7;
+    margin-bottom: 1.5rem;
 }
 
 /*
