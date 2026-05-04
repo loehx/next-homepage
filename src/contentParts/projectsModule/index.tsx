@@ -72,7 +72,9 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                                 <TerminalCursor />
                             </h2>
                         </div>
-                        <p className={`hidden md:block text-sm mt-2 text-center ${styles.projectsSubline}`}>
+                        <p
+                            className={`hidden md:block text-sm mt-2 text-center ${styles.projectsSubline}`}
+                        >
                             press{" "}
                             <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
                                 ↓
@@ -84,7 +86,6 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             to scroll through projects
                         </p>
                     </>
-                    
                 )}
             </FadeIn>
             <ProjectsScrollFocusProvider>
