@@ -55,10 +55,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
             ? getProjectCardAccent(detailProjectIndex)
             : undefined;
 
-    const orderedIds = useMemo(
-        () => projects.map((p) => p.id),
-        [projects],
-    );
+    const orderedIds = useMemo(() => projects.map((p) => p.id), [projects]);
 
     return (
         <div

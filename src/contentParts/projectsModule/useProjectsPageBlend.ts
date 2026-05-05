@@ -32,9 +32,9 @@ const ATTR = "data-dark-corridor";
  * Returns `{ isNearViewport }` so callers can lazy-mount heavy decorations
  * (e.g. canvas animations) only when the section is close to view.
  */
-export function useProjectsPageBlend(
-    ref: RefObject<HTMLElement | null>,
-): { isNearViewport: boolean } {
+export function useProjectsPageBlend(ref: RefObject<HTMLElement | null>): {
+    isNearViewport: boolean;
+} {
     const lastRef = useRef<boolean | null>(null);
     const lastNearRef = useRef<boolean | null>(null);
     const [nearState, setNearState] = useState(false);

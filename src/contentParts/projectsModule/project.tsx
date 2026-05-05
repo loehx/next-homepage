@@ -231,7 +231,7 @@ const ProjectComponent: FC<Props> = ({
 
     const isMobile = useMemo(() => windowWidth < 768, [windowWidth]);
 
-    const multiplier = useMemo(() => (isMobile ? 4 : 2.5 ), [isMobile]);
+    const multiplier = useMemo(() => (isMobile ? 4 : 2.5), [isMobile]);
 
     const getRevealState = useCallback(
         (text: string): { revealed: string; showCursor: boolean } => {
@@ -298,7 +298,7 @@ const ProjectComponent: FC<Props> = ({
             const translateY = 100 * slideProgress;
             return {
                 ...base,
-                transform: `translate(${translateX}vw, ${translateY}vw)`
+                transform: `translate(${translateX}vw, ${translateY}vw)`,
             };
         }
 
