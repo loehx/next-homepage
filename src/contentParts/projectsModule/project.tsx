@@ -166,7 +166,7 @@ const ProjectComponent: FC<Props> = ({
 
     useLayoutEffect(() => {
         if (!scrollFocus) return;
-        scrollFocus.register(project.id, cardRef.current);
+        scrollFocus.register(project.id, rowRef.current);
         return () => {
             scrollFocus.register(project.id, null);
         };

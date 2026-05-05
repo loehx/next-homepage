@@ -54,6 +54,11 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
             ? getProjectCardAccent(detailProjectIndex)
             : undefined;
 
+    const orderedIds = useMemo(
+        () => projects.map((p) => p.id),
+        [projects],
+    );
+
     return (
         <div ref={sectionRef} className="container mx-auto px-4 py-12">
             <FadeIn>
@@ -83,12 +88,20 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                             <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
                                 space
                             </kbd>{" "}
-                            to scroll through projects
+                            to scroll,{" "}
+                            <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                enter
+                            </kbd>{" "}
+                            to open,{" "}
+                            <kbd className="font-mono text-xs px-1.5 py-0.5 rounded bg-[var(--grey-2)]">
+                                esc
+                            </kbd>{" "}
+                            to close
                         </p>
                     </>
                 )}
             </FadeIn>
-            <ProjectsScrollFocusProvider>
+            <ProjectsScrollFocusProvider orderedIds={orderedIds}>
                 <ProjectsList
                     projects={projects}
                     openProjectDetails={openProjectDetails}
@@ -113,9 +126,15 @@ const ProjectsList: FC<ProjectsListProps> = ({
     openProjectDetails,
 }) => {
     const scrollFocus = useProjectsScrollFocus();
+    const listRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            // Skip if modifier keys are pressed (allow browser shortcuts)
+            if (e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) {
+                return;
+            }
+
             // Only handle when not in an input or textarea
             const target = e.target as HTMLElement;
             if (
@@ -128,6 +147,15 @@ const ProjectsList: FC<ProjectsListProps> = ({
 
             if (!scrollFocus) return;
 
+            // Only intercept when the projects section is in viewport
+            const listEl = listRef.current;
+            if (!listEl) return;
+            const rect = listEl.getBoundingClientRect();
+            const vh = window.innerHeight;
+            // Section is "on screen" if it overlaps the viewport
+            const isInViewport = rect.top < vh && rect.bottom > 0;
+            if (!isInViewport) return;
+
             const projectIds = scrollFocus.getProjectIds();
             if (projectIds.length === 0) return;
 
@@ -135,21 +163,28 @@ const ProjectsList: FC<ProjectsListProps> = ({
             let currentIndex = currentId ? projectIds.indexOf(currentId) : -1;
 
             if (currentIndex === -1) {
-                // No project is currently focused, find the one closest to center
+                // No project is currently focused, start from first
                 currentIndex = 0;
             }
 
             let nextIndex: number | null = null;
 
             if (e.key === "ArrowDown" || e.key === " ") {
-                e.preventDefault();
                 if (currentIndex < projectIds.length - 1) {
+                    e.preventDefault();
                     nextIndex = currentIndex + 1;
                 }
+                // At last project: don't preventDefault, allow native page scroll
             } else if (e.key === "ArrowUp") {
-                e.preventDefault();
                 if (currentIndex > 0) {
+                    e.preventDefault();
                     nextIndex = currentIndex - 1;
+                }
+                // At first project: don't preventDefault, allow native page scroll
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (currentId) {
+                    openProjectDetails(currentId);
                 }
             }
 
@@ -164,7 +199,7 @@ const ProjectsList: FC<ProjectsListProps> = ({
     }, [scrollFocus]);
 
     return (
-        <div className="flex flex-col">
+        <div ref={listRef} className="flex flex-col">
             {projects.map((project, index) => (
                 <Project
                     key={project.id}

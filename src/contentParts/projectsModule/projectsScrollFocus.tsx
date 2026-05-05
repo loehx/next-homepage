@@ -12,7 +12,7 @@ import {
 
 type ProjectsScrollFocusValue = {
     activeProjectId: string | null;
-    register: (id: string, el: HTMLElement | null) => void;
+    register: (id: string, rowEl: HTMLElement | null) => void;
     scrollToProject: (id: string) => void;
     getProjectIds: () => string[];
 };
@@ -24,9 +24,14 @@ export function useProjectsScrollFocus(): ProjectsScrollFocusValue | null {
     return useContext(ProjectsScrollFocusContext);
 }
 
-export const ProjectsScrollFocusProvider: FC<{ children: ReactNode }> = ({
-    children,
-}) => {
+interface ProjectsScrollFocusProviderProps {
+    children: ReactNode;
+    orderedIds: string[];
+}
+
+export const ProjectsScrollFocusProvider: FC<
+    ProjectsScrollFocusProviderProps
+> = ({ children, orderedIds }) => {
     const refs = useRef<Map<string, HTMLElement>>(new Map());
     const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
 
@@ -60,52 +65,28 @@ export const ProjectsScrollFocusProvider: FC<{ children: ReactNode }> = ({
     );
 
     const scrollToProject = useCallback((id: string) => {
-        const el = refs.current.get(id);
-        if (!el || typeof window === "undefined") return;
-        const cardRect = el.getBoundingClientRect();
+        const row = refs.current.get(id);
+        if (!row || typeof window === "undefined") return;
+
+        const rect = row.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const viewportCenter = viewportHeight / 2;
-        const cardVisualCenter = cardRect.top + cardRect.height / 2;
+        const targetY =
+            window.scrollY + rect.top + rect.height / 2 - viewportHeight / 2;
+        const startY = window.scrollY;
+        const distance = targetY - startY;
 
-        // How far the card's visual center is from viewport center
-        const visualOffset = cardVisualCenter - viewportCenter;
-
-        // The card has a translateY transform based on viewport progress.
-        // We want to scroll so that when the card reaches center (transform ≈ 0),
-        // it's visually centered. To do this, we need to account for the current
-        // transform offset in our scroll calculation.
-        // transformOffset = visualTop - naturalTop
-        // When transform is 0, visualTop = naturalTop
-        // So we scroll by visualOffset - transformOffset to center the natural position
-        const rowEl = el.parentElement;
-        const rowRect = rowEl?.getBoundingClientRect();
-        // transformOffset: how many pixels the transform has shifted the card down
-        // (positive means card is visually below its natural position)
-        const transformOffset = rowRect ? cardRect.top - rowRect.top : 0;
-
-        // We want the  card's NATURAL position to end up at viewport center.
-        // The natural center is (visual center - transformOffset), so we need to
-        // scroll by (visualOffset + transformOffset) to bring the natural center
-        // to viewport center.
-        const targetScroll =
-            window.scrollY + visualOffset - transformOffset + 100;
-        const startScroll = window.scrollY;
-        const distance = targetScroll - startScroll;
-
-        // 2x duration: base 600ms + 0.5ms per pixel (vs typical 300ms + 0.25ms)
-        const duration = Math.min(1200, 600 + Math.abs(distance) * 0.5);
+        // Longer duration for a luxurious feel: 800ms base + 0.4ms per pixel
+        const duration = Math.min(1200, 800 + Math.abs(distance) * 0.4);
         const startTime = performance.now();
 
-        const easeOutCubic = (t: number): number => {
-            return 1 - Math.pow(1 - t, 3);
-        };
+        // Ease-out cubic for smooth deceleration
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
         const animate = (currentTime: number) => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const eased = easeOutCubic(progress);
-            const currentScroll = startScroll + distance * eased;
-            window.scrollTo(0, currentScroll);
+            window.scrollTo(0, startY + distance * eased);
 
             if (progress < 1) {
                 requestAnimationFrame(animate);
@@ -116,8 +97,8 @@ export const ProjectsScrollFocusProvider: FC<{ children: ReactNode }> = ({
     }, []);
 
     const getProjectIds = useCallback(() => {
-        return Array.from(refs.current.keys());
-    }, []);
+        return orderedIds;
+    }, [orderedIds]);
 
     useLayoutEffect(() => {
         updateActive();
