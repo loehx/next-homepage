@@ -7,13 +7,6 @@ interface Props extends CompanyEntry {
 }
 
 export const Company: React.FC<Props> = (props) => {
-    const onClick = (e) => {
-        e.preventDefault();
-        document
-            .querySelector(`[data-company="${props.id}"]`)
-            ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    };
-
     return (
         <div
             className={
@@ -22,10 +15,11 @@ export const Company: React.FC<Props> = (props) => {
             style={{ aspectRatio: "16/9" }}
         >
             <a
-                aria-label={`Jump to timeline entry`}
+                aria-label={`Visit ${props.fullName} website`}
                 className="absolute inset-0 cursor-pointer"
-                onClick={onClick}
                 href={props.url}
+                target="_blank"
+                rel="noopener noreferrer"
             >
                 <Image
                     asset={props.logo}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CompanyEntry, Entry, ProjectEntry } from "data/definitions";
 import cx from "classnames";
 import { Company } from "./company";
@@ -16,6 +16,7 @@ export const Companies: React.FC<CompaniesProps> = (props) => {
     const animationRef = useRef<number>();
     const offsetRef = useRef(0);
     const setWidthRef = useRef(0);
+    const [isPaused, setIsPaused] = useState(false);
 
     const duplicatedCompanies = [
         ...props.companies,
@@ -41,17 +42,19 @@ export const Companies: React.FC<CompaniesProps> = (props) => {
         const speed = isMobile ? 0.5 : 0.2;
 
         const animate = () => {
-            if (setWidthRef.current === 0) {
-                updateSetWidth();
+            if (!isPaused) {
+                if (setWidthRef.current === 0) {
+                    updateSetWidth();
+                }
+
+                offsetRef.current += speed;
+
+                if (offsetRef.current >= setWidthRef.current) {
+                    offsetRef.current = 0;
+                }
+
+                track.style.transform = `translateX(-${offsetRef.current}px)`;
             }
-
-            offsetRef.current += speed;
-
-            if (offsetRef.current >= setWidthRef.current) {
-                offsetRef.current = 0;
-            }
-
-            track.style.transform = `translateX(-${offsetRef.current}px)`;
             animationRef.current = requestAnimationFrame(animate);
         };
 
@@ -69,11 +72,17 @@ export const Companies: React.FC<CompaniesProps> = (props) => {
             }
             window.removeEventListener("resize", handleResize);
         };
-    }, [props.companies, duplicatedCompanies.length]);
+    }, [props.companies, duplicatedCompanies.length, isPaused]);
 
     return (
         <div className={cx("", "md:-my-10")}>
-            <div className={styles.marquee}>
+            <div
+                className={styles.marquee}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
+            >
                 <div ref={trackRef} className={styles.track}>
                     {duplicatedCompanies.map((company, index) => (
                         <div
