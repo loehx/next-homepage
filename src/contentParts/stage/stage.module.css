@@ -120,7 +120,8 @@
 
 @media only screen and (min-width: 800px) {
     .description {
-        margin-top: 30px;
+        margin-top: 60px;
+        padding-right: 50px !important;
         opacity: 1;
     }
 }
@@ -237,8 +238,8 @@
 
     @media only screen and (max-height: 1600px) {
         .phoneWrapper {
-            width: 200px;
-            height: 409px;
+            width: 285px;
+            height: 583px;
         }
 
         .phone {
