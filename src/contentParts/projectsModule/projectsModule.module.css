@@ -363,7 +363,7 @@
 
 @media (max-width: 767px) {
     .projectCardRow {
-        margin-bottom: -1rem;
+        margin-bottom: 10px;
     }
 
     .projectCard {

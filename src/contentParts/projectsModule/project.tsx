@@ -298,8 +298,7 @@ const ProjectComponent: FC<Props> = ({
             const translateY = 100 * slideProgress;
             return {
                 ...base,
-                transform: `translate(${translateX}vw, ${translateY}vw)`,
-                opacity: p,
+                transform: `translate(${translateX}vw, ${translateY}vw)`
             };
         }
 
