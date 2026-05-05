@@ -231,7 +231,7 @@ const ProjectComponent: FC<Props> = ({
 
     const isMobile = useMemo(() => windowWidth < 768, [windowWidth]);
 
-    const multiplier = useMemo(() => (isMobile ? 4 : 3), [isMobile]);
+    const multiplier = useMemo(() => (isMobile ? 4 : 2.5 ), [isMobile]);
 
     const getRevealState = useCallback(
         (text: string): { revealed: string; showCursor: boolean } => {
@@ -269,6 +269,19 @@ const ProjectComponent: FC<Props> = ({
     const alignPhase = projectIndex % 2;
 
     const isCenterFocused = scrollFocus?.activeProjectId === project.id;
+
+    // Determine if this project is above (already scrolled past) or below (incoming) the focused one
+    const { isAboveFocused, isBelowFocused } = useMemo(() => {
+        if (!scrollFocus?.activeProjectId)
+            return { isAboveFocused: false, isBelowFocused: false };
+        const activeIndex = scrollFocus
+            .getProjectIds()
+            .indexOf(scrollFocus.activeProjectId);
+        return {
+            isAboveFocused: projectIndex < activeIndex,
+            isBelowFocused: projectIndex > activeIndex,
+        };
+    }, [scrollFocus, projectIndex]);
 
     const cardMotionStyle = useMemo((): CSSProperties => {
         const base = {
@@ -312,7 +325,7 @@ const ProjectComponent: FC<Props> = ({
         const xPx = Math.round(extraPx * 100) / 100;
         const yVh = Math.round(translateY * 100) / 100;
         const translate = `translate(calc(-50% + ${xPx}px), ${yVh}vh)`;
-        return { ...base, transform: translate, opacity: (p * p).toFixed(2) };
+        return { ...base, transform: translate };
     }, [
         hoverAccent,
         alignPhase,
@@ -332,6 +345,8 @@ const ProjectComponent: FC<Props> = ({
                 aria-label={`Open project details: ${project.name}`}
                 className={`${styles.projectCard} flex flex-col cursor-pointer${
                     isCenterFocused ? ` ${styles.projectCardFocused}` : ""
+                }${isAboveFocused ? ` ${styles.projectCardDimmed}` : ""}${
+                    isBelowFocused ? ` ${styles.projectCardRevealed}` : ""
                 }`}
                 style={cardMotionStyle}
                 onClick={handleOpenDetails}

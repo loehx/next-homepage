@@ -285,6 +285,11 @@
     margin-bottom: 1.5rem;
 }
 
+/* In dark corridor mode, make the subline white instead of grey */
+:global(html[data-dark-corridor]) .projectsSubline {
+    color: #ffffff;
+}
+
 /*
  * Row is positioning context. translateX driven in JS (project.tsx).
  * Row: margin-bottom animates with scroll. Card: horizontal transform only.
@@ -337,6 +342,17 @@
 
 /* Ensure full opacity for focused card content (like hover state) */
 .projectCardFocused .projectCardContent {
+    opacity: 1;
+}
+
+/* Dimmed state: projects above the currently focused one */
+.projectCardDimmed {
+    filter: brightness(0.55);
+    transition: filter 0.35s ease;
+}
+
+/* Revealed state: projects below the focused one show content at full opacity */
+.projectCardRevealed .projectCardContent {
     opacity: 1;
 }
 
