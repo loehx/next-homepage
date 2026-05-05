@@ -1,7 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { useIsMobile } from "src/hooks";
 
-export const BubblesAnimation: React.FC = () => {
+export interface BubblesAnimationProps {
+    /**
+     * If true, skips the solid black backdrop so the parent's background
+     * (e.g. page-bg) shows through behind the colorful circles.
+     */
+    transparent?: boolean;
+}
+
+export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
+    transparent = false,
+}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -197,16 +207,17 @@ export const BubblesAnimation: React.FC = () => {
 
     return (
         <div
-            id="container"
             ref={containerRef}
             style={{ position: "relative", width: "100%", height: "100%" }}
         >
-            <div
-                className="background absolute inset-0"
-                style={{
-                    background: "black",
-                }}
-            ></div>
+            {!transparent && (
+                <div
+                    className="background absolute inset-0"
+                    style={{
+                        background: "black",
+                    }}
+                ></div>
+            )}
             <div
                 style={{
                     position: "absolute",
@@ -219,13 +230,11 @@ export const BubblesAnimation: React.FC = () => {
                 }}
             >
                 <canvas
-                    id="backgroundCanvas"
                     ref={backgroundCanvasRef}
                     style={{ position: "absolute", top: 0, left: 0 }}
                 ></canvas>
             </div>
             <canvas
-                id="canvas"
                 ref={canvasRef}
                 style={{ position: "absolute", top: 0, left: 0 }}
             ></canvas>

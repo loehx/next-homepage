@@ -532,3 +532,24 @@
         filter: none;
     }
 }
+
+/* —— Projects section backdrop (colorful blurry circles from Stage) —— */
+.projectsBackdrop {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:global(html[data-dark-corridor]) .projectsBackdrop {
+    opacity: 1;
+}
+
+/* Reduced motion: instant fade */
+@media (prefers-reduced-motion: reduce) {
+    .projectsBackdrop {
+        transition: none;
+    }
+}

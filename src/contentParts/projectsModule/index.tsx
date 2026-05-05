@@ -8,6 +8,7 @@ import {
 import { ProjectDetailOverlay } from "./projectDetailOverlay";
 import { FadeIn } from "@components/fadeIn";
 import { TerminalCursor } from "@components/terminalCursor";
+import { BubblesAnimation } from "../stage/BubbleAnimation";
 import styles from "./projectsModule.module.css";
 import { useProjectsPageBlend } from "./useProjectsPageBlend";
 
@@ -22,7 +23,7 @@ export interface ProjectsModuleProps extends Entry {
 export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     const { projects } = props;
     const sectionRef = useRef<HTMLDivElement>(null);
-    useProjectsPageBlend(sectionRef);
+    const { isNearViewport } = useProjectsPageBlend(sectionRef);
     const [detailProjectId, setDetailProjectId] = useState<string | null>(null);
 
     const openProjectDetails = useCallback((id: string) => {
@@ -60,7 +61,13 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     );
 
     return (
-        <div ref={sectionRef} className="container mx-auto px-4 py-12">
+        <div
+            ref={sectionRef}
+            className="container mx-auto px-4 py-12 relative isolate"
+        >
+            <div className={styles.projectsBackdrop} aria-hidden>
+                {isNearViewport && <BubblesAnimation transparent />}
+            </div>
             <FadeIn>
                 {props.title && (
                     <>
