@@ -284,16 +284,10 @@
 }
 
 .availability {
-    display: none;
-    transition: all 0.3s ease;
+    display: none !important;
 }
 
 .initializing .availability {
     opacity: 0;
 }
 
-@media only screen and (min-width: 800px) {
-    .availability {
-        display: block;
-    }
-}
