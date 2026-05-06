@@ -106,8 +106,7 @@ export const Stage: React.FC<StageProps> = (props) => {
             <div
                 className={styles.inner}
                 style={{
-                    transform:
-                        windowHeight < 950 ? "scale(0.8)" : undefined,
+                    transform: windowHeight < 950 ? "scale(0.8)" : undefined,
                 }}
             >
                 <div className={styles.intro}>
