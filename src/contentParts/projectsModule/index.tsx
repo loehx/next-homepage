@@ -11,6 +11,7 @@ import { TerminalCursor } from "@components/terminalCursor";
 import { BubblesAnimation } from "../stage/BubbleAnimation";
 import styles from "./projectsModule.module.css";
 import { useProjectsPageBlend } from "./useProjectsPageBlend";
+import { useIsMobile } from "src/hooks";
 
 export interface ProjectsModuleProps extends Entry {
     name: string;
@@ -24,6 +25,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     const { projects } = props;
     const sectionRef = useRef<HTMLDivElement>(null);
     const { isNearViewport } = useProjectsPageBlend(sectionRef);
+    const isMobile = useIsMobile(true);
     const [detailProjectId, setDetailProjectId] = useState<string | null>(null);
 
     const openProjectDetails = useCallback((id: string) => {
@@ -63,7 +65,9 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
             className="container mx-auto px-4 py-12 relative isolate"
         >
             <div className={styles.projectsBackdrop} aria-hidden>
-                {isNearViewport && <BubblesAnimation transparent />}
+                {isNearViewport && (
+                    <BubblesAnimation transparent disableBubbles={true} />
+                )}
             </div>
             <FadeIn>
                 {props.title && (

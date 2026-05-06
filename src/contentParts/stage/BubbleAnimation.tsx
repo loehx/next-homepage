@@ -7,10 +7,16 @@ export interface BubblesAnimationProps {
      * (e.g. page-bg) shows through behind the colorful circles.
      */
     transparent?: boolean;
+    /**
+     * If true, disables the animated white bubbles but keeps the colorful
+     * background circles. Useful for mobile performance optimization.
+     */
+    disableBubbles?: boolean;
 }
 
 export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
     transparent = false,
+    disableBubbles = false,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -176,10 +182,12 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             if (elapsed >= frameInterval) {
                 lastTime = currentTime - (elapsed % frameInterval);
 
-                updateBubbles();
+                if (!disableBubbles) {
+                    updateBubbles();
+                    drawBubbles();
+                }
                 updateBackgroundCircles();
                 drawBackgroundCircles();
-                drawBubbles();
             }
 
             animationFrameId = requestAnimationFrame(animate);
@@ -188,8 +196,10 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
         function init() {
             resizeCanvas();
             initBackgroundCircles();
-            for (let i = 0; i < baseBubbleCount; i++) {
-                createBubble();
+            if (!disableBubbles) {
+                for (let i = 0; i < baseBubbleCount; i++) {
+                    createBubble();
+                }
             }
             animate(0);
         }
@@ -203,7 +213,7 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [isMobile]);
+    }, [isMobile, disableBubbles]);
 
     return (
         <div
