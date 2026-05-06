@@ -31,9 +31,12 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [phoneImageLoaded, setPhoneImageLoaded] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
     const [scrollY, setScrollY] = useState(0);
-    const [windowHeight, setWindowHeight] = useState(() =>
-        typeof window !== "undefined" ? window.innerHeight : 1000,
-    );
+    const [windowSize, setWindowSize] = useState(() => ({
+        width:
+            typeof window !== "undefined" ? window.innerWidth : 1200,
+        height:
+            typeof window !== "undefined" ? window.innerHeight : 1000,
+    }));
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
@@ -61,7 +64,11 @@ export const Stage: React.FC<StageProps> = (props) => {
         const onScroll = () => setScrollY(window.scrollY);
         window.addEventListener("scroll", onScroll);
 
-        const onResize = () => setWindowHeight(window.innerHeight);
+        const onResize = () =>
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
         window.addEventListener("resize", onResize);
 
         return () => {
@@ -106,7 +113,11 @@ export const Stage: React.FC<StageProps> = (props) => {
             <div
                 className={styles.inner}
                 style={{
-                    transform: windowHeight < 950 ? "scale(0.8)" : undefined,
+                    transform:
+                        windowSize.width > windowSize.height &&
+                        windowSize.height < 950
+                            ? "scale(0.8)"
+                            : undefined,
                 }}
             >
                 <div className={styles.intro}>
