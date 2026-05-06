@@ -291,14 +291,14 @@ const ProjectComponent: FC<Props> = ({
         const { rowW: R, cardW: C } = layoutSizes;
 
         if (isMobile) {
-            // Mobile: slide in from sides (-50vw or +50vw based on alignment) + fade in
-            const entryDirection = alignPhase === 0 ? -1 : 1;
-            const slideProgress = 1 - p; // 1 when entering, 0 when centered
-            const translateX = entryDirection * 50 * slideProgress;
-            const translateY = 100 * slideProgress;
+            // Mobile: simpler opacity-based reveal instead of position slide
+            // to avoid janky subpixel rendering on mobile GPUs
+            const opacity = p < 0.1 ? 0.3 : p < 0.3 ? 0.5 : 1;
+            const translateY = (1 - p) * 30; // Smaller translate using vh for smoothness
             return {
                 ...base,
-                transform: `translate(${translateX}vw, ${translateY}vw)`,
+                opacity,
+                transform: `translate3d(0, ${translateY}px, 0)`,
             };
         }
 
