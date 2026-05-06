@@ -32,10 +32,8 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
     const [scrollY, setScrollY] = useState(0);
     const [windowSize, setWindowSize] = useState(() => ({
-        width:
-            typeof window !== "undefined" ? window.innerWidth : 1200,
-        height:
-            typeof window !== "undefined" ? window.innerHeight : 1000,
+        width: typeof window !== "undefined" ? window.innerWidth : 1200,
+        height: typeof window !== "undefined" ? window.innerHeight : 1000,
     }));
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
