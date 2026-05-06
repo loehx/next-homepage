@@ -31,6 +31,9 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [phoneImageLoaded, setPhoneImageLoaded] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
     const [scrollY, setScrollY] = useState(0);
+    const [windowHeight, setWindowHeight] = useState(() =>
+        typeof window !== "undefined" ? window.innerHeight : 1000,
+    );
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     useEffect(() => {
@@ -58,8 +61,12 @@ export const Stage: React.FC<StageProps> = (props) => {
         const onScroll = () => setScrollY(window.scrollY);
         window.addEventListener("scroll", onScroll);
 
+        const onResize = () => setWindowHeight(window.innerHeight);
+        window.addEventListener("resize", onResize);
+
         return () => {
             window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", onResize);
             clearTimeout(timeout);
         };
     }, []);
@@ -96,7 +103,13 @@ export const Stage: React.FC<StageProps> = (props) => {
                     <BubblesAnimation />
                 )}
             </div>
-            <div className={styles.inner}>
+            <div
+                className={styles.inner}
+                style={{
+                    transform:
+                        windowHeight < 950 ? "scale(0.8)" : undefined,
+                }}
+            >
                 <div className={styles.intro}>
                     {props.logo && (
                         <div className={styles.logo}>

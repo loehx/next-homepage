@@ -66,6 +66,27 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             canvas.height = container.offsetHeight;
             backgroundCanvas.width = container.offsetWidth;
             backgroundCanvas.height = container.offsetHeight;
+
+            // Reposition circles that are now outside bounds and redraw immediately
+            // to prevent flicker during resize
+            backgroundCircles.current.forEach((circle) => {
+                if (circle.x > backgroundCanvas.width + circle.radius) {
+                    circle.x =
+                        Math.random() * backgroundCanvas.width +
+                        backgroundCanvas.width * 0.2;
+                }
+                if (circle.y > backgroundCanvas.height + circle.radius) {
+                    circle.y =
+                        Math.random() * backgroundCanvas.height +
+                        backgroundCanvas.height * 0.2;
+                }
+            });
+
+            // Redraw immediately to prevent flicker
+            drawBackgroundCircles();
+            if (!disableBubbles) {
+                drawBubbles();
+            }
         }
 
         function createBubble() {
@@ -204,11 +225,24 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             animate(0);
         }
 
-        window.addEventListener("resize", resizeCanvas);
+        // Debounced resize handler using requestAnimationFrame
+        let resizeRafId: number | null = null;
+        function handleResize() {
+            if (resizeRafId !== null) return;
+            resizeRafId = requestAnimationFrame(() => {
+                resizeCanvas();
+                resizeRafId = null;
+            });
+        }
+
+        window.addEventListener("resize", handleResize);
         init();
 
         return () => {
-            window.removeEventListener("resize", resizeCanvas);
+            window.removeEventListener("resize", handleResize);
+            if (resizeRafId !== null) {
+                cancelAnimationFrame(resizeRafId);
+            }
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
             }
