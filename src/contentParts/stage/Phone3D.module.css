@@ -1,0 +1,16 @@
+.container {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.container[data-loaded="true"] {
+    opacity: 1;
+}
+
+.canvas {
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+}

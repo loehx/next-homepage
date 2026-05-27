@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import styles from "./stage.module.css";
-import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
 import { AssetEntry } from "data/definitions";
 import { AvailabilityStatus } from "@components/availabilityStatus";
@@ -9,6 +9,11 @@ import { Image } from "@components/image";
 import cx from "classnames";
 import { BubblesAnimation } from "./BubbleAnimation";
 import { AnimatedWaves } from "./AnimatedWaves";
+
+// Three.js doesn't play nicely with SSR, so we client-only this.
+const Phone3D = dynamic(() => import("./Phone3D"), {
+    ssr: false,
+});
 
 export interface StageProps {
     id: string;
@@ -27,8 +32,7 @@ export interface StageProps {
 export const Stage: React.FC<StageProps> = (props) => {
     const isMobile = useIsMobile(true);
     const [loading, setLoading] = useState(true);
-    const [phoneFrameLoaded, setPhoneFrameLoaded] = useState(false);
-    const [phoneImageLoaded, setPhoneImageLoaded] = useState(false);
+    const [phoneModelLoaded, setPhoneModelLoaded] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
     const [scrollY, setScrollY] = useState(0);
     const [windowSize, setWindowSize] = useState(() => ({
@@ -40,15 +44,13 @@ export const Stage: React.FC<StageProps> = (props) => {
     useEffect(() => {
         const isBackgroundReady =
             !props.backgroundImage?.url || backgroundLoaded;
-        const isPhoneReady =
-            !props.phoneImage?.url || (phoneFrameLoaded && phoneImageLoaded);
+        const isPhoneReady = !props.phoneImage?.url || phoneModelLoaded;
 
         if (isBackgroundReady && isPhoneReady) {
             setLoading(false);
         }
     }, [
-        phoneFrameLoaded,
-        phoneImageLoaded,
+        phoneModelLoaded,
         backgroundLoaded,
         props.backgroundImage?.url,
         props.phoneImage?.url,
@@ -59,8 +61,18 @@ export const Stage: React.FC<StageProps> = (props) => {
             setLoading(false);
         }, 3000); // Safety timeout
 
-        const onScroll = () => setScrollY(window.scrollY);
-        window.addEventListener("scroll", onScroll);
+        // Throttle scroll-driven state updates to one per animation frame so
+        // we don't kick off a React reconciliation for every single scroll
+        // tick (Safari can fire those much faster than rAF).
+        let scrollRaf: number | null = null;
+        const onScroll = () => {
+            if (scrollRaf !== null) return;
+            scrollRaf = requestAnimationFrame(() => {
+                scrollRaf = null;
+                setScrollY(window.scrollY);
+            });
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
 
         const onResize = () =>
             setWindowSize({
@@ -72,6 +84,7 @@ export const Stage: React.FC<StageProps> = (props) => {
         return () => {
             window.removeEventListener("scroll", onScroll);
             window.removeEventListener("resize", onResize);
+            if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
             clearTimeout(timeout);
         };
     }, []);
@@ -151,37 +164,15 @@ export const Stage: React.FC<StageProps> = (props) => {
                         <div
                             className={styles.phone}
                             aria-label={props.phoneImage.description}
+                            style={{
+                                filter: `brightness(${
+                                    1 - scrollY / (w.innerHeight / 2)
+                                })`,
+                            }}
                         >
-                            <div
-                                className={`${styles.avatar} w-full h-full relative overflow-hidden rounded`}
-                            >
-                                <div
-                                    className="w-full h-full"
-                                    style={{
-                                        filter: `brightness(${
-                                            1 - scrollY / (w.innerHeight / 2)
-                                        })`,
-                                    }}
-                                >
-                                    <Image
-                                        asset={props.phoneImage}
-                                        priority
-                                        alt="profile picture of me outside looking slightly up"
-                                        sizes="(min-width: 768px) 100px, 200px"
-                                        onLoadingComplete={() =>
-                                            setPhoneImageLoaded(true)
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            <Image
-                                src={phoneFrameSrc}
-                                alt={"iphone frame"}
-                                sizes="(min-width: 768px) 100px, 200px"
-                                priority
-                                onLoadingComplete={() =>
-                                    setPhoneFrameLoaded(true)
-                                }
+                            <Phone3D
+                                imageUrl={props.phoneImage.url}
+                                onLoad={() => setPhoneModelLoaded(true)}
                             />
                         </div>
                         {props.availableFrom && (
