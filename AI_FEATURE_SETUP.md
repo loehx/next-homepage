@@ -133,6 +133,18 @@ curl -s https://api.cursor.com/v1/repositories \
 
 `loehx/homepage-agent` muss in der Liste auftauchen.
 
+> ⚠️ **Read-only enforcement.** Visitor prompts are sandboxed by two layers:
+>
+> 1. **GitHub App permissions (hard).** Install the Cursor GitHub App on
+>    `loehx/homepage-agent` with **Contents: Read-only** and no `Pull
+>    requests: Write`. This is the only layer that *cannot* be bypassed by
+>    a hostile prompt — the agent literally lacks the permission to push or
+>    open PRs.
+> 2. **Prompt-level guard (soft).** Every visitor prompt is wrapped in
+>    `_cursor.ts → wrapUserPrompt(...)` with strict "no writes, no PRs, no
+>    shell mutations" instructions. This catches benign asks and keeps the
+>    persona consistent but should not be relied on for security.
+
 ### Netlify Environment Variables
 
 | Variable          | Wert                                              | Pflicht?                    |

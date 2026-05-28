@@ -4,6 +4,7 @@ import {
   createRunWithBusyRetry,
   pollRunUntilComplete,
   extractJsonFromResult,
+  wrapUserPrompt,
   CursorError,
   TERMINAL_STATUSES,
 } from "./_cursor";
@@ -165,17 +166,27 @@ export const handler: Handler = async (event) => {
       let runId: string;
       let isNewAgent = false;
 
+      // Every visitor message is wrapped with the read-only + R2-D2 persona
+      // preamble so the agent stays in character and refuses any mutation
+      // request, even on follow-up turns. Hard enforcement for "no repo
+      // writes" still relies on the Cursor GitHub App being installed with
+      // read-only permissions on loehx/homepage-agent.
+      const wrappedPrompt = wrapUserPrompt(text);
+
       if (!currentAgentId) {
         // First ask: create agent with the user's text as the initial run,
         // saving a round-trip (no separate /runs POST needed).
-        const agent = await createAgent(text);
+        const agent = await createAgent(wrappedPrompt);
         currentAgentId = agent.agentId;
         runId = agent.runId;
         isNewAgent = true;
       } else {
         // Existing agent: it might still have an active warmup run; the
         // helper waits and retries internally on 409 agent_busy.
-        const run = await createRunWithBusyRetry(currentAgentId, text);
+        const run = await createRunWithBusyRetry(
+          currentAgentId,
+          wrappedPrompt
+        );
         runId = run.runId;
       }
 
