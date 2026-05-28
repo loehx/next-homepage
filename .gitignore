@@ -14,3 +14,5 @@ out
 imagekit.json
 # typescript incremental build cache
 tsconfig.tsbuildinfo
+# generated at build time by `yarn build:agent-api`
+public/api/v1/
