@@ -43,13 +43,10 @@ export const ProjectsScrollFocusProvider: FC<
         null,
     );
 
-    const register = useCallback(
-        (id: string, el: HTMLElement | null) => {
-            if (el) refs.current.set(id, el);
-            else refs.current.delete(id);
-        },
-        [],
-    );
+    const register = useCallback((id: string, el: HTMLElement | null) => {
+        if (el) refs.current.set(id, el);
+        else refs.current.delete(id);
+    }, []);
 
     const scrollToProject = useCallback((id: string) => {
         const row = refs.current.get(id);

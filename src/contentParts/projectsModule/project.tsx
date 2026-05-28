@@ -194,10 +194,7 @@ const ProjectComponent: FC<Props> = ({
         };
     }, [project.id, scrollFocus]);
 
-    const startYear = useMemo(
-        () => project.from.split("/")[1],
-        [project.from],
-    );
+    const startYear = useMemo(() => project.from.split("/")[1], [project.from]);
 
     const sortedTechnologies = useMemo(() => {
         if (!project.technologies) return [];
@@ -316,7 +313,9 @@ const ProjectComponent: FC<Props> = ({
                 tabIndex={0}
                 aria-haspopup="dialog"
                 aria-label={`Open project details: ${project.name}`}
-                className={`${styles.projectCard} ${isKeyboardActive ? styles.projectCardActive : ""} flex flex-col cursor-pointer`}
+                className={`${styles.projectCard} ${
+                    isKeyboardActive ? styles.projectCardActive : ""
+                } flex flex-col cursor-pointer`}
                 style={cardMotionStyle}
                 onClick={handleOpenDetails}
                 onKeyDown={handleCardKeyDown}
@@ -324,7 +323,13 @@ const ProjectComponent: FC<Props> = ({
                 <div className="w-full text-sm">
                     <div className="text-2xl font-bold text-left md:text-center w-full mb-1 flex flex-row items-center justify-start md:justify-center gap-2">
                         <span
-                            className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt} ${isTechLineVisible ? styles.projectCardTitlePromptVisible : ""}`}
+                            className={`shrink-0 font-mono text-base ${
+                                styles.projectCardTitlePrompt
+                            } ${
+                                isTechLineVisible
+                                    ? styles.projectCardTitlePromptVisible
+                                    : ""
+                            }`}
                         >
                             &gt;_
                         </span>
@@ -343,14 +348,22 @@ const ProjectComponent: FC<Props> = ({
                     </div>
                     <div className={styles.projectCardContent}>
                         <div
-                            className={`w-full font-mono text-sm flex flex-wrap justify-start md:justify-center pt-2 ${styles.projectCardTechLine} ${isTechLineVisible ? styles.projectCardTechLineVisible : ""}`}
+                            className={`w-full font-mono text-sm flex flex-wrap justify-start md:justify-center pt-2 ${
+                                styles.projectCardTechLine
+                            } ${
+                                isTechLineVisible
+                                    ? styles.projectCardTechLineVisible
+                                    : ""
+                            }`}
                         >
                             <span>
                                 <span className={styles.projectCardTechOther}>
                                     {startYear}
                                 </span>
                                 {sortedTechnologies.length > 0 && (
-                                    <span className={styles.projectCardTechOther}>
+                                    <span
+                                        className={styles.projectCardTechOther}
+                                    >
                                         {"\u00A0"}
                                     </span>
                                 )}
@@ -369,7 +382,11 @@ const ProjectComponent: FC<Props> = ({
                                         {tech.name}
                                     </span>
                                     {i < sortedTechnologies.length - 1 && (
-                                        <span className={styles.projectCardTechOther}>
+                                        <span
+                                            className={
+                                                styles.projectCardTechOther
+                                            }
+                                        >
                                             {"\u00A0"}
                                         </span>
                                     )}
