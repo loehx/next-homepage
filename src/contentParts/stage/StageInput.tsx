@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import styles from "./StageInput.module.css";
 import cx from "classnames";
+import { playDroidChirp } from "./droidChirp";
 
 interface ChatResponse {
     agentId: string;
@@ -190,6 +191,9 @@ export const StageInput: React.FC<StageInputProps> = ({
                 );
                 setStatus("ready");
                 onAnswer(data.answer, data.suggestions || []);
+                // Audible cue the droid finished thinking. Synthesized in
+                // ./droidChirp so we don't have to ship a sample asset.
+                playDroidChirp();
             } catch (error) {
                 setErrorMessage(
                     error instanceof Error
