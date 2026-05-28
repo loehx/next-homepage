@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    padding-right: 0;
 }
 
 .inputRow {
@@ -12,7 +13,8 @@
     gap: 8px;
     background-color: rgba(0 0 0 / 25%);
     border-radius: 4px;
-    padding: 10px 12px;
+    padding: 14px 16px 14px;
+    margin-top: 10px;
 }
 
 .prompt {
@@ -36,8 +38,6 @@
     min-height: 18px;
     max-height: 120px;
     padding: 0;
-    width: 100%;
-    margin-top: 10px;
 }
 
 .input::placeholder {
@@ -54,7 +54,8 @@
     border: none;
     color: var(--grey-3);
     cursor: pointer;
-    padding: 2px;
+    padding: 12px;
+    margin: -10px;
     display: flex;
     align-items: center;
     justify-content: center;
