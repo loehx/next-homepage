@@ -32,6 +32,19 @@ const DEFAULT_SUGGESTIONS = [
 
 const STORAGE_KEY = "aiAgentId";
 
+// Rotated through the input placeholder while a request is in flight, so the
+// user gets a sense of progress instead of staring at a single "Thinking…".
+const LOADING_HINTS = [
+    "Sending message to Cursor…",
+    "Gathering information…",
+    "Thinking…",
+    "Coming up with follow-ups…",
+    "Taking a little nap…",
+    "Getting a coffee…",
+    "Coming up with an answer…",
+];
+const LOADING_HINT_INTERVAL_MS = 2500;
+
 export const StageInput: React.FC<StageInputProps> = ({
     onAnswer,
 }: StageInputProps) => {
@@ -41,6 +54,7 @@ export const StageInput: React.FC<StageInputProps> = ({
         useState<string[]>(DEFAULT_SUGGESTIONS);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
+    const [loadingHintIndex, setLoadingHintIndex] = useState(0);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -234,6 +248,18 @@ export const StageInput: React.FC<StageInputProps> = ({
         }
     }, [inputValue]);
 
+    // Rotate the loading hint while a request is in flight. Reset to the first
+    // hint each time we enter the loading state so the sequence always starts
+    // with "Sending message to Cursor…".
+    useEffect(() => {
+        if (status !== "loading") return;
+        setLoadingHintIndex(0);
+        const interval = setInterval(() => {
+            setLoadingHintIndex((i) => (i + 1) % LOADING_HINTS.length);
+        }, LOADING_HINT_INTERVAL_MS);
+        return () => clearInterval(interval);
+    }, [status]);
+
     if (status === "initializing") {
         return (
             <div className={styles.container}>
@@ -243,6 +269,12 @@ export const StageInput: React.FC<StageInputProps> = ({
                         Waking up the AI agent…
                     </span>
                 </div>
+                <p className={styles.statusHint}>
+                    The agent lives in my Cursor Cloud and has access to a small
+                    repository with information about me. When you ask it
+                    something, it opens that repository and comes up with an
+                    answer.
+                </p>
             </div>
         );
     }
@@ -279,7 +311,11 @@ export const StageInput: React.FC<StageInputProps> = ({
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder={isBusy ? "Thinking…" : "Ask me anything…"}
+                    placeholder={
+                        isBusy
+                            ? LOADING_HINTS[loadingHintIndex]
+                            : "Ask me anything…"
+                    }
                     disabled={isBusy}
                     rows={1}
                     className={styles.input}
