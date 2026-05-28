@@ -1,17 +1,24 @@
 import { Handler } from "@netlify/functions";
 import {
   createAgent,
-  createRun,
+  createRunWithBusyRetry,
   pollRunUntilComplete,
   extractJsonFromResult,
   CursorError,
+  TERMINAL_STATUSES,
 } from "./_cursor";
 
 interface ChatRequest {
-  mode: "prewarm" | "ask";
+  mode: "prewarm" | "wait" | "ask";
   agentId?: string;
+  runId?: string;
   text?: string;
 }
+
+// Per-call polling budget. Netlify functions cap around 26s, leave headroom
+// for the createAgent + HTTP round-trip on top of this.
+const POLL_BUDGET_MS = 15000;
+const POLL_INTERVAL_MS = 1500;
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -55,14 +62,89 @@ export const handler: Handler = async (event) => {
 
   try {
     if (body.mode === "prewarm") {
+      // If the client already has a known agentId from sessionStorage we trust
+      // it's idle (the warmup ran in a prior session). Skip recreating and
+      // let the next "ask" surface any issue if it turns out to be dead.
+      if (body.agentId) {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            agentId: body.agentId,
+            status: "ready",
+          }),
+        };
+      }
+
       // /v1/agents always enqueues an initial run; we use a no-op prompt so
       // the warmup work boots the VM without producing meaningful output.
+      // We MUST drain that run before reporting "ready" - otherwise the next
+      // /runs POST will 409 with agent_busy.
       const agent = await createAgent("Initialize");
+
+      const result = await pollRunUntilComplete(agent.agentId, agent.runId, {
+        maxWaitMs: POLL_BUDGET_MS,
+        pollIntervalMs: POLL_INTERVAL_MS,
+        throwOnTimeout: false,
+      });
+
+      if (!TERMINAL_STATUSES.has(result.status)) {
+        // Cold-start still running; tell the client to keep polling via "wait".
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            agentId: agent.agentId,
+            runId: agent.runId,
+            status: "warming",
+          }),
+        };
+      }
+
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           agentId: agent.agentId,
+          status: "ready",
+        }),
+      };
+    }
+
+    if (body.mode === "wait") {
+      if (!body.agentId || !body.runId) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: "Missing agentId or runId for wait",
+          }),
+        };
+      }
+
+      const result = await pollRunUntilComplete(body.agentId, body.runId, {
+        maxWaitMs: POLL_BUDGET_MS,
+        pollIntervalMs: POLL_INTERVAL_MS,
+        throwOnTimeout: false,
+      });
+
+      if (!TERMINAL_STATUSES.has(result.status)) {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            agentId: body.agentId,
+            runId: body.runId,
+            status: "warming",
+          }),
+        };
+      }
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          agentId: body.agentId,
           status: "ready",
         }),
       };
@@ -91,7 +173,9 @@ export const handler: Handler = async (event) => {
         runId = agent.runId;
         isNewAgent = true;
       } else {
-        const run = await createRun(currentAgentId, text);
+        // Existing agent: it might still have an active warmup run; the
+        // helper waits and retries internally on 409 agent_busy.
+        const run = await createRunWithBusyRetry(currentAgentId, text);
         runId = run.runId;
       }
 

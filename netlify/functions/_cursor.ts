@@ -39,7 +39,7 @@ export class CursorError extends Error {
   }
 }
 
-const TERMINAL_STATUSES: ReadonlySet<RunStatus> = new Set<RunStatus>([
+export const TERMINAL_STATUSES: ReadonlySet<RunStatus> = new Set<RunStatus>([
   "FINISHED",
   "ERROR",
   "CANCELLED",
@@ -210,13 +210,23 @@ export async function getRun(agentId: string, runId: string): Promise<RunResult>
 export async function pollRunUntilComplete(
   agentId: string,
   runId: string,
-  options: { maxWaitMs?: number; pollIntervalMs?: number } = {}
+  options: {
+    maxWaitMs?: number;
+    pollIntervalMs?: number;
+    throwOnTimeout?: boolean;
+  } = {}
 ): Promise<RunResult> {
-  const { maxWaitMs = 25000, pollIntervalMs = 1000 } = options;
+  const {
+    maxWaitMs = 25000,
+    pollIntervalMs = 1000,
+    throwOnTimeout = true,
+  } = options;
   const startTime = Date.now();
+  let lastResult: RunResult = { status: "CREATING" };
 
   while (Date.now() - startTime < maxWaitMs) {
     const result = await getRun(agentId, runId);
+    lastResult = result;
 
     if (TERMINAL_STATUSES.has(result.status)) {
       return result;
@@ -225,10 +235,49 @@ export async function pollRunUntilComplete(
     await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
   }
 
-  throw new CursorError(
-    "Cold start timeout - agent is still initializing",
-    504,
-    true
+  if (throwOnTimeout) {
+    throw new CursorError(
+      "Cold start timeout - agent is still initializing",
+      504,
+      true
+    );
+  }
+  return lastResult;
+}
+
+/**
+ * Creates a follow-up run, retrying on 409 agent_busy by waiting a few
+ * seconds for the previous run to drain. Without this, asks immediately
+ * after a prewarm reliably 409 because the warmup run is still active.
+ */
+export async function createRunWithBusyRetry(
+  agentId: string,
+  text: string,
+  options: { maxAttempts?: number; backoffMs?: number } = {}
+): Promise<CreateRunResponse> {
+  const { maxAttempts = 4, backoffMs = 2000 } = options;
+  let lastError: CursorError | null = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await createRun(agentId, text);
+    } catch (error) {
+      if (error instanceof CursorError && error.status === 409) {
+        lastError = error;
+        if (attempt < maxAttempts - 1) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, backoffMs + attempt * 1000)
+          );
+          continue;
+        }
+      }
+      throw error;
+    }
+  }
+
+  throw (
+    lastError ??
+    new CursorError("Agent stayed busy after retries", 409, true)
   );
 }
 

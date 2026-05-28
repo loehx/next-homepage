@@ -43,8 +43,12 @@ export const StageInput: React.FC<StageInputProps> = ({
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
-    // Initialize: restore agentId from session storage (if any) and prewarm
-    // the agent so the input is ready by the time we render it.
+    // Initialize: restore agentId from session storage (if any), prewarm the
+    // agent, and keep polling via "wait" until the warmup run drains. The
+    // server returns status: "warming" with a runId when the cold start hasn't
+    // finished within its per-call budget; we then drive the wait loop from
+    // here. Without this, an "ask" immediately after prewarm reliably 409s
+    // with agent_busy because the warmup run is still active.
     const initialize = useCallback(async () => {
         setStatus("initializing");
         setErrorMessage(null);
@@ -55,16 +59,12 @@ export const StageInput: React.FC<StageInputProps> = ({
             if (stored) agentIdRef.current = stored;
         }
 
-        try {
+        const callChat = async (payload: Record<string, unknown>) => {
             const response = await fetch("/api/ai/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    mode: "prewarm",
-                    agentId: agentIdRef.current,
-                }),
+                body: JSON.stringify(payload),
             });
-
             if (!response.ok) {
                 const errorData: ChatError = await response
                     .json()
@@ -73,27 +73,59 @@ export const StageInput: React.FC<StageInputProps> = ({
                         message: "Could not start the AI agent.",
                         retryable: true,
                     }));
-                setErrorMessage(errorData.message);
-                setErrorRetryable(errorData.retryable ?? true);
-                setStatus("error");
-                return;
+                throw Object.assign(new Error(errorData.message), {
+                    retryable: errorData.retryable ?? true,
+                });
             }
+            return response.json();
+        };
 
-            const data = await response.json();
+        try {
+            let data = await callChat({
+                mode: "prewarm",
+                agentId: agentIdRef.current,
+            });
+
             if (data.agentId) {
                 agentIdRef.current = data.agentId;
                 if (typeof window !== "undefined") {
                     sessionStorage.setItem(STORAGE_KEY, data.agentId);
                 }
             }
+
+            // Cap total warmup time at ~6 wait cycles (~90s) to avoid pinning
+            // the user in "Waking up..." forever on a stuck cold start.
+            let waitAttempts = 0;
+            while (data.status === "warming" && waitAttempts < 6) {
+                waitAttempts++;
+                data = await callChat({
+                    mode: "wait",
+                    agentId: data.agentId,
+                    runId: data.runId,
+                });
+            }
+
+            if (data.status !== "ready") {
+                setErrorMessage(
+                    "The AI agent is taking too long to start. Please try again.",
+                );
+                setErrorRetryable(true);
+                setStatus("error");
+                return;
+            }
+
             setStatus("ready");
         } catch (error) {
-            setErrorMessage(
+            const message =
                 error instanceof Error
                     ? error.message
-                    : "Could not reach the AI agent.",
-            );
-            setErrorRetryable(true);
+                    : "Could not reach the AI agent.";
+            const retryable =
+                error && typeof error === "object" && "retryable" in error
+                    ? Boolean((error as { retryable?: boolean }).retryable)
+                    : true;
+            setErrorMessage(message);
+            setErrorRetryable(retryable);
             setStatus("error");
         }
     }, []);
