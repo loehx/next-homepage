@@ -145,7 +145,6 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             const colors = [
                 "rgba(255, 0, 0, 0.15)",
                 "rgba(0, 0, 255, 0.15)",
-                "rgba(255, 255, 0, 0.15)",
                 "rgba(255, 0, 255, 0.15)",
                 "rgba(0, 255, 255, 0.15)",
             ];

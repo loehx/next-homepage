@@ -297,78 +297,27 @@
 .projectCardRow {
     position: relative;
     width: 100%;
-    /* Fixed margin - animation handled by transform on .projectCard */
-    margin-bottom: -2rem;
 }
 
 .projectCard {
     --project-accent: var(--primary);
     position: relative;
     left: 50%;
-    width: 450px;
+    width: fit-content;
     max-width: 100%;
-    padding: 1.5rem 1.6rem;
-    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    /* Transparent border keeps layout stable when the accent border appears on hover */
+    border: 1px solid transparent;
     border-radius: 0.875rem;
-    background-color: var(--card-bg);
+    background-color: transparent;
     color: var(--body-color);
-    box-shadow: 0 1px 2px rgba(39, 44, 53, 0.04);
     pointer-events: all;
     transition:
         border-color 0.35s ease,
         box-shadow 0.35s ease,
         background-color 0.35s ease,
         color 0.35s ease,
-        opacity 0.14s ease-out,
-        margin 0.35s ease,
-        backdrop-filter 0.35s ease;
-}
-
-/* Dark corridor: glassmorphism effect with transparent black */
-:global(html[data-dark-corridor]) .projectCard {
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.projectCardFocused {
-    border-color: var(--project-accent);
-    background-color: var(--card-bg-hover);
-    box-shadow:
-        0 0 0 1px var(--project-accent),
-        0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
-        0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
-}
-
-/* Dark corridor: focused state with stronger glassmorphism */
-:global(html[data-dark-corridor]) .projectCardFocused {
-    background-color: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
-.projectCardFocused .projectCardTitlePrompt,
-.projectCardFocused .projectCardTitleName span {
-    color: var(--project-accent) !important;
-    text-shadow:
-        0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
-        0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
-}
-
-/* Ensure full opacity for focused card content (like hover state) */
-.projectCardFocused .projectCardContent {
-    opacity: 1;
-}
-
-/* Dimmed state: projects above the currently focused one */
-.projectCardDimmed {
-    filter: brightness(0.55);
-    transition: filter 0.35s ease;
-}
-
-/* Revealed state: projects below the focused one show content at full opacity */
-.projectCardRevealed .projectCardContent {
-    opacity: 1;
+        margin 0.35s ease;
 }
 
 @media (max-width: 767px) {
@@ -379,14 +328,8 @@
     .projectCard {
         width: 100%;
         left: 0;
-        padding: 1.2rem 1.2rem;
-        /* On mobile, use solid background instead of transparent */
-        background-color: var(--card-bg);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        /* Hint browser to optimize transform animations */
+        padding: 1rem;
         will-change: transform;
-        /* Use hardware-accelerated transform */
         transform: translateZ(0);
     }
 
@@ -394,31 +337,19 @@
     .projectCard .projectCardContent {
         opacity: 1;
     }
-
-    /* Override dark corridor glassmorphism on mobile */
-    :global(html[data-dark-corridor]) .projectCard {
-        background-color: var(--card-bg);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-    }
 }
 
-.projectCardTitlePrompt,
-.projectCardTitleName,
-.projectCardTitleName span {
-    transition:
-        color 0.35s ease,
-        text-shadow 0.35s ease;
-}
-
-/* Content below title: dimmed by default, full opacity on hover */
 .projectCardContent {
-    opacity: 0.5;
-    transition: opacity 0.35s ease;
+    opacity: 1;
 }
 
 .projectCard .projectCardTitlePrompt {
     color: var(--link-color);
+}
+
+.projectCardTitleName {
+    font-family: var(--font-headline);
+    letter-spacing: 0.02em;
 }
 
 .projectCard .projectCardTitleName span {
@@ -440,31 +371,24 @@
 @media (hover: hover) {
     .projectCard:hover {
         border-color: var(--project-accent);
-        background-color: var(--card-bg-hover);
+        background-color: rgba(0, 0, 0, 0.2);
         box-shadow:
             0 0 0 1px var(--project-accent),
             0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
             0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
     }
+}
 
-    /* Dark corridor: hover state with glassmorphism */
-    :global(html[data-dark-corridor]) .projectCard:hover {
-        background-color: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-    }
-
-    .projectCard:hover .projectCardTitlePrompt,
-    .projectCard:hover .projectCardTitleName span {
-        color: var(--project-accent);
-        text-shadow:
-            0 0 6px color-mix(in srgb, var(--project-accent) 28%, transparent),
-            0 0 14px color-mix(in srgb, var(--project-accent) 15%, transparent);
-    }
-
-    .projectCard:hover .projectCardContent {
-        opacity: 1;
-    }
+/* Keyboard-driven highlight: applied to the active project when the user
+   is navigating with Space / ArrowUp / ArrowDown. Mirrors :hover styles so
+   it works on touch devices too (which don't trigger :hover). */
+.projectCard.projectCardActive {
+    border-color: var(--project-accent);
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 0 0 1px var(--project-accent),
+        0 0 28px color-mix(in srgb, var(--project-accent) 48%, transparent),
+        0 0 56px color-mix(in srgb, var(--project-accent) 20%, transparent);
 }
 
 /* —— Project detail overlay (Window) —— */
@@ -597,7 +521,7 @@
 }
 
 :global(html[data-dark-corridor]) .projectsBackdrop {
-    opacity: 1;
+    opacity: 0.5;
 }
 
 /* Reduced motion: instant fade */

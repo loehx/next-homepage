@@ -20,7 +20,7 @@ export const TechnologySkillset: FC<TechnologySkillsetProps> = (props) => {
         <div className="container">
             <FadeIn>
                 {props.title && (
-                    <h2 className="text-3xl mb-6">{props.title}</h2>
+                    <h2 className="text-4xl my-8">{props.title}</h2>
                 )}
             </FadeIn>
             <div className={``}>

@@ -25,7 +25,7 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
         <div className={cx(styles.wrapper, "container")}>
             <FadeIn className={styles.inner}>
                 {props.h2 && (
-                    <h2 className={`text-3xl mb-6 ${styles.imageTextHeadline}`}>
+                    <h2 className={`text-3xl my-8 ${styles.imageTextHeadline}`}>
                         {props.h2}
                     </h2>
                 )}
@@ -45,7 +45,7 @@ export const ImageText: React.FC<ImageTextProps> = (props) => {
                     <div className={styles.textWrapper}>
                         {props.h2 && (
                             <h2
-                                className={`text-3xl mb-6 ${styles.imageTextHeadline}`}
+                                className={`text-4xl mt-8 mb-6 ${styles.imageTextHeadline}`}
                             >
                                 {props.h2}
                             </h2>

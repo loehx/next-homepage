@@ -2,7 +2,6 @@ import {
     createContext,
     useCallback,
     useContext,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -11,7 +10,14 @@ import {
 } from "react";
 
 type ProjectsScrollFocusValue = {
-    activeProjectId: string | null;
+    /**
+     * The currently keyboard-selected project, or `null` when the user hasn't
+     * engaged keyboard navigation (or has reverted to mouse/touch interaction).
+     * This is intentionally decoupled from scroll position so that pressing
+     * ArrowDown / Space always starts from the first project.
+     */
+    selectedProjectId: string | null;
+    setSelectedProjectId: (id: string | null) => void;
     register: (id: string, rowEl: HTMLElement | null) => void;
     scrollToProject: (id: string) => void;
     getProjectIds: () => string[];
@@ -33,35 +39,16 @@ export const ProjectsScrollFocusProvider: FC<
     ProjectsScrollFocusProviderProps
 > = ({ children, orderedIds }) => {
     const refs = useRef<Map<string, HTMLElement>>(new Map());
-    const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
-
-    const updateActive = useCallback(() => {
-        if (typeof window === "undefined") return;
-        const vh = window.innerHeight;
-        const mid = vh / 2;
-        const candidates: { id: string; d: number; top: number }[] = [];
-        refs.current.forEach((el, id) => {
-            const r = el.getBoundingClientRect();
-            const cy = (r.top + r.bottom) / 2;
-            const d = Math.abs(cy - mid);
-            candidates.push({ id, d, top: r.top });
-        });
-        if (candidates.length === 0) {
-            setActiveProjectId((prev) => (prev !== null ? null : prev));
-            return;
-        }
-        candidates.sort((a, b) => a.d - b.d || a.top - b.top);
-        const next = candidates[0]!.id;
-        setActiveProjectId((prev) => (prev === next ? prev : next));
-    }, []);
+    const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+        null,
+    );
 
     const register = useCallback(
         (id: string, el: HTMLElement | null) => {
             if (el) refs.current.set(id, el);
             else refs.current.delete(id);
-            queueMicrotask(updateActive);
         },
-        [updateActive],
+        [],
     );
 
     const scrollToProject = useCallback((id: string) => {
@@ -100,19 +87,15 @@ export const ProjectsScrollFocusProvider: FC<
         return orderedIds;
     }, [orderedIds]);
 
-    useLayoutEffect(() => {
-        updateActive();
-        window.addEventListener("scroll", updateActive, { passive: true });
-        window.addEventListener("resize", updateActive, { passive: true });
-        return () => {
-            window.removeEventListener("scroll", updateActive);
-            window.removeEventListener("resize", updateActive);
-        };
-    }, [updateActive]);
-
     const value = useMemo(
-        () => ({ activeProjectId, register, scrollToProject, getProjectIds }),
-        [activeProjectId, register, scrollToProject, getProjectIds],
+        () => ({
+            selectedProjectId,
+            setSelectedProjectId,
+            register,
+            scrollToProject,
+            getProjectIds,
+        }),
+        [selectedProjectId, register, scrollToProject, getProjectIds],
     );
 
     return (

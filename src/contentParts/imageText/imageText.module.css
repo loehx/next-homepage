@@ -40,9 +40,9 @@
         border-right: 15px solid var(--primary);
         border-radius: 50%;
         filter: blur(30px);
-        -webkit-animation: spin 30s linear infinite;
-        -moz-animation: spin 30s linear infinite;
-        animation: spin 30s linear infinite;
+        -webkit-animation: spin 6s linear infinite;
+        -moz-animation: spin 6s linear infinite;
+        animation: spin 6s linear infinite;
         opacity: var(--decor-opacity);
         transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }

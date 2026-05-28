@@ -48,7 +48,7 @@ export const LinksModule: FC<LinksModuleProps> = (props) => {
         <div className="container">
             <FadeIn>
                 {props.title && (
-                    <h2 className={`text-3xl mb-6 ${styles.linksHeadline}`}>
+                    <h2 className={`text-4xl my-8 ${styles.linksHeadline}`}>
                         {props.title}
                     </h2>
                 )}

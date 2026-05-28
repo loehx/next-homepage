@@ -62,7 +62,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     return (
         <div
             ref={sectionRef}
-            className="container mx-auto px-4 py-12 relative isolate"
+            className="container mx-auto px-4 pt-12 md:pt-[2 00px] relative isolate pb-12 md:pb-[300px]"
         >
             <div className={styles.projectsBackdrop} aria-hidden>
                 {isNearViewport && (
@@ -74,7 +74,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
                     <>
                         <div className={styles.headlineSection}>
                             <h2
-                                className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-3xl font-bold ${styles.projectsHeadline}`}
+                                className={`flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-4xl md:text-5xl font-bold ${styles.projectsHeadline}`}
                             >
                                 <span
                                     className={`font-mono text-2xl ${styles.projectsHeadlinePrompt}`}
@@ -167,24 +167,28 @@ const ProjectsList: FC<ProjectsListProps> = ({
             const projectIds = scrollFocus.getProjectIds();
             if (projectIds.length === 0) return;
 
-            const currentId = scrollFocus.activeProjectId;
-            let currentIndex = currentId ? projectIds.indexOf(currentId) : -1;
-
-            if (currentIndex === -1) {
-                // No project is currently focused, start from first
-                currentIndex = 0;
-            }
+            const currentId = scrollFocus.selectedProjectId;
+            const currentIndex = currentId ? projectIds.indexOf(currentId) : -1;
+            const hasSelection = currentIndex !== -1;
 
             let nextIndex: number | null = null;
 
             if (e.key === "ArrowDown" || e.key === " ") {
-                if (currentIndex < projectIds.length - 1) {
+                if (!hasSelection) {
+                    // First press: select the first project instead of advancing past it.
+                    e.preventDefault();
+                    nextIndex = 0;
+                } else if (currentIndex < projectIds.length - 1) {
                     e.preventDefault();
                     nextIndex = currentIndex + 1;
                 }
                 // At last project: don't preventDefault, allow native page scroll
             } else if (e.key === "ArrowUp") {
-                if (currentIndex > 0) {
+                if (!hasSelection) {
+                    // First press: select the first project.
+                    e.preventDefault();
+                    nextIndex = 0;
+                } else if (currentIndex > 0) {
                     e.preventDefault();
                     nextIndex = currentIndex - 1;
                 }
@@ -198,13 +202,33 @@ const ProjectsList: FC<ProjectsListProps> = ({
 
             if (nextIndex !== null) {
                 const nextId = projectIds[nextIndex];
+                scrollFocus.setSelectedProjectId(nextId);
                 scrollFocus.scrollToProject(nextId);
             }
         };
 
+        const handlePointerActivity = () => {
+            if (!scrollFocus) return;
+            scrollFocus.setSelectedProjectId(null);
+        };
+
         window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [scrollFocus]);
+        window.addEventListener("mousemove", handlePointerActivity, {
+            passive: true,
+        });
+        window.addEventListener("wheel", handlePointerActivity, {
+            passive: true,
+        });
+        window.addEventListener("touchstart", handlePointerActivity, {
+            passive: true,
+        });
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("mousemove", handlePointerActivity);
+            window.removeEventListener("wheel", handlePointerActivity);
+            window.removeEventListener("touchstart", handlePointerActivity);
+        };
+    }, [scrollFocus, openProjectDetails]);
 
     return (
         <div ref={listRef} className="flex flex-col">

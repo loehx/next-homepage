@@ -35,10 +35,18 @@ const PROJECT_HOVER_ACCENTS = [
     "#facc15",
 ] as const;
 
-/** Inset from container (row) left/right edge when a box is fully aligned. */
-const CONTAINER_INSET_PX = 60;
-/** When row width ≈ card width, geometric slide → ~0; keep L/R offset visible within slack. */
-const MIN_DESKTOP_SLIDE_PX = 60;
+/**
+ * Deterministic horizontal placement cycle for desktop project cards.
+ * Values are normalized to viewport: -1 = card flush left edge, +1 = flush right edge.
+ * Sides strictly alternate; amplitudes vary so the layout feels lively, never random.
+ */
+const LATERAL_POSITIONS = [
+    -0.95, 0.65, -0.35, 0.9, -0.75, 0.3, -0.55, 0.85, -0.2, 0.55,
+] as const;
+
+/** Horizontal padding from viewport edges as a fraction of viewport width.
+ *  0.1 = cards stay within the center 80% (10% padding on each side). */
+const VIEWPORT_PADDING_RATIO = 0.1;
 
 export function getProjectCardAccent(projectIndex: number): string {
     return PROJECT_HOVER_ACCENTS[projectIndex % PROJECT_HOVER_ACCENTS.length];
@@ -141,14 +149,28 @@ const ProjectComponent: FC<Props> = ({
         const card = cardRef.current;
         if (!row || typeof window === "undefined") return;
         const rect = row.getBoundingClientRect();
-        const p = viewportSlideProgress(rect, window.innerHeight, reduceMotion);
+        const screenHeight = window.innerHeight;
+        const p = viewportSlideProgress(rect, screenHeight, reduceMotion);
         setViewportProgress((prev) => (Math.abs(prev - p) < 0.003 ? prev : p));
         const R = rect.width;
         const C = card?.getBoundingClientRect().width ?? 0;
         setLayoutSizes((prev) =>
             prev.rowW === R && prev.cardW === C ? prev : { rowW: R, cardW: C },
         );
-    }, [reduceMotion]);
+
+        // On mobile CustomParallax is skipped, so drive the typewriter's scroll
+        // position from the row's bounding rect using the same formula as
+        // CustomParallax + onScrollUpdate so the reveal feels consistent.
+        if (windowWidth > 0 && windowWidth < 768) {
+            const bottom = screenHeight - (rect.top + rect.height);
+            const center = bottom - rect.height / 2;
+            const pos = (center * 0.9) / screenHeight;
+            const value = Math.round(pos * 100) / 100;
+            setRelativeScreenPosition((prev) =>
+                Math.abs(prev - value) < 0.01 ? prev : value,
+            );
+        }
+    }, [reduceMotion, windowWidth]);
 
     useLayoutEffect(() => {
         measureViewportProgress();
@@ -172,40 +194,10 @@ const ProjectComponent: FC<Props> = ({
         };
     }, [project.id, scrollFocus]);
 
-    const dateString = useMemo(() => {
-        const fromYear = project.from.split("/")[1];
-        if (!project.to) {
-            const now = new Date();
-            const currentYear = now.getFullYear();
-            return fromYear === currentYear.toString()
-                ? fromYear
-                : `${fromYear} - ${currentYear.toString().slice(2)}`;
-        }
-        const toYear = project.to.split("/")[1];
-        return fromYear === toYear
-            ? fromYear
-            : `${fromYear} - ${toYear.slice(2)}`;
-    }, [project.from, project.to]);
-
-    const monthsCount = useMemo(() => {
-        const fromParts = project.from.split("/");
-        const fromMonth = parseInt(fromParts[0]);
-        const fromYear = parseInt(fromParts[1]);
-
-        let toMonth, toYear;
-        if (!project.to) {
-            const now = new Date();
-            toMonth = now.getMonth() + 1;
-            toYear = now.getFullYear();
-        } else {
-            const toParts = project.to.split("/");
-            toMonth = parseInt(toParts[0]);
-            toYear = parseInt(toParts[1]);
-        }
-
-        const months = (toYear - fromYear) * 12 + (toMonth - fromMonth);
-        return months === 1 ? "1 month" : `${months} months`;
-    }, [project.from, project.to]);
+    const startYear = useMemo(
+        () => project.from.split("/")[1],
+        [project.from],
+    );
 
     const sortedTechnologies = useMemo(() => {
         if (!project.technologies) return [];
@@ -220,7 +212,7 @@ const ProjectComponent: FC<Props> = ({
     }, [project.technologies]);
 
     const onScrollUpdate = useCallback((props: ParallaxCallbackProps) => {
-        const pos = props.center / props.screenHeight + 0.2;
+        const pos = (props.center - 100) / props.screenHeight;
         const value = Math.round(pos * 100) / 100;
         setRelativeScreenPosition((prev) => {
             // Only update if value changed significantly
@@ -231,14 +223,10 @@ const ProjectComponent: FC<Props> = ({
 
     const isMobile = useMemo(() => windowWidth < 768, [windowWidth]);
 
-    const multiplier = useMemo(() => (isMobile ? 4 : 2.5), [isMobile]);
+    const multiplier = useMemo(() => 4, []);
 
     const getRevealState = useCallback(
         (text: string): { revealed: string; showCursor: boolean } => {
-            // On mobile without CustomParallax, show all text immediately
-            if (isMobile && relativeScreenPosition === 0) {
-                return { revealed: text, showCursor: false };
-            }
             const r = relativeScreenPosition * multiplier;
             const showN = Math.min(Math.ceil(text.length * r), text.length);
             return {
@@ -246,7 +234,7 @@ const ProjectComponent: FC<Props> = ({
                 showCursor: showN < text.length,
             };
         },
-        [relativeScreenPosition, multiplier, isMobile],
+        [relativeScreenPosition, multiplier],
     );
 
     const hoverAccent = getProjectCardAccent(projectIndex);
@@ -265,30 +253,12 @@ const ProjectComponent: FC<Props> = ({
         [onOpenDetails, project.id],
     );
 
-    /** 0 → left, 1 → right (repeats: left–right–left–right–…) */
-    const alignPhase = projectIndex % 2;
-
-    const isCenterFocused = scrollFocus?.activeProjectId === project.id;
-
-    // Determine if this project is above (already scrolled past) or below (incoming) the focused one
-    const { isAboveFocused, isBelowFocused } = useMemo(() => {
-        if (!scrollFocus?.activeProjectId)
-            return { isAboveFocused: false, isBelowFocused: false };
-        const activeIndex = scrollFocus
-            .getProjectIds()
-            .indexOf(scrollFocus.activeProjectId);
-        return {
-            isAboveFocused: projectIndex < activeIndex,
-            isBelowFocused: projectIndex > activeIndex,
-        };
-    }, [scrollFocus, projectIndex]);
-
     const cardMotionStyle = useMemo((): CSSProperties => {
         const base = {
             "--project-accent": hoverAccent,
         } as CSSProperties;
         const p = viewportProgress;
-        const { rowW: R, cardW: C } = layoutSizes;
+        const { cardW: C } = layoutSizes;
 
         if (isMobile) {
             // Mobile: simpler opacity-based reveal instead of position slide
@@ -302,22 +272,19 @@ const ProjectComponent: FC<Props> = ({
             };
         }
 
-        // Desktop: slide between centered (p=0) and left/right inset (p=1).
-        // Inset is capped to half the horizontal slack so targets stay in-row; if the
-        // geometric delta is still tiny (common on tablet), nudge by phase so L/R reads.
+        // Desktop: spread cards across the full viewport via a deterministic
+        // cycle of horizontal positions. The row sits centered (mx-auto), so
+        // shifting the card by `lateralFrac * maxDeviation` puts it anywhere
+        // between flush-left and flush-right of the viewport.
         let extraPx = 0;
-        if (R > 0 && C > 0) {
-            const halfGap = Math.max(0, (R - C) / 2);
-            const inset = Math.min(CONTAINER_INSET_PX, halfGap);
-            const deltaLeft = inset + C / 2 - R / 2;
-            const deltaRight = R / 2 - inset - C / 2;
-            let deltaFinal = alignPhase === 0 ? deltaLeft : deltaRight;
-            if (halfGap >= 1 && Math.abs(deltaFinal) < MIN_DESKTOP_SLIDE_PX) {
-                const cap = Math.min(MIN_DESKTOP_SLIDE_PX, halfGap);
-                const dir = alignPhase === 0 ? -1 : 1;
-                deltaFinal = dir * cap;
-            }
-            extraPx = p * deltaFinal;
+        if (windowWidth > 0 && C > 0) {
+            const lateralFrac =
+                LATERAL_POSITIONS[projectIndex % LATERAL_POSITIONS.length];
+            const maxDeviation = Math.max(
+                0,
+                windowWidth / 2 - C / 2 - windowWidth * VIEWPORT_PADDING_RATIO,
+            );
+            extraPx = p * lateralFrac * maxDeviation;
         }
         // Subtle vertical drift: starts higher, settles to 0
         const translateY = (1 - p) * 50;
@@ -327,12 +294,15 @@ const ProjectComponent: FC<Props> = ({
         return { ...base, transform: translate };
     }, [
         hoverAccent,
-        alignPhase,
+        projectIndex,
         viewportProgress,
-        layoutSizes.rowW,
         layoutSizes.cardW,
+        windowWidth,
         isMobile,
     ]);
+
+    const isKeyboardActive =
+        !!scrollFocus && scrollFocus.selectedProjectId === project.id;
 
     const cardContent = (
         <div ref={rowRef} className={styles.projectCardRow}>
@@ -342,104 +312,63 @@ const ProjectComponent: FC<Props> = ({
                 tabIndex={0}
                 aria-haspopup="dialog"
                 aria-label={`Open project details: ${project.name}`}
-                className={`${styles.projectCard} flex flex-col cursor-pointer${
-                    isCenterFocused ? ` ${styles.projectCardFocused}` : ""
-                }${isAboveFocused ? ` ${styles.projectCardDimmed}` : ""}${
-                    isBelowFocused ? ` ${styles.projectCardRevealed}` : ""
-                }`}
+                className={`${styles.projectCard} ${isKeyboardActive ? styles.projectCardActive : ""} flex flex-col cursor-pointer`}
                 style={cardMotionStyle}
                 onClick={handleOpenDetails}
                 onKeyDown={handleCardKeyDown}
             >
-                <div className="flex flex-row items-stretch w-full gap-3 md:gap-8">
-                    {/* Timeline */}
-                    <div className="flex flex-col items-start shrink-0 min-w-[4.5rem] md:min-w-[5.5rem] pl-0 pr-1 text-left mt-[5px] relative">
-                        <span className="font-bold text-sm leading-none">
-                            <RevealedWithCursor
-                                text={dateString}
-                                reveal={getRevealState}
-                            />
+                <div className="w-full text-sm">
+                    <div className="text-2xl font-bold text-left md:text-center w-full mb-1 flex flex-row items-center justify-start md:justify-center gap-2">
+                        <span
+                            className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
+                        >
+                            &gt;_
                         </span>
                         <span
-                            className={`${styles.projectCardMuted} text-xs mb-2 mt-2 md:mt-3`}
+                            data-to={project.to}
+                            className={`inline-block relative ${styles.projectCardTitleName}`}
                         >
-                            {monthsCount}
+                            <span className="absolute inset-0">
+                                <RevealedWithCursor
+                                    text={project.name}
+                                    reveal={getRevealState}
+                                />
+                            </span>
+                            <span className="opacity-0">{project.name}</span>
                         </span>
                     </div>
-                    {/* Project Content */}
-                    <div className="flex-1 text-sm">
-                        <div className="md:text-base font-bold text-left w-full mb-1 flex flex-row items-center gap-2">
-                            <span
-                                className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
-                            >
-                                &gt;_
-                            </span>
-                            <span
-                                data-to={project.to}
-                                className={`-mr-6 inline-block relative font-mono ${styles.projectCardTitleName}`}
-                            >
-                                <span className="absolute inset-0">
-                                    <RevealedWithCursor
-                                        text={project.name}
-                                        reveal={getRevealState}
-                                    />
+                    <div className={styles.projectCardContent}>
+                        <div className="w-full font-mono text-sm flex flex-wrap justify-start md:justify-center mt-2">
+                            <span>
+                                <span className={styles.projectCardTechOther}>
+                                    {startYear}
                                 </span>
-                                <span className="opacity-0">
-                                    {project.name}
-                                </span>
+                                {sortedTechnologies.length > 0 && (
+                                    <span className={styles.projectCardTechOther}>
+                                        {"\u00A0"}
+                                    </span>
+                                )}
                             </span>
-                        </div>
-                        <div className={styles.projectCardContent}>
-                            <div className="w-full font-mono text-xs flex flex-wrap mt-2">
-                                {sortedTechnologies.map((tech, i) => (
-                                    <span key={tech.id}>
-                                        <span
-                                            className={
-                                                frameworksFirst.includes(
-                                                    tech.name.toLowerCase(),
-                                                )
-                                                    ? `${styles.projectCardTechFw} lowercase`
-                                                    : `${styles.projectCardTechOther} lowercase`
-                                            }
-                                        >
-                                            {tech.name}
+                            {sortedTechnologies.map((tech, i) => (
+                                <span key={tech.id}>
+                                    <span
+                                        className={
+                                            frameworksFirst.includes(
+                                                tech.name.toLowerCase(),
+                                            )
+                                                ? `${styles.projectCardTechFw} lowercase`
+                                                : `${styles.projectCardTechOther} lowercase`
+                                        }
+                                    >
+                                        {tech.name}
+                                    </span>
+                                    {i < sortedTechnologies.length - 1 && (
+                                        <span className={styles.projectCardTechOther}>
+                                            {"\u00A0"}
                                         </span>
-                                        {i < sortedTechnologies.length - 1 && (
-                                            <span className="mx-1">·</span>
-                                        )}
-                                    </span>
-                                ))}
-                            </div>
-                            {/* Desktop only: description, role, company */}
-                            <div className="block">
-                                <div className="my-2 relative">
-                                    <span className="absolute top-0 left-0 w-full h-full">
-                                        <RevealedWithCursor
-                                            text={project.description}
-                                            reveal={getRevealState}
-                                        />
-                                    </span>
-                                    <span className="opacity-0">
-                                        {project.description}
-                                    </span>
-                                </div>
-                                <div className="w-full max-w-xl">
-                                    <div className="mb-1">
-                                        <span className="mr-2">👨‍💻</span>
-                                        <RevealedWithCursor
-                                            text={project.role}
-                                            reveal={getRevealState}
-                                        />
-                                    </div>
-                                    <div className="mb-1">
-                                        <span className="mr-2">🏢</span>
-                                        <RevealedWithCursor
-                                            text={project.company.name}
-                                            reveal={getRevealState}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                                    )}
+                                </span>
+                            ))}
                         </div>
                     </div>
                 </div>
