@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {
+    useEffect,
+    useState,
+    useCallback,
+    useRef,
+    useLayoutEffect,
+} from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
@@ -39,6 +45,8 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
     const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
+    const [windowMinHeight, setWindowMinHeight] = useState<number | null>(null);
+    const windowSizerRef = useRef<HTMLDivElement>(null);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     // Feature flag: AI chat input is hidden unless the page is opened with
@@ -75,6 +83,28 @@ export const Stage: React.FC<StageProps> = (props) => {
         props.backgroundImage?.url,
         props.phoneImage?.url,
     ]);
+
+    // Lock the Window to whatever height the description text naturally
+    // occupies on the first render, so swapping its content (init spinner,
+    // input + suggestions, answer) never makes the box collapse or jump.
+    useLayoutEffect(() => {
+        if (aiActivated) return;
+        if (loading) return;
+        if (!windowSizerRef.current) return;
+        const measured = windowSizerRef.current.offsetHeight;
+        if (measured > 0) setWindowMinHeight(measured);
+    }, [loading, aiActivated, props.text]);
+
+    useEffect(() => {
+        if (aiActivated) return;
+        const onResize = () => {
+            if (!windowSizerRef.current) return;
+            const measured = windowSizerRef.current.offsetHeight;
+            if (measured > 0) setWindowMinHeight(measured);
+        };
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, [aiActivated]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -163,19 +193,31 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
                     {props.text && (
                         <div className={styles.descriptionWrapper}>
-                            <Window
-                                className={styles.description}
-                                text={
-                                    aiActivated
-                                        ? aiAnswer || undefined
-                                        : props.text
-                                }
-                                onClose={aiActivated ? handleReset : undefined}
+                            <div
+                                ref={windowSizerRef}
+                                className={styles.windowSizer}
                             >
-                                {aiActivated && (
-                                    <StageInput onAnswer={handleAnswer} />
-                                )}
-                            </Window>
+                                <Window
+                                    className={styles.description}
+                                    text={
+                                        aiActivated
+                                            ? aiAnswer || undefined
+                                            : props.text
+                                    }
+                                    onClose={
+                                        aiActivated ? handleReset : undefined
+                                    }
+                                    style={
+                                        aiActivated && windowMinHeight
+                                            ? { minHeight: windowMinHeight }
+                                            : undefined
+                                    }
+                                >
+                                    {aiActivated && (
+                                        <StageInput onAnswer={handleAnswer} />
+                                    )}
+                                </Window>
+                            </div>
                             {agentEnabled && !aiActivated && (
                                 <div className={styles.wakeUpRow}>
                                     <button
