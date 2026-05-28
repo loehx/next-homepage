@@ -159,3 +159,13 @@
     filter: brightness(2);
     font-weight: bold;
 }
+
+.windowInner a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+.windowInner em a,
+.windowInner a em {
+    text-decoration: none;
+}
