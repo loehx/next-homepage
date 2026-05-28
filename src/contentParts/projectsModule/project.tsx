@@ -237,6 +237,10 @@ const ProjectComponent: FC<Props> = ({
         [relativeScreenPosition, multiplier],
     );
 
+    // Reveal the tech-stack line once the title's typewriter has finished
+    // (typewriter completes when `relativeScreenPosition * multiplier >= 1`).
+    const isTechLineVisible = relativeScreenPosition * multiplier >= 1;
+
     const hoverAccent = getProjectCardAccent(projectIndex);
 
     const handleOpenDetails = useCallback(() => {
@@ -320,7 +324,7 @@ const ProjectComponent: FC<Props> = ({
                 <div className="w-full text-sm">
                     <div className="text-2xl font-bold text-left md:text-center w-full mb-1 flex flex-row items-center justify-start md:justify-center gap-2">
                         <span
-                            className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt}`}
+                            className={`shrink-0 font-mono text-base ${styles.projectCardTitlePrompt} ${isTechLineVisible ? styles.projectCardTitlePromptVisible : ""}`}
                         >
                             &gt;_
                         </span>
@@ -338,7 +342,9 @@ const ProjectComponent: FC<Props> = ({
                         </span>
                     </div>
                     <div className={styles.projectCardContent}>
-                        <div className="w-full font-mono text-sm flex flex-wrap justify-start md:justify-center mt-2">
+                        <div
+                            className={`w-full font-mono text-sm flex flex-wrap justify-start md:justify-center pt-2 ${styles.projectCardTechLine} ${isTechLineVisible ? styles.projectCardTechLineVisible : ""}`}
+                        >
                             <span>
                                 <span className={styles.projectCardTechOther}>
                                     {startYear}

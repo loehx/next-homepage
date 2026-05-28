@@ -341,10 +341,34 @@
 
 .projectCardContent {
     opacity: 1;
+    overflow: hidden;
+}
+
+/* Slide-down + fade-in for the tech-stack line below the title.
+   Container above clips the off-screen state so the inner element
+   doesn't bleed above the card while it's hidden. */
+.projectCardTechLine {
+    transform: translateY(-100%);
+    opacity: 0;
+    transition:
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s ease-out;
+    will-change: transform, opacity;
+}
+
+.projectCardTechLineVisible {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .projectCard .projectCardTitlePrompt {
     color: var(--link-color);
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+}
+
+.projectCard .projectCardTitlePromptVisible {
+    opacity: 1;
 }
 
 .projectCardTitleName {
