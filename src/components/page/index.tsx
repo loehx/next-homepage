@@ -11,6 +11,7 @@ import LazyHydrate from "react-lazy-hydration";
 
 console.log(
     [
+        "",
         "      ___           ___           ___       ___       ___     ",
         "     /\\__\\         /\\  \\         /\\__\\     /\\__\\     /\\  \\    ",
         "    /:/  /        /::\\  \\       /:/  /    /:/  /    /::\\  \\   ",
