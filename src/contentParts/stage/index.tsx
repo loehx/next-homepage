@@ -50,10 +50,13 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAgentEnabled(params.get("agent") === "true");
     }, []);
 
-    const handleAnswer = useCallback((answer: string, suggestions: string[]) => {
-        setAiAnswer(answer);
-        setAiSuggestions(suggestions);
-    }, []);
+    const handleAnswer = useCallback(
+        (answer: string, suggestions: string[]) => {
+            setAiAnswer(answer);
+            setAiSuggestions(suggestions);
+        },
+        [],
+    );
 
     const handleReset = useCallback(() => {
         setAiAnswer(null);
@@ -169,7 +172,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     styles.description,
                                     agentEnabled &&
                                         aiAnswer &&
-                                        styles.descriptionHidden
+                                        styles.descriptionHidden,
                                 )}
                                 text={props.text}
                             />
