@@ -17,93 +17,65 @@ interface ChatError {
     retryable: boolean;
 }
 
-type Status =
-    | "checking"
-    | "unavailable"
-    | "idle"
-    | "prewarming"
-    | "loading"
-    | "answered"
-    | "error";
+type Status = "initializing" | "ready" | "loading" | "error";
 
 interface StageInputProps {
     onAnswer: (answer: string, suggestions: string[]) => void;
-    onReset?: () => void;
-    hasAnswer?: boolean;
 }
 
-const STATIC_SUGGESTIONS = [
-    "Welche Skills hat Alex?",
-    "Was unterscheidet ihn von anderen Devs?",
-    "An welchen Projekten arbeitet er gerade?",
+const DEFAULT_SUGGESTIONS = [
+    "What skills does Alex have?",
+    "What makes him different from other devs?",
+    "What is he working on right now?",
 ];
 
 const STORAGE_KEY = "aiAgentId";
 
 export const StageInput: React.FC<StageInputProps> = ({
     onAnswer,
-    onReset,
-    hasAnswer = false,
 }: StageInputProps) => {
-    const [status, setStatus] = useState<Status>("checking");
+    const [status, setStatus] = useState<Status>("initializing");
     const [inputValue, setInputValue] = useState("");
     const [suggestions, setSuggestions] =
-        useState<string[]>(STATIC_SUGGESTIONS);
+        useState<string[]>(DEFAULT_SUGGESTIONS);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [isPrewarmed, setIsPrewarmed] = useState(false);
+    const [errorRetryable, setErrorRetryable] = useState(true);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
-    // Load agentId from sessionStorage on mount
-    useEffect(() => {
+    // Initialize: restore agentId from session storage (if any) and prewarm
+    // the agent so the input is ready by the time we render it.
+    const initialize = useCallback(async () => {
+        setStatus("initializing");
+        setErrorMessage(null);
+        setErrorRetryable(true);
+
         if (typeof window !== "undefined") {
             const stored = sessionStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                agentIdRef.current = stored;
-                setIsPrewarmed(true);
-            }
+            if (stored) agentIdRef.current = stored;
         }
-    }, []);
-
-    // Check health on mount
-    useEffect(() => {
-        const checkHealth = async () => {
-            try {
-                const response = await fetch("/api/ai/health");
-                if (!response.ok) {
-                    throw new Error("Health check failed");
-                }
-                const data = await response.json();
-                if (data.ok) {
-                    setStatus("idle");
-                } else {
-                    setStatus("unavailable");
-                }
-            } catch {
-                setStatus("unavailable");
-            }
-        };
-
-        checkHealth();
-    }, []);
-
-    // Prewarm agent on first focus/click
-    const prewarmAgent = useCallback(async () => {
-        if (isPrewarmed || status === "prewarming" || status === "loading")
-            return;
-
-        setStatus("prewarming");
 
         try {
             const response = await fetch("/api/ai/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ mode: "prewarm" }),
+                body: JSON.stringify({
+                    mode: "prewarm",
+                    agentId: agentIdRef.current,
+                }),
             });
 
             if (!response.ok) {
-                // Don't block the UI - prewarm is best-effort
-                setStatus("idle");
+                const errorData: ChatError = await response
+                    .json()
+                    .catch(() => ({
+                        error: "unknown",
+                        message: "Could not start the AI agent.",
+                        retryable: true,
+                    }));
+                setErrorMessage(errorData.message);
+                setErrorRetryable(errorData.retryable ?? true);
+                setStatus("error");
                 return;
             }
 
@@ -113,29 +85,37 @@ export const StageInput: React.FC<StageInputProps> = ({
                 if (typeof window !== "undefined") {
                     sessionStorage.setItem(STORAGE_KEY, data.agentId);
                 }
-                setIsPrewarmed(true);
             }
+            setStatus("ready");
         } catch (error) {
-            console.warn("Prewarm failed:", error);
-        } finally {
-            setStatus((s) => (s === "prewarming" ? "idle" : s));
+            setErrorMessage(
+                error instanceof Error
+                    ? error.message
+                    : "Could not reach the AI agent.",
+            );
+            setErrorRetryable(true);
+            setStatus("error");
         }
-    }, [isPrewarmed, status]);
+    }, []);
 
-    // Handle focus to trigger prewarm
-    const handleFocus = useCallback(() => {
-        if (!isPrewarmed && status === "idle") {
-            prewarmAgent();
+    useEffect(() => {
+        initialize();
+    }, [initialize]);
+
+    // Focus the input once the agent is ready so the user can type immediately.
+    useEffect(() => {
+        if (status === "ready") {
+            inputRef.current?.focus();
         }
-    }, [isPrewarmed, status, prewarmAgent]);
+    }, [status]);
 
-    // Handle sending a message
     const sendMessage = useCallback(
         async (text: string) => {
             if (!text.trim()) return;
 
             setStatus("loading");
             setErrorMessage(null);
+            setInputValue("");
 
             try {
                 const response = await fetch("/api/ai/chat", {
@@ -153,18 +133,17 @@ export const StageInput: React.FC<StageInputProps> = ({
                         .json()
                         .catch(() => ({
                             error: "unknown",
-                            message: "Ein Fehler ist aufgetreten",
+                            message: "Something went wrong.",
                             retryable: true,
                         }));
-
-                    setStatus("error");
                     setErrorMessage(errorData.message);
+                    setErrorRetryable(errorData.retryable ?? true);
+                    setStatus("error");
                     return;
                 }
 
                 const data: ChatResponse = await response.json();
 
-                // Store agentId for follow-ups
                 if (data.agentId) {
                     agentIdRef.current = data.agentId;
                     if (typeof window !== "undefined") {
@@ -173,65 +152,44 @@ export const StageInput: React.FC<StageInputProps> = ({
                 }
 
                 setSuggestions(
-                    data.suggestions.length > 0
+                    data.suggestions && data.suggestions.length > 0
                         ? data.suggestions
-                        : STATIC_SUGGESTIONS,
+                        : DEFAULT_SUGGESTIONS,
                 );
-                setStatus("answered");
-                setInputValue("");
-                onAnswer(data.answer, data.suggestions);
+                setStatus("ready");
+                onAnswer(data.answer, data.suggestions || []);
             } catch (error) {
-                console.error("Chat error:", error);
-                setStatus("error");
                 setErrorMessage(
                     error instanceof Error
                         ? error.message
-                        : "Ein unerwarteter Fehler ist aufgetreten",
+                        : "An unexpected error occurred.",
                 );
+                setErrorRetryable(true);
+                setStatus("error");
             }
         },
         [onAnswer],
     );
 
-    // Handle form submission
     const handleSubmit = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault();
-            if (inputValue.trim()) {
-                sendMessage(inputValue);
-            }
+            if (inputValue.trim()) sendMessage(inputValue);
         },
         [inputValue, sendMessage],
     );
 
-    // Handle suggestion click
-    const handleSuggestionClick = useCallback(
-        (suggestion: string) => {
-            sendMessage(suggestion);
-        },
-        [sendMessage],
-    );
-
-    // Handle retry
-    const handleRetry = useCallback(() => {
-        setStatus("idle");
-        setErrorMessage(null);
-    }, []);
-
-    // Handle key press (submit on Enter, new line on Shift+Enter)
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                if (inputValue.trim()) {
-                    sendMessage(inputValue);
-                }
+                if (inputValue.trim()) sendMessage(inputValue);
             }
         },
         [inputValue, sendMessage],
     );
 
-    // Auto-resize textarea
+    // Auto-resize textarea.
     useEffect(() => {
         const textarea = inputRef.current;
         if (textarea) {
@@ -240,139 +198,96 @@ export const StageInput: React.FC<StageInputProps> = ({
         }
     }, [inputValue]);
 
-    // Don't render if unavailable
-    if (status === "unavailable" || status === "checking") {
-        return null;
+    if (status === "initializing") {
+        return (
+            <div className={styles.container}>
+                <div className={styles.statusRow}>
+                    <span className={styles.spinner}></span>
+                    <span className={styles.statusText}>
+                        Waking up the AI agent…
+                    </span>
+                </div>
+            </div>
+        );
     }
 
-    return (
-        <div className={styles.container}>
-            <div className={styles.window}>
-                {/* Header with traffic lights (matching Window component style) */}
-                <div className={styles.header}>
-                    <span className={cx(styles.dot, styles.dotRed)}></span>
-                    <span className={cx(styles.dot, styles.dotYellow)}></span>
-                    <span className={cx(styles.dot, styles.dotGreen)}></span>
-                    <span className={styles.title}>
-                        {status === "prewarming"
-                            ? "Starte KI-Agenten..."
-                            : status === "loading"
-                            ? "Denke nach..."
-                            : status === "answered" || hasAnswer
-                            ? "Frag weiter..."
-                            : "Frag mich etwas"}
+    if (status === "error") {
+        return (
+            <div className={styles.container}>
+                <div className={styles.error}>
+                    <span className={styles.errorText}>
+                        {errorMessage || "Something went wrong."}
                     </span>
-                    {hasAnswer && onReset && (
+                    {errorRetryable && (
                         <button
-                            onClick={onReset}
-                            className={styles.resetButton}
-                            aria-label="Zurücksetzen"
+                            onClick={initialize}
+                            className={styles.retryButton}
                             type="button"
                         >
-                            <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                                <path d="M3 3v5h5" />
-                            </svg>
+                            Try again
                         </button>
-                    )}
-                </div>
-
-                <div className={styles.content}>
-                    {/* Input form */}
-                    <form onSubmit={handleSubmit} className={styles.inputRow}>
-                        <span className={styles.prompt}>{">"}</span>
-                        <textarea
-                            ref={inputRef}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onFocus={handleFocus}
-                            onKeyDown={handleKeyDown}
-                            placeholder={
-                                status === "prewarming"
-                                    ? "Warte kurz, Agent startet..."
-                                    : "Deine Frage..."
-                            }
-                            disabled={
-                                status === "loading" || status === "prewarming"
-                            }
-                            rows={1}
-                            className={styles.input}
-                        />
-                        <button
-                            type="submit"
-                            disabled={
-                                !inputValue.trim() ||
-                                status === "loading" ||
-                                status === "prewarming"
-                            }
-                            className={styles.sendButton}
-                            aria-label="Senden"
-                        >
-                            <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                            </svg>
-                        </button>
-                    </form>
-
-                    {/* Loading indicator */}
-                    {status === "loading" && (
-                        <div className={styles.loading}>
-                            <span className={styles.spinner}></span>
-                            <span className={styles.loadingText}>
-                                KI antwortet...
-                            </span>
-                        </div>
-                    )}
-
-                    {/* Error message */}
-                    {status === "error" && (
-                        <div className={styles.error}>
-                            <span className={styles.errorIcon}>!</span>
-                            <span className={styles.errorText}>
-                                {errorMessage || "Ein Fehler ist aufgetreten"}
-                            </span>
-                            <button
-                                onClick={handleRetry}
-                                className={styles.retryButton}
-                            >
-                                Nochmal versuchen
-                            </button>
-                        </div>
-                    )}
-
-                    {/* Suggestions */}
-                    {status !== "loading" && status !== "error" && (
-                        <div className={styles.suggestions}>
-                            {suggestions.map((suggestion, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() =>
-                                        handleSuggestionClick(suggestion)
-                                    }
-                                    className={styles.suggestionChip}
-                                    disabled={status === "prewarming"}
-                                >
-                                    {suggestion}
-                                </button>
-                            ))}
-                        </div>
                     )}
                 </div>
             </div>
+        );
+    }
+
+    const isBusy = status === "loading";
+
+    return (
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.inputRow}>
+                <span className={styles.prompt}>{">"}</span>
+                <textarea
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={isBusy ? "Thinking…" : "Ask me anything…"}
+                    disabled={isBusy}
+                    rows={1}
+                    className={styles.input}
+                />
+                <button
+                    type="submit"
+                    disabled={!inputValue.trim() || isBusy}
+                    className={styles.sendButton}
+                    aria-label="Send"
+                >
+                    {isBusy ? (
+                        <span className={styles.spinner}></span>
+                    ) : (
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                        >
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                        </svg>
+                    )}
+                </button>
+            </form>
+
+            <ul className={styles.suggestions}>
+                {suggestions.map((suggestion, index) => (
+                    <li key={index} className={styles.suggestionItem}>
+                        <button
+                            onClick={() => sendMessage(suggestion)}
+                            className={cx(
+                                styles.suggestionButton,
+                                isBusy && styles.suggestionButtonDisabled,
+                            )}
+                            type="button"
+                            disabled={isBusy}
+                        >
+                            {suggestion}
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

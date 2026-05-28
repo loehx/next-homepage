@@ -37,7 +37,7 @@ export const Stage: React.FC<StageProps> = (props) => {
         height: typeof window !== "undefined" ? window.innerHeight : 1000,
     }));
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
-    const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+    const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
@@ -50,17 +50,13 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAgentEnabled(params.get("agent") === "true");
     }, []);
 
-    const handleAnswer = useCallback(
-        (answer: string, suggestions: string[]) => {
-            setAiAnswer(answer);
-            setAiSuggestions(suggestions);
-        },
-        [],
-    );
+    const handleAnswer = useCallback((answer: string) => {
+        setAiAnswer(answer);
+    }, []);
 
     const handleReset = useCallback(() => {
         setAiAnswer(null);
-        setAiSuggestions([]);
+        setAiActivated(false);
     }, []);
 
     useEffect(() => {
@@ -168,27 +164,34 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.text && (
                         <div className={styles.descriptionWrapper}>
                             <Window
-                                className={cx(
-                                    styles.description,
-                                    agentEnabled &&
-                                        aiAnswer &&
-                                        styles.descriptionHidden,
+                                className={styles.description}
+                                text={
+                                    aiActivated
+                                        ? aiAnswer || undefined
+                                        : props.text
+                                }
+                                onClose={aiActivated ? handleReset : undefined}
+                            >
+                                {aiActivated && (
+                                    <StageInput onAnswer={handleAnswer} />
                                 )}
-                                text={props.text}
-                            />
-                            {agentEnabled && aiAnswer && (
-                                <div className={styles.answerOverlay}>
-                                    <Window text={aiAnswer} />
+                            </Window>
+                            {agentEnabled && !aiActivated && (
+                                <div className={styles.wakeUpRow}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setAiActivated(true)}
+                                        className={styles.wakeUpButton}
+                                    >
+                                        <span
+                                            className={styles.wakeUpDot}
+                                            aria-hidden
+                                        ></span>
+                                        Wake up AI
+                                    </button>
                                 </div>
                             )}
                         </div>
-                    )}
-                    {agentEnabled && (
-                        <StageInput
-                            onAnswer={handleAnswer}
-                            onReset={handleReset}
-                            hasAnswer={!!aiAnswer}
-                        />
                     )}
                 </div>
                 {props.phoneImage && (
