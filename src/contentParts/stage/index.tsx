@@ -45,7 +45,10 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
     const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
-    const [windowMinHeight, setWindowMinHeight] = useState<number | null>(null);
+    const [windowMinSize, setWindowMinSize] = useState<{
+        width: number;
+        height: number;
+    } | null>(null);
     const windowSizerRef = useRef<HTMLDivElement>(null);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
@@ -84,23 +87,34 @@ export const Stage: React.FC<StageProps> = (props) => {
         props.phoneImage?.url,
     ]);
 
-    // Lock the Window to whatever height the description text naturally
+    // Lock the Window to whatever dimensions the description text naturally
     // occupies on the first render, so swapping its content (init spinner,
-    // input + suggestions, answer) never makes the box collapse or jump.
+    // input + suggestions, answer) never makes the box collapse or jump in
+    // either direction. The whole flex chain (intro -> descriptionWrapper ->
+    // Window) is content-sized on desktop, so without this the box shrinks
+    // both horizontally and vertically when the AI content is narrower than
+    // the description text.
     useLayoutEffect(() => {
         if (aiActivated) return;
         if (loading) return;
         if (!windowSizerRef.current) return;
-        const measured = windowSizerRef.current.offsetHeight;
-        if (measured > 0) setWindowMinHeight(measured);
+        const { offsetWidth, offsetHeight } = windowSizerRef.current;
+        if (offsetWidth > 0 && offsetHeight > 0) {
+            setWindowMinSize({ width: offsetWidth, height: offsetHeight });
+        }
     }, [loading, aiActivated, props.text]);
 
     useEffect(() => {
         if (aiActivated) return;
         const onResize = () => {
             if (!windowSizerRef.current) return;
-            const measured = windowSizerRef.current.offsetHeight;
-            if (measured > 0) setWindowMinHeight(measured);
+            const { offsetWidth, offsetHeight } = windowSizerRef.current;
+            if (offsetWidth > 0 && offsetHeight > 0) {
+                setWindowMinSize({
+                    width: offsetWidth,
+                    height: offsetHeight,
+                });
+            }
         };
         window.addEventListener("resize", onResize);
         return () => window.removeEventListener("resize", onResize);
@@ -196,6 +210,14 @@ export const Stage: React.FC<StageProps> = (props) => {
                             <div
                                 ref={windowSizerRef}
                                 className={styles.windowSizer}
+                                style={
+                                    aiActivated && windowMinSize
+                                        ? {
+                                              minWidth: windowMinSize.width,
+                                              minHeight: windowMinSize.height,
+                                          }
+                                        : undefined
+                                }
                             >
                                 <Window
                                     className={styles.description}
@@ -208,8 +230,12 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         aiActivated ? handleReset : undefined
                                     }
                                     style={
-                                        aiActivated && windowMinHeight
-                                            ? { minHeight: windowMinHeight }
+                                        aiActivated && windowMinSize
+                                            ? {
+                                                  minWidth: windowMinSize.width,
+                                                  minHeight:
+                                                      windowMinSize.height,
+                                              }
                                             : undefined
                                     }
                                 >
