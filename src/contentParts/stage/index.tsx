@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
@@ -9,6 +9,7 @@ import { Image } from "@components/image";
 import cx from "classnames";
 import { BubblesAnimation } from "./BubbleAnimation";
 import { AnimatedWaves } from "./AnimatedWaves";
+import { StageInput } from "./StageInput";
 
 export interface StageProps {
     id: string;
@@ -35,7 +36,29 @@ export const Stage: React.FC<StageProps> = (props) => {
         width: typeof window !== "undefined" ? window.innerWidth : 1200,
         height: typeof window !== "undefined" ? window.innerHeight : 1000,
     }));
+    const [aiAnswer, setAiAnswer] = useState<string | null>(null);
+    const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+    const [agentEnabled, setAgentEnabled] = useState(false);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
+
+    // Feature flag: AI chat input is hidden unless the page is opened with
+    // ?agent=true. Read from the URL on mount (client-only, since this is a
+    // statically exported Next.js site).
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        const params = new URLSearchParams(window.location.search);
+        setAgentEnabled(params.get("agent") === "true");
+    }, []);
+
+    const handleAnswer = useCallback((answer: string, suggestions: string[]) => {
+        setAiAnswer(answer);
+        setAiSuggestions(suggestions);
+    }, []);
+
+    const handleReset = useCallback(() => {
+        setAiAnswer(null);
+        setAiSuggestions([]);
+    }, []);
 
     useEffect(() => {
         const isBackgroundReady =
@@ -140,9 +163,28 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.h2 && <h2 className={styles.h2}>{props.h2}</h2>}
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
                     {props.text && (
-                        <Window
-                            className={styles.description}
-                            text={props.text}
+                        <div className={styles.descriptionWrapper}>
+                            <Window
+                                className={cx(
+                                    styles.description,
+                                    agentEnabled &&
+                                        aiAnswer &&
+                                        styles.descriptionHidden
+                                )}
+                                text={props.text}
+                            />
+                            {agentEnabled && aiAnswer && (
+                                <div className={styles.answerOverlay}>
+                                    <Window text={aiAnswer} />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {agentEnabled && (
+                        <StageInput
+                            onAnswer={handleAnswer}
+                            onReset={handleReset}
+                            hasAnswer={!!aiAnswer}
                         />
                     )}
                 </div>

@@ -1,0 +1,254 @@
+.container {
+    max-width: 500px;
+    margin: 20px auto 0;
+    width: 100%;
+}
+
+.window {
+    background-color: var(--grey-5);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 20px 35px 50px -10px rgb(0 0 0 / 56%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.window:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba(0 0 0 / 10%);
+    height: 30px;
+}
+
+.header {
+    line-height: 0;
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 6px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.dotRed {
+    background-color: var(--red);
+}
+
+.dotYellow {
+    background-color: var(--yellow);
+}
+
+.dotGreen {
+    background-color: var(--green);
+}
+
+.title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--grey-3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+
+.content {
+    padding: 15px 20px 20px;
+    font-family: var(--font-mono);
+}
+
+.inputRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background-color: rgba(0 0 0 / 20%);
+    border-radius: 4px;
+    padding: 10px 12px;
+}
+
+.prompt {
+    color: var(--green);
+    font-size: 14px;
+    line-height: 1.4;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--grey-1);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+    min-height: 18px;
+    max-height: 120px;
+    padding: 0;
+}
+
+.input::placeholder {
+    color: var(--grey-4);
+}
+
+.input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.sendButton {
+    background: transparent;
+    border: none;
+    color: var(--grey-3);
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.sendButton:hover:not(:disabled) {
+    color: var(--secondary);
+}
+
+.sendButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 0 4px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--grey-4);
+    border-top-color: var(--secondary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loadingText {
+    font-size: 12px;
+    color: var(--grey-3);
+}
+
+.error {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: rgba(255, 79, 82, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid var(--red);
+}
+
+.errorIcon {
+    display: none;
+}
+
+.errorText {
+    font-size: 12px;
+    color: var(--grey-2);
+}
+
+.retryButton {
+    background-color: var(--grey-5);
+    border: 1px solid var(--grey-4);
+    color: var(--grey-2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+    background-color: var(--grey-4);
+    border-color: var(--grey-3);
+}
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.suggestionChip {
+    background-color: rgba(26, 118, 249, 0.15);
+    border: 1px solid rgba(26, 118, 249, 0.3);
+    color: var(--secondary-300);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestionChip:hover:not(:disabled) {
+    background-color: rgba(26, 118, 249, 0.25);
+    border-color: var(--secondary);
+    color: var(--secondary-100);
+}
+
+.suggestionChip:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media only screen and (max-width: 799px) {
+    .container {
+        margin-top: 15px;
+        padding: 0 15px;
+    }
+
+    .content {
+        padding: 12px 15px 15px;
+    }
+
+    .suggestionChip {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+}
