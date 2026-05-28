@@ -69,6 +69,24 @@
     max-width: 60%;
 }
 
+.resetButton {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--grey-4);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.resetButton:hover {
+    color: var(--grey-2);
+}
+
 .content {
     padding: 15px 20px 20px;
     font-family: var(--font-mono);
