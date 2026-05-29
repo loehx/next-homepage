@@ -9,7 +9,7 @@ interface Props extends CompanyEntry {
 export const Company: React.FC<Props> = (props) => {
     return (
         <div
-            className={"relative group w-[100px] md:w-[200px] flex-shrink-0"}
+            className={"relative group w-[100px] md:w-[150px] flex-shrink-0"}
             style={{ aspectRatio: "1 / 1" }}
         >
             <a
