@@ -171,26 +171,49 @@
     left: 0.3em;
 }
 
-/* Flash a freshly-arrived suggestion to full white, then settle back to the
-   dimmed resting state. Timeline: 100ms fade in, 200ms hold, 100ms fade out
-   (400ms total). Items are staggered via inline animation-delay so they light
-   up one after the other. */
+/* "Wake up" the suggestions when the user focuses the input: each item
+   brightens to full white while its arrow marker nudges right and flashes
+   cyan, then everything settles back to the dimmed resting state. Items are
+   staggered via inline animation-delay so they ripple down the list. */
 .suggestionItemHighlight {
-    animation: suggestionHighlight 700ms ease both;
+    animation: suggestionWake 600ms ease both;
 }
 
-@keyframes suggestionHighlight {
+.suggestionItemHighlight:before {
+    animation: suggestionArrow 600ms ease both;
+}
+
+@keyframes suggestionWake {
     0% {
         opacity: 0.4;
     }
-    25% {
-        opacity: 1;
-    }
-    75% {
+    35% {
         opacity: 1;
     }
     100% {
         opacity: 0.4;
+    }
+}
+
+@keyframes suggestionArrow {
+    0% {
+        transform: translateX(0);
+        color: inherit;
+    }
+    35% {
+        transform: translateX(4px);
+        color: var(--cyan);
+    }
+    100% {
+        transform: translateX(0);
+        color: inherit;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .suggestionItemHighlight,
+    .suggestionItemHighlight:before {
+        animation: none;
     }
 }
 

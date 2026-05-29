@@ -31,6 +31,8 @@ const DEFAULT_SUGGESTIONS = [
 
 const STORAGE_KEY = "aiAgentId";
 
+const MAX_INPUT_LENGTH = 200;
+
 // Rotated through the input placeholder while a request is in flight, so the
 // user gets a sense of progress instead of staring at a single "Thinking…".
 const LOADING_HINTS = [
@@ -61,8 +63,8 @@ export const StageInput: React.FC<StageInputProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
     const [loadingHintIndex, setLoadingHintIndex] = useState(0);
-    // Bumped whenever a fresh set of suggestions arrives from an answer, so the
-    // suggestion items replay their staggered highlight animation.
+    // Bumped each time the user focuses the input, so the suggestion items
+    // replay their staggered "wake up" highlight and briefly draw the eye.
     const [highlightTrigger, setHighlightTrigger] = useState(0);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -212,7 +214,6 @@ export const StageInput: React.FC<StageInputProps> = ({
                         ? data.suggestions
                         : DEFAULT_SUGGESTIONS,
                 );
-                setHighlightTrigger((t) => t + 1);
                 setStatus("ready");
                 onAnswer(data.answer, data.suggestions || []);
             } catch (error) {
@@ -318,12 +319,14 @@ export const StageInput: React.FC<StageInputProps> = ({
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    onFocus={() => setHighlightTrigger((t) => t + 1)}
                     placeholder={
                         isBusy
                             ? LOADING_HINTS[loadingHintIndex]
                             : "Ask me anything…"
                     }
                     disabled={isBusy}
+                    maxLength={MAX_INPUT_LENGTH}
                     rows={1}
                     className={styles.input}
                 />
@@ -361,7 +364,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                         )}
                         style={
                             highlightTrigger > 0
-                                ? { animationDelay: `${500 + index * 140}ms` }
+                                ? { animationDelay: `${index * 80}ms` }
                                 : undefined
                         }
                     >
