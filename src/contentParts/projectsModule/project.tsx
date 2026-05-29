@@ -356,7 +356,7 @@ const ProjectComponent: FC<Props> = ({
                     </div>
                     <div className={styles.projectCardContent}>
                         <div
-                            className={`w-full font-mono text-sm flex flex-wrap justify-start md:justify-center pt-2 ${
+                            className={`w-full md:max-w-[300px] md:items-center font-mono text-sm flex flex-wrap justify-start md:justify-center pt-2 ${
                                 styles.projectCardTechLine
                             } ${
                                 isTechLineVisible

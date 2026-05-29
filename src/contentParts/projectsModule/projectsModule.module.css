@@ -371,6 +371,14 @@
     opacity: 1;
 }
 
+/* On mobile, keep the >_ prompt visible from the start (unlike desktop, where
+   it fades in once the title typewriter finishes). */
+@media (max-width: 767px) {
+    .projectCard .projectCardTitlePrompt {
+        opacity: 1;
+    }
+}
+
 .projectCardTitleName {
     font-family: var(--font-headline);
     letter-spacing: 0.02em;
@@ -386,10 +394,12 @@
 
 .projectCardTechFw {
     color: var(--link-color);
+    font-weight: bold;
 }
 
 .projectCardTechStorefront {
     color: #0ccc8d;
+    font-weight: bold;
 }
 
 .projectCardTechOther {
