@@ -301,7 +301,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.inputRow}>
-                <span className={styles.prompt}>{">"}</span>
+                <span className={styles.prompt}>{">_"}</span>
                 <textarea
                     ref={inputRef}
                     value={inputValue}

@@ -168,11 +168,11 @@ export const handler: Handler = async (event) => {
       let runId: string;
       let isNewAgent = false;
 
-      // Every visitor message is wrapped with the read-only + R2-D2 persona
-      // preamble so the agent stays in character and refuses any mutation
-      // request, even on follow-up turns. Hard enforcement for "no repo
-      // writes" still relies on the Cursor GitHub App being installed with
-      // read-only permissions on loehx/homepage-agent.
+      // Every visitor message is wrapped with the read-only + tone/context
+      // preamble so the agent stays friendly, concise, and on-topic, and
+      // refuses any mutation request even on follow-up turns. Hard enforcement
+      // for "no repo writes" still relies on the Cursor GitHub App being
+      // installed with read-only permissions on loehx/homepage-agent.
       const wrappedPrompt = wrapUserPrompt(text);
 
       if (!currentAgentId) {

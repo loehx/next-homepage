@@ -42,7 +42,7 @@
 }
 
 .input::placeholder {
-    color: var(--grey-4);
+    color: var(--grey-3);
 }
 
 .input:disabled {
