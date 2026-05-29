@@ -32,12 +32,11 @@
 
 /* Logos are black & white by default. */
 .company img {
-    filter: saturate(0);
     transition: filter 0.35s ease;
 }
 
 /* In dark corridor mode, keep them desaturated but invert so dark logos
    stay visible against the dark background. */
 :global(html[data-dark-corridor]) .company img {
-    filter: saturate(0) invert(1);
+    filter: saturate(0) invert(1) brightness(5);
 }
