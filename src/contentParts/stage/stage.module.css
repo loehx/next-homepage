@@ -6,6 +6,17 @@
     overflow: hidden;
 }
 
+/* When the dark corridor begins, invert the stage's canvas colors instead of
+   hiding the stage, so it blends into the dark background. */
+.stage canvas {
+    filter: invert(0);
+    transition: filter 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:global(html[data-dark-corridor]) .stage canvas {
+    filter: invert(1);
+}
+
 @media only screen and (min-width: 768px) {
     .stage {
         height: 100vh;

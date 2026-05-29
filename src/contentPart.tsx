@@ -51,7 +51,10 @@ const Page: FC<Props> = (props: Props) => {
                     <SecretLinkModule {...(props as any)} />
                 )}
 
-                {props.type === "timeline" && <Timeline {...(props as any)} />}
+                {/* Timeline temporarily hidden */}
+                {false && props.type === "timeline" && (
+                    <Timeline {...(props as any)} />
+                )}
 
                 {/* ADD MORE COMPONENTS HERE ... */}
             </div>

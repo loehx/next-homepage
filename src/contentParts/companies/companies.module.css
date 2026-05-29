@@ -3,6 +3,7 @@
     white-space: nowrap;
     width: 100%;
     position: relative;
+    margin-top: 50px;
 }
 
 .marquee::after {
@@ -13,7 +14,6 @@
     right: 0;
     bottom: 0;
     pointer-events: none;
-    box-shadow: inset 80px 0 40px -40px white, inset -80px 0 40px -40px white;
 }
 
 .track {
@@ -27,4 +27,17 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    transform-origin: center center;
+}
+
+/* Logos are black & white by default. */
+.company img {
+    filter: saturate(0);
+    transition: filter 0.35s ease;
+}
+
+/* In dark corridor mode, keep them desaturated but invert so dark logos
+   stay visible against the dark background. */
+:global(html[data-dark-corridor]) .company img {
+    filter: saturate(0) invert(1);
 }

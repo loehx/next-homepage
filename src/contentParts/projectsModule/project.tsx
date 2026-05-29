@@ -242,9 +242,10 @@ const ProjectComponent: FC<Props> = ({
         [relativeScreenPosition, multiplier],
     );
 
-    // Reveal the tech-stack line once the title's typewriter has finished
-    // (typewriter completes when `relativeScreenPosition * multiplier >= 1`).
-    const isTechLineVisible = relativeScreenPosition * multiplier >= 1;
+    // Reveal the tech-stack line once the title's typewriter is nearly done.
+    // The typewriter completes at `relativeScreenPosition * multiplier >= 1`;
+    // we trigger 20% earlier (>= 0.8) so the line appears a bit sooner.
+    const isTechLineVisible = relativeScreenPosition * multiplier >= 0.8;
 
     const hoverAccent = getProjectCardAccent(projectIndex);
 

@@ -62,7 +62,7 @@ export const ProjectsModule: FC<ProjectsModuleProps> = (props) => {
     return (
         <div
             ref={sectionRef}
-            className="container mx-auto px-4 pt-12 md:pt-[2 00px] relative isolate pb-12 md:pb-[300px]"
+            className="container mx-auto px-4 pt-12 md:pt-[200px] relative isolate pb-12 md:pb-[200px]"
         >
             <div className={styles.projectsBackdrop} aria-hidden>
                 {isNearViewport && (
