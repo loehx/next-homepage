@@ -36,13 +36,20 @@ const STORAGE_KEY = "aiAgentId";
 const LOADING_HINTS = [
     "Sending message to Cursor…",
     "Gathering information…",
-    "Thinking…",
-    "Coming up with follow-ups…",
+    "Working on the answer…",
+    "Finding follow-ups…",
     "Taking a little nap…",
     "Getting a coffee…",
-    "Coming up with an answer…",
+    "Thinking about life…",
+    "What's the meaning of it all?...",
+    "Well, back to the question...",
+    "I'm slow today...",
+    "Now it becomes awkward...",
+    "Sorry, I'm not feeling well...",
+    "Could you repeat the question?",
+    "... Just joking^^",
 ];
-const LOADING_HINT_INTERVAL_MS = 2500;
+const LOADING_HINT_INTERVAL_MS = 4000;
 
 export const StageInput: React.FC<StageInputProps> = ({
     onAnswer,
