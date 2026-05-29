@@ -97,22 +97,37 @@ const USER_PROMPT_PREAMBLE = [
 
 /**
  * Wraps a user-driven prompt with the read-only + R2-D2 instructions.
- * Intentionally NOT applied to the "Initialize" warmup prompt.
+ * Intentionally NOT applied to the warmup prompt.
  */
 export function wrapUserPrompt(text: string): string {
   return `${USER_PROMPT_PREAMBLE}\n<USER_QUESTION>${text}</USER_QUESTION>`;
 }
 
 /**
+ * Warmup prompt for prewarm/initialization. The ONLY goal here is to boot the
+ * agent VM as fast as possible, so we explicitly forbid any exploration. The
+ * agent must reply instantly with a single token and touch nothing — no file
+ * reads, no tool calls, no repo scanning. This keeps cold-start latency to the
+ * VM boot time rather than the model exploring the repository for ~30s.
+ */
+export const WARMUP_PROMPT = [
+  "Reply with exactly the single word: OK",
+  "Do NOT read any files. Do NOT list directories. Do NOT run any tools or",
+  "shell commands. Do NOT explore or scan the repository. Do NOT think.",
+  "Respond immediately with just: OK",
+].join("\n");
+
+/**
  * Creates a Cloud Agent and enqueues its first run in a single call.
  *
  * The new /v1/agents endpoint always starts a run with the provided prompt.
- * For "prewarm" callers, pass a benign placeholder (default "Initialize").
+ * For "prewarm" callers, pass the WARMUP_PROMPT (the default) so the agent
+ * boots without doing any repo exploration.
  * For first-ask callers, pass the user's question directly to skip the
  * second round-trip.
  */
 export async function createAgent(
-  promptText: string = "Initialize"
+  promptText: string = WARMUP_PROMPT
 ): Promise<CreateAgentResponse> {
   const apiKey = getApiKey();
   const repo = getRepoConfig();

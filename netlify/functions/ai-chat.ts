@@ -7,6 +7,7 @@ import {
   wrapUserPrompt,
   CursorError,
   TERMINAL_STATUSES,
+  WARMUP_PROMPT,
 } from "./_cursor";
 
 interface ChatRequest {
@@ -77,11 +78,12 @@ export const handler: Handler = async (event) => {
         };
       }
 
-      // /v1/agents always enqueues an initial run; we use a no-op prompt so
-      // the warmup work boots the VM without producing meaningful output.
-      // We MUST drain that run before reporting "ready" - otherwise the next
-      // /runs POST will 409 with agent_busy.
-      const agent = await createAgent("Initialize");
+      // /v1/agents always enqueues an initial run; we use a slim no-op prompt
+      // (WARMUP_PROMPT) that forbids any file reads/tool calls so the agent
+      // boots the VM and returns instantly instead of spending ~30s exploring
+      // the repo. We MUST still drain that run before reporting "ready" -
+      // otherwise the next /runs POST will 409 with agent_busy.
+      const agent = await createAgent(WARMUP_PROMPT);
 
       const result = await pollRunUntilComplete(agent.agentId, agent.runId, {
         maxWaitMs: POLL_BUDGET_MS,

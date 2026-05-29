@@ -255,7 +255,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                             className={styles.wakeUpDot}
                                             aria-hidden
                                         ></span>
-                                        Wake up my AI
+                                        Talk to my AI Agent
                                     </button>
                                 </div>
                             )}
