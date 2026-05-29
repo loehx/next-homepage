@@ -388,6 +388,10 @@
     color: var(--link-color);
 }
 
+.projectCardTechStorefront {
+    color: #0ccc8d;
+}
+
 .projectCardTechOther {
     color: var(--body-color);
 }

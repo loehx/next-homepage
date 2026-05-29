@@ -176,11 +176,11 @@
    cyan, then everything settles back to the dimmed resting state. Items are
    staggered via inline animation-delay so they ripple down the list. */
 .suggestionItemHighlight {
-    animation: suggestionWake 600ms ease both;
+    animation: suggestionWake 600ms ease backwards;
 }
 
 .suggestionItemHighlight:before {
-    animation: suggestionArrow 600ms ease both;
+    animation: suggestionArrow 600ms ease backwards;
 }
 
 @keyframes suggestionWake {

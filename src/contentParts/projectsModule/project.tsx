@@ -100,6 +100,8 @@ interface Props {
 
 const frameworksFirst = ["vue", "react", "angular", "vanilla", "c#"];
 
+const STOREFRONT_TECH = "storefront";
+
 const ProjectComponent: FC<Props> = ({
     project,
     projectIndex,
@@ -199,6 +201,12 @@ const ProjectComponent: FC<Props> = ({
     const sortedTechnologies = useMemo(() => {
         if (!project.technologies) return [];
         return [...project.technologies].sort((a, b) => {
+            const aIsStorefront = a.name.toLowerCase() === STOREFRONT_TECH;
+            const bIsStorefront = b.name.toLowerCase() === STOREFRONT_TECH;
+
+            if (aIsStorefront && !bIsStorefront) return -1;
+            if (!aIsStorefront && bIsStorefront) return 1;
+
             const aIsFramework = frameworksFirst.includes(a.name.toLowerCase());
             const bIsFramework = frameworksFirst.includes(b.name.toLowerCase());
 
@@ -357,7 +365,9 @@ const ProjectComponent: FC<Props> = ({
                             }`}
                         >
                             <span>
-                                <span className={styles.projectCardTechOther}>
+                                <span
+                                    className={`${styles.projectCardTechOther} font-bold`}
+                                >
                                     {startYear}
                                 </span>
                                 {sortedTechnologies.length > 0 && (
@@ -371,13 +381,16 @@ const ProjectComponent: FC<Props> = ({
                             {sortedTechnologies.map((tech, i) => (
                                 <span key={tech.id}>
                                     <span
-                                        className={
-                                            frameworksFirst.includes(
-                                                tech.name.toLowerCase(),
-                                            )
-                                                ? `${styles.projectCardTechFw} lowercase`
-                                                : `${styles.projectCardTechOther} lowercase`
-                                        }
+                                        className={`${
+                                            tech.name.toLowerCase() ===
+                                            STOREFRONT_TECH
+                                                ? styles.projectCardTechStorefront
+                                                : frameworksFirst.includes(
+                                                        tech.name.toLowerCase(),
+                                                  )
+                                                ? styles.projectCardTechFw
+                                                : styles.projectCardTechOther
+                                        } lowercase`}
                                     >
                                         {tech.name}
                                     </span>
