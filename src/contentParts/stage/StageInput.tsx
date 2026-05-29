@@ -354,7 +354,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                         )}
                         style={
                             highlightTrigger > 0
-                                ? { animationDelay: `${index * 80}ms` }
+                                ? { animationDelay: `${500 + index * 140}ms` }
                                 : undefined
                         }
                     >

@@ -176,7 +176,7 @@
    (400ms total). Items are staggered via inline animation-delay so they light
    up one after the other. */
 .suggestionItemHighlight {
-    animation: suggestionHighlight 400ms ease both;
+    animation: suggestionHighlight 700ms ease both;
 }
 
 @keyframes suggestionHighlight {
