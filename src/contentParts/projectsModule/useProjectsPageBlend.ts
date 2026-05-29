@@ -5,8 +5,8 @@ import { useLayoutEffect, useRef, useState, type RefObject } from "react";
  * Uses a small buffer (10% from top) to start dark mode slightly before
  * the section is fully in view, but ends it as soon as the section leaves.
  */
-const CORRIDOR_TOP_FRAC = 0.5;
-const CORRIDOR_BOTTOM_FRAC = 0.5;
+const CORRIDOR_TOP_FRAC = 0.75;
+const CORRIDOR_BOTTOM_FRAC = 0.75;
 
 function isInCorridor(rect: DOMRect, vh: number): boolean {
     const bandTop = vh * CORRIDOR_TOP_FRAC;
