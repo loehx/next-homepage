@@ -54,6 +54,9 @@ export const StageInput: React.FC<StageInputProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
     const [loadingHintIndex, setLoadingHintIndex] = useState(0);
+    // Bumped whenever a fresh set of suggestions arrives from an answer, so the
+    // suggestion items replay their staggered highlight animation.
+    const [highlightTrigger, setHighlightTrigger] = useState(0);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -202,6 +205,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                         ? data.suggestions
                         : DEFAULT_SUGGESTIONS,
                 );
+                setHighlightTrigger((t) => t + 1);
                 setStatus("ready");
                 onAnswer(data.answer, data.suggestions || []);
             } catch (error) {
@@ -341,7 +345,19 @@ export const StageInput: React.FC<StageInputProps> = ({
 
             <ul className={styles.suggestions}>
                 {suggestions.map((suggestion, index) => (
-                    <li key={index} className={styles.suggestionItem}>
+                    <li
+                        key={`${highlightTrigger}-${index}`}
+                        className={cx(
+                            styles.suggestionItem,
+                            highlightTrigger > 0 &&
+                                styles.suggestionItemHighlight,
+                        )}
+                        style={
+                            highlightTrigger > 0
+                                ? { animationDelay: `${index * 80}ms` }
+                                : undefined
+                        }
+                    >
                         <button
                             onClick={() => sendMessage(suggestion)}
                             className={cx(
