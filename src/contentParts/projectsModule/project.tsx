@@ -387,7 +387,7 @@ const ProjectComponent: FC<Props> = ({
                                             STOREFRONT_TECH
                                                 ? styles.projectCardTechStorefront
                                                 : frameworksFirst.includes(
-                                                        tech.name.toLowerCase(),
+                                                      tech.name.toLowerCase(),
                                                   )
                                                 ? styles.projectCardTechFw
                                                 : styles.projectCardTechOther
