@@ -20,7 +20,7 @@
 
 .prompt {
     color: var(--cyan);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.4;
     flex-shrink: 0;
     user-select: none;
@@ -222,7 +222,7 @@
     border: none;
     padding: 0;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     text-align: left;
     cursor: pointer;
     transition: color 0.15s ease;
@@ -237,16 +237,6 @@
 .suggestionButtonDisabled {
     opacity: 0.5;
     cursor: not-allowed;
-}
-
-@media only screen and (max-width: 375px) {
-    .prompt,
-    .input,
-    .statusText,
-    .statusHint,
-    .suggestionButton {
-        font-size: 12px;
-    }
 }
 
 @media only screen and (min-width: 800px) {

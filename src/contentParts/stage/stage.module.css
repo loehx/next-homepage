@@ -146,7 +146,7 @@
 .descriptionWrapper {
     position: relative;
     max-width: 500px;
-    margin: 100px auto 50px auto;
+    margin: 100px auto 0 auto;
 }
 
 @media only screen and (min-width: 800px) {
@@ -179,7 +179,7 @@
     border-radius: 999px;
     color: var(--grey-1);
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 0.3px;
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease,
@@ -199,6 +199,12 @@
 
 .wakeUpButton:active {
     transform: scale(0.97);
+}
+
+@media only screen and (min-width: 800px) {
+    .wakeUpButton {
+        font-size: 14px;
+    }
 }
 
 .wakeUpDot {
