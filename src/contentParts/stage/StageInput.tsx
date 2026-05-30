@@ -70,6 +70,8 @@ export const StageInput: React.FC<StageInputProps> = ({
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
+    usePreventTouchInputZoom(true);
+
     // Initialize: restore agentId from session storage (if any), prewarm the
     // agent, and keep polling via "wait" until the warmup run drains. The
     // server returns status: "warming" with a runId when the cold start hasn't
@@ -161,11 +163,11 @@ export const StageInput: React.FC<StageInputProps> = ({
         initialize();
     }, [initialize]);
 
-    // Focus the input once the agent is ready so the user can type immediately.
+    // Autofocus on desktop only; on touch devices it can trigger page zoom.
     useEffect(() => {
-        if (status === "ready") {
-            inputRef.current?.focus();
-        }
+        if (status !== "ready") return;
+        if (isCoarsePointerDevice()) return;
+        inputRef.current?.focus();
     }, [status]);
 
     const sendMessage = useCallback(
