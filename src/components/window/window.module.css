@@ -33,7 +33,7 @@
 .windowInner {
     color: var(--grey-1);
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.8;
     counter-reset: line;
     letter-spacing: -0.2px;
@@ -42,6 +42,12 @@
 
 .lineNumbers {
     display: none !important;
+}
+
+@media only screen and (max-width: 375px) {
+    .windowInner {
+        font-size: 12px;
+    }
 }
 
 @media only screen and (min-width: 800px) {

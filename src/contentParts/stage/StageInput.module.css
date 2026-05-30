@@ -239,12 +239,24 @@
     cursor: not-allowed;
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (max-width: 375px) {
+    .prompt,
+    .input,
     .statusText,
-    .statusHint {
-        font-size: 13px;
+    .statusHint,
+    .suggestionButton {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .prompt,
+    .input {
+        font-size: 14px;
     }
 
+    .statusText,
+    .statusHint,
     .suggestionButton {
         font-size: 13px;
     }
