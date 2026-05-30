@@ -178,6 +178,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                 className={styles.inner}
                 style={{
                     transform:
+                        !(aiActivated && isMobile) &&
                         windowSize.width > windowSize.height &&
                         windowSize.height < 950
                             ? "scale(0.8)"

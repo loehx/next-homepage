@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import styles from "./StageInput.module.css";
 import cx from "classnames";
+import { isCoarsePointerDevice, usePreventTouchInputZoom } from "src/hooks";
 
 interface ChatResponse {
     agentId: string;

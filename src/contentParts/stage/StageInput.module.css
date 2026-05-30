@@ -41,6 +41,15 @@
     padding: 0;
 }
 
+/* Phones/tablets in touch mode only — desktop sizes stay in the min-width rules below. */
+@media (hover: none) and (pointer: coarse) {
+    .input {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+    }
+}
+
 .input::placeholder {
     color: var(--grey-3);
 }
@@ -240,13 +249,11 @@
 }
 
 @media only screen and (min-width: 800px) {
-    .suggestionButton {
-        font-size: 13px;
-    }
-}
-
-@media only screen and (min-width: 1025px) {
     .input {
         font-size: 14px;
+    }
+
+    .suggestionButton {
+        font-size: 13px;
     }
 }
