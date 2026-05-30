@@ -7,6 +7,7 @@
     },
     "scripts": {
         "dev": "next dev",
+        "dev:netlify": "netlify dev",
         "build:agent-api": "ts-node --compiler-options '{\"module\":\"commonjs\",\"target\":\"es2019\"}' data/agentApi.generate.ts",
         "build": "yarn build:agent-api && next build && next export",
         "start": "next dev -p 8080",
@@ -62,6 +63,7 @@
         "imagekit": "^4.1.3",
         "jest": "^26.4.2",
         "jest-cli": "^26.4.2",
+        "netlify-cli": "^23.0.0",
         "ts-jest": "^26.3.0",
         "typescript": "^4.5.5"
     }
