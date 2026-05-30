@@ -146,7 +146,7 @@
 .descriptionWrapper {
     position: relative;
     max-width: 500px;
-    margin: 100px auto 0 auto;
+    margin: 100px auto 50px auto;
 }
 
 @media only screen and (min-width: 800px) {
