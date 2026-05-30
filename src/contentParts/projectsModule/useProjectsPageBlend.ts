@@ -11,7 +11,7 @@ import { useLayoutEffect, useRef, useState, type RefObject } from "react";
  *   scrolled off the top; negative values keep it dark even after it leaves.
  */
 const CORRIDOR_TOP_FRAC = 0;
-const CORRIDOR_BOTTOM_FRAC = 0.90;
+const CORRIDOR_BOTTOM_FRAC = 0.9;
 
 function isInCorridor(rect: DOMRect, vh: number): boolean {
     const bandTop = vh * CORRIDOR_TOP_FRAC;
