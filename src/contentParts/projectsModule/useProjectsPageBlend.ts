@@ -1,12 +1,17 @@
 import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 
 /**
- * Dark mode activates when projects section is in the viewport.
- * Uses a small buffer (10% from top) to start dark mode slightly before
- * the section is fully in view, but ends it as soon as the section leaves.
+ * Dark mode is active while the projects section overlaps the viewport.
+ *
+ * The corridor band is expressed as fractions of the viewport height:
+ * - CORRIDOR_BOTTOM_FRAC: where dark mode BEGINS as the section enters from the
+ *   bottom (checked against rect.top). Higher = starts earlier/lower on screen.
+ * - CORRIDOR_TOP_FRAC: where dark mode ENDS as the section exits past the top
+ *   (checked against rect.bottom). 0 = stays dark until the section is fully
+ *   scrolled off the top; negative values keep it dark even after it leaves.
  */
-const CORRIDOR_TOP_FRAC = 0.75;
-const CORRIDOR_BOTTOM_FRAC = 0.75;
+const CORRIDOR_TOP_FRAC = 0;
+const CORRIDOR_BOTTOM_FRAC = 0.90;
 
 function isInCorridor(rect: DOMRect, vh: number): boolean {
     const bandTop = vh * CORRIDOR_TOP_FRAC;
