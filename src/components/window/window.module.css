@@ -33,7 +33,7 @@
 .windowInner {
     color: var(--grey-1);
     font-weight: normal;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 1.8;
     counter-reset: line;
     letter-spacing: -0.2px;
@@ -166,6 +166,8 @@
     -webkit-text-fill-color: transparent;
     filter: brightness(2);
     font-weight: bold;
+    padding-right: 2px;
+    margin-left: -2px;
 }
 
 .windowInner a {
