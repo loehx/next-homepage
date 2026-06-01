@@ -1,0 +1,14 @@
+# Cursor Rules for next-homepage
+
+## Pre-commit Checklist
+
+Always run the following before committing:
+
+1. **Lint Check**: Run `npm run lint` or `npm run build` to verify there are no TypeScript errors or Prettier formatting issues
+2. If there are Prettier errors, run: `npx prettier --write <path-to-file>`
+
+## General Guidelines
+
+- Keep changes focused and atomic
+- Follow existing code style in the project
+- Test changes locally before pushing
