@@ -157,11 +157,6 @@
     }
 }
 
-.windowSizer {
-    display: block;
-    width: 100%;
-}
-
 .wakeUpRow {
     display: flex;
     justify-content: center;

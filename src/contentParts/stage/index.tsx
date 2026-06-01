@@ -2,8 +2,6 @@ import React, {
     useEffect,
     useState,
     useCallback,
-    useRef,
-    useLayoutEffect,
 } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
@@ -46,11 +44,6 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [aiQuestion, setAiQuestion] = useState<string | null>(null);
     const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
-    const [windowMinSize, setWindowMinSize] = useState<{
-        width: number;
-        height: number;
-    } | null>(null);
-    const windowSizerRef = useRef<HTMLDivElement>(null);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     // Feature flag: AI chat input is hidden unless the page is opened with
@@ -95,38 +88,6 @@ export const Stage: React.FC<StageProps> = (props) => {
         props.phoneImage?.url,
     ]);
 
-    // Lock the Window to whatever dimensions the description text naturally
-    // occupies on the first render, so swapping its content (init spinner,
-    // input + suggestions, answer) never makes the box collapse or jump in
-    // either direction. The whole flex chain (intro -> descriptionWrapper ->
-    // Window) is content-sized on desktop, so without this the box shrinks
-    // both horizontally and vertically when the AI content is narrower than
-    // the description text.
-    useLayoutEffect(() => {
-        if (aiActivated) return;
-        if (loading) return;
-        if (!windowSizerRef.current) return;
-        const { offsetWidth, offsetHeight } = windowSizerRef.current;
-        if (offsetWidth > 0 && offsetHeight > 0) {
-            setWindowMinSize({ width: offsetWidth, height: offsetHeight });
-        }
-    }, [loading, aiActivated, props.text]);
-
-    useEffect(() => {
-        if (aiActivated) return;
-        const onResize = () => {
-            if (!windowSizerRef.current) return;
-            const { offsetWidth, offsetHeight } = windowSizerRef.current;
-            if (offsetWidth > 0 && offsetHeight > 0) {
-                setWindowMinSize({
-                    width: offsetWidth,
-                    height: offsetHeight,
-                });
-            }
-        };
-        window.addEventListener("resize", onResize);
-        return () => window.removeEventListener("resize", onResize);
-    }, [aiActivated]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -216,18 +177,6 @@ export const Stage: React.FC<StageProps> = (props) => {
                     {props.h1 && <h1 className={styles.h1}>{props.h1}</h1>}
                     {props.text && (
                         <div className={styles.descriptionWrapper}>
-                            <div
-                                ref={windowSizerRef}
-                                className={styles.windowSizer}
-                                style={
-                                    aiActivated && windowMinSize
-                                        ? {
-                                              minWidth: windowMinSize.width,
-                                              minHeight: windowMinSize.height,
-                                          }
-                                        : undefined
-                                }
-                            >
                             <Window
                                 className={styles.description}
                                 text={
@@ -239,27 +188,15 @@ export const Stage: React.FC<StageProps> = (props) => {
                                               : undefined
                                         : props.text
                                 }
-                                    onClose={
-                                        aiActivated ? handleReset : undefined
-                                    }
-                                    style={
-                                        aiActivated && windowMinSize
-                                            ? {
-                                                  minWidth: windowMinSize.width,
-                                                  minHeight:
-                                                      windowMinSize.height,
-                                              }
-                                            : undefined
-                                    }
-                                >
+                                onClose={aiActivated ? handleReset : undefined}
+                            >
                                 {aiActivated && (
                                     <StageInput
                                         onQuestionSubmit={handleQuestionSubmit}
                                         onAnswer={handleAnswer}
                                     />
                                 )}
-                                </Window>
-                            </div>
+                            </Window>
                             {agentEnabled && !aiActivated && (
                                 <div className={styles.wakeUpRow}>
                                     <button
