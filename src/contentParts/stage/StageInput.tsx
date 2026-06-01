@@ -33,7 +33,7 @@ const capSuggestions = (items: string[]): string[] =>
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
     "What skills does Alex have?",
-    "What is he good at?",
+    "Who is Alex?",
     "What is he working on right now?",
 ]);
 
