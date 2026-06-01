@@ -21,13 +21,13 @@ interface BubbleConfig {
 
 /** Configure each background bubble here. Colors and sizes are fixed, positions are random. */
 const BUBBLES: BubbleConfig[] = [
-    { color: "rgba(255, 0, 0, 0.15)", radius: 300 },    // red
-    { color: "rgba(255, 0, 0, 0.15)", radius: 500 },    // red
-    { color: "rgba(0, 0, 255, 0.2)", radius: 250 },    // blue
-    { color: "rgba(0, 0, 255, 0.15)", radius: 650 },    // blue
-    { color: "rgba(255, 0, 255, 0.15)", radius: 150 },  // magenta
-    { color: "rgba(255, 0, 255, 0.2)", radius: 350 },  // magenta
-    { color: "rgba(0, 255, 255, 0.25)", radius: 700 },  // cyan
+    { color: "rgba(255, 0, 0, 0.15)", radius: 300 }, // red
+    { color: "rgba(255, 0, 0, 0.15)", radius: 500 }, // red
+    { color: "rgba(0, 0, 255, 0.2)", radius: 250 }, // blue
+    { color: "rgba(0, 0, 255, 0.15)", radius: 650 }, // blue
+    { color: "rgba(255, 0, 255, 0.15)", radius: 150 }, // magenta
+    { color: "rgba(255, 0, 255, 0.2)", radius: 350 }, // magenta
+    { color: "rgba(0, 255, 255, 0.25)", radius: 700 }, // cyan
 ];
 
 export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
