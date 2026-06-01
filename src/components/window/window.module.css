@@ -157,11 +157,16 @@
 }
 
 .windowInner blockquote {
-    color: var(--grey-2);
-    border-left: 2px solid var(--cyan);
-    padding-left: 0.9em !important;
-    margin-bottom: 1.2em !important;
-    opacity: 0.85;
+    color: white;
+    font-style: italic;
+    border-left: 3px solid var(--grey-4);
+    padding-left: .7em !important;
+    font-size: 90%;
+}
+
+.windowInner blockquote::before {
+    content: "Q: ";
+    font-weight: bold;
 }
 
 .windowInner em {
