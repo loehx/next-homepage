@@ -118,7 +118,7 @@
 }
 
 .description {
-    max-width: 500px;
+    width: 500px;
     margin: 0 auto;
     opacity: var(--scroll);
 }
@@ -126,6 +126,7 @@
 @media only screen and (max-width: 799px) {
     .description {
         margin-bottom: 0;
+        width: auto;
     }
 }
 
