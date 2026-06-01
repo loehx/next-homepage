@@ -43,6 +43,7 @@ export const Stage: React.FC<StageProps> = (props) => {
         height: typeof window !== "undefined" ? window.innerHeight : 1000,
     }));
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
+    const [aiQuestion, setAiQuestion] = useState<string | null>(null);
     const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
     const [windowMinSize, setWindowMinSize] = useState<{
@@ -61,12 +62,14 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAgentEnabled(params.get("agent") === "true");
     }, []);
 
-    const handleAnswer = useCallback((answer: string) => {
+    const handleAnswer = useCallback((question: string, answer: string) => {
+        setAiQuestion(question);
         setAiAnswer(answer);
     }, []);
 
     const handleReset = useCallback(() => {
         setAiAnswer(null);
+        setAiQuestion(null);
         setAiActivated(false);
     }, []);
 
@@ -224,7 +227,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     className={styles.description}
                                     text={
                                         aiActivated
-                                            ? aiAnswer || undefined
+                                            ? aiAnswer
+                                                ? `> ${aiQuestion}\n\n${aiAnswer}`
+                                                : undefined
                                             : props.text
                                     }
                                     onClose={

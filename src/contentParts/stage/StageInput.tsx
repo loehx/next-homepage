@@ -21,7 +21,11 @@ interface ChatError {
 type Status = "initializing" | "ready" | "loading" | "error";
 
 interface StageInputProps {
-    onAnswer: (answer: string, suggestions: string[]) => void;
+    onAnswer: (
+        question: string,
+        answer: string,
+        suggestions: string[],
+    ) => void;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
@@ -224,7 +228,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                     capped.length > 0 ? capped : DEFAULT_SUGGESTIONS,
                 );
                 setStatus("ready");
-                onAnswer(data.answer, data.suggestions || []);
+                onAnswer(text, data.answer, data.suggestions || []);
             } catch (error) {
                 setErrorMessage(
                     error instanceof Error
