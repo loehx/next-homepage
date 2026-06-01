@@ -21,6 +21,7 @@ interface ChatError {
 type Status = "initializing" | "ready" | "loading" | "error";
 
 interface StageInputProps {
+    onQuestionSubmit?: (question: string) => void;
     onAnswer: (question: string, answer: string, suggestions: string[]) => void;
 }
 
@@ -62,6 +63,7 @@ const LOADING_HINTS = [
 const LOADING_HINT_INTERVAL_MS = 4000;
 
 export const StageInput: React.FC<StageInputProps> = ({
+    onQuestionSubmit,
     onAnswer,
 }: StageInputProps) => {
     const [status, setStatus] = useState<Status>("initializing");
@@ -188,6 +190,7 @@ export const StageInput: React.FC<StageInputProps> = ({
         async (text: string) => {
             if (!text.trim()) return;
 
+            onQuestionSubmit?.(text);
             setStatus("loading");
             setErrorMessage(null);
             setInputValue("");
@@ -242,7 +245,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                 setStatus("error");
             }
         },
-        [onAnswer],
+        [onAnswer, onQuestionSubmit],
     );
 
     // Entry point for every submission (form, Enter key, suggestion click). If
@@ -251,6 +254,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     const submitMessage = useCallback(
         (text: string) => {
             if (!text.trim()) return;
+            onQuestionSubmit?.(text);
             if (status === "initializing") {
                 pendingMessageRef.current = text;
                 setQueuedMessage(text);
@@ -259,7 +263,7 @@ export const StageInput: React.FC<StageInputProps> = ({
             }
             sendMessage(text);
         },
-        [status, sendMessage],
+        [status, sendMessage, onQuestionSubmit],
     );
 
     // Once warmup finishes, fire any message the user queued while waiting.

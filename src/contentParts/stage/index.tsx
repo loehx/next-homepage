@@ -62,6 +62,11 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAgentEnabled(params.get("agent") === "true");
     }, []);
 
+    const handleQuestionSubmit = useCallback((question: string) => {
+        setAiQuestion(question);
+        setAiAnswer(null);
+    }, []);
+
     const handleAnswer = useCallback((question: string, answer: string) => {
         setAiQuestion(question);
         setAiAnswer(answer);
@@ -223,15 +228,17 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         : undefined
                                 }
                             >
-                                <Window
-                                    className={styles.description}
-                                    text={
-                                        aiActivated
-                                            ? aiAnswer
-                                                ? `> ${aiQuestion}\n\n${aiAnswer}`
-                                                : undefined
-                                            : props.text
-                                    }
+                            <Window
+                                className={styles.description}
+                                text={
+                                    aiActivated
+                                        ? aiAnswer
+                                            ? `> ${aiQuestion}\n\n${aiAnswer}`
+                                            : aiQuestion
+                                              ? `Q: ${aiQuestion}`
+                                              : undefined
+                                        : props.text
+                                }
                                     onClose={
                                         aiActivated ? handleReset : undefined
                                     }
@@ -245,9 +252,12 @@ export const Stage: React.FC<StageProps> = (props) => {
                                             : undefined
                                     }
                                 >
-                                    {aiActivated && (
-                                        <StageInput onAnswer={handleAnswer} />
-                                    )}
+                                {aiActivated && (
+                                    <StageInput
+                                        onQuestionSubmit={handleQuestionSubmit}
+                                        onAnswer={handleAnswer}
+                                    />
+                                )}
                                 </Window>
                             </div>
                             {agentEnabled && !aiActivated && (
