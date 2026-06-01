@@ -24,11 +24,18 @@ interface StageInputProps {
     onAnswer: (answer: string, suggestions: string[]) => void;
 }
 
-const DEFAULT_SUGGESTIONS = [
+// Suggestions are rendered as compact chips, so anything longer than this
+// blows out the layout. We hard-cap them and drop any that don't fit.
+const MAX_SUGGESTION_LENGTH = 40;
+
+const capSuggestions = (items: string[]): string[] =>
+    items.filter((s) => s.trim().length <= MAX_SUGGESTION_LENGTH);
+
+const DEFAULT_SUGGESTIONS = capSuggestions([
     "What skills does Alex have?",
-    "What makes him different from other devs?",
+    "What is he good at?",
     "What is he working on right now?",
-];
+]);
 
 const STORAGE_KEY = "aiAgentId";
 
@@ -212,10 +219,9 @@ export const StageInput: React.FC<StageInputProps> = ({
                     }
                 }
 
+                const capped = capSuggestions(data.suggestions || []);
                 setSuggestions(
-                    data.suggestions && data.suggestions.length > 0
-                        ? data.suggestions
-                        : DEFAULT_SUGGESTIONS,
+                    capped.length > 0 ? capped : DEFAULT_SUGGESTIONS,
                 );
                 setStatus("ready");
                 onAnswer(data.answer, data.suggestions || []);
@@ -277,7 +283,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                 <div className={styles.statusRow}>
                     <span className={styles.spinner}></span>
                     <span className={styles.statusText}>
-                        Waking up the AI agent…
+                        Waking up ...
                     </span>
                 </div>
                 <p className={styles.statusHint}>
@@ -285,6 +291,9 @@ export const StageInput: React.FC<StageInputProps> = ({
                     repository with information about me. When you ask it
                     something, it opens that repository and comes up with an
                     answer.
+                </p>
+                <p className={styles.statusHint}>
+                    It will be ready in a few seconds.
                 </p>
             </div>
         );
