@@ -23,6 +23,8 @@ type Status = "initializing" | "ready" | "loading" | "error";
 interface StageInputProps {
     onQuestionSubmit?: (question: string) => void;
     onAnswer: (question: string, answer: string, suggestions: string[]) => void;
+    /** If true, hides the "Ready when you are..." message (e.g., when an answer is being displayed) */
+    hasActiveConversation?: boolean;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
@@ -65,6 +67,7 @@ const LOADING_HINT_INTERVAL_MS = 4000;
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
+    hasActiveConversation = false,
 }: StageInputProps) => {
     const [status, setStatus] = useState<Status>("initializing");
     const [inputValue, setInputValue] = useState("");
@@ -73,9 +76,10 @@ export const StageInput: React.FC<StageInputProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
     const [loadingHintIndex, setLoadingHintIndex] = useState(0);
-    // Bumped each time the user focuses the input, so the suggestion items
-    // replay their staggered "wake up" highlight and briefly draw the eye.
-    const [highlightTrigger, setHighlightTrigger] = useState(0);
+    // Set to true once the user focuses the input, so the suggestion items
+    // play their staggered "wake up" highlight once and briefly draw the eye.
+    const highlightTriggeredRef = useRef(false);
+    const [highlighted, setHighlighted] = useState(false);
     // When the user submits before the agent has finished warming up, we hold
     // the message here and fire it off automatically once status flips to
     // "ready" (see the flush effect below).
@@ -345,6 +349,8 @@ export const StageInput: React.FC<StageInputProps> = ({
         ? LOADING_HINTS[loadingHintIndex]
         : "Ask me anything…";
 
+    const isReady = status === "ready";
+
     return (
         <div className={styles.container}>
             {isInitializing && (
@@ -357,6 +363,11 @@ export const StageInput: React.FC<StageInputProps> = ({
                     </span>
                 </div>
             )}
+            {isReady && !hasActiveConversation && (
+                <div className={styles.statusRow}>
+                    <span className={styles.statusText}>Ready when you are…</span>
+                </div>
+            )}
             <form onSubmit={handleSubmit} className={styles.inputRow}>
                 <span className={styles.prompt}>{">_"}</span>
                 <textarea
@@ -364,7 +375,12 @@ export const StageInput: React.FC<StageInputProps> = ({
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    onFocus={() => setHighlightTrigger((t) => t + 1)}
+                    onFocus={() => {
+                        if (!highlightTriggeredRef.current) {
+                            highlightTriggeredRef.current = true;
+                            setHighlighted(true);
+                        }
+                    }}
                     placeholder={placeholder}
                     disabled={isBusy}
                     maxLength={MAX_INPUT_LENGTH}
@@ -397,14 +413,13 @@ export const StageInput: React.FC<StageInputProps> = ({
             <ul className={styles.suggestions}>
                 {suggestions.map((suggestion, index) => (
                     <li
-                        key={`${highlightTrigger}-${index}`}
+                        key={index}
                         className={cx(
                             styles.suggestionItem,
-                            highlightTrigger > 0 &&
-                                styles.suggestionItemHighlight,
+                            highlighted && styles.suggestionItemHighlight,
                         )}
                         style={
-                            highlightTrigger > 0
+                            highlighted
                                 ? { animationDelay: `${index * 80}ms` }
                                 : undefined
                         }

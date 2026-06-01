@@ -14,6 +14,22 @@ export interface BubblesAnimationProps {
     disableBubbles?: boolean;
 }
 
+interface BubbleConfig {
+    color: string;
+    radius: number;
+}
+
+/** Configure each background bubble here. Colors and sizes are fixed, positions are random. */
+const BUBBLES: BubbleConfig[] = [
+    { color: "rgba(255, 0, 0, 0.15)", radius: 300 },    // red
+    { color: "rgba(255, 0, 0, 0.15)", radius: 500 },    // red
+    { color: "rgba(0, 0, 255, 0.2)", radius: 250 },    // blue
+    { color: "rgba(0, 0, 255, 0.15)", radius: 650 },    // blue
+    { color: "rgba(255, 0, 255, 0.15)", radius: 150 },  // magenta
+    { color: "rgba(255, 0, 255, 0.2)", radius: 350 },  // magenta
+    { color: "rgba(0, 255, 255, 0.25)", radius: 700 },  // cyan
+];
+
 export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
     transparent = false,
     disableBubbles = false,
@@ -142,19 +158,12 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
         }
 
         function initBackgroundCircles() {
-            const colors = [
-                "rgba(255, 0, 0, 0.15)",
-                "rgba(0, 0, 255, 0.15)",
-                "rgba(255, 0, 255, 0.15)",
-                "rgba(0, 255, 255, 0.15)",
-            ];
-
-            for (let i = 0; i < 10; i++) {
+            for (const config of BUBBLES) {
                 backgroundCircles.current.push({
                     x: Math.random() * backgroundCanvas.width,
                     y: Math.random() * backgroundCanvas.height,
-                    radius: Math.random() * 300 + 200,
-                    color: colors[Math.floor(Math.random() * colors.length)],
+                    radius: config.radius,
+                    color: config.color,
                     speed: 0,
                     angle: 0,
                 });

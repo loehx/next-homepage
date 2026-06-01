@@ -184,7 +184,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         ? aiAnswer
                                             ? `> ${aiQuestion}\n\n${aiAnswer}`
                                             : aiQuestion
-                                              ? `Q: ${aiQuestion}`
+                                              ? `> ${aiQuestion}`
                                               : undefined
                                         : props.text
                                 }
@@ -194,6 +194,9 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     <StageInput
                                         onQuestionSubmit={handleQuestionSubmit}
                                         onAnswer={handleAnswer}
+                                        hasActiveConversation={
+                                            aiQuestion !== null
+                                        }
                                     />
                                 )}
                             </Window>

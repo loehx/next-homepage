@@ -68,7 +68,7 @@
 }
 
 .sendButton:disabled {
-    opacity: 0.4;
+    opacity: 0.8;
     cursor: not-allowed;
 }
 
@@ -90,6 +90,15 @@
     opacity: 1;
 }
 
+.statusDot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
@@ -97,7 +106,6 @@
 }
 
 .statusText {
-    font-size: 13px;
     padding-top: 3px;
 }
 
