@@ -159,9 +159,6 @@
 .windowInner blockquote {
     color: white;
     font-style: italic;
-    border-left: 3px solid var(--grey-4);
-    padding-left: .7em !important;
-    font-size: 90%;
 }
 
 .windowInner blockquote::before {
