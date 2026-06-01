@@ -21,11 +21,7 @@ interface ChatError {
 type Status = "initializing" | "ready" | "loading" | "error";
 
 interface StageInputProps {
-    onAnswer: (
-        question: string,
-        answer: string,
-        suggestions: string[],
-    ) => void;
+    onAnswer: (question: string, answer: string, suggestions: string[]) => void;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
@@ -342,8 +338,8 @@ export const StageInput: React.FC<StageInputProps> = ({
     const placeholder = queuedMessage
         ? "Waking up… your question is queued"
         : isBusy
-          ? LOADING_HINTS[loadingHintIndex]
-          : "Ask me anything…";
+        ? LOADING_HINTS[loadingHintIndex]
+        : "Ask me anything…";
 
     return (
         <div className={styles.container}>
