@@ -365,7 +365,9 @@ export const StageInput: React.FC<StageInputProps> = ({
             )}
             {isReady && !hasActiveConversation && (
                 <div className={styles.statusRow}>
-                    <span className={styles.statusText}>Ready when you are…</span>
+                    <span className={styles.statusText}>
+                        Ready when you are…
+                    </span>
                 </div>
             )}
             <form onSubmit={handleSubmit} className={styles.inputRow}>

@@ -1,8 +1,4 @@
-import React, {
-    useEffect,
-    useState,
-    useCallback,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./stage.module.css";
 import phoneFrameSrc from "./phone-frame.webp";
 import { useIsMobile } from "src/hooks";
@@ -87,7 +83,6 @@ export const Stage: React.FC<StageProps> = (props) => {
         props.backgroundImage?.url,
         props.phoneImage?.url,
     ]);
-
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -184,8 +179,8 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         ? aiAnswer
                                             ? `> ${aiQuestion}\n\n${aiAnswer}`
                                             : aiQuestion
-                                              ? `> ${aiQuestion}`
-                                              : undefined
+                                            ? `> ${aiQuestion}`
+                                            : undefined
                                         : props.text
                                 }
                                 onClose={aiActivated ? handleReset : undefined}
