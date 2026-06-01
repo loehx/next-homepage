@@ -1,5 +1,4 @@
 .container {
-    --cyan: #00ffff;
     font-family: var(--font-mono);
     color: var(--grey-1);
     display: flex;

@@ -349,7 +349,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                     <span className={styles.statusText}>
                         {queuedMessage
                             ? "Waking up the agent… I'll answer the moment I'm ready."
-                            : "Waking up the agent… you can already type your question."}
+                            : "Waking up the agent… time to think of a question."}
                     </span>
                 </div>
             )}
