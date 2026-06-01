@@ -1,59 +1,30 @@
 import React, { useRef, useEffect } from "react";
 
-// Each layer is built from several harmonics with deliberately incommensurate
-// wavelengths/speeds (and some travelling in the opposite direction) so the
-// crests never line up. This keeps the waterline looking organic and constantly
-// out of sync instead of a single repeating sine.
-interface Harmonic {
-    amplitude: number;
-    wavelength: number;
-    speed: number;
-    phase: number;
-}
-
-interface WaveConfig {
-    opacity: number;
-    yOffset: number;
-    harmonics: Harmonic[];
-}
-
-const WAVE_CONFIGS: WaveConfig[] = [
+const WAVE_CONFIGS = [
     {
+        amplitude: 24,
+        wavelength: 500,
+        speed: 0.2,
         opacity: 1,
+        phase: 0,
         yOffset: 0,
-        harmonics: [
-            { amplitude: 20, wavelength: 620, speed: 0.22, phase: 0 },
-            { amplitude: 11, wavelength: 290, speed: -0.31, phase: 1.7 },
-            { amplitude: 6, wavelength: 150, speed: 0.47, phase: 4.1 },
-        ],
     },
     {
+        amplitude: 18,
+        wavelength: 350,
+        speed: 0.15,
         opacity: 0.5,
-        yOffset: 14,
-        harmonics: [
-            { amplitude: 16, wavelength: 470, speed: -0.17, phase: 2.4 },
-            { amplitude: 9, wavelength: 230, speed: 0.29, phase: 0.6 },
-            { amplitude: 5, wavelength: 110, speed: -0.53, phase: 3.3 },
-        ],
+        phase: Math.PI / 2,
+        yOffset: 12,
     },
     {
+        amplitude: 14,
+        wavelength: 300,
+        speed: 0.1,
         opacity: 0.3,
-        yOffset: 26,
-        harmonics: [
-            { amplitude: 13, wavelength: 540, speed: 0.13, phase: 5.0 },
-            { amplitude: 7, wavelength: 270, speed: -0.23, phase: 1.1 },
-            { amplitude: 4, wavelength: 130, speed: 0.41, phase: 2.7 },
-        ],
-    },
-    {
-        opacity: 0.18,
-        yOffset: 40,
-        harmonics: [
-            { amplitude: 10, wavelength: 700, speed: -0.09, phase: 3.8 },
-            { amplitude: 6, wavelength: 330, speed: 0.19, phase: 0.2 },
-            { amplitude: 3, wavelength: 90, speed: -0.61, phase: 4.6 },
-        ],
-    },
+        phase: Math.PI,
+        yOffset: 24,
+    }, // slowest, most transparent
 ];
 
 const CANVAS_HEIGHT = 120;
@@ -89,26 +60,25 @@ export const AnimatedWaves: React.FC = () => {
         function drawWaves(time: number) {
             if (!ctx) return;
             ctx.clearRect(0, 0, width, height);
-            WAVE_CONFIGS.forEach((wave) => {
+            WAVE_CONFIGS.forEach((wave, i) => {
                 ctx.save();
                 ctx.globalAlpha = wave.opacity;
                 ctx.beginPath();
                 ctx.moveTo(0, height);
-                const baseline = height - 40 - wave.yOffset;
+                // Draw the wave
                 for (let x = 0; x <= width; x += 2) {
-                    let y = baseline;
-                    // Sum the harmonics; each drifts at its own speed/direction
-                    // so the layer's surface keeps shifting shape over time.
-                    for (let h = 0; h < wave.harmonics.length; h++) {
-                        const harmonic = wave.harmonics[h];
-                        const t =
-                            (x / harmonic.wavelength +
-                                (time * harmonic.speed) / 1000) *
-                                2 *
-                                Math.PI +
-                            harmonic.phase;
-                        y += Math.sin(t) * harmonic.amplitude;
-                    }
+                    // Use a combination of sine and cosine for a more organic look
+                    const t =
+                        (x / wave.wavelength + (time * wave.speed) / 1000) *
+                            2 *
+                            Math.PI +
+                        wave.phase;
+                    const y =
+                        Math.sin(t) * wave.amplitude +
+                        Math.cos(t * 0.7) * (wave.amplitude * 0.3) +
+                        height -
+                        40 -
+                        wave.yOffset;
                     ctx.lineTo(x, y);
                 }
                 ctx.lineTo(width, height);
