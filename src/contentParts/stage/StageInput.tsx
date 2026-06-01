@@ -78,6 +78,11 @@ export const StageInput: React.FC<StageInputProps> = ({
     // Bumped each time the user focuses the input, so the suggestion items
     // replay their staggered "wake up" highlight and briefly draw the eye.
     const [highlightTrigger, setHighlightTrigger] = useState(0);
+    // When the user submits before the agent has finished warming up, we hold
+    // the message here and fire it off automatically once status flips to
+    // "ready" (see the flush effect below).
+    const [queuedMessage, setQueuedMessage] = useState<string | null>(null);
+    const pendingMessageRef = useRef<string | null>(null);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -175,8 +180,10 @@ export const StageInput: React.FC<StageInputProps> = ({
     }, [initialize]);
 
     // Autofocus on desktop only; on touch devices it can trigger page zoom.
+    // We focus as soon as the input is visible (already during warmup) so the
+    // user can start typing immediately.
     useEffect(() => {
-        if (status !== "ready") return;
+        if (status !== "initializing" && status !== "ready") return;
         if (isCoarsePointerDevice()) return;
         inputRef.current?.focus();
     }, [status]);
@@ -242,22 +249,49 @@ export const StageInput: React.FC<StageInputProps> = ({
         [onAnswer],
     );
 
+    // Entry point for every submission (form, Enter key, suggestion click). If
+    // the agent is still warming up we queue the message instead of sending it,
+    // so the user never has to wait at an empty screen before typing.
+    const submitMessage = useCallback(
+        (text: string) => {
+            if (!text.trim()) return;
+            if (status === "initializing") {
+                pendingMessageRef.current = text;
+                setQueuedMessage(text);
+                setInputValue("");
+                return;
+            }
+            sendMessage(text);
+        },
+        [status, sendMessage],
+    );
+
+    // Once warmup finishes, fire any message the user queued while waiting.
+    useEffect(() => {
+        if (status !== "ready") return;
+        if (!pendingMessageRef.current) return;
+        const text = pendingMessageRef.current;
+        pendingMessageRef.current = null;
+        setQueuedMessage(null);
+        sendMessage(text);
+    }, [status, sendMessage]);
+
     const handleSubmit = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault();
-            if (inputValue.trim()) sendMessage(inputValue);
+            if (inputValue.trim()) submitMessage(inputValue);
         },
-        [inputValue, sendMessage],
+        [inputValue, submitMessage],
     );
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                if (inputValue.trim()) sendMessage(inputValue);
+                if (inputValue.trim()) submitMessage(inputValue);
             }
         },
-        [inputValue, sendMessage],
+        [inputValue, submitMessage],
     );
 
     // Auto-resize textarea.
@@ -281,28 +315,6 @@ export const StageInput: React.FC<StageInputProps> = ({
         return () => clearInterval(interval);
     }, [status]);
 
-    if (status === "initializing") {
-        return (
-            <div className={styles.container}>
-                <div className={styles.statusRow}>
-                    <span className={styles.spinner}></span>
-                    <span className={styles.statusText}>
-                        Waking up ...
-                    </span>
-                </div>
-                <p className={styles.statusHint}>
-                    The agent lives in my Cursor Cloud and has access to a small
-                    repository with information about me. When you ask it
-                    something, it opens that repository and comes up with an
-                    answer.
-                </p>
-                <p className={styles.statusHint}>
-                    It will be ready in a few seconds.
-                </p>
-            </div>
-        );
-    }
-
     if (status === "error") {
         return (
             <div className={styles.container}>
@@ -324,10 +336,27 @@ export const StageInput: React.FC<StageInputProps> = ({
         );
     }
 
-    const isBusy = status === "loading";
+    const isInitializing = status === "initializing";
+    const isBusy = status === "loading" || queuedMessage !== null;
+
+    const placeholder = queuedMessage
+        ? "Waking up… your question is queued"
+        : isBusy
+          ? LOADING_HINTS[loadingHintIndex]
+          : "Ask me anything…";
 
     return (
         <div className={styles.container}>
+            {isInitializing && (
+                <div className={styles.statusRow}>
+                    <span className={styles.spinner}></span>
+                    <span className={styles.statusText}>
+                        {queuedMessage
+                            ? "Waking up the agent… I'll answer the moment I'm ready."
+                            : "Waking up the agent… you can already type your question."}
+                    </span>
+                </div>
+            )}
             <form onSubmit={handleSubmit} className={styles.inputRow}>
                 <span className={styles.prompt}>{">_"}</span>
                 <textarea
@@ -336,11 +365,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     onFocus={() => setHighlightTrigger((t) => t + 1)}
-                    placeholder={
-                        isBusy
-                            ? LOADING_HINTS[loadingHintIndex]
-                            : "Ask me anything…"
-                    }
+                    placeholder={placeholder}
                     disabled={isBusy}
                     maxLength={MAX_INPUT_LENGTH}
                     rows={1}
@@ -385,7 +410,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                         }
                     >
                         <button
-                            onClick={() => sendMessage(suggestion)}
+                            onClick={() => submitMessage(suggestion)}
                             className={cx(
                                 styles.suggestionButton,
                                 isBusy && styles.suggestionButtonDisabled,
