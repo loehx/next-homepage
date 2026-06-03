@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import { useIsMobile } from "src/hooks";
 
 export interface BubblesAnimationProps {
@@ -19,16 +19,24 @@ interface BubbleConfig {
     radius: number;
 }
 
-/** Configure each background bubble here. Colors and sizes are fixed, positions are random. */
-const BUBBLES: BubbleConfig[] = [
-    { color: "rgba(255, 0, 0, 0.15)", radius: 300 }, // red
-    { color: "rgba(255, 0, 0, 0.15)", radius: 500 }, // red
-    { color: "rgba(0, 0, 255, 0.2)", radius: 250 }, // blue
-    { color: "rgba(0, 0, 255, 0.15)", radius: 650 }, // blue
-    { color: "rgba(255, 0, 255, 0.15)", radius: 150 }, // magenta
-    { color: "rgba(255, 0, 255, 0.2)", radius: 350 }, // magenta
-    { color: "rgba(0, 255, 255, 0.25)", radius: 700 }, // cyan
-];
+const BUBBLE_COUNT = 7;
+
+function generateRandomBubbles(): BubbleConfig[] {
+    const bubbles: BubbleConfig[] = [];
+    for (let i = 0; i < BUBBLE_COUNT; i++) {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const alpha = 0.1 + Math.random() * 0.2;
+        const radius = 100 + Math.random() * 300;
+        bubbles.push({
+            color: `rgba(${r}, ${g}, ${b}, ${alpha})`,
+            radius,
+        });
+    }
+    console.log("Generated bubbles:", bubbles);
+    return bubbles;
+}
 
 export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
     transparent = false,
@@ -38,6 +46,9 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile(true);
+    const [bubbleConfigs, setBubbleConfigs] = useState<BubbleConfig[]>(
+        generateRandomBubbles,
+    );
 
     // Background circles data
     const backgroundCircles = useRef<
@@ -50,6 +61,10 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             angle: number;
         }>
     >([]);
+
+    const handleRandomize = useCallback(() => {
+        setBubbleConfigs(generateRandomBubbles());
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current!;
@@ -157,8 +172,9 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             }
         }
 
-        function initBackgroundCircles() {
-            for (const config of BUBBLES) {
+        function initBackgroundCircles(configs: BubbleConfig[]) {
+            backgroundCircles.current = [];
+            for (const config of configs) {
                 backgroundCircles.current.push({
                     x: Math.random() * backgroundCanvas.width,
                     y: Math.random() * backgroundCanvas.height,
@@ -222,9 +238,9 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
             animationFrameId = requestAnimationFrame(animate);
         }
 
-        function init() {
+        function init(configs: BubbleConfig[]) {
             resizeCanvas();
-            initBackgroundCircles();
+            initBackgroundCircles(configs);
             if (!disableBubbles) {
                 for (let i = 0; i < baseBubbleCount; i++) {
                     createBubble();
@@ -244,7 +260,7 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
         }
 
         window.addEventListener("resize", handleResize);
-        init();
+        init(bubbleConfigs);
 
         return () => {
             window.removeEventListener("resize", handleResize);
@@ -255,12 +271,18 @@ export const BubblesAnimation: React.FC<BubblesAnimationProps> = ({
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [isMobile, disableBubbles]);
+    }, [isMobile, disableBubbles, bubbleConfigs]);
 
     return (
         <div
             ref={containerRef}
-            style={{ position: "relative", width: "100%", height: "100%" }}
+            onClick={handleRandomize}
+            style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                cursor: "pointer",
+            }}
         >
             {!transparent && (
                 <div

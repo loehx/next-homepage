@@ -9,6 +9,8 @@ interface WindowProps {
     text?: string;
     textStyle?: any;
     onClose?: () => void;
+    /** Dims the question blockquote (e.g. once the answer below it is shown). */
+    dimQuestion?: boolean;
 }
 
 export const Window: React.FC<WindowProps> = ({
@@ -17,6 +19,7 @@ export const Window: React.FC<WindowProps> = ({
     textStyle,
     children,
     onClose,
+    dimQuestion,
     ...props
 }) => {
     const html = useMemo(() => {
@@ -42,7 +45,13 @@ export const Window: React.FC<WindowProps> = ({
                 <span onClick={onClose}></span>
                 <span></span>
             </div>
-            <div className={styles.windowInner} style={textStyle}>
+            <div
+                className={cx(
+                    styles.windowInner,
+                    dimQuestion && styles.dimQuestion,
+                )}
+                style={textStyle}
+            >
                 <pre
                     className={styles.text}
                     dangerouslySetInnerHTML={{ __html: html }}

@@ -25,14 +25,31 @@ interface StageInputProps {
     onAnswer: (question: string, answer: string, suggestions: string[]) => void;
     /** If true, hides the "Ready when you are..." message (e.g., when an answer is being displayed) */
     hasActiveConversation?: boolean;
+    /**
+     * Emits the warmup "Hey agent, are you there?" exchange as markdown so the
+     * parent can render it through the same Window/conversation component the
+     * real chat uses. null once a real conversation takes over.
+     */
+    onWarmupTextChange?: (text: string | null) => void;
+    /**
+     * True once the warmup exchange is "answered" (agent ready, showing
+     * "Yes, I'm here!"); false while it's still warming up. Lets the parent dim
+     * the question blockquote the same way it does after a real answer.
+     */
+    onWarmupReadyChange?: (ready: boolean) => void;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
 // blows out the layout. We hard-cap them and drop any that don't fit.
 const MAX_SUGGESTION_LENGTH = 40;
 
+const sortSuggestionsByLength = (items: string[]): string[] =>
+    [...items].sort((a, b) => b.trim().length - a.trim().length);
+
 const capSuggestions = (items: string[]): string[] =>
-    items.filter((s) => s.trim().length <= MAX_SUGGESTION_LENGTH);
+    sortSuggestionsByLength(
+        items.filter((s) => s.trim().length <= MAX_SUGGESTION_LENGTH),
+    );
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
     "What skills does Alex have?",
@@ -64,10 +81,29 @@ const LOADING_HINTS = [
 ];
 const LOADING_HINT_INTERVAL_MS = 4000;
 
+// The agent greets the visitor like a sleepy person being woken up. While it
+// warms up we cycle through these one-liners (~2s each), then swap in the
+// "awake" line once initialization finishes.
+const WARMUP_QUESTION = "Hey agent, are you there?";
+const WARMUP_HINTS: { text: string; ms: number }[] = [
+    { text: "(moaning)", ms: 4000 },
+    { text: "What? Who's there?", ms: 2000 },
+    { text: "(Yawning)", ms: 3000 },
+    { text: "Oh bot, I need a coffee...", ms: 2000 },
+    { text: "(slurping sounds)", ms: 4000 },
+    { text: "Okay, gimme a second...", ms: 2000 },
+    { text: "(typing sounds)", ms: 3000 },
+    { text: "(silence)", ms: 2000 },
+    { text: "(typing sounds)", ms: 10000 },
+];
+const WARMUP_READY_ANSWER = "Yes, I'm here! What's up?";
+
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
     hasActiveConversation = false,
+    onWarmupTextChange,
+    onWarmupReadyChange,
 }: StageInputProps) => {
     const [status, setStatus] = useState<Status>("initializing");
     const [inputValue, setInputValue] = useState("");
@@ -76,6 +112,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
     const [loadingHintIndex, setLoadingHintIndex] = useState(0);
+    const [warmupHintIndex, setWarmupHintIndex] = useState(0);
     // Set to true once the user focuses the input, so the suggestion items
     // play their staggered "wake up" highlight once and briefly draw the eye.
     const highlightTriggeredRef = useRef(false);
@@ -97,6 +134,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     // here. Without this, an "ask" immediately after prewarm reliably 409s
     // with agent_busy because the warmup run is still active.
     const initialize = useCallback(async () => {
+        const initStartedAt = Date.now();
         setStatus("initializing");
         setErrorMessage(null);
         setErrorRetryable(true);
@@ -160,6 +198,14 @@ export const StageInput: React.FC<StageInputProps> = ({
                 setStatus("error");
                 return;
             }
+
+            const elapsedMs = Date.now() - initStartedAt;
+            // eslint-disable-next-line no-console
+            console.log(
+                `[AI agent] initialized in ${(elapsedMs / 1000).toFixed(
+                    2,
+                )}s (${elapsedMs}ms)`,
+            );
 
             setStatus("ready");
         } catch (error) {
@@ -319,6 +365,49 @@ export const StageInput: React.FC<StageInputProps> = ({
         return () => clearInterval(interval);
     }, [status]);
 
+    // While the agent warms up, step through the sleepy "are you there?"
+    // replies. Each line has its own dwell time, so we chain timeouts instead
+    // of using a fixed interval. We stop on the last line instead of looping so
+    // it doesn't reset to "(moaning)" on a slow cold start.
+    useEffect(() => {
+        if (status !== "initializing") return;
+        setWarmupHintIndex(0);
+        let timeout: ReturnType<typeof setTimeout>;
+        const advance = (i: number) => {
+            if (i >= WARMUP_HINTS.length - 1) return;
+            timeout = setTimeout(() => {
+                setWarmupHintIndex(i + 1);
+                advance(i + 1);
+            }, WARMUP_HINTS[i].ms);
+        };
+        advance(0);
+        return () => clearTimeout(timeout);
+    }, [status]);
+
+    // Surface the warmup exchange as markdown so the parent renders it through
+    // the same Window/conversation component the real chat uses (identical
+    // styling — only the text differs). Cleared once a real conversation takes
+    // over or the agent errors out.
+    useEffect(() => {
+        if (!onWarmupTextChange) return;
+        if (hasActiveConversation || status === "error") {
+            onWarmupTextChange(null);
+            return;
+        }
+        const answer =
+            status === "initializing"
+                ? WARMUP_HINTS[warmupHintIndex].text
+                : WARMUP_READY_ANSWER;
+        onWarmupTextChange(`> ${WARMUP_QUESTION}\n\n${answer}`);
+    }, [status, warmupHintIndex, hasActiveConversation, onWarmupTextChange]);
+
+    // Mirror the warmup "answered" state up so the parent can dim the question
+    // once the agent is awake (and un-dim it while still warming up).
+    useEffect(() => {
+        if (!onWarmupReadyChange) return;
+        onWarmupReadyChange(!hasActiveConversation && status === "ready");
+    }, [status, hasActiveConversation, onWarmupReadyChange]);
+
     if (status === "error") {
         return (
             <div className={styles.container}>
@@ -340,7 +429,6 @@ export const StageInput: React.FC<StageInputProps> = ({
         );
     }
 
-    const isInitializing = status === "initializing";
     const isBusy = status === "loading" || queuedMessage !== null;
 
     const placeholder = queuedMessage
@@ -349,27 +437,8 @@ export const StageInput: React.FC<StageInputProps> = ({
         ? LOADING_HINTS[loadingHintIndex]
         : "Ask me anything…";
 
-    const isReady = status === "ready";
-
     return (
         <div className={styles.container}>
-            {isInitializing && (
-                <div className={styles.statusRow}>
-                    <span className={styles.spinner}></span>
-                    <span className={styles.statusText}>
-                        {queuedMessage
-                            ? "Waking up the agent… I'll answer the moment I'm ready."
-                            : "Waking up the agent… time to think of a question."}
-                    </span>
-                </div>
-            )}
-            {isReady && !hasActiveConversation && (
-                <div className={styles.statusRow}>
-                    <span className={styles.statusText}>
-                        Ready when you are…
-                    </span>
-                </div>
-            )}
             <form onSubmit={handleSubmit} className={styles.inputRow}>
                 <span className={styles.prompt}>{">_"}</span>
                 <textarea

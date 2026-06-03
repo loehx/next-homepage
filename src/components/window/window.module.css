@@ -159,6 +159,11 @@
 .windowInner blockquote {
     color: white;
     font-style: italic;
+    transition: opacity 0.3s ease;
+}
+
+.dimQuestion blockquote {
+    opacity: 0.5;
 }
 
 .windowInner blockquote::before {

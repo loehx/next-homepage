@@ -38,6 +38,8 @@ export const Stage: React.FC<StageProps> = (props) => {
     }));
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
     const [aiQuestion, setAiQuestion] = useState<string | null>(null);
+    const [warmupText, setWarmupText] = useState<string | null>(null);
+    const [warmupReady, setWarmupReady] = useState(false);
     const [aiActivated, setAiActivated] = useState(false);
     const [agentEnabled, setAgentEnabled] = useState(false);
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
@@ -180,8 +182,12 @@ export const Stage: React.FC<StageProps> = (props) => {
                                             ? `> ${aiQuestion}\n\n${aiAnswer}`
                                             : aiQuestion
                                             ? `> ${aiQuestion}`
-                                            : undefined
+                                            : warmupText ?? undefined
                                         : props.text
+                                }
+                                dimQuestion={
+                                    aiActivated &&
+                                    (aiAnswer !== null || warmupReady)
                                 }
                                 onClose={aiActivated ? handleReset : undefined}
                             >
@@ -192,6 +198,8 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         hasActiveConversation={
                                             aiQuestion !== null
                                         }
+                                        onWarmupTextChange={setWarmupText}
+                                        onWarmupReadyChange={setWarmupReady}
                                     />
                                 )}
                             </Window>
