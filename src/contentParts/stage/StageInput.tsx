@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import styles from "./StageInput.module.css";
 import cx from "classnames";
-import { isCoarsePointerDevice, usePreventTouchInputZoom } from "src/hooks";
+import { isCoarsePointerDevice } from "src/hooks";
 
 interface ChatResponse {
     agentId: string;
@@ -87,14 +87,15 @@ const LOADING_HINT_INTERVAL_MS = 4000;
 const WARMUP_QUESTION = "Hey agent, are you there?";
 const WARMUP_HINTS: { text: string; ms: number }[] = [
     { text: "(moaning)", ms: 4000 },
-    { text: "What? Who's there?", ms: 2000 },
+    { text: "What.. who is it?", ms: 2000 },
     { text: "(Yawning)", ms: 3000 },
-    { text: "Oh bot, I need a coffee...", ms: 2000 },
+    { text: "Oh boy, I need a coffee...", ms: 2000 },
     { text: "(slurping sounds)", ms: 4000 },
     { text: "Okay, gimme a second...", ms: 2000 },
     { text: "(typing sounds)", ms: 3000 },
     { text: "(silence)", ms: 2000 },
-    { text: "(typing sounds)", ms: 10000 },
+    { text: "(typing sounds)", ms: 5000 },
+    { text: "(nothingness)", ms: 5000 },
 ];
 const WARMUP_READY_ANSWER = "Yes, I'm here! What's up?";
 
@@ -124,8 +125,6 @@ export const StageInput: React.FC<StageInputProps> = ({
     const pendingMessageRef = useRef<string | null>(null);
     const agentIdRef = useRef<string | null>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
-
-    usePreventTouchInputZoom(true);
 
     // Initialize: restore agentId from session storage (if any), prewarm the
     // agent, and keep polling via "wait" until the warmup run drains. The
@@ -435,7 +434,7 @@ export const StageInput: React.FC<StageInputProps> = ({
         ? "Waking up… your question is queued"
         : isBusy
         ? LOADING_HINTS[loadingHintIndex]
-        : "Ask me anything…";
+        : "";
 
     return (
         <div className={styles.container}>

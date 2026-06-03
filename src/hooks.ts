@@ -65,37 +65,3 @@ export const isCoarsePointerDevice = (): boolean => {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 };
-
-/**
- * On mobile/tablet touch, lock viewport maximum-scale while mounted so
- * focusing the chat input does not zoom the page. No effect on desktop.
- */
-export const usePreventTouchInputZoom = (active = true): void => {
-    useEffect(() => {
-        if (!active || typeof window === "undefined") return;
-        if (!isCoarsePointerDevice()) return;
-
-        const meta = document.querySelector('meta[name="viewport"]');
-        if (!meta) return;
-
-        const previous = meta.getAttribute("content") ?? "";
-        const withoutZoomLimits = previous
-            .split(",")
-            .map((part) => part.trim())
-            .filter(
-                (part) =>
-                    part &&
-                    !/^maximum-scale=/i.test(part) &&
-                    !/^user-scalable=/i.test(part),
-            );
-
-        meta.setAttribute(
-            "content",
-            [...withoutZoomLimits, "maximum-scale=1"].join(", "),
-        );
-
-        return () => {
-            meta.setAttribute("content", previous);
-        };
-    }, [active]);
-};
