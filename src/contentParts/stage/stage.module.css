@@ -120,7 +120,7 @@
 .description {
     width: 500px;
     margin: 0 auto;
-    opacity: var(--scroll);
+    opacity: 1;
 }
 
 @media only screen and (max-width: 799px) {

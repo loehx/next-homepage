@@ -54,7 +54,7 @@ export const Companies: React.FC<CompaniesProps> = (props) => {
         updateSetWidth();
 
         const isMobile = window.innerWidth <= 768;
-        const speed = isMobile ? 0.5 : 0.5;
+        const speed = isMobile ? 0.35 : 0.35;
         // Max scroll speed when the cursor reaches the very edge of the module.
         const MAX_HOVER_SPEED = 3;
 
