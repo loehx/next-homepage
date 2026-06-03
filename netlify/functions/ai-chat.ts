@@ -9,6 +9,7 @@ import {
     TERMINAL_STATUSES,
     WARMUP_PROMPT,
 } from "./_cursor";
+import { logConversationTurn } from "./_email";
 
 interface ChatRequest {
     mode: "prewarm" | "wait" | "ask";
@@ -245,6 +246,17 @@ export const handler: Handler = async (event) => {
             }
 
             const parsed = extractJsonFromResult(result.result);
+
+            // Best-effort conversation log to email. Awaited so it runs before
+            // the function freezes, but it never throws (see _email.ts), so a
+            // rate limit or any error can't break the chat response. The
+            // warmup/prewarm "initiation" exchange is intentionally excluded —
+            // only real "ask" turns are logged.
+            await logConversationTurn({
+                sessionId: currentAgentId,
+                question: text,
+                answer: parsed.answer,
+            });
 
             return {
                 statusCode: 200,
