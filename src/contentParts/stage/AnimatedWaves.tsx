@@ -1,13 +1,15 @@
 import React, { useRef, useEffect } from "react";
 
-// Smooth rolling ocean swell. The earlier Gerstner version pinched the crests
-// so hard it read as jagged mountains; real water is rounded on both the crests
-// and the troughs. Each layer is a dominant long swell plus a gentle, slower
-// secondary roll travelling the other way, so the surface undulates softly and
-// the layers stay out of sync. A faint blue tint on the back layers adds depth.
+// Three layered waterlines, each a single clean sine travelling left to right
+// at its own speed. Wavelengths are expressed as "waves across the viewport"
+// (~1.5) so they scale with the canvas width. A faint blue tint on the back
+// layers adds depth.
 interface Swell {
     amplitude: number;
-    wavelength: number;
+    // Number of full waves to fit across the viewport width. The pixel
+    // wavelength is derived from the canvas width at draw time, so the waves
+    // scale with the viewport instead of being a fixed size.
+    waves: number;
     speed: number;
     phase: number;
 }
@@ -22,21 +24,33 @@ const WAVE_CONFIGS: WaveConfig[] = [
     {
         color: "rgba(214, 230, 245, 0.35)",
         yOffset: 0,
-        swells: [{ amplitude: 22, wavelength: 560, speed: -0.08, phase: 1.1 }],
+        swells: [{ amplitude: 26, waves: 1.25, speed: -0.04, phase: 1.1 }],
     },
     {
         color: "rgba(232, 241, 250, 0.55)",
         yOffset: 0,
-        swells: [{ amplitude: 28, wavelength: 380, speed: -0.24, phase: 2.4 }],
+        swells: [{ amplitude: 32, waves: 1.75, speed: -0.07, phase: 2.4 }],
     },
     {
         color: "rgba(255, 255, 255, 1)",
         yOffset: 10,
-        swells: [{ amplitude: 32, wavelength: 460, speed: -0.14, phase: 0 }],
+        swells: [{ amplitude: 24, waves: 1.5, speed: -0.1, phase: 0 }],
+        // front white is fastest; the two layers behind roll slower
     },
 ];
 
-const CANVAS_HEIGHT = 160;
+// On desktop we want somewhat more, tighter waves across the viewport than on
+// mobile, where a couple of wide waves read better. The configured `waves`
+// counts are the mobile baseline and get multiplied on wider screens.
+const DESKTOP_BREAKPOINT_PX = 800;
+const DESKTOP_WAVES_MULTIPLIER = 1.1;
+
+// Canvas height as a fraction of the viewport height (25vh).
+const CANVAS_HEIGHT_VH = 0.25;
+const getCanvasHeight = () =>
+    typeof window !== "undefined"
+        ? Math.round(window.innerHeight * CANVAS_HEIGHT_VH)
+        : 160;
 
 // Intro sweep tuning: how long the wavefront takes to cross the full width,
 // how wide the fade-in band at the front is, and how much later each successive
@@ -57,15 +71,17 @@ export const AnimatedWaves: React.FC = () => {
 
         const dpr =
             typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-        const height = CANVAS_HEIGHT;
+        let height = getCanvasHeight();
         let width = canvas.parentElement
             ? canvas.parentElement.offsetWidth
             : 1440;
 
         const setupCanvas = () => {
+            height = getCanvasHeight();
             width = canvas.parentElement
                 ? canvas.parentElement.offsetWidth
                 : 1440;
+            canvas.style.height = `${height}px`;
             canvas.width = Math.floor(width * dpr);
             canvas.height = Math.floor(height * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -101,13 +117,14 @@ export const AnimatedWaves: React.FC = () => {
 
             // A single clean sine per layer, travelling left to right. Negative
             // speed advances the crests rightward over time.
+            const wavesMultiplier =
+                width >= DESKTOP_BREAKPOINT_PX ? DESKTOP_WAVES_MULTIPLIER : 1;
             let displacement = 0;
             for (let s = 0; s < wave.swells.length; s++) {
                 const swell = wave.swells[s];
+                const wavelength = width / (swell.waves * wavesMultiplier);
                 const t =
-                    (x / swell.wavelength + seconds * swell.speed) *
-                        2 *
-                        Math.PI +
+                    (x / wavelength + seconds * swell.speed) * 2 * Math.PI +
                     swell.phase;
                 displacement += Math.sin(t) * swell.amplitude;
             }
@@ -151,8 +168,7 @@ export const AnimatedWaves: React.FC = () => {
     return (
         <canvas
             ref={canvasRef}
-            style={{ width: "100%", height: CANVAS_HEIGHT, display: "block" }}
-            height={CANVAS_HEIGHT}
+            style={{ width: "100%", height: "25vh", display: "block" }}
         />
     );
 };
