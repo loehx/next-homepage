@@ -52,9 +52,9 @@ const capSuggestions = (items: string[]): string[] =>
     );
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
-    "What skills does Alex have?",
-    "Who is Alex?",
     "What is he working on right now?",
+    "Can he support us in a project?",
+    "Who is Alex?",
 ]);
 
 const STORAGE_KEY = "aiAgentId";
