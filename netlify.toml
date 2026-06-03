@@ -8,7 +8,7 @@ NETLIFY_NEXT_PLUGIN_SKIP = "true"
 NODE_VERSION = "22"
 
 [dev]
-command = "yarn dev"
+command = "yarn dev:next"
 targetPort = 3000
 port = 8888
 publish = "out"

@@ -38,9 +38,9 @@ export async function logConversationTurn(params: {
     }
 
     const subject = `Conversation ${sessionId} | loehx.com`;
-    const body = `${cursorSessionLink(
+    const body = `Q: ${question}\n\n${answer}\n\n${cursorSessionLink(
         sessionId,
-    )}\n\nQ: ${question}\n\n${answer}`;
+    )}`;
 
     try {
         const response = await fetch(RESEND_API_URL, {

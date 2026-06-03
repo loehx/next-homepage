@@ -6,8 +6,8 @@
         "node": "^22.0.0"
     },
     "scripts": {
-        "dev": "next dev",
-        "dev:netlify": "netlify dev",
+        "dev": "netlify dev",
+        "dev:next": "next dev",
         "build:agent-api": "ts-node --compiler-options '{\"module\":\"commonjs\",\"target\":\"es2019\"}' data/agentApi.generate.ts",
         "build": "yarn build:agent-api && next build && next export",
         "start": "next dev -p 8080",
