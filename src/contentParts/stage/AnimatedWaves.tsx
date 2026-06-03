@@ -45,12 +45,8 @@ const WAVE_CONFIGS: WaveConfig[] = [
 const DESKTOP_BREAKPOINT_PX = 800;
 const DESKTOP_WAVES_MULTIPLIER = 1.1;
 
-// Canvas height as a fraction of the viewport height (25vh).
-const CANVAS_HEIGHT_VH = 0.25;
-const getCanvasHeight = () =>
-    typeof window !== "undefined"
-        ? Math.round(window.innerHeight * CANVAS_HEIGHT_VH)
-        : 160;
+const CANVAS_HEIGHT = 160;
+const getCanvasHeight = () => CANVAS_HEIGHT;
 
 // Intro sweep tuning: how long the wavefront takes to cross the full width,
 // how wide the fade-in band at the front is, and how much later each successive
@@ -168,7 +164,8 @@ export const AnimatedWaves: React.FC = () => {
     return (
         <canvas
             ref={canvasRef}
-            style={{ width: "100%", height: "25vh", display: "block" }}
+            style={{ width: "100%", height: CANVAS_HEIGHT, display: "block" }}
+            height={CANVAS_HEIGHT}
         />
     );
 };
