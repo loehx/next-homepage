@@ -1,0 +1,95 @@
+.page {
+    min-height: 100vh;
+    background-color: #0f1115;
+    color: var(--grey-1);
+    padding: 4rem 1.25rem 6rem;
+    font-family: var(--font-default);
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+.inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--grey-3);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.back:hover {
+    color: var(--cyan);
+}
+
+.title {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+    color: #ffffff;
+    margin: 0 0 0.25rem;
+}
+
+.updated {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--grey-4);
+    margin: 0 0 2.5rem;
+}
+
+.heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 2.5rem 0 0.75rem;
+}
+
+.subheading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--grey-1);
+    margin: 1.5rem 0 0.5rem;
+}
+
+.text {
+    margin: 0 0 1rem;
+    color: var(--grey-2);
+}
+
+.list {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+    color: var(--grey-2);
+}
+
+.list li {
+    margin-bottom: 0.4rem;
+}
+
+.link {
+    color: var(--secondary-300);
+    text-decoration: underline;
+}
+
+.link:hover {
+    color: var(--cyan);
+}
+
+.note {
+    display: block;
+    margin: 1.5rem 0;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--yellow);
+    background-color: rgba(255, 187, 0, 0.08);
+    font-size: 0.9rem;
+    color: var(--grey-2);
+}
+
+.placeholder {
+    color: var(--yellow);
+    font-style: italic;
+}
