@@ -236,7 +236,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         asset={props.phoneImage}
                                         priority
                                         alt="profile picture of me outside looking slightly up"
-                                        sizes="(min-width: 768px) 100px, 200px"
+                                        sizes="(min-width: 800px) 300px, 100px"
                                         onLoadingComplete={() =>
                                             setPhoneImageLoaded(true)
                                         }
@@ -246,7 +246,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                             <Image
                                 src={phoneFrameSrc}
                                 alt={"iphone frame"}
-                                sizes="(min-width: 768px) 100px, 200px"
+                                sizes="(min-width: 800px) 300px, 100px"
                                 priority
                                 onLoadingComplete={() =>
                                     setPhoneFrameLoaded(true)
