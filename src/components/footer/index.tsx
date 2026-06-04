@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./footer.module.css";
 import { FooterEntry } from "data/definitions";
 import { Window } from "@components/window";
-import Link from "next/link";
 import { useInitializeClass, useIsMobile } from "src/hooks";
 import { FadeIn } from "@components/fadeIn";
 import { Image } from "@components/image";
@@ -44,15 +43,14 @@ export const Footer: React.FC<FooterEntry> = (props) => {
                 )}
                 <nav>
                     <ul className={styles.metaNav}>
-                        {props.metaNavigation?.map((item) => (
-                            <li key={item.id}>
-                                <Link href={item.slug}>
-                                    {item.teaserTitle || item.title}
-                                </Link>
-                            </li>
-                        ))}
                         <li>
-                            <a href="/datenschutz">Datenschutz</a>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/imprint">Imprint</a>
+                        </li>
+                        <li>
+                            <a href="/datenschutz">Privacy Policy</a>
                         </li>
                     </ul>
                 </nav>
