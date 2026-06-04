@@ -28,8 +28,10 @@ export async function logConversationTurn(params: {
     sessionId: string;
     question: string;
     answer: string;
+    /** Browser UI language (navigator.language), if the client sent it. */
+    locale?: string;
 }): Promise<void> {
-    const { sessionId, question, answer } = params;
+    const { sessionId, question, answer, locale } = params;
 
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
@@ -38,7 +40,8 @@ export async function logConversationTurn(params: {
     }
 
     const subject = `Conversation ${sessionId} | loehx.com`;
-    const body = `Q: ${question}\n\n${answer}\n\n${cursorSessionLink(
+    const localeLine = locale ? `Browser locale: ${locale}\n\n` : "";
+    const body = `Q: ${question}\n\n${answer}\n\n${localeLine}${cursorSessionLink(
         sessionId,
     )}`;
 

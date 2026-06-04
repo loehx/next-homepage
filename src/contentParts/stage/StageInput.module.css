@@ -246,6 +246,24 @@
     cursor: not-allowed;
 }
 
+.privacyHint {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--grey-4);
+    max-width: 60ch;
+}
+
+.privacyHintLink {
+    color: var(--grey-3);
+    text-decoration: underline;
+    transition: color 0.15s ease;
+}
+
+.privacyHintLink:hover {
+    color: var(--cyan);
+}
+
 @media only screen and (min-width: 800px) {
     .input {
         font-size: 14px;

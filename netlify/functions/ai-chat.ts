@@ -16,7 +16,10 @@ interface ChatRequest {
     agentId?: string;
     runId?: string;
     text?: string;
-    /** Visitor's browser locale (e.g. "de-DE"), forwarded to the agent as context. */
+    /**
+     * Visitor's browser locale (navigator.language, e.g. "de-DE"). Forwarded
+     * to the agent as plain context and included in the conversation log.
+     */
     locale?: string;
 }
 
@@ -259,6 +262,7 @@ export const handler: Handler = async (event) => {
                 sessionId: currentAgentId,
                 question: text,
                 answer: parsed.answer,
+                locale,
             });
 
             return {

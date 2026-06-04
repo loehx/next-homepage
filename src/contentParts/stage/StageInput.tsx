@@ -517,6 +517,20 @@ export const StageInput: React.FC<StageInputProps> = ({
                     </li>
                 ))}
             </ul>
+
+            <p className={styles.privacyHint}>
+                Every chat lands in my (Alex&apos;s) inbox — leave your email or
+                phone if you&apos;d like a reply; details in my{" "}
+                <a
+                    href="/datenschutz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.privacyHintLink}
+                >
+                    privacy policy
+                </a>
+                .
+            </p>
         </div>
     );
 };
