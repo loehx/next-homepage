@@ -605,7 +605,7 @@
                             "content": [
                                 {
                                     "nodeType": "text",
-                                    "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                    "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                     "marks": [],
                                     "data": {}
                                 },
@@ -625,7 +625,7 @@
                                 },
                                 {
                                     "nodeType": "text",
-                                    "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                    "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                     "marks": [],
                                     "data": {}
                                 }
@@ -637,7 +637,7 @@
                             "content": [
                                 {
                                     "nodeType": "text",
-                                    "value": "Pros",
+                                    "value": "Content & Images",
                                     "marks": [
                                         {
                                             "type": "bold"
@@ -647,7 +647,7 @@
                                 },
                                 {
                                     "nodeType": "text",
-                                    "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                    "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                     "marks": [],
                                     "data": {}
                                 }
@@ -659,7 +659,7 @@
                             "content": [
                                 {
                                     "nodeType": "text",
-                                    "value": "Cons",
+                                    "value": "Latest feature: AI Chat",
                                     "marks": [
                                         {
                                             "type": "bold"
@@ -669,7 +669,7 @@
                                 },
                                 {
                                     "nodeType": "text",
-                                    "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                    "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                     "marks": [],
                                     "data": {}
                                 }
@@ -720,135 +720,6 @@
                 },
                 "imageRight": false,
                 "imageWidth": 36
-            },
-            {
-                "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                "type": "linksmodule",
-                "name": "Agile Methoden",
-                "title": "Agile Methoden",
-                "links": [
-                    {
-                        "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                        "type": "link",
-                        "name": "1-on-1 Coaching",
-                        "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                        "image": {
-                            "id": "1A2j4cv98Czz3eNOsmg0N2",
-                            "type": "asset",
-                            "name": "1-on-1 coaching logo",
-                            "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                            "width": 422,
-                            "height": 348
-                        },
-                        "file": {
-                            "id": "2sfnTGRsFxmpeyLtD9loED",
-                            "type": "asset",
-                            "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                            "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                            "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                        }
-                    },
-                    {
-                        "id": "74rmZrWOtnH4U8jqyFDw0M",
-                        "type": "link",
-                        "name": "Agile Team-Diagnostik",
-                        "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                        "image": {
-                            "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                            "type": "asset",
-                            "name": "agile team diagnostik logo",
-                            "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                            "width": 428,
-                            "height": 368
-                        },
-                        "file": {
-                            "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                            "type": "asset",
-                            "name": "Agile Team-Diagnostik -agile -04 2020",
-                            "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                        }
-                    },
-                    {
-                        "id": "2qej3bzxzbE5eF1816BX8h",
-                        "type": "link",
-                        "name": "Feedbackgespräch 1-on-1",
-                        "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                        "image": {
-                            "id": "7FQuELoI6KIxqhnAD9di9r",
-                            "type": "asset",
-                            "name": "feedbackgespräch 1-on-1 logo",
-                            "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                            "width": 270,
-                            "height": 282
-                        },
-                        "file": {
-                            "id": "G8oEj206DvIVy8zO5swTs",
-                            "type": "asset",
-                            "name": "Feedbackgespräch -agile -04 2020",
-                            "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                        }
-                    },
-                    {
-                        "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                        "type": "link",
-                        "name": "Cynefin Framework",
-                        "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                        "image": {
-                            "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                            "type": "asset",
-                            "name": "cynefin framework logo",
-                            "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                            "width": 900,
-                            "height": 934
-                        },
-                        "file": {
-                            "id": "2PORRQ0UgKpATICHFPrEI8",
-                            "type": "asset",
-                            "name": "Cynefin Framework -agile -03 2020",
-                            "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                        }
-                    },
-                    {
-                        "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                        "type": "link",
-                        "name": "Kon-Meeting",
-                        "description": "Das konstruktive Meeting mit modernen Methoden",
-                        "image": {
-                            "id": "39dcG4RqTyXd3m5udzErns",
-                            "type": "asset",
-                            "name": "kon-meeting logo",
-                            "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                            "width": 516,
-                            "height": 566
-                        },
-                        "file": {
-                            "id": "246DwYPTl9iyQUzUjYvPcH",
-                            "type": "asset",
-                            "name": "Kon-Meeting -agile 12 2019",
-                            "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                        }
-                    },
-                    {
-                        "id": "1iVyfLLNMBNO3RiMNxchqi",
-                        "type": "link",
-                        "name": "Treiberupdate",
-                        "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                        "image": {
-                            "id": "6FPr9mtF04TtCWA2GWac6F",
-                            "type": "asset",
-                            "name": "treiber update logo",
-                            "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                            "width": 291,
-                            "height": 226
-                        },
-                        "file": {
-                            "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                            "type": "asset",
-                            "name": "Treiberfindung -agile -11 2019",
-                            "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                        }
-                    }
-                ]
             }
         ],
         "slug": "/",
@@ -1526,7 +1397,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                 "marks": [],
                                                 "data": {}
                                             },
@@ -1546,7 +1417,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -1558,7 +1429,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Pros",
+                                                "value": "Content & Images",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -1568,7 +1439,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -1580,7 +1451,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Cons",
+                                                "value": "Latest feature: AI Chat",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -1590,7 +1461,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -1641,135 +1512,6 @@
                             },
                             "imageRight": false,
                             "imageWidth": 36
-                        },
-                        {
-                            "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                            "type": "linksmodule",
-                            "name": "Agile Methoden",
-                            "title": "Agile Methoden",
-                            "links": [
-                                {
-                                    "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                    "type": "link",
-                                    "name": "1-on-1 Coaching",
-                                    "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                    "image": {
-                                        "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                        "type": "asset",
-                                        "name": "1-on-1 coaching logo",
-                                        "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                        "width": 422,
-                                        "height": 348
-                                    },
-                                    "file": {
-                                        "id": "2sfnTGRsFxmpeyLtD9loED",
-                                        "type": "asset",
-                                        "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                        "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                        "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                    "type": "link",
-                                    "name": "Agile Team-Diagnostik",
-                                    "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                    "image": {
-                                        "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                        "type": "asset",
-                                        "name": "agile team diagnostik logo",
-                                        "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                        "width": 428,
-                                        "height": 368
-                                    },
-                                    "file": {
-                                        "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                        "type": "asset",
-                                        "name": "Agile Team-Diagnostik -agile -04 2020",
-                                        "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2qej3bzxzbE5eF1816BX8h",
-                                    "type": "link",
-                                    "name": "Feedbackgespräch 1-on-1",
-                                    "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                    "image": {
-                                        "id": "7FQuELoI6KIxqhnAD9di9r",
-                                        "type": "asset",
-                                        "name": "feedbackgespräch 1-on-1 logo",
-                                        "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                        "width": 270,
-                                        "height": 282
-                                    },
-                                    "file": {
-                                        "id": "G8oEj206DvIVy8zO5swTs",
-                                        "type": "asset",
-                                        "name": "Feedbackgespräch -agile -04 2020",
-                                        "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                    "type": "link",
-                                    "name": "Cynefin Framework",
-                                    "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                    "image": {
-                                        "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                        "type": "asset",
-                                        "name": "cynefin framework logo",
-                                        "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                        "width": 900,
-                                        "height": 934
-                                    },
-                                    "file": {
-                                        "id": "2PORRQ0UgKpATICHFPrEI8",
-                                        "type": "asset",
-                                        "name": "Cynefin Framework -agile -03 2020",
-                                        "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                    "type": "link",
-                                    "name": "Kon-Meeting",
-                                    "description": "Das konstruktive Meeting mit modernen Methoden",
-                                    "image": {
-                                        "id": "39dcG4RqTyXd3m5udzErns",
-                                        "type": "asset",
-                                        "name": "kon-meeting logo",
-                                        "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                        "width": 516,
-                                        "height": 566
-                                    },
-                                    "file": {
-                                        "id": "246DwYPTl9iyQUzUjYvPcH",
-                                        "type": "asset",
-                                        "name": "Kon-Meeting -agile 12 2019",
-                                        "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                    "type": "link",
-                                    "name": "Treiberupdate",
-                                    "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                    "image": {
-                                        "id": "6FPr9mtF04TtCWA2GWac6F",
-                                        "type": "asset",
-                                        "name": "treiber update logo",
-                                        "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                        "width": 291,
-                                        "height": 226
-                                    },
-                                    "file": {
-                                        "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                        "type": "asset",
-                                        "name": "Treiberfindung -agile -11 2019",
-                                        "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                    }
-                                }
-                            ]
                         }
                     ],
                     "slug": "/",
@@ -2976,7 +2718,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                 "marks": [],
                                                 "data": {}
                                             },
@@ -2996,7 +2738,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -3008,7 +2750,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Pros",
+                                                "value": "Content & Images",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -3018,7 +2760,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -3030,7 +2772,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Cons",
+                                                "value": "Latest feature: AI Chat",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -3040,7 +2782,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -3091,135 +2833,6 @@
                             },
                             "imageRight": false,
                             "imageWidth": 36
-                        },
-                        {
-                            "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                            "type": "linksmodule",
-                            "name": "Agile Methoden",
-                            "title": "Agile Methoden",
-                            "links": [
-                                {
-                                    "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                    "type": "link",
-                                    "name": "1-on-1 Coaching",
-                                    "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                    "image": {
-                                        "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                        "type": "asset",
-                                        "name": "1-on-1 coaching logo",
-                                        "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                        "width": 422,
-                                        "height": 348
-                                    },
-                                    "file": {
-                                        "id": "2sfnTGRsFxmpeyLtD9loED",
-                                        "type": "asset",
-                                        "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                        "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                        "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                    "type": "link",
-                                    "name": "Agile Team-Diagnostik",
-                                    "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                    "image": {
-                                        "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                        "type": "asset",
-                                        "name": "agile team diagnostik logo",
-                                        "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                        "width": 428,
-                                        "height": 368
-                                    },
-                                    "file": {
-                                        "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                        "type": "asset",
-                                        "name": "Agile Team-Diagnostik -agile -04 2020",
-                                        "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2qej3bzxzbE5eF1816BX8h",
-                                    "type": "link",
-                                    "name": "Feedbackgespräch 1-on-1",
-                                    "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                    "image": {
-                                        "id": "7FQuELoI6KIxqhnAD9di9r",
-                                        "type": "asset",
-                                        "name": "feedbackgespräch 1-on-1 logo",
-                                        "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                        "width": 270,
-                                        "height": 282
-                                    },
-                                    "file": {
-                                        "id": "G8oEj206DvIVy8zO5swTs",
-                                        "type": "asset",
-                                        "name": "Feedbackgespräch -agile -04 2020",
-                                        "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                    "type": "link",
-                                    "name": "Cynefin Framework",
-                                    "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                    "image": {
-                                        "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                        "type": "asset",
-                                        "name": "cynefin framework logo",
-                                        "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                        "width": 900,
-                                        "height": 934
-                                    },
-                                    "file": {
-                                        "id": "2PORRQ0UgKpATICHFPrEI8",
-                                        "type": "asset",
-                                        "name": "Cynefin Framework -agile -03 2020",
-                                        "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                    "type": "link",
-                                    "name": "Kon-Meeting",
-                                    "description": "Das konstruktive Meeting mit modernen Methoden",
-                                    "image": {
-                                        "id": "39dcG4RqTyXd3m5udzErns",
-                                        "type": "asset",
-                                        "name": "kon-meeting logo",
-                                        "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                        "width": 516,
-                                        "height": 566
-                                    },
-                                    "file": {
-                                        "id": "246DwYPTl9iyQUzUjYvPcH",
-                                        "type": "asset",
-                                        "name": "Kon-Meeting -agile 12 2019",
-                                        "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                    "type": "link",
-                                    "name": "Treiberupdate",
-                                    "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                    "image": {
-                                        "id": "6FPr9mtF04TtCWA2GWac6F",
-                                        "type": "asset",
-                                        "name": "treiber update logo",
-                                        "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                        "width": 291,
-                                        "height": 226
-                                    },
-                                    "file": {
-                                        "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                        "type": "asset",
-                                        "name": "Treiberfindung -agile -11 2019",
-                                        "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                    }
-                                }
-                            ]
                         }
                     ],
                     "slug": "/",
@@ -3911,7 +3524,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                            "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                             "marks": [],
                                                             "data": {}
                                                         },
@@ -3931,7 +3544,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                            "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -3943,7 +3556,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "Pros",
+                                                            "value": "Content & Images",
                                                             "marks": [
                                                                 {
                                                                     "type": "bold"
@@ -3953,7 +3566,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                            "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -3965,7 +3578,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "Cons",
+                                                            "value": "Latest feature: AI Chat",
                                                             "marks": [
                                                                 {
                                                                     "type": "bold"
@@ -3975,7 +3588,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                            "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -4026,135 +3639,6 @@
                                         },
                                         "imageRight": false,
                                         "imageWidth": 36
-                                    },
-                                    {
-                                        "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                                        "type": "linksmodule",
-                                        "name": "Agile Methoden",
-                                        "title": "Agile Methoden",
-                                        "links": [
-                                            {
-                                                "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                                "type": "link",
-                                                "name": "1-on-1 Coaching",
-                                                "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                                "image": {
-                                                    "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                                    "type": "asset",
-                                                    "name": "1-on-1 coaching logo",
-                                                    "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                                    "width": 422,
-                                                    "height": 348
-                                                },
-                                                "file": {
-                                                    "id": "2sfnTGRsFxmpeyLtD9loED",
-                                                    "type": "asset",
-                                                    "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                                    "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                                    "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                                "type": "link",
-                                                "name": "Agile Team-Diagnostik",
-                                                "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                                "image": {
-                                                    "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                                    "type": "asset",
-                                                    "name": "agile team diagnostik logo",
-                                                    "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                                    "width": 428,
-                                                    "height": 368
-                                                },
-                                                "file": {
-                                                    "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                                    "type": "asset",
-                                                    "name": "Agile Team-Diagnostik -agile -04 2020",
-                                                    "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "2qej3bzxzbE5eF1816BX8h",
-                                                "type": "link",
-                                                "name": "Feedbackgespräch 1-on-1",
-                                                "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                                "image": {
-                                                    "id": "7FQuELoI6KIxqhnAD9di9r",
-                                                    "type": "asset",
-                                                    "name": "feedbackgespräch 1-on-1 logo",
-                                                    "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                                    "width": 270,
-                                                    "height": 282
-                                                },
-                                                "file": {
-                                                    "id": "G8oEj206DvIVy8zO5swTs",
-                                                    "type": "asset",
-                                                    "name": "Feedbackgespräch -agile -04 2020",
-                                                    "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                                "type": "link",
-                                                "name": "Cynefin Framework",
-                                                "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                                "image": {
-                                                    "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                                    "type": "asset",
-                                                    "name": "cynefin framework logo",
-                                                    "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                                    "width": 900,
-                                                    "height": 934
-                                                },
-                                                "file": {
-                                                    "id": "2PORRQ0UgKpATICHFPrEI8",
-                                                    "type": "asset",
-                                                    "name": "Cynefin Framework -agile -03 2020",
-                                                    "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                                "type": "link",
-                                                "name": "Kon-Meeting",
-                                                "description": "Das konstruktive Meeting mit modernen Methoden",
-                                                "image": {
-                                                    "id": "39dcG4RqTyXd3m5udzErns",
-                                                    "type": "asset",
-                                                    "name": "kon-meeting logo",
-                                                    "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                                    "width": 516,
-                                                    "height": 566
-                                                },
-                                                "file": {
-                                                    "id": "246DwYPTl9iyQUzUjYvPcH",
-                                                    "type": "asset",
-                                                    "name": "Kon-Meeting -agile 12 2019",
-                                                    "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                                "type": "link",
-                                                "name": "Treiberupdate",
-                                                "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                                "image": {
-                                                    "id": "6FPr9mtF04TtCWA2GWac6F",
-                                                    "type": "asset",
-                                                    "name": "treiber update logo",
-                                                    "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                                    "width": 291,
-                                                    "height": 226
-                                                },
-                                                "file": {
-                                                    "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                                    "type": "asset",
-                                                    "name": "Treiberfindung -agile -11 2019",
-                                                    "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                                }
-                                            }
-                                        ]
                                     }
                                 ],
                                 "slug": "/",
@@ -5626,7 +5110,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                 "marks": [],
                                                 "data": {}
                                             },
@@ -5646,7 +5130,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -5658,7 +5142,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Pros",
+                                                "value": "Content & Images",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -5668,7 +5152,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -5680,7 +5164,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Cons",
+                                                "value": "Latest feature: AI Chat",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -5690,7 +5174,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -5741,135 +5225,6 @@
                             },
                             "imageRight": false,
                             "imageWidth": 36
-                        },
-                        {
-                            "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                            "type": "linksmodule",
-                            "name": "Agile Methoden",
-                            "title": "Agile Methoden",
-                            "links": [
-                                {
-                                    "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                    "type": "link",
-                                    "name": "1-on-1 Coaching",
-                                    "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                    "image": {
-                                        "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                        "type": "asset",
-                                        "name": "1-on-1 coaching logo",
-                                        "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                        "width": 422,
-                                        "height": 348
-                                    },
-                                    "file": {
-                                        "id": "2sfnTGRsFxmpeyLtD9loED",
-                                        "type": "asset",
-                                        "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                        "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                        "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                    "type": "link",
-                                    "name": "Agile Team-Diagnostik",
-                                    "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                    "image": {
-                                        "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                        "type": "asset",
-                                        "name": "agile team diagnostik logo",
-                                        "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                        "width": 428,
-                                        "height": 368
-                                    },
-                                    "file": {
-                                        "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                        "type": "asset",
-                                        "name": "Agile Team-Diagnostik -agile -04 2020",
-                                        "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2qej3bzxzbE5eF1816BX8h",
-                                    "type": "link",
-                                    "name": "Feedbackgespräch 1-on-1",
-                                    "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                    "image": {
-                                        "id": "7FQuELoI6KIxqhnAD9di9r",
-                                        "type": "asset",
-                                        "name": "feedbackgespräch 1-on-1 logo",
-                                        "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                        "width": 270,
-                                        "height": 282
-                                    },
-                                    "file": {
-                                        "id": "G8oEj206DvIVy8zO5swTs",
-                                        "type": "asset",
-                                        "name": "Feedbackgespräch -agile -04 2020",
-                                        "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                    "type": "link",
-                                    "name": "Cynefin Framework",
-                                    "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                    "image": {
-                                        "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                        "type": "asset",
-                                        "name": "cynefin framework logo",
-                                        "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                        "width": 900,
-                                        "height": 934
-                                    },
-                                    "file": {
-                                        "id": "2PORRQ0UgKpATICHFPrEI8",
-                                        "type": "asset",
-                                        "name": "Cynefin Framework -agile -03 2020",
-                                        "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                    "type": "link",
-                                    "name": "Kon-Meeting",
-                                    "description": "Das konstruktive Meeting mit modernen Methoden",
-                                    "image": {
-                                        "id": "39dcG4RqTyXd3m5udzErns",
-                                        "type": "asset",
-                                        "name": "kon-meeting logo",
-                                        "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                        "width": 516,
-                                        "height": 566
-                                    },
-                                    "file": {
-                                        "id": "246DwYPTl9iyQUzUjYvPcH",
-                                        "type": "asset",
-                                        "name": "Kon-Meeting -agile 12 2019",
-                                        "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                    "type": "link",
-                                    "name": "Treiberupdate",
-                                    "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                    "image": {
-                                        "id": "6FPr9mtF04TtCWA2GWac6F",
-                                        "type": "asset",
-                                        "name": "treiber update logo",
-                                        "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                        "width": 291,
-                                        "height": 226
-                                    },
-                                    "file": {
-                                        "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                        "type": "asset",
-                                        "name": "Treiberfindung -agile -11 2019",
-                                        "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                    }
-                                }
-                            ]
                         }
                     ],
                     "slug": "/",
@@ -6561,7 +5916,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                            "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                             "marks": [],
                                                             "data": {}
                                                         },
@@ -6581,7 +5936,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                            "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -6593,7 +5948,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "Pros",
+                                                            "value": "Content & Images",
                                                             "marks": [
                                                                 {
                                                                     "type": "bold"
@@ -6603,7 +5958,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                            "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -6615,7 +5970,7 @@
                                                     "content": [
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "Cons",
+                                                            "value": "Latest feature: AI Chat",
                                                             "marks": [
                                                                 {
                                                                     "type": "bold"
@@ -6625,7 +5980,7 @@
                                                         },
                                                         {
                                                             "nodeType": "text",
-                                                            "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                            "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                             "marks": [],
                                                             "data": {}
                                                         }
@@ -6676,135 +6031,6 @@
                                         },
                                         "imageRight": false,
                                         "imageWidth": 36
-                                    },
-                                    {
-                                        "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                                        "type": "linksmodule",
-                                        "name": "Agile Methoden",
-                                        "title": "Agile Methoden",
-                                        "links": [
-                                            {
-                                                "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                                "type": "link",
-                                                "name": "1-on-1 Coaching",
-                                                "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                                "image": {
-                                                    "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                                    "type": "asset",
-                                                    "name": "1-on-1 coaching logo",
-                                                    "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                                    "width": 422,
-                                                    "height": 348
-                                                },
-                                                "file": {
-                                                    "id": "2sfnTGRsFxmpeyLtD9loED",
-                                                    "type": "asset",
-                                                    "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                                    "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                                    "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                                "type": "link",
-                                                "name": "Agile Team-Diagnostik",
-                                                "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                                "image": {
-                                                    "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                                    "type": "asset",
-                                                    "name": "agile team diagnostik logo",
-                                                    "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                                    "width": 428,
-                                                    "height": 368
-                                                },
-                                                "file": {
-                                                    "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                                    "type": "asset",
-                                                    "name": "Agile Team-Diagnostik -agile -04 2020",
-                                                    "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "2qej3bzxzbE5eF1816BX8h",
-                                                "type": "link",
-                                                "name": "Feedbackgespräch 1-on-1",
-                                                "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                                "image": {
-                                                    "id": "7FQuELoI6KIxqhnAD9di9r",
-                                                    "type": "asset",
-                                                    "name": "feedbackgespräch 1-on-1 logo",
-                                                    "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                                    "width": 270,
-                                                    "height": 282
-                                                },
-                                                "file": {
-                                                    "id": "G8oEj206DvIVy8zO5swTs",
-                                                    "type": "asset",
-                                                    "name": "Feedbackgespräch -agile -04 2020",
-                                                    "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                                "type": "link",
-                                                "name": "Cynefin Framework",
-                                                "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                                "image": {
-                                                    "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                                    "type": "asset",
-                                                    "name": "cynefin framework logo",
-                                                    "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                                    "width": 900,
-                                                    "height": 934
-                                                },
-                                                "file": {
-                                                    "id": "2PORRQ0UgKpATICHFPrEI8",
-                                                    "type": "asset",
-                                                    "name": "Cynefin Framework -agile -03 2020",
-                                                    "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                                "type": "link",
-                                                "name": "Kon-Meeting",
-                                                "description": "Das konstruktive Meeting mit modernen Methoden",
-                                                "image": {
-                                                    "id": "39dcG4RqTyXd3m5udzErns",
-                                                    "type": "asset",
-                                                    "name": "kon-meeting logo",
-                                                    "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                                    "width": 516,
-                                                    "height": 566
-                                                },
-                                                "file": {
-                                                    "id": "246DwYPTl9iyQUzUjYvPcH",
-                                                    "type": "asset",
-                                                    "name": "Kon-Meeting -agile 12 2019",
-                                                    "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                                }
-                                            },
-                                            {
-                                                "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                                "type": "link",
-                                                "name": "Treiberupdate",
-                                                "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                                "image": {
-                                                    "id": "6FPr9mtF04TtCWA2GWac6F",
-                                                    "type": "asset",
-                                                    "name": "treiber update logo",
-                                                    "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                                    "width": 291,
-                                                    "height": 226
-                                                },
-                                                "file": {
-                                                    "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                                    "type": "asset",
-                                                    "name": "Treiberfindung -agile -11 2019",
-                                                    "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                                }
-                                            }
-                                        ]
                                     }
                                 ],
                                 "slug": "/",
@@ -8298,7 +7524,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "I've created this website using React, Next.js, Contentful and Netlify (You can find the source code in my ",
+                                                "value": "I started building this website back in 2022 and have been improving it on an ongoing basis ever since. It's built with React, Next.js and Netlify (you can find the source code in my ",
                                                 "marks": [],
                                                 "data": {}
                                             },
@@ -8318,7 +7544,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "). Why this kind of tech-stack? I did so much Vue and Nuxt.js over the last years and I always wondered how it would be using React/Next. So here are some pros and cons...",
+                                                "value": "). Over the years the tech-stack has evolved quite a bit, so here is a quick look behind the scenes...",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -8330,7 +7556,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Pros",
+                                                "value": "Content & Images",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -8340,7 +7566,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) React hooks are just amazing ♥. (2) Next.js is pretty easy to setup and use. (3) Netlify is also super easy to use, e.g. connecting to GitHub, preview and deploy the website. (4) Contentful is a headless CMS, that is just amazingly easy to setup and structure",
+                                                "value": "\nThe site no longer relies on a CMS at runtime. All content now lives in plain JSON files right inside the codebase, so updating the website is as easy as editing a file. Images and videos are stored alongside the code and served through the Netlify Image CDN, which resizes and optimizes them on the fly for every device.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -8352,7 +7578,7 @@
                                         "content": [
                                             {
                                                 "nodeType": "text",
-                                                "value": "Cons",
+                                                "value": "Latest feature: AI Chat",
                                                 "marks": [
                                                     {
                                                         "type": "bold"
@@ -8362,7 +7588,7 @@
                                             },
                                             {
                                                 "nodeType": "text",
-                                                "value": "\n(1) Although I was able to create dynamic routes based on my pages in contentful, I somehow was not able to pass that data directly to the components. Instead I had to fetch each page again. This was easier using Vue and Nuxt.js. (2) Rendering Contentful Rich-text values are kind of a pain in the ass. (3) Unfortunately there is no easy way to extract TypeScript Definitions from Contentful GraphQL Schemas",
+                                                "value": "\nThe newest addition is an AI chat that you can open right from the stage. It works like this: the website talks to a Netlify Function, which in turn talks to Cursor Cloud, where an agent answers your questions about me and my work in real time.",
                                                 "marks": [],
                                                 "data": {}
                                             }
@@ -8413,135 +7639,6 @@
                             },
                             "imageRight": false,
                             "imageWidth": 36
-                        },
-                        {
-                            "id": "23bN3LV4H9Vc0n0l3VR7yI",
-                            "type": "linksmodule",
-                            "name": "Agile Methoden",
-                            "title": "Agile Methoden",
-                            "links": [
-                                {
-                                    "id": "1V7RLVpTFx9OGuHFoA9IBp",
-                                    "type": "link",
-                                    "name": "1-on-1 Coaching",
-                                    "description": "Ein Leitfaden für die Durchführung eines Coaching-Gesprächs",
-                                    "image": {
-                                        "id": "1A2j4cv98Czz3eNOsmg0N2",
-                                        "type": "asset",
-                                        "name": "1-on-1 coaching logo",
-                                        "url": "/cms/1A2j4cv98Czz3eNOsmg0N2.png",
-                                        "width": 422,
-                                        "height": 348
-                                    },
-                                    "file": {
-                                        "id": "2sfnTGRsFxmpeyLtD9loED",
-                                        "type": "asset",
-                                        "name": "1-on-1 Coaching-Leitfaden #agile #10/2019 (DE)",
-                                        "description": "Dieser Leitfaden dient der Durchführung eines Coaching-Gesprächs.",
-                                        "url": "/cms/2sfnTGRsFxmpeyLtD9loED.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "74rmZrWOtnH4U8jqyFDw0M",
-                                    "type": "link",
-                                    "name": "Agile Team-Diagnostik",
-                                    "description": "Diese Checklisten hilft bei der modellbasierten Interpretation von Teamverhalten",
-                                    "image": {
-                                        "id": "6Jy8dVBFv39mbFhOzsKt4Z",
-                                        "type": "asset",
-                                        "name": "agile team diagnostik logo",
-                                        "url": "/cms/6Jy8dVBFv39mbFhOzsKt4Z.png",
-                                        "width": 428,
-                                        "height": 368
-                                    },
-                                    "file": {
-                                        "id": "5pqVyM04Wg7SzrzKMJ3MER",
-                                        "type": "asset",
-                                        "name": "Agile Team-Diagnostik -agile -04 2020",
-                                        "url": "/cms/5pqVyM04Wg7SzrzKMJ3MER.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2qej3bzxzbE5eF1816BX8h",
-                                    "type": "link",
-                                    "name": "Feedbackgespräch 1-on-1",
-                                    "description": "Kurze Checkliste für Vorgesetzte und Agile Coaches, die ein Feedbackgespräch führen",
-                                    "image": {
-                                        "id": "7FQuELoI6KIxqhnAD9di9r",
-                                        "type": "asset",
-                                        "name": "feedbackgespräch 1-on-1 logo",
-                                        "url": "/cms/7FQuELoI6KIxqhnAD9di9r.png",
-                                        "width": 270,
-                                        "height": 282
-                                    },
-                                    "file": {
-                                        "id": "G8oEj206DvIVy8zO5swTs",
-                                        "type": "asset",
-                                        "name": "Feedbackgespräch -agile -04 2020",
-                                        "url": "/cms/G8oEj206DvIVy8zO5swTs.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "5lQ8YBYUvLRgTIGG4E2yGs",
-                                    "type": "link",
-                                    "name": "Cynefin Framework",
-                                    "description": "Das Cynefin-Framework hilft zu erkennen in welchem Zustand man sich bei der Umsetzung eines Projekts befindet.",
-                                    "image": {
-                                        "id": "7pT6qLNyVO8Nn5nRvUqa96",
-                                        "type": "asset",
-                                        "name": "cynefin framework logo",
-                                        "url": "/cms/7pT6qLNyVO8Nn5nRvUqa96.png",
-                                        "width": 900,
-                                        "height": 934
-                                    },
-                                    "file": {
-                                        "id": "2PORRQ0UgKpATICHFPrEI8",
-                                        "type": "asset",
-                                        "name": "Cynefin Framework -agile -03 2020",
-                                        "url": "/cms/2PORRQ0UgKpATICHFPrEI8.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "2j5XO6oACG9ZFhVYMrNvAr",
-                                    "type": "link",
-                                    "name": "Kon-Meeting",
-                                    "description": "Das konstruktive Meeting mit modernen Methoden",
-                                    "image": {
-                                        "id": "39dcG4RqTyXd3m5udzErns",
-                                        "type": "asset",
-                                        "name": "kon-meeting logo",
-                                        "url": "/cms/39dcG4RqTyXd3m5udzErns.png",
-                                        "width": 516,
-                                        "height": 566
-                                    },
-                                    "file": {
-                                        "id": "246DwYPTl9iyQUzUjYvPcH",
-                                        "type": "asset",
-                                        "name": "Kon-Meeting -agile 12 2019",
-                                        "url": "/cms/246DwYPTl9iyQUzUjYvPcH.pdf"
-                                    }
-                                },
-                                {
-                                    "id": "1iVyfLLNMBNO3RiMNxchqi",
-                                    "type": "link",
-                                    "name": "Treiberupdate",
-                                    "description": "Methode zur Findung oder Erneuerung gemeinsamer Ziele",
-                                    "image": {
-                                        "id": "6FPr9mtF04TtCWA2GWac6F",
-                                        "type": "asset",
-                                        "name": "treiber update logo",
-                                        "url": "/cms/6FPr9mtF04TtCWA2GWac6F.png",
-                                        "width": 291,
-                                        "height": 226
-                                    },
-                                    "file": {
-                                        "id": "5ULfsHtJxWv6qeRMSg9SBT",
-                                        "type": "asset",
-                                        "name": "Treiberfindung -agile -11 2019",
-                                        "url": "/cms/5ULfsHtJxWv6qeRMSg9SBT.pdf"
-                                    }
-                                }
-                            ]
                         }
                     ],
                     "slug": "/",
