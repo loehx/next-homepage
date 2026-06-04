@@ -514,16 +514,19 @@ export const StageInput: React.FC<StageInputProps> = ({
             </ul>
 
             <p className={styles.privacyHint}>
-                Your messages are sent to Cursor (USA) to generate a reply and
-                emailed to the site owner for quality assurance. Please
-                don&apos;t share sensitive personal data.{" "}
+                Heads-up: every conversation lands in my (Alex&apos;s) personal
+                inbox, and your messages are sent to Cursor (USA) to generate
+                the reply. Feel free to leave your email or phone number if
+                you&apos;d like me to get back to you — just please avoid truly
+                sensitive details (e.g. health or financial information). More
+                in my{" "}
                 <a
                     href="/datenschutz"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.privacyHintLink}
                 >
-                    Privacy policy
+                    privacy policy
                 </a>
                 .
             </p>

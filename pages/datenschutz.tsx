@@ -127,6 +127,13 @@ const DatenschutzPage: NextPage = () => {
                             die Sitzungs-ID und das Browser-Locale) per E-Mail
                             an den Betreiber übermittelt.
                         </li>
+                        <li>
+                            Kontaktaufnahme und Beantwortung Ihres Anliegens,
+                            sofern Sie im Chat freiwillig Kontaktdaten (z. B.
+                            E-Mail-Adresse oder Telefonnummer) hinterlassen. Wir
+                            verwenden diese ausschließlich, um auf Ihre Anfrage
+                            zu antworten.
+                        </li>
                     </ul>
 
                     <h3 className={styles.subheading}>Rechtsgrundlage</h3>
@@ -136,9 +143,12 @@ const DatenschutzPage: NextPage = () => {
                         6 Abs. 1 lit. a DSGVO). Daneben besteht ein berechtigtes
                         Interesse des Betreibers am sicheren, funktionsfähigen
                         Betrieb sowie an der Qualitätssicherung des Angebots
-                        (Art. 6 Abs. 1 lit. f DSGVO). Sie sind nicht
-                        verpflichtet, den Chat zu nutzen; die übrige Website ist
-                        ohne den Chat vollständig nutzbar.
+                        (Art. 6 Abs. 1 lit. f DSGVO). Hinterlassen Sie
+                        Kontaktdaten, um eine Rückmeldung zu erhalten, erfolgt
+                        deren Verarbeitung zur Beantwortung Ihrer Anfrage
+                        zusätzlich auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO.
+                        Sie sind nicht verpflichtet, den Chat zu nutzen; die
+                        übrige Website ist ohne den Chat vollständig nutzbar.
                     </p>
 
                     <h3 className={styles.subheading}>
