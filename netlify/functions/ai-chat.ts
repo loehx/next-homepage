@@ -16,6 +16,8 @@ interface ChatRequest {
     agentId?: string;
     runId?: string;
     text?: string;
+    /** Visitor's browser locale (e.g. "de-DE"), used to hint the reply language. */
+    locale?: string;
 }
 
 // Per-call polling budget. Netlify functions cap around 26s, leave headroom
@@ -163,7 +165,7 @@ export const handler: Handler = async (event) => {
         }
 
         if (body.mode === "ask") {
-            const { agentId, text } = body;
+            const { agentId, text, locale } = body;
 
             if (!text) {
                 return {
@@ -182,7 +184,8 @@ export const handler: Handler = async (event) => {
             // refuses any mutation request even on follow-up turns. Hard enforcement
             // for "no repo writes" still relies on the Cursor GitHub App being
             // installed with read-only permissions on loehx/homepage-agent.
-            const wrappedPrompt = wrapUserPrompt(text);
+            // The visitor's browser locale is forwarded as a language hint.
+            const wrappedPrompt = wrapUserPrompt(text, locale);
 
             if (!currentAgentId) {
                 // First ask: create agent with the user's text as the initial run,

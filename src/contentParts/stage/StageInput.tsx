@@ -61,6 +61,14 @@ const STORAGE_KEY = "aiAgentId";
 
 const MAX_INPUT_LENGTH = 200;
 
+// The visitor's browser locale (e.g. "de-DE", "en-US"). Sent along with each
+// question so the agent can answer in the user's preferred language even
+// before it has any text to detect the language from.
+const getBrowserLocale = (): string | undefined => {
+    if (typeof navigator === "undefined") return undefined;
+    return navigator.languages?.[0] || navigator.language || undefined;
+};
+
 // Rotated through the input placeholder while a request is in flight, so the
 // user gets a sense of progress instead of staring at a single "Thinking…".
 const LOADING_HINTS = [
@@ -252,6 +260,7 @@ export const StageInput: React.FC<StageInputProps> = ({
                         mode: "ask",
                         agentId: agentIdRef.current,
                         text,
+                        locale: getBrowserLocale(),
                     }),
                 });
 
