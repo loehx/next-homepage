@@ -1,5 +1,9 @@
 # Cursor Rules for next-homepage
 
+## Content (no Contentful at runtime)
+
+All site content lives in `data/content/*.json` (`config.json`, `pages.json`, `projects.json`, `companies.json`, `technologies.json`, `secretLinks.json`). Edit these files directly to change content. Images and videos are in `public/cms/` and referenced as `/cms/<id>.<ext>`; resizing uses the Netlify Image CDN via `src/components/image/index.tsx`. Contentful is not used at build or runtime; `scripts/export-contentful.ts` is only for re-syncing from Contentful and requires `CONTENTFUL_ACCESS_TOKEN`, `CONTENTFUL_SPACE`, `CONTENTFUL_CONFIG_ID`, and optionally `CONTENTFUL_ENVIRONMENT`.
+
 ## Pre-commit Checklist
 
 Always run the following before committing:

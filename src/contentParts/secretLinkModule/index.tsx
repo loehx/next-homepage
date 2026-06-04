@@ -3,7 +3,6 @@ import { SecretLinkModuleProps } from "data/definitions";
 import cx from "classnames";
 import { FadeIn } from "@components/fadeIn";
 import { cipher, decipher } from "./cipher";
-import { getSecretLink } from "data";
 
 const storage = typeof localStorage !== "undefined" ? localStorage : null;
 
@@ -11,7 +10,6 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
     const [password, setPassword] = useState(storage?.getItem("pw") || "");
     const [loading, setLoading] = useState(false);
     const [doggyWidth, setDoggyWidth] = useState(200);
-    const [showContentfulLink, setShowContentfulLink] = useState(false);
     const [url, setUrl] = useState("");
     const [salt, setSalt] = useState("");
     const [info, setInfo] = useState("");
@@ -24,7 +22,19 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
         setError("");
         setUrl("");
         setLoading(true);
-        const item = await getSecretLink(password);
+        let item: { url?: string } | null = null;
+        try {
+            const res = await fetch("/api/secret-link", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password }),
+            });
+            if (res.ok) {
+                item = await res.json();
+            }
+        } catch {
+            item = null;
+        }
         setInfo("");
         setLoading(false);
 
@@ -57,7 +67,6 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
     }, [error]);
 
     const onPasswordChange = (e) => {
-        setShowContentfulLink(false);
         const value = e.target.value || "";
         const pw = value.toUpperCase().trim();
         setPassword(pw);
@@ -66,7 +75,6 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
         if (value.startsWith("http")) {
             const encrypt = cipher(salt);
             const encrypted = encrypt(value);
-            setShowContentfulLink(true);
             return setInfo(encrypted || "");
         }
     };
@@ -102,15 +110,6 @@ export const SecretLinkModule: React.FC<SecretLinkModuleProps> = (props) => {
                     </button>
                 </form>
                 {info && <div className="p-2 break-all">{info}</div>}
-                {showContentfulLink && (
-                    <a
-                        href="https://app.contentful.com/spaces/sn5a22dgyyrk/entries?id=HfEnmdH3M1IVI2e8&contentTypeId=secretLink"
-                        target="_blank"
-                        className="p-2 font-bold text-red"
-                    >
-                        Zu Contentful wechseln ...
-                    </a>
-                )}
                 {error && (
                     <div className="mt-2 flex items-center p-2 border border-red rounded-sm">
                         <div

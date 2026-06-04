@@ -13,7 +13,7 @@ module.exports = withPlugins(
     ],
     {
         images: {
-            unoptimized: true,
+            loader: "custom",
             disableStaticImages: true,
         },
         exportTrailingSlash: true,

@@ -1,0 +1,1919 @@
+[
+    {
+        "id": "2HH3wwlllPYapa2kH3Mv7e",
+        "type": "project",
+        "name": "Sorpetaler.de",
+        "description": "Migrating Sorpertaler's website to a CMS-less approach, letting AI do the content changes directly in the repository.",
+        "from": "11/2025",
+        "role": "Frontend Developer",
+        "sector": "E-commerce",
+        "url": "https://www.sorpetaler.de/",
+        "urlLabel": "www.sorpetaler.de",
+        "company": {
+            "id": "4o9zJNgWyml0PPbAzl7XT",
+            "type": "company",
+            "name": "Sorpetaler",
+            "fullName": "Sorpetaler Fensterbau GmbH",
+            "companyType": "Window Company",
+            "url": "https://www.sorpetaler.de/",
+            "logo": {
+                "id": "6aOwsKnlmjoDj2ge7oz20f",
+                "type": "asset",
+                "name": "sorpetaler-logo",
+                "url": "/cms/6aOwsKnlmjoDj2ge7oz20f.png",
+                "width": 625,
+                "height": 625
+            }
+        },
+        "technologies": [
+            {
+                "id": "5TRK3hsjb54emrKOwh6Ipe",
+                "type": "technology",
+                "name": "cms-less",
+                "fullName": "AI-driven CMS",
+                "url": "https://dev.to/matfrana/cms-vs-ai-the-content-battle-begins-de"
+            },
+            {
+                "id": "AueNjVu9ROQeiEW2aLz8V",
+                "type": "technology",
+                "name": "react",
+                "fullName": "React.js",
+                "url": "https://reactjs.org/",
+                "logo": {
+                    "id": "32VOiMe4FqNsjapns9qC6",
+                    "type": "asset",
+                    "name": "react",
+                    "url": "/cms/32VOiMe4FqNsjapns9qC6.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "EpDh0tml79SnmDGftjxe9",
+                "type": "technology",
+                "name": "Gatsby",
+                "fullName": "Gatsby - Static Site Generator",
+                "url": "https://www.gatsbyjs.com/"
+            }
+        ],
+        "moreTechnologies": "JIRA, pnpm, GitLab",
+        "team": "Solo",
+        "logo": {
+            "id": "3RvC1pMvsIeE2YCsPE9tng",
+            "type": "asset",
+            "name": "netto-logo",
+            "url": "/cms/3RvC1pMvsIeE2YCsPE9tng.png",
+            "width": 384,
+            "height": 207
+        }
+    },
+    {
+        "id": "2fN4psbQGSzjq3yDriTtTK",
+        "type": "project",
+        "name": "Netto Webshop",
+        "description": "Netto's webshop relaunch based on SCAYLE's Storefront",
+        "from": "11/2025",
+        "to": "05/2026",
+        "role": "Frontend Developer",
+        "sector": "E-commerce",
+        "url": "https://www.netto-online.de/",
+        "urlLabel": "www.netto-online.de",
+        "company": {
+            "id": "4pIziJPzam2Kv3sznyRUev",
+            "type": "company",
+            "name": "growsome",
+            "fullName": "growsome GmbH",
+            "companyType": "Web / E-commerce",
+            "url": "https://growsome.agency/",
+            "logo": {
+                "id": "7qBu2JvSJFrmsUxlZtXMKr",
+                "type": "asset",
+                "name": "growsome-logo",
+                "url": "/cms/7qBu2JvSJFrmsUxlZtXMKr.png",
+                "width": 280,
+                "height": 280
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "nDzyvWkBE9cFBeRLgVbLN",
+                "type": "technology",
+                "name": "Storyblok",
+                "fullName": "Storyblok",
+                "url": "https://www.storyblok.com/",
+                "logo": {
+                    "id": "350IGo20AcnIAWPi9n8hHO",
+                    "type": "asset",
+                    "name": "storyblok-logo",
+                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+                    "width": 586,
+                    "height": 586
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, pnpm, GitLab",
+        "team": "Team of 6",
+        "logo": {
+            "id": "3RvC1pMvsIeE2YCsPE9tng",
+            "type": "asset",
+            "name": "netto-logo",
+            "url": "/cms/3RvC1pMvsIeE2YCsPE9tng.png",
+            "width": 384,
+            "height": 207
+        }
+    },
+    {
+        "id": "7HpdegD2qbUATnr2aUnMXR",
+        "type": "project",
+        "name": "s.Oliver Webshop",
+        "description": "s.Oliver webshop relaunch",
+        "from": "07/2025",
+        "to": "10/2025",
+        "role": "Frontend Developer",
+        "sector": "Fashion",
+        "url": "https://soliver.de/",
+        "urlLabel": "www.soliver.de",
+        "company": {
+            "id": "CtSzAQeukNN58CJTvQwhs",
+            "type": "company",
+            "name": "scayle",
+            "fullName": "ABOUT YOU SE & Co. KG",
+            "companyType": "E-commerce",
+            "url": "https://www.scayle.com/",
+            "logo": {
+                "id": "3fHLY9GQyyPPdRl9paW61i",
+                "type": "asset",
+                "name": "scayle logo",
+                "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "4eb74CjF8j9DEEsh4Xq60h",
+                "type": "technology",
+                "name": "contentful",
+                "fullName": "Contentful",
+                "url": "https://contentful.com/",
+                "logo": {
+                    "id": "3nQs2hA9WPOLRSqVLKrtgt",
+                    "type": "asset",
+                    "name": "contentful",
+                    "url": "/cms/3nQs2hA9WPOLRSqVLKrtgt.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, yarn, Bitbucket",
+        "logo": {
+            "id": "2OzBceKbDJfKK3smLWnWo6",
+            "type": "asset",
+            "name": "s.Oliver Logo",
+            "url": "/cms/2OzBceKbDJfKK3smLWnWo6.svg",
+            "width": 114,
+            "height": 32
+        }
+    },
+    {
+        "id": "4nZuGCYQpFNu9GnDRO50Ig",
+        "type": "project",
+        "name": "Harrods.com",
+        "description": "Harrods webshop relaunch",
+        "from": "06/2024",
+        "to": "05/2025",
+        "role": "Frontend- / Lead- Developer",
+        "sector": "Fashion",
+        "url": "https://www.harrods.com/",
+        "urlLabel": "www.harrods.com",
+        "company": {
+            "id": "CtSzAQeukNN58CJTvQwhs",
+            "type": "company",
+            "name": "scayle",
+            "fullName": "ABOUT YOU SE & Co. KG",
+            "companyType": "E-commerce",
+            "url": "https://www.scayle.com/",
+            "logo": {
+                "id": "3fHLY9GQyyPPdRl9paW61i",
+                "type": "asset",
+                "name": "scayle logo",
+                "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "4eb74CjF8j9DEEsh4Xq60h",
+                "type": "technology",
+                "name": "contentful",
+                "fullName": "Contentful",
+                "url": "https://contentful.com/",
+                "logo": {
+                    "id": "3nQs2hA9WPOLRSqVLKrtgt",
+                    "type": "asset",
+                    "name": "contentful",
+                    "url": "/cms/3nQs2hA9WPOLRSqVLKrtgt.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, yarn, cypress, husky, GitLab",
+        "logo": {
+            "id": "5vS9PnyEXR2DFQmdx41TRz",
+            "type": "asset",
+            "name": "Harrods Logo",
+            "url": "/cms/5vS9PnyEXR2DFQmdx41TRz.png",
+            "width": 400,
+            "height": 180
+        }
+    },
+    {
+        "id": "2tzfoWGM3pn2kPhq34DF1L",
+        "type": "project",
+        "name": "Albamoda.com",
+        "description": "Another webshop based on SCAYLE's storefront",
+        "from": "01/2024",
+        "to": "03/2024",
+        "role": "Lead Developer",
+        "sector": "Fashion",
+        "url": "https://www.albamoda.com/",
+        "urlLabel": "https://www.albamoda.com/",
+        "company": {
+            "id": "4pIziJPzam2Kv3sznyRUev",
+            "type": "company",
+            "name": "growsome",
+            "fullName": "growsome GmbH",
+            "companyType": "Web / E-commerce",
+            "url": "https://growsome.agency/",
+            "logo": {
+                "id": "7qBu2JvSJFrmsUxlZtXMKr",
+                "type": "asset",
+                "name": "growsome-logo",
+                "url": "/cms/7qBu2JvSJFrmsUxlZtXMKr.png",
+                "width": 280,
+                "height": 280
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "nDzyvWkBE9cFBeRLgVbLN",
+                "type": "technology",
+                "name": "Storyblok",
+                "fullName": "Storyblok",
+                "url": "https://www.storyblok.com/",
+                "logo": {
+                    "id": "350IGo20AcnIAWPi9n8hHO",
+                    "type": "asset",
+                    "name": "storyblok-logo",
+                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+                    "width": 586,
+                    "height": 586
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "team": "5 freelancers and me",
+        "logo": {
+            "id": "1f3dF7cpPxjihespTrMsRy",
+            "type": "asset",
+            "name": "Albamoda Logo",
+            "url": "/cms/1f3dF7cpPxjihespTrMsRy.svg",
+            "width": 606,
+            "height": 85
+        }
+    },
+    {
+        "id": "qza8wmkD0TuDLBDY011mi",
+        "type": "project",
+        "name": "Madeleine.com",
+        "description": "Webshop based on SCAYLE's storefront",
+        "from": "11/2023",
+        "to": "03/2024",
+        "role": "Lead Developer",
+        "sector": "Fashion",
+        "url": "https://www.madeleine.com/",
+        "urlLabel": "https://www.madeleine.com/",
+        "company": {
+            "id": "4pIziJPzam2Kv3sznyRUev",
+            "type": "company",
+            "name": "growsome",
+            "fullName": "growsome GmbH",
+            "companyType": "Web / E-commerce",
+            "url": "https://growsome.agency/",
+            "logo": {
+                "id": "7qBu2JvSJFrmsUxlZtXMKr",
+                "type": "asset",
+                "name": "growsome-logo",
+                "url": "/cms/7qBu2JvSJFrmsUxlZtXMKr.png",
+                "width": 280,
+                "height": 280
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "nDzyvWkBE9cFBeRLgVbLN",
+                "type": "technology",
+                "name": "Storyblok",
+                "fullName": "Storyblok",
+                "url": "https://www.storyblok.com/",
+                "logo": {
+                    "id": "350IGo20AcnIAWPi9n8hHO",
+                    "type": "asset",
+                    "name": "storyblok-logo",
+                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+                    "width": 586,
+                    "height": 586
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "team": "5 freelancers and me",
+        "logo": {
+            "id": "w4gpAk9ZNQkTZbonAYEiJ",
+            "type": "asset",
+            "name": "Madeleine Logo",
+            "url": "/cms/w4gpAk9ZNQkTZbonAYEiJ.svg",
+            "width": 624,
+            "height": 113
+        }
+    },
+    {
+        "id": "2YNCsf3HAUGKHhupsFWJIl",
+        "type": "project",
+        "name": "Babymarkt.de",
+        "description": "Another webshop based on the SCAYLE's boilerplate",
+        "from": "11/2023",
+        "to": "03/2024",
+        "role": "Lead Developer",
+        "sector": "Consumer Goods",
+        "url": "https://www.babymarkt.de/",
+        "urlLabel": "www.babymarkt.de",
+        "company": {
+            "id": "4rGDxFCu6z8toCd1GVd2TP",
+            "type": "company",
+            "name": "DEPT",
+            "fullName": "DEPT®",
+            "companyType": "E-Commerce",
+            "url": "https://www.deptagency.com/de-de/",
+            "logo": {
+                "id": "7h2yXUvqzcd0CLLCRNpM2Y",
+                "type": "asset",
+                "name": "dept-logo",
+                "url": "/cms/7h2yXUvqzcd0CLLCRNpM2Y.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "4eb74CjF8j9DEEsh4Xq60h",
+                "type": "technology",
+                "name": "contentful",
+                "fullName": "Contentful",
+                "url": "https://contentful.com/",
+                "logo": {
+                    "id": "3nQs2hA9WPOLRSqVLKrtgt",
+                    "type": "asset",
+                    "name": "contentful",
+                    "url": "/cms/3nQs2hA9WPOLRSqVLKrtgt.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            }
+        ],
+        "team": "8 frontend developers and me",
+        "logo": {
+            "id": "5bdbFylILDCXWUxQolpDGA",
+            "type": "asset",
+            "name": "Babymarkt Logo",
+            "url": "/cms/5bdbFylILDCXWUxQolpDGA.svg",
+            "width": 3000,
+            "height": 892
+        }
+    },
+    {
+        "id": "6NzUYN4NKPXazWnITqRNNz",
+        "type": "project",
+        "name": "Goldner-Fashion.com",
+        "description": "Webshop based on SCAYLE's storefront",
+        "from": "04/2023",
+        "to": "03/2024",
+        "role": "Frontend Developer",
+        "sector": "Fashion",
+        "url": "https://www.goldner-fashion.com/",
+        "urlLabel": "https://www.goldner-fashion.com/",
+        "company": {
+            "id": "4pIziJPzam2Kv3sznyRUev",
+            "type": "company",
+            "name": "growsome",
+            "fullName": "growsome GmbH",
+            "companyType": "Web / E-commerce",
+            "url": "https://growsome.agency/",
+            "logo": {
+                "id": "7qBu2JvSJFrmsUxlZtXMKr",
+                "type": "asset",
+                "name": "growsome-logo",
+                "url": "/cms/7qBu2JvSJFrmsUxlZtXMKr.png",
+                "width": 280,
+                "height": 280
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "nDzyvWkBE9cFBeRLgVbLN",
+                "type": "technology",
+                "name": "Storyblok",
+                "fullName": "Storyblok",
+                "url": "https://www.storyblok.com/",
+                "logo": {
+                    "id": "350IGo20AcnIAWPi9n8hHO",
+                    "type": "asset",
+                    "name": "storyblok-logo",
+                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+                    "width": 586,
+                    "height": 586
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, yarn, cypress, GitHub",
+        "team": "International team of 8 developers",
+        "logo": {
+            "id": "4Pzf4XWoCboFqX6iQVo2rB",
+            "type": "asset",
+            "name": "Goldner Logo",
+            "url": "/cms/4Pzf4XWoCboFqX6iQVo2rB.svg",
+            "width": 157,
+            "height": 34
+        }
+    },
+    {
+        "id": "6kL0ndYJ1FMqBVL3N6fpco",
+        "type": "project",
+        "name": "Storefront (by SCAYLE)",
+        "description": "SCAYLE's self-made headless webshop-boilerplate and core libraries",
+        "from": "10/2022",
+        "to": "07/2023",
+        "role": "Frontend Developer",
+        "sector": "E-commerce",
+        "url": "https://www.scayle.com/de/headless-frontend",
+        "urlLabel": "https://www.scayle.com/de/headless-frontend",
+        "company": {
+            "id": "CtSzAQeukNN58CJTvQwhs",
+            "type": "company",
+            "name": "scayle",
+            "fullName": "ABOUT YOU SE & Co. KG",
+            "companyType": "E-commerce",
+            "url": "https://www.scayle.com/",
+            "logo": {
+                "id": "3fHLY9GQyyPPdRl9paW61i",
+                "type": "asset",
+                "name": "scayle logo",
+                "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, yarn, cypress, GitLab",
+        "team": "International team of 6 developers",
+        "logo": {
+            "id": "3fHLY9GQyyPPdRl9paW61i",
+            "type": "asset",
+            "name": "scayle logo",
+            "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "68CxDAHTJHdGara1epTYsS",
+        "type": "project",
+        "name": "FC Bayern München Store",
+        "description": "Official Fan-Shop of FC Bayern Munich",
+        "from": "02/2022",
+        "to": "07/2023",
+        "role": "Frontend Developer",
+        "sector": "Football",
+        "url": "https://fcbayern.com/store/de-de",
+        "urlLabel": "fcbayern.com/store",
+        "company": {
+            "id": "CtSzAQeukNN58CJTvQwhs",
+            "type": "company",
+            "name": "scayle",
+            "fullName": "ABOUT YOU SE & Co. KG",
+            "companyType": "E-commerce",
+            "url": "https://www.scayle.com/",
+            "logo": {
+                "id": "3fHLY9GQyyPPdRl9paW61i",
+                "type": "asset",
+                "name": "scayle logo",
+                "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "9pupfiqnKwZkCXI3dGvkp",
+                "type": "technology",
+                "name": "storefront",
+                "fullName": "Storefront (by SCAYLE)",
+                "url": "https://www.scayle.com/platform/digital-storefront/"
+            },
+            {
+                "id": "nDzyvWkBE9cFBeRLgVbLN",
+                "type": "technology",
+                "name": "Storyblok",
+                "fullName": "Storyblok",
+                "url": "https://www.storyblok.com/",
+                "logo": {
+                    "id": "350IGo20AcnIAWPi9n8hHO",
+                    "type": "asset",
+                    "name": "storyblok-logo",
+                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+                    "width": 586,
+                    "height": 586
+                }
+            },
+            {
+                "id": "2zimoPdvWo1mJVLhUkU8dC",
+                "type": "technology",
+                "name": "tailwind",
+                "fullName": "Tailwind CSS",
+                "url": "https://tailwindcss.com/",
+                "logo": {
+                    "id": "74PhGhAk96EoJkBw68nz1G",
+                    "type": "asset",
+                    "name": "tailwind",
+                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, yarn, cypress, husky, GitLab",
+        "logo": {
+            "id": "6OTbAO4hR5nL1DTghoRDGy",
+            "type": "asset",
+            "name": "FC Bayern Logo",
+            "url": "/cms/6OTbAO4hR5nL1DTghoRDGy.png",
+            "width": 1024,
+            "height": 1024
+        }
+    },
+    {
+        "id": "9F5NzZHnbPyp1LkEBiQLQ",
+        "type": "project",
+        "name": "GIGA-Hamburg.de",
+        "description": "German Institute for Global and Area Studies (GIGA) - Prerendered website using vue/nuxt/contentful",
+        "from": "09/2020",
+        "to": "04/2021",
+        "role": "Frontend Lead",
+        "sector": "Research",
+        "url": "https://www.giga-hamburg.de",
+        "urlLabel": "www.giga-hamburg.de",
+        "company": {
+            "id": "1R0VWzDrHnkVEZOwvpP1nG",
+            "type": "company",
+            "name": "elbformat",
+            "fullName": "elbformat content solutions GmbH",
+            "companyType": "Web agency",
+            "url": "https://www.elbformat.de/",
+            "logo": {
+                "id": "1HotzSN5zW7j9c0TVedhE2",
+                "type": "asset",
+                "name": "elbformat logo",
+                "url": "/cms/1HotzSN5zW7j9c0TVedhE2.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "2zClz1ezL03dCLlmnJbFAx",
+                "type": "technology",
+                "name": "nuxt",
+                "fullName": "Nuxt.js",
+                "url": "https://nuxtjs.org/",
+                "logo": {
+                    "id": "3EGs4QwTnbr75o6UiYCCzb",
+                    "type": "asset",
+                    "name": "nuxt",
+                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "4eb74CjF8j9DEEsh4Xq60h",
+                "type": "technology",
+                "name": "contentful",
+                "fullName": "Contentful",
+                "url": "https://contentful.com/",
+                "logo": {
+                    "id": "3nQs2hA9WPOLRSqVLKrtgt",
+                    "type": "asset",
+                    "name": "contentful",
+                    "url": "/cms/3nQs2hA9WPOLRSqVLKrtgt.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "vue, nuxt, fractal, node.js, HTML, SCSS, JavaScript, webpack, gulp, BrowserStack, JIRA",
+        "logo": {
+            "id": "2DFNED3PThqPXAZi29EsdQ",
+            "type": "asset",
+            "name": "Giga Hamburg Logo",
+            "url": "/cms/2DFNED3PThqPXAZi29EsdQ.png",
+            "width": 200,
+            "height": 59
+        }
+    },
+    {
+        "id": "5cyQf6CmWtfzalEK2yH3vk",
+        "type": "project",
+        "name": "Akurit.de",
+        "description": "Corporate website with product catalog",
+        "from": "03/2019",
+        "to": "03/2020",
+        "role": "Frontend Lead",
+        "sector": "Construction industry",
+        "url": "https://www.akurit.de",
+        "company": {
+            "id": "1R0VWzDrHnkVEZOwvpP1nG",
+            "type": "company",
+            "name": "elbformat",
+            "fullName": "elbformat content solutions GmbH",
+            "companyType": "Web agency",
+            "url": "https://www.elbformat.de/",
+            "logo": {
+                "id": "1HotzSN5zW7j9c0TVedhE2",
+                "type": "asset",
+                "name": "elbformat logo",
+                "url": "/cms/1HotzSN5zW7j9c0TVedhE2.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "67Jog7Ffuhodi3RIwdBKeY",
+                "type": "technology",
+                "name": "vanilla",
+                "fullName": "Plain HTML, CSS, JavaScript",
+                "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+            }
+        ],
+        "moreTechnologies": "JIRA, fractal.js, webpack, gulp, BrowserStack",
+        "logo": {
+            "id": "3Ybjfl8dQViGbUABsLBkst",
+            "type": "asset",
+            "name": "Akurit Logo",
+            "url": "/cms/3Ybjfl8dQViGbUABsLBkst.svg",
+            "width": 60,
+            "height": 22
+        }
+    },
+    {
+        "id": "5zKho85aVa9Ume4hWLC9JA",
+        "type": "project",
+        "name": "xStarters.digital",
+        "description": "Campaign website with a complex registration process",
+        "from": "04/2018",
+        "to": "03/2019",
+        "role": "Frontend Lead",
+        "url": "xstarters.digital",
+        "company": {
+            "id": "1R0VWzDrHnkVEZOwvpP1nG",
+            "type": "company",
+            "name": "elbformat",
+            "fullName": "elbformat content solutions GmbH",
+            "companyType": "Web agency",
+            "url": "https://www.elbformat.de/",
+            "logo": {
+                "id": "1HotzSN5zW7j9c0TVedhE2",
+                "type": "asset",
+                "name": "elbformat logo",
+                "url": "/cms/1HotzSN5zW7j9c0TVedhE2.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "54fGtF1zBRGpU9Zmtr8eux",
+                "type": "technology",
+                "name": "vue",
+                "fullName": "Vue.js",
+                "url": "https://vuejs.org/",
+                "logo": {
+                    "id": "2tW8ipPNPttvRG2JcSpWYV",
+                    "type": "asset",
+                    "name": "vue",
+                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5F8GoVek3g4BtVPtv3g2Yg",
+                "type": "technology",
+                "name": "vuex",
+                "fullName": "Vuex.js",
+                "url": "https://vuex.vuejs.org/",
+                "logo": {
+                    "id": "5jXGiLqd5jdsP64vkTDe9z",
+                    "type": "asset",
+                    "name": "vuex",
+                    "url": "/cms/5jXGiLqd5jdsP64vkTDe9z.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "vue, vuex, JIRA, Fractal.js, TWIG, HTML, SCSS, JavaScript, webpack, gulp, BrowserStack, nunjucks",
+        "logo": {
+            "id": "73W0unHeOeXMY4MIXHjmYc",
+            "type": "asset",
+            "name": "xStarters Logo",
+            "url": "/cms/73W0unHeOeXMY4MIXHjmYc.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "6jjPrCOsjKdAOzPmvnY8ar",
+        "type": "project",
+        "name": "BusinessBike",
+        "description": "Bike leasing platform using react/redux/sulu",
+        "from": "08/2017",
+        "to": "09/2018",
+        "role": "Frontend Lead",
+        "company": {
+            "id": "1R0VWzDrHnkVEZOwvpP1nG",
+            "type": "company",
+            "name": "elbformat",
+            "fullName": "elbformat content solutions GmbH",
+            "companyType": "Web agency",
+            "url": "https://www.elbformat.de/",
+            "logo": {
+                "id": "1HotzSN5zW7j9c0TVedhE2",
+                "type": "asset",
+                "name": "elbformat logo",
+                "url": "/cms/1HotzSN5zW7j9c0TVedhE2.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "AueNjVu9ROQeiEW2aLz8V",
+                "type": "technology",
+                "name": "react",
+                "fullName": "React.js",
+                "url": "https://reactjs.org/",
+                "logo": {
+                    "id": "32VOiMe4FqNsjapns9qC6",
+                    "type": "asset",
+                    "name": "react",
+                    "url": "/cms/32VOiMe4FqNsjapns9qC6.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "44KzW99RAS3moq93l46dTu",
+                "type": "technology",
+                "name": "redux",
+                "fullName": "Redux.js",
+                "url": "https://redux.js.org/",
+                "logo": {
+                    "id": "5MvJm6lwHhdQZmqMKjWo3s",
+                    "type": "asset",
+                    "name": "redux",
+                    "url": "/cms/5MvJm6lwHhdQZmqMKjWo3s.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "JIRA, HTML, SCSS, JavaScript, webpack, Fabricator, mustache, yarn, gulp",
+        "logo": {
+            "id": "7Ch0VsE6dCPMG0z9FjvZTS",
+            "type": "asset",
+            "name": "Business Bike Logo",
+            "url": "/cms/7Ch0VsE6dCPMG0z9FjvZTS.svg",
+            "width": 1716,
+            "height": 440
+        }
+    },
+    {
+        "id": "3uW6ArZwx1ETsLyTrcKaXM",
+        "type": "project",
+        "name": "Enerlisa",
+        "description": "SmartHome platform",
+        "from": "10/2015",
+        "to": "01/2018",
+        "role": "Project Lead",
+        "sector": "Internet of Things",
+        "company": {
+            "id": "67RMitwXYMmopZPoKHeMx7",
+            "type": "company",
+            "name": "lustitia ltd",
+            "fullName": "Lustitia Limited",
+            "companyType": "IoT startup",
+            "url": "https://lustitia.de/",
+            "logo": {
+                "id": "5riNILZPodjcuAS0OXeuMs",
+                "type": "asset",
+                "name": "lustitia logo",
+                "url": "/cms/5riNILZPodjcuAS0OXeuMs.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "2EO7XE61ZgC8bGFo8xhLma",
+                "type": "technology",
+                "name": "angular",
+                "fullName": "Angular.js",
+                "url": "https://angular.io/",
+                "logo": {
+                    "id": "5RwQnyolyqavXrUhoNoEft",
+                    "type": "asset",
+                    "name": "angular",
+                    "url": "/cms/5RwQnyolyqavXrUhoNoEft.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "YouTrack, draw.io, C# (.NET & .NET Core), angular.js, Material UI, HTML, CSS, LESS, JavaScript, PostgreSQL, Redis, InfluxDB, Grunt, Cordova, INVISION, swagger.io, TeamCity",
+        "logo": {
+            "id": "1nrS6mmXjdfLePwRCb79O2",
+            "type": "asset",
+            "name": "Enerlisa Logo",
+            "url": "/cms/1nrS6mmXjdfLePwRCb79O2.jpg",
+            "width": 500,
+            "height": 150
+        }
+    },
+    {
+        "id": "5luo3uiz3fL7eUL2tEbm7D",
+        "type": "project",
+        "name": "Nivea.com",
+        "description": "Corporate website relaunch",
+        "from": "12/2014",
+        "to": "06/2015",
+        "role": "Frontend Developer",
+        "sector": "Consumer Products",
+        "company": {
+            "id": "4j7OqZbjt7G1GFCd2UoO6h",
+            "type": "company",
+            "name": "neveling.net",
+            "fullName": "neveling.net GmbH",
+            "companyType": "Web agency",
+            "url": "https://nevelingreply.de/",
+            "logo": {
+                "id": "4VucpwY4kYIEhVxBNPkPOS",
+                "type": "asset",
+                "name": "neveling logo",
+                "url": "/cms/4VucpwY4kYIEhVxBNPkPOS.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "67Jog7Ffuhodi3RIwdBKeY",
+                "type": "technology",
+                "name": "vanilla",
+                "fullName": "Plain HTML, CSS, JavaScript",
+                "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5sqN1sIy8yvi8uJUf9OLX7",
+                "type": "technology",
+                "name": "sitecore",
+                "fullName": "Sitecore",
+                "url": "https://www.sitecore.com/",
+                "logo": {
+                    "id": "kSi35dzSJCYUU6crZdDdP",
+                    "type": "asset",
+                    "name": "sitecore",
+                    "url": "/cms/kSi35dzSJCYUU6crZdDdP.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "YouTrack, Social Media Integration, XSLT, Sitecore CMS, Video.js, FlexSlider, jQuery, Modernizr, Photoshop, Visual Studio 2013",
+        "logo": {
+            "id": "6TrKrHhi5ew81CJNd9gwCj",
+            "type": "asset",
+            "name": "Nivea Logo",
+            "url": "/cms/6TrKrHhi5ew81CJNd9gwCj.png",
+            "width": 1024,
+            "height": 1024
+        }
+    },
+    {
+        "id": "3x7nsifMx7JBOaUNdEzcU8",
+        "type": "project",
+        "name": "Beiersdorf.com",
+        "description": "Corporate website relaunch",
+        "from": "08/2014",
+        "to": "10/2015",
+        "role": "Frontend Developer",
+        "company": {
+            "id": "4j7OqZbjt7G1GFCd2UoO6h",
+            "type": "company",
+            "name": "neveling.net",
+            "fullName": "neveling.net GmbH",
+            "companyType": "Web agency",
+            "url": "https://nevelingreply.de/",
+            "logo": {
+                "id": "4VucpwY4kYIEhVxBNPkPOS",
+                "type": "asset",
+                "name": "neveling logo",
+                "url": "/cms/4VucpwY4kYIEhVxBNPkPOS.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "67Jog7Ffuhodi3RIwdBKeY",
+                "type": "technology",
+                "name": "vanilla",
+                "fullName": "Plain HTML, CSS, JavaScript",
+                "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "YouTrack, HTML, CSS, LESS, JavaScript, C# / ASP.NET, Social Media, XSLT, Sitecore CMS, Video.js, FlexSlider, jQuery, Modernizr, Photoshop, Visual Studio 2013",
+        "logo": {
+            "id": "1CLNv9m1X9DtgXDsSvsfWZ",
+            "type": "asset",
+            "name": "Beiersdorf Logo",
+            "url": "/cms/1CLNv9m1X9DtgXDsSvsfWZ.png",
+            "width": 630,
+            "height": 104
+        }
+    },
+    {
+        "id": "581JTHsG24yDsEQBnTHmvf",
+        "type": "project",
+        "name": "Eucerin.de",
+        "description": "Corporate website with product catalog",
+        "from": "05/2014",
+        "to": "10/2014",
+        "role": ".NET Developer",
+        "sector": "Consumer Products",
+        "company": {
+            "id": "4j7OqZbjt7G1GFCd2UoO6h",
+            "type": "company",
+            "name": "neveling.net",
+            "fullName": "neveling.net GmbH",
+            "companyType": "Web agency",
+            "url": "https://nevelingreply.de/",
+            "logo": {
+                "id": "4VucpwY4kYIEhVxBNPkPOS",
+                "type": "asset",
+                "name": "neveling logo",
+                "url": "/cms/4VucpwY4kYIEhVxBNPkPOS.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "5sqN1sIy8yvi8uJUf9OLX7",
+                "type": "technology",
+                "name": "sitecore",
+                "fullName": "Sitecore",
+                "url": "https://www.sitecore.com/",
+                "logo": {
+                    "id": "kSi35dzSJCYUU6crZdDdP",
+                    "type": "asset",
+                    "name": "sitecore",
+                    "url": "/cms/kSi35dzSJCYUU6crZdDdP.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "YouTrack, Social Media Integration, XSLT, Sitecore CMS, Video.js, FlexSlider, jQuery, Modernizr, Photoshop, Visual Studio 2013",
+        "logo": {
+            "id": "7Ha4krB10kq1Mj8awi1dN",
+            "type": "asset",
+            "name": "Eucerin Logo",
+            "url": "/cms/7Ha4krB10kq1Mj8awi1dN.svg",
+            "width": 165,
+            "height": 64
+        }
+    },
+    {
+        "id": "4hP5pbPWLfFSkrtUm9oplG",
+        "type": "project",
+        "name": "Nivea MEN",
+        "description": "Corporate website with product catalog",
+        "from": "05/2014",
+        "to": "12/2014",
+        "role": ".NET Developer",
+        "sector": "Consumer Products",
+        "company": {
+            "id": "4j7OqZbjt7G1GFCd2UoO6h",
+            "type": "company",
+            "name": "neveling.net",
+            "fullName": "neveling.net GmbH",
+            "companyType": "Web agency",
+            "url": "https://nevelingreply.de/",
+            "logo": {
+                "id": "4VucpwY4kYIEhVxBNPkPOS",
+                "type": "asset",
+                "name": "neveling logo",
+                "url": "/cms/4VucpwY4kYIEhVxBNPkPOS.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "67Jog7Ffuhodi3RIwdBKeY",
+                "type": "technology",
+                "name": "vanilla",
+                "fullName": "Plain HTML, CSS, JavaScript",
+                "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+            },
+            {
+                "id": "76esXpJFLSw9SqV4hadbc",
+                "type": "technology",
+                "name": "TS",
+                "fullName": "TypeScript",
+                "url": "https://www.typescriptlang.org/",
+                "logo": {
+                    "id": "16r0RL7imurjAe8jlRDb1E",
+                    "type": "asset",
+                    "name": "typescript",
+                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5sqN1sIy8yvi8uJUf9OLX7",
+                "type": "technology",
+                "name": "sitecore",
+                "fullName": "Sitecore",
+                "url": "https://www.sitecore.com/",
+                "logo": {
+                    "id": "kSi35dzSJCYUU6crZdDdP",
+                    "type": "asset",
+                    "name": "sitecore",
+                    "url": "/cms/kSi35dzSJCYUU6crZdDdP.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            }
+        ],
+        "moreTechnologies": "YouTrack, Social Media Integration, XSLT, Sitecore CMS, Video.js, FlexSlider, jQuery, Modernizr, Photoshop, Visual Studio 2013",
+        "logo": {
+            "id": "5jb8aNBxPUAsvRk7FEwzfR",
+            "type": "asset",
+            "name": "Nivea Men Logo",
+            "url": "/cms/5jb8aNBxPUAsvRk7FEwzfR.png",
+            "width": 415,
+            "height": 413
+        }
+    },
+    {
+        "id": "27cq09Y9KpDJZmC6PZdUG5",
+        "type": "project",
+        "name": "Central Database",
+        "description": "Centralization and standardization of shipping data from 5 different sources",
+        "from": "12/2011",
+        "to": "03/2013",
+        "role": "Trainee",
+        "sector": "Forwarding Industry",
+        "company": {
+            "id": "2lHGJkoB4VU0HMDJZdRS7R",
+            "type": "company",
+            "name": "a. hartrodt",
+            "fullName": "a. hartrodt (GmbH & Co) KG",
+            "companyType": "Shipping company",
+            "url": "https://www.hartrodt.com/",
+            "logo": {
+                "id": "1poJZOLMo77V9v20ChgHQD",
+                "type": "asset",
+                "name": "hartrodt logo",
+                "url": "/cms/1poJZOLMo77V9v20ChgHQD.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5xiuHv78wAhBvyI8Eh8RNW",
+                "type": "technology",
+                "name": "MSSQL",
+                "fullName": "MSSQL",
+                "url": "https://www.microsoft.com/en-us/sql-server"
+            }
+        ],
+        "moreTechnologies": "C#, ASP.NET, MSSQL, Visual Studio 2008/2010",
+        "logo": {
+            "id": "56pVluVE26G2als1ya2Qrk",
+            "type": "asset",
+            "name": "Central Database Logo",
+            "url": "/cms/56pVluVE26G2als1ya2Qrk.svg",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "7fKh83sjqPvktTHD4Jjddh",
+        "type": "project",
+        "name": "ExtraNet",
+        "description": "Internal website for shipment tracking with data from the Central Database",
+        "from": "12/2011",
+        "to": "03/2013",
+        "role": "Trainee",
+        "sector": "Forwarding Industry",
+        "company": {
+            "id": "2lHGJkoB4VU0HMDJZdRS7R",
+            "type": "company",
+            "name": "a. hartrodt",
+            "fullName": "a. hartrodt (GmbH & Co) KG",
+            "companyType": "Shipping company",
+            "url": "https://www.hartrodt.com/",
+            "logo": {
+                "id": "1poJZOLMo77V9v20ChgHQD",
+                "type": "asset",
+                "name": "hartrodt logo",
+                "url": "/cms/1poJZOLMo77V9v20ChgHQD.png",
+                "width": 200,
+                "height": 200
+            }
+        },
+        "technologies": [
+            {
+                "id": "67Jog7Ffuhodi3RIwdBKeY",
+                "type": "technology",
+                "name": "vanilla",
+                "fullName": "Plain HTML, CSS, JavaScript",
+                "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+            },
+            {
+                "id": "5OCezaxGtirJHmyRscEMjP",
+                "type": "technology",
+                "name": "C#",
+                "fullName": "C#.NET",
+                "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+                "logo": {
+                    "id": "2hiBxp8jk1j6KsnIbW5ULc",
+                    "type": "asset",
+                    "name": "csharp",
+                    "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+                    "width": 200,
+                    "height": 200
+                }
+            },
+            {
+                "id": "5xiuHv78wAhBvyI8Eh8RNW",
+                "type": "technology",
+                "name": "MSSQL",
+                "fullName": "MSSQL",
+                "url": "https://www.microsoft.com/en-us/sql-server"
+            }
+        ],
+        "moreTechnologies": "ASP.NET, MSSQL, jQuery, Visual Studio 2008/2010, Internet Explorer 6",
+        "logo": {
+            "id": "1e2Xfmut6BjtdPMNwjVaIX",
+            "type": "asset",
+            "name": "ExtraNet Logo",
+            "url": "/cms/1e2Xfmut6BjtdPMNwjVaIX.svg",
+            "width": 500,
+            "height": 150
+        }
+    }
+]
