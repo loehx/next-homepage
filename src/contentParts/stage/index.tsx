@@ -41,17 +41,11 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [warmupText, setWarmupText] = useState<string | null>(null);
     const [warmupReady, setWarmupReady] = useState(false);
     const [aiActivated, setAiActivated] = useState(false);
-    const [agentEnabled, setAgentEnabled] = useState(false);
+    // Soft launch: the AI chat is now always available. It used to be gated
+    // behind a ?agent=true URL flag; that gate has been removed so the
+    // "Talk to my AI Agent" entry point shows for every visitor.
+    const agentEnabled = true;
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
-
-    // Feature flag: AI chat input is hidden unless the page is opened with
-    // ?agent=true. Read from the URL on mount (client-only, since this is a
-    // statically exported Next.js site).
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        const params = new URLSearchParams(window.location.search);
-        setAgentEnabled(params.get("agent") === "true");
-    }, []);
 
     const handleQuestionSubmit = useCallback((question: string) => {
         setAiQuestion(question);
