@@ -9,7 +9,7 @@ interface Props extends CompanyEntry {
 export const Company: React.FC<Props> = (props) => {
     return (
         <div
-            className={"relative group w-[100px] md:w-[150px] flex-shrink-0"}
+            className={"relative group w-[125px] md:w-[150px] flex-shrink-0"}
             style={{ aspectRatio: "1 / 1" }}
         >
             <a
@@ -22,7 +22,7 @@ export const Company: React.FC<Props> = (props) => {
                 <Image
                     asset={props.logo}
                     alt={`logo of ${props.fullName}`}
-                    sizes="200px"
+                    sizes="(max-width: 768px) 125px, 150px"
                 />
             </a>
         </div>

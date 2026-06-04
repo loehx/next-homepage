@@ -16,6 +16,17 @@
     pointer-events: none;
 }
 
+.rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Pull the second stacked row up to tighten the spacing between rows. */
+.rows .marquee + .marquee {
+    margin-top: -30px;
+}
+
 .track {
     display: flex;
     gap: 1rem;
