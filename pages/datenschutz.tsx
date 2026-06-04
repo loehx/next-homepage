@@ -50,10 +50,9 @@ const DatenschutzPage: NextPage = () => {
                     <p className={styles.text}>
                         Alexander Löhn
                         <br />
-                        <span className={styles.placeholder}>
-                            [Straße und Hausnummer, PLZ und Ort – bitte
-                            ergänzen]
-                        </span>
+                        Stahltwiete 18
+                        <br />
+                        22761 Hamburg
                         <br />
                         E-Mail:{" "}
                         <a

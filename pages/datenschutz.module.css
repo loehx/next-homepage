@@ -88,8 +88,3 @@
     font-size: 0.9rem;
     color: var(--grey-2);
 }
-
-.placeholder {
-    color: var(--yellow);
-    font-style: italic;
-}
