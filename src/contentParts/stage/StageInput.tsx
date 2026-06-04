@@ -514,12 +514,8 @@ export const StageInput: React.FC<StageInputProps> = ({
             </ul>
 
             <p className={styles.privacyHint}>
-                Heads-up: every conversation lands in my (Alex&apos;s) personal
-                inbox, and your messages are sent to Cursor (USA) to generate
-                the reply. Feel free to leave your email or phone number if
-                you&apos;d like me to get back to you — just please avoid truly
-                sensitive details (e.g. health or financial information). More
-                in my{" "}
+                Every chat lands in my (Alex&apos;s) inbox — leave your email or
+                phone if you&apos;d like a reply; details in my{" "}
                 <a
                     href="/datenschutz"
                     target="_blank"
