@@ -16,7 +16,7 @@ interface ChatRequest {
     agentId?: string;
     runId?: string;
     text?: string;
-    /** Visitor's browser locale (e.g. "de-DE"), used to hint the reply language. */
+    /** Visitor's browser locale (e.g. "de-DE"), forwarded to the agent as context. */
     locale?: string;
 }
 
@@ -184,7 +184,7 @@ export const handler: Handler = async (event) => {
             // refuses any mutation request even on follow-up turns. Hard enforcement
             // for "no repo writes" still relies on the Cursor GitHub App being
             // installed with read-only permissions on loehx/homepage-agent.
-            // The visitor's browser locale is forwarded as a language hint.
+            // The visitor's browser locale is forwarded as plain context.
             const wrappedPrompt = wrapUserPrompt(text, locale);
 
             if (!currentAgentId) {
