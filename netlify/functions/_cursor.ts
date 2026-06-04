@@ -94,9 +94,18 @@ const USER_PROMPT_PREAMBLE = [
 /**
  * Wraps a user-driven prompt with the read-only + tone/context instructions.
  * Intentionally NOT applied to the warmup prompt.
+ *
+ * When the visitor's browser locale is known it is passed along as plain
+ * context. We deliberately do NOT tell the agent what to do with it — how to
+ * use the locale (e.g. which language to answer in) is the agent's decision,
+ * governed by the agent repo's persona/rules.
  */
-export function wrapUserPrompt(text: string): string {
-    return `${USER_PROMPT_PREAMBLE}\n<USER_QUESTION>${text}</USER_QUESTION>`;
+export function wrapUserPrompt(text: string, locale?: string): string {
+    const localeLine =
+        locale && locale.trim()
+            ? `[USER BROWSER LOCALE: ${locale.trim()}]\n`
+            : "";
+    return `${USER_PROMPT_PREAMBLE}\n${localeLine}<USER_QUESTION>${text}</USER_QUESTION>`;
 }
 
 /**
