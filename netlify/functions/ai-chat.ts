@@ -16,6 +16,8 @@ interface ChatRequest {
     agentId?: string;
     runId?: string;
     text?: string;
+    /** Browser UI language (navigator.language) for the conversation log. */
+    locale?: string;
 }
 
 // Per-call polling budget. Netlify functions cap around 26s, leave headroom
@@ -163,7 +165,7 @@ export const handler: Handler = async (event) => {
         }
 
         if (body.mode === "ask") {
-            const { agentId, text } = body;
+            const { agentId, text, locale } = body;
 
             if (!text) {
                 return {
@@ -256,6 +258,7 @@ export const handler: Handler = async (event) => {
                 sessionId: currentAgentId,
                 question: text,
                 answer: parsed.answer,
+                locale,
             });
 
             return {

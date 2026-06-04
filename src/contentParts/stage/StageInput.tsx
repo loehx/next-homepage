@@ -252,6 +252,10 @@ export const StageInput: React.FC<StageInputProps> = ({
                         mode: "ask",
                         agentId: agentIdRef.current,
                         text,
+                        locale:
+                            typeof navigator !== "undefined"
+                                ? navigator.language
+                                : undefined,
                     }),
                 });
 
@@ -508,6 +512,21 @@ export const StageInput: React.FC<StageInputProps> = ({
                     </li>
                 ))}
             </ul>
+
+            <p className={styles.privacyHint}>
+                Your messages are sent to Cursor (USA) to generate a reply and
+                emailed to the site owner for quality assurance. Please
+                don&apos;t share sensitive personal data.{" "}
+                <a
+                    href="/datenschutz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.privacyHintLink}
+                >
+                    Privacy policy
+                </a>
+                .
+            </p>
         </div>
     );
 };
