@@ -77,13 +77,6 @@
     white-space: pre-wrap;
 }
 
-@media only screen and (min-width: 800px) {
-    .windowInner > * {
-        padding-left: 0em;
-        padding-right: 1em;
-    }
-}
-
 .text ul > li {
     padding-left: 2em;
     position: relative;

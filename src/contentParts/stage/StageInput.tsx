@@ -89,22 +89,12 @@ const LOADING_HINTS = [
 ];
 const LOADING_HINT_INTERVAL_MS = 4000;
 
-// The agent greets the visitor like a sleepy person being woken up. While it
-// warms up we cycle through these one-liners (~2s each), then swap in the
-// "awake" line once initialization finishes.
+// While the agent warms up we show a single line so the visitor knows they
+// don't have to wait, then swap in the "awake" line once initialization
+// finishes.
 const WARMUP_QUESTION = "Hey agent, are you there?";
-const WARMUP_HINTS: { text: string; ms: number }[] = [
-    { text: "(moaning)", ms: 4000 },
-    { text: "What.. who is it?", ms: 2000 },
-    { text: "(Yawning)", ms: 3000 },
-    { text: "Oh boy, I need a coffee...", ms: 2000 },
-    { text: "(slurping sounds)", ms: 4000 },
-    { text: "Okay, gimme a second...", ms: 2000 },
-    { text: "(typing sounds)", ms: 3000 },
-    { text: "(silence)", ms: 2000 },
-    { text: "(typing sounds)", ms: 5000 },
-    { text: "(nothingness)", ms: 5000 },
-];
+const WARMUP_ANSWER =
+    "Yes, just need a second to get cosy... But please go ahead already!";
 const WARMUP_READY_ANSWER = "Yes, I'm here! What's up?";
 
 export const StageInput: React.FC<StageInputProps> = ({
@@ -121,7 +111,6 @@ export const StageInput: React.FC<StageInputProps> = ({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [errorRetryable, setErrorRetryable] = useState(true);
     const [loadingHintIndex, setLoadingHintIndex] = useState(0);
-    const [warmupHintIndex, setWarmupHintIndex] = useState(0);
     // Set to true once the user focuses the input, so the suggestion items
     // play their staggered "wake up" highlight once and briefly draw the eye.
     const highlightTriggeredRef = useRef(false);
@@ -373,25 +362,6 @@ export const StageInput: React.FC<StageInputProps> = ({
         return () => clearInterval(interval);
     }, [status]);
 
-    // While the agent warms up, step through the sleepy "are you there?"
-    // replies. Each line has its own dwell time, so we chain timeouts instead
-    // of using a fixed interval. We stop on the last line instead of looping so
-    // it doesn't reset to "(moaning)" on a slow cold start.
-    useEffect(() => {
-        if (status !== "initializing") return;
-        setWarmupHintIndex(0);
-        let timeout: ReturnType<typeof setTimeout>;
-        const advance = (i: number) => {
-            if (i >= WARMUP_HINTS.length - 1) return;
-            timeout = setTimeout(() => {
-                setWarmupHintIndex(i + 1);
-                advance(i + 1);
-            }, WARMUP_HINTS[i].ms);
-        };
-        advance(0);
-        return () => clearTimeout(timeout);
-    }, [status]);
-
     // Surface the warmup exchange as markdown so the parent renders it through
     // the same Window/conversation component the real chat uses (identical
     // styling — only the text differs). Cleared once a real conversation takes
@@ -403,11 +373,9 @@ export const StageInput: React.FC<StageInputProps> = ({
             return;
         }
         const answer =
-            status === "initializing"
-                ? WARMUP_HINTS[warmupHintIndex].text
-                : WARMUP_READY_ANSWER;
+            status === "initializing" ? WARMUP_ANSWER : WARMUP_READY_ANSWER;
         onWarmupTextChange(`> ${WARMUP_QUESTION}\n\n${answer}`);
-    }, [status, warmupHintIndex, hasActiveConversation, onWarmupTextChange]);
+    }, [status, hasActiveConversation, onWarmupTextChange]);
 
     // Mirror the warmup "answered" state up so the parent can dim the question
     // once the agent is awake (and un-dim it while still warming up).
