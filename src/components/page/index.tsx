@@ -67,7 +67,11 @@ const Page: FC<Props> = (props: Props) => {
                 )}
                 {renderOG(
                     "og:image",
-                    `${props.ogimage?.url}?w=1200&h=630&fit=fill`,
+                    props.ogimage?.url
+                        ? `/.netlify/images?url=${encodeURIComponent(
+                              props.ogimage.url,
+                          )}&w=1200&h=630&fit=cover&fm=webp`
+                        : "",
                 )}
                 {renderOG("og:title", props.ogtitle)}
                 {renderOG("og:description", props.ogdescription)}
@@ -76,7 +80,6 @@ const Page: FC<Props> = (props: Props) => {
                 {renderOG("og:site_name", "Alexander Löhn")}
                 {renderOG("og:type", "website")}
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
-                <link rel="preconnect" href="https://images.ctfassets.net" />
             </Head>
             <div className={className}>
                 {props.mainContent?.map((cp) => (

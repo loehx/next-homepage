@@ -19,6 +19,11 @@ from = "/api/ai/*"
 to = "/.netlify/functions/ai-:splat"
 status = 200
 
+[[redirects]]
+from = "/api/secret-link"
+to = "/.netlify/functions/secret-link"
+status = 200
+
 # Public, read-only project/company/technology catalog consumed by the
 # homepage-agent (and any future external integration). Generated at build
 # time by `yarn build:agent-api` → public/api/v1/*.json, so it ships as a

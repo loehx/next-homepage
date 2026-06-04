@@ -1,5 +1,5 @@
 /**
- * Builds the public v1 agent API payload from Contentful.
+ * Builds the public v1 agent API payload from local JSON content.
  *
  * This is the stable, Contentful-agnostic contract the homepage-agent (and
  * any future consumer) reads. The schema is versioned (`version: 1`) so we
@@ -84,17 +84,14 @@ export async function buildAgentApiV1(): Promise<AgentApiV1> {
         projects,
         (p) => p.company?.id,
     );
-    const techProjectIndex = indexProjectsByRefIds(
-        projects,
-        (p) => (p.technologies || []).map((t) => t.id),
+    const techProjectIndex = indexProjectsByRefIds(projects, (p) =>
+        (p.technologies || []).map((t) => t.id),
     );
 
-    const companiesOut: AgentCompany[] = companies
-        .filter(Boolean)
-        .map((c) => ({
-            ...mapCompanyRef(c),
-            projectIds: companyProjectIndex.get(c.id) || [],
-        }));
+    const companiesOut: AgentCompany[] = companies.filter(Boolean).map((c) => ({
+        ...mapCompanyRef(c),
+        projectIds: companyProjectIndex.get(c.id) || [],
+    }));
 
     const technologiesOut: AgentTechnology[] = technologies
         .filter(Boolean)

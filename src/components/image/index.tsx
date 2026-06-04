@@ -22,23 +22,25 @@ export interface ImageProps {
 }
 
 const srcLoader: ImageLoader = ({ src, width, quality = undefined }) => {
-    // Multiply width by device pixel ratio for retina displays (default to 2x)
-    const devicePixelRatio =
-        typeof window !== "undefined" ? window.devicePixelRatio || 2 : 2;
-    const adjustedWidth = width ? Math.round(width * devicePixelRatio) : width;
+    // Only locally-hosted raster assets go through the Netlify Image CDN.
+    // SVGs, data URIs and bundled static images are served untouched.
+    const isResizable =
+        src.startsWith("/cms/") && !src.toLowerCase().endsWith(".svg");
+    if (!isResizable) {
+        return src;
+    }
 
-    const params = {
-        w: adjustedWidth,
-        q: quality,
-        fm: !src.includes(".svg") ? "webp" : undefined,
-    };
-    const keys = Object.keys(params).filter((k) => params[k]);
-    const separator = src.includes("?") ? "&" : "?";
-    const query = keys
-        .map((k) => k + "=" + encodeURIComponent(params[k]))
-        .join("&");
+    // Next builds the srcset by calling this loader once per device size, so the
+    // browser picks the right width (incl. retina) via the `sizes` attribute -
+    // no manual devicePixelRatio math needed here.
+    const params = [
+        `url=${encodeURIComponent(src)}`,
+        width != null ? `w=${width}` : null,
+        quality != null ? `q=${quality}` : null,
+        "fm=webp",
+    ].filter(Boolean);
 
-    return src + separator + query;
+    return `/.netlify/images?${params.join("&")}`;
 };
 
 export const Image: React.FC<ImageProps> = ({
@@ -69,7 +71,7 @@ export const Image: React.FC<ImageProps> = ({
             <NextImage
                 layout={"fill"}
                 objectFit="cover"
-                loader={asset ? srcLoader : undefined}
+                loader={srcLoader}
                 loading={props.priority ? "eager" : "lazy"}
                 height={height}
                 alt={asset?.description}
@@ -87,7 +89,7 @@ export const Image: React.FC<ImageProps> = ({
                     layout={"fill"}
                     objectFit="cover"
                     alt="Placeholder image"
-                    loader={undefined}
+                    unoptimized
                     src={placeHolderImage}
                 />
             )}

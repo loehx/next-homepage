@@ -23,7 +23,7 @@ const OUTPUT_PATH = path.join(
 
 async function main(): Promise<void> {
     const startedAt = Date.now();
-    console.log("[agentApi] building v1 payload from Contentful…");
+    console.log("[agentApi] building v1 payload from local content…");
 
     const payload = await buildAgentApiV1();
 

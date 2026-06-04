@@ -1,66 +1,58 @@
-import * as contentful from "./contentful";
-import {
-    ConfigEntry,
-    Entry,
-    PageEntry,
-    ProjectEntry,
-    SecretLink,
-} from "./definitions";
+import configData from "./content/config.json";
+import pagesData from "./content/pages.json";
+import projectsData from "./content/projects.json";
+import companiesData from "./content/companies.json";
+import technologiesData from "./content/technologies.json";
+import { ConfigEntry, Entry, PageEntry, ProjectEntry } from "./definitions";
+
+const config = configData as unknown as ConfigEntry;
+const pages = pagesData as unknown as PageEntry[];
+const projects = projectsData as unknown as ProjectEntry[];
+const companies = companiesData as unknown as Entry[];
+const technologies = technologiesData as unknown as Entry[];
+
+function allTopLevelEntries(): Entry[] {
+    return [config, ...pages, ...projects, ...companies, ...technologies];
+}
 
 export async function getEntry<T extends Entry>(id: string): Promise<T> {
-    const result = await contentful.getEntry<T>(id);
-    return result;
+    const found = allTopLevelEntries().find((entry) => entry.id === id);
+    if (!found) {
+        throw new Error(`Entry not found: ${id}`);
+    }
+    return found as T;
 }
 
 export async function getEntriesByType<T extends Entry>(
     typeName: string,
 ): Promise<T[]> {
-    const result = await contentful.getEntries<T>({
-        "sys.contentType.sys.id": typeName,
-    });
-    return result;
+    const type = typeName.toLowerCase();
+    return allTopLevelEntries().filter((entry) => entry.type === type) as T[];
 }
 
 export async function getPageBySlug(slug: string): Promise<PageEntry> {
     if (slug[0] === "/") slug = slug.substring(1);
-    const result = await contentful.getEntries<PageEntry>({
-        content_type: "page",
-        "fields.slug[in]": `${slug},/${slug}`,
-        limit: 1,
-    });
-    return result[0];
+    return pages.find(
+        (page) => page.slug === slug || page.slug === `/${slug}`,
+    )!;
 }
 
 export async function getConfig(): Promise<ConfigEntry> {
-    return await contentful.getConfig();
+    return config;
 }
 
-export async function getProjects(): Promise<ProjectEntry[]> {
-    const projects = await getEntriesByType<ProjectEntry>("project");
-
-    projects.sort((a, b) => {
+function sortProjectsByFrom(projectsList: ProjectEntry[]): ProjectEntry[] {
+    return [...projectsList].sort((a, b) => {
         const [monthA, yearA] = a.from.split("/");
         const [monthB, yearB] = b.from.split("/");
         const valA = parseInt(yearA) + parseInt(monthA) / 100;
         const valB = parseInt(yearB) + parseInt(monthB) / 100;
         return valB - valA;
     });
-
-    return projects;
 }
 
-export async function getSecretLink(
-    password: string,
-): Promise<SecretLink | undefined> {
-    return (
-        await contentful.getEntries<SecretLink>({
-            content_type: "secretLink",
-            "fields.password[match]": password,
-            limit: 1,
-        })
-    ).find(
-        (k) => k.password.toLocaleLowerCase() === password.toLocaleLowerCase(),
-    );
+export async function getProjects(): Promise<ProjectEntry[]> {
+    return sortProjectsByFrom(projects);
 }
 
 export default {

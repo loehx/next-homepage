@@ -1,0 +1,268 @@
+[
+    {
+        "id": "EpDh0tml79SnmDGftjxe9",
+        "type": "technology",
+        "name": "Gatsby",
+        "fullName": "Gatsby - Static Site Generator",
+        "url": "https://www.gatsbyjs.com/"
+    },
+    {
+        "id": "67Jog7Ffuhodi3RIwdBKeY",
+        "type": "technology",
+        "name": "vanilla",
+        "fullName": "Plain HTML, CSS, JavaScript",
+        "url": "https://en.wikipedia.org/wiki/Vanilla_software"
+    },
+    {
+        "id": "9pupfiqnKwZkCXI3dGvkp",
+        "type": "technology",
+        "name": "storefront",
+        "fullName": "Storefront (by SCAYLE)",
+        "url": "https://www.scayle.com/platform/digital-storefront/"
+    },
+    {
+        "id": "5TRK3hsjb54emrKOwh6Ipe",
+        "type": "technology",
+        "name": "cms-less",
+        "fullName": "AI-driven CMS",
+        "url": "https://dev.to/matfrana/cms-vs-ai-the-content-battle-begins-de"
+    },
+    {
+        "id": "5xiuHv78wAhBvyI8Eh8RNW",
+        "type": "technology",
+        "name": "MSSQL",
+        "fullName": "MSSQL",
+        "url": "https://www.microsoft.com/en-us/sql-server"
+    },
+    {
+        "id": "nDzyvWkBE9cFBeRLgVbLN",
+        "type": "technology",
+        "name": "Storyblok",
+        "fullName": "Storyblok",
+        "url": "https://www.storyblok.com/",
+        "logo": {
+            "id": "350IGo20AcnIAWPi9n8hHO",
+            "type": "asset",
+            "name": "storyblok-logo",
+            "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
+            "width": 586,
+            "height": 586
+        }
+    },
+    {
+        "id": "2zimoPdvWo1mJVLhUkU8dC",
+        "type": "technology",
+        "name": "tailwind",
+        "fullName": "Tailwind CSS",
+        "url": "https://tailwindcss.com/",
+        "logo": {
+            "id": "74PhGhAk96EoJkBw68nz1G",
+            "type": "asset",
+            "name": "tailwind",
+            "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "54fGtF1zBRGpU9Zmtr8eux",
+        "type": "technology",
+        "name": "vue",
+        "fullName": "Vue.js",
+        "url": "https://vuejs.org/",
+        "logo": {
+            "id": "2tW8ipPNPttvRG2JcSpWYV",
+            "type": "asset",
+            "name": "vue",
+            "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "4eb74CjF8j9DEEsh4Xq60h",
+        "type": "technology",
+        "name": "contentful",
+        "fullName": "Contentful",
+        "url": "https://contentful.com/",
+        "logo": {
+            "id": "3nQs2hA9WPOLRSqVLKrtgt",
+            "type": "asset",
+            "name": "contentful",
+            "url": "/cms/3nQs2hA9WPOLRSqVLKrtgt.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "5OCezaxGtirJHmyRscEMjP",
+        "type": "technology",
+        "name": "C#",
+        "fullName": "C#.NET",
+        "url": "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)",
+        "logo": {
+            "id": "2hiBxp8jk1j6KsnIbW5ULc",
+            "type": "asset",
+            "name": "csharp",
+            "url": "/cms/2hiBxp8jk1j6KsnIbW5ULc.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "6g9f2ctPTvkSXGwtp2ixFk",
+        "type": "technology",
+        "name": "C++",
+        "fullName": "C++"
+    },
+    {
+        "id": "5sqN1sIy8yvi8uJUf9OLX7",
+        "type": "technology",
+        "name": "sitecore",
+        "fullName": "Sitecore",
+        "url": "https://www.sitecore.com/",
+        "logo": {
+            "id": "kSi35dzSJCYUU6crZdDdP",
+            "type": "asset",
+            "name": "sitecore",
+            "url": "/cms/kSi35dzSJCYUU6crZdDdP.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "2EO7XE61ZgC8bGFo8xhLma",
+        "type": "technology",
+        "name": "angular",
+        "fullName": "Angular.js",
+        "url": "https://angular.io/",
+        "logo": {
+            "id": "5RwQnyolyqavXrUhoNoEft",
+            "type": "asset",
+            "name": "angular",
+            "url": "/cms/5RwQnyolyqavXrUhoNoEft.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "44KzW99RAS3moq93l46dTu",
+        "type": "technology",
+        "name": "redux",
+        "fullName": "Redux.js",
+        "url": "https://redux.js.org/",
+        "logo": {
+            "id": "5MvJm6lwHhdQZmqMKjWo3s",
+            "type": "asset",
+            "name": "redux",
+            "url": "/cms/5MvJm6lwHhdQZmqMKjWo3s.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "AueNjVu9ROQeiEW2aLz8V",
+        "type": "technology",
+        "name": "react",
+        "fullName": "React.js",
+        "url": "https://reactjs.org/",
+        "logo": {
+            "id": "32VOiMe4FqNsjapns9qC6",
+            "type": "asset",
+            "name": "react",
+            "url": "/cms/32VOiMe4FqNsjapns9qC6.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "5F8GoVek3g4BtVPtv3g2Yg",
+        "type": "technology",
+        "name": "vuex",
+        "fullName": "Vuex.js",
+        "url": "https://vuex.vuejs.org/",
+        "logo": {
+            "id": "5jXGiLqd5jdsP64vkTDe9z",
+            "type": "asset",
+            "name": "vuex",
+            "url": "/cms/5jXGiLqd5jdsP64vkTDe9z.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "7MSfFkTqBsuZAnX3XF6GPj",
+        "type": "technology",
+        "name": "jira",
+        "fullName": "JIRA",
+        "url": "https://www.atlassian.com/software/jira",
+        "logo": {
+            "id": "3vKIcByjnfP8mCGtdcdFRG",
+            "type": "asset",
+            "name": "jira",
+            "url": "/cms/3vKIcByjnfP8mCGtdcdFRG.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "mDcifoUJom6YdSxxJVoMD",
+        "type": "technology",
+        "name": "netlify",
+        "fullName": "Netlify",
+        "url": "https://www.netlify.com/",
+        "logo": {
+            "id": "22ccl84gCItjFF2wmmPa0W",
+            "type": "asset",
+            "name": "netlify",
+            "url": "/cms/22ccl84gCItjFF2wmmPa0W.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "7MPgScLUzOHdEeePiwhO39",
+        "type": "technology",
+        "name": "next",
+        "fullName": "Next.js",
+        "url": "https://nextjs.org/",
+        "logo": {
+            "id": "239Dic5MdGZanUQ6kEVl6f",
+            "type": "asset",
+            "name": "nextjs",
+            "url": "/cms/239Dic5MdGZanUQ6kEVl6f.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "76esXpJFLSw9SqV4hadbc",
+        "type": "technology",
+        "name": "TS",
+        "fullName": "TypeScript",
+        "url": "https://www.typescriptlang.org/",
+        "logo": {
+            "id": "16r0RL7imurjAe8jlRDb1E",
+            "type": "asset",
+            "name": "typescript",
+            "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "2zClz1ezL03dCLlmnJbFAx",
+        "type": "technology",
+        "name": "nuxt",
+        "fullName": "Nuxt.js",
+        "url": "https://nuxtjs.org/",
+        "logo": {
+            "id": "3EGs4QwTnbr75o6UiYCCzb",
+            "type": "asset",
+            "name": "nuxt",
+            "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
+            "width": 200,
+            "height": 200
+        }
+    }
+]

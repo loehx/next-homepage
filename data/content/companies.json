@@ -1,0 +1,161 @@
+[
+    {
+        "id": "4o9zJNgWyml0PPbAzl7XT",
+        "type": "company",
+        "name": "Sorpetaler",
+        "fullName": "Sorpetaler Fensterbau GmbH",
+        "companyType": "Window Company",
+        "url": "https://www.sorpetaler.de/",
+        "logo": {
+            "id": "6aOwsKnlmjoDj2ge7oz20f",
+            "type": "asset",
+            "name": "sorpetaler-logo",
+            "url": "/cms/6aOwsKnlmjoDj2ge7oz20f.png",
+            "width": 625,
+            "height": 625
+        }
+    },
+    {
+        "id": "4pIziJPzam2Kv3sznyRUev",
+        "type": "company",
+        "name": "growsome",
+        "fullName": "growsome GmbH",
+        "companyType": "Web / E-commerce",
+        "url": "https://growsome.agency/",
+        "logo": {
+            "id": "7qBu2JvSJFrmsUxlZtXMKr",
+            "type": "asset",
+            "name": "growsome-logo",
+            "url": "/cms/7qBu2JvSJFrmsUxlZtXMKr.png",
+            "width": 280,
+            "height": 280
+        }
+    },
+    {
+        "id": "4rGDxFCu6z8toCd1GVd2TP",
+        "type": "company",
+        "name": "DEPT",
+        "fullName": "DEPT®",
+        "companyType": "E-Commerce",
+        "url": "https://www.deptagency.com/de-de/",
+        "logo": {
+            "id": "7h2yXUvqzcd0CLLCRNpM2Y",
+            "type": "asset",
+            "name": "dept-logo",
+            "url": "/cms/7h2yXUvqzcd0CLLCRNpM2Y.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "58w9bdxmwvIrYjZqZyebol",
+        "type": "company",
+        "name": "Judith Andresen",
+        "fullName": "Beratung Judith Andresen",
+        "companyType": "Agile Coaching",
+        "url": "https://www.judithandresen.com/",
+        "logo": {
+            "id": "1eTMVO9iLP2vf3t6mHKnvD",
+            "type": "asset",
+            "name": "judith-andresen",
+            "url": "/cms/1eTMVO9iLP2vf3t6mHKnvD.png",
+            "width": 475,
+            "height": 334
+        }
+    },
+    {
+        "id": "CtSzAQeukNN58CJTvQwhs",
+        "type": "company",
+        "name": "scayle",
+        "fullName": "ABOUT YOU SE & Co. KG",
+        "companyType": "E-commerce",
+        "url": "https://www.scayle.com/",
+        "logo": {
+            "id": "3fHLY9GQyyPPdRl9paW61i",
+            "type": "asset",
+            "name": "scayle logo",
+            "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "1R0VWzDrHnkVEZOwvpP1nG",
+        "type": "company",
+        "name": "elbformat",
+        "fullName": "elbformat content solutions GmbH",
+        "companyType": "Web agency",
+        "url": "https://www.elbformat.de/",
+        "logo": {
+            "id": "1HotzSN5zW7j9c0TVedhE2",
+            "type": "asset",
+            "name": "elbformat logo",
+            "url": "/cms/1HotzSN5zW7j9c0TVedhE2.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "67RMitwXYMmopZPoKHeMx7",
+        "type": "company",
+        "name": "lustitia ltd",
+        "fullName": "Lustitia Limited",
+        "companyType": "IoT startup",
+        "url": "https://lustitia.de/",
+        "logo": {
+            "id": "5riNILZPodjcuAS0OXeuMs",
+            "type": "asset",
+            "name": "lustitia logo",
+            "url": "/cms/5riNILZPodjcuAS0OXeuMs.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "4j7OqZbjt7G1GFCd2UoO6h",
+        "type": "company",
+        "name": "neveling.net",
+        "fullName": "neveling.net GmbH",
+        "companyType": "Web agency",
+        "url": "https://nevelingreply.de/",
+        "logo": {
+            "id": "4VucpwY4kYIEhVxBNPkPOS",
+            "type": "asset",
+            "name": "neveling logo",
+            "url": "/cms/4VucpwY4kYIEhVxBNPkPOS.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "2lHGJkoB4VU0HMDJZdRS7R",
+        "type": "company",
+        "name": "a. hartrodt",
+        "fullName": "a. hartrodt (GmbH & Co) KG",
+        "companyType": "Shipping company",
+        "url": "https://www.hartrodt.com/",
+        "logo": {
+            "id": "1poJZOLMo77V9v20ChgHQD",
+            "type": "asset",
+            "name": "hartrodt logo",
+            "url": "/cms/1poJZOLMo77V9v20ChgHQD.png",
+            "width": 200,
+            "height": 200
+        }
+    },
+    {
+        "id": "5HMS7R7h9GU5KxRFnOZW4U",
+        "type": "company",
+        "name": "hamburg coding school",
+        "fullName": "HCS Hamburg Coding School GmbH",
+        "url": "https://hamburgcodingschool.com/",
+        "logo": {
+            "id": "51YQkc7pifP6fD7swz2qaM",
+            "type": "asset",
+            "name": "hcs logo",
+            "url": "/cms/51YQkc7pifP6fD7swz2qaM.png",
+            "width": 200,
+            "height": 200
+        }
+    }
+]
