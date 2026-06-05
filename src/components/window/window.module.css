@@ -224,7 +224,7 @@
 .animatedWord {
     opacity: 0;
     animation-name: animatedWordFadeIn;
-    animation-duration: calc(1000ms / 4.2);
+    animation-duration: calc(1000ms / 10);
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
 }
