@@ -81,8 +81,8 @@ const LOADING_HINT_INTERVAL_MS = 4000;
 
 const IDLE_PLACEHOLDERS = [
     "Enter your questions here ...",
-    "Or choose from below ...",
-    "Any language works ...",
+    "Any language works!",
+    "Or choose one from below:",
 ];
 const PLACEHOLDER_CHAR_DELAY_MS = 34;
 const PLACEHOLDER_CYCLE_MS = 3000;
