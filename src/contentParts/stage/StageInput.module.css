@@ -15,12 +15,6 @@
     border-radius: 4px;
     padding: 14px 16px 14px;
     margin-top: 1rem;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-}
-
-.inputRow:focus-within {
-    opacity: 1;
 }
 
 .prompt {
@@ -31,7 +25,45 @@
     user-select: none;
 }
 
+.inputWrap {
+    flex: 1;
+    position: relative;
+    min-height: 18px;
+    display: flex;
+}
+
+.fakePlaceholder {
+    position: absolute;
+    inset: 0;
+    padding-top: 2px;
+    pointer-events: none;
+    color: var(--grey-4);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+
+.placeholderCursor {
+    color: var(--cyan);
+    animation: placeholderCursorBlink 1s step-end infinite;
+}
+
+@keyframes placeholderCursorBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .placeholderCursor {
+        animation: none;
+    }
+}
+
 .input {
+    width: 100%;
     flex: 1;
     background: transparent;
     border: none;
@@ -43,11 +75,11 @@
     outline: none;
     min-height: 18px;
     max-height: 120px;
-    padding: 0;
+    padding: 2px 0 0;
 }
 
 .input::placeholder {
-    color: var(--grey-3);
+    color: var(--grey-4);
 }
 
 .input:disabled {
@@ -248,7 +280,7 @@
 
 .privacyHint {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.5;
     color: var(--grey-4);
     max-width: 60ch;
@@ -266,6 +298,10 @@
 
 @media only screen and (min-width: 800px) {
     .input {
+        font-size: 14px;
+    }
+
+    .fakePlaceholder {
         font-size: 14px;
     }
 

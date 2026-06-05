@@ -79,6 +79,83 @@ const LOADING_HINTS = [
 ];
 const LOADING_HINT_INTERVAL_MS = 4000;
 
+const IDLE_PLACEHOLDERS = [
+    "Enter your questions here ...",
+    "Or choose from below ...",
+    "Any language works ...",
+];
+const PLACEHOLDER_CHAR_DELAY_MS = 34;
+const PLACEHOLDER_CYCLE_MS = 3000;
+
+interface TypewriterPlaceholder {
+    text: string;
+    showCursor: boolean;
+}
+
+const useTypewriterPlaceholder = (active: boolean): TypewriterPlaceholder => {
+    const [text, setText] = useState("");
+    const [showCursor, setShowCursor] = useState(false);
+    const placeholderIndexRef = useRef(0);
+    const charIndexRef = useRef(0);
+    const charTimerRef = useRef<ReturnType<typeof setTimeout>>();
+    const cycleTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+    useEffect(() => {
+        const clearTimers = () => {
+            if (charTimerRef.current) clearTimeout(charTimerRef.current);
+            if (cycleTimerRef.current) clearTimeout(cycleTimerRef.current);
+            charTimerRef.current = undefined;
+            cycleTimerRef.current = undefined;
+        };
+
+        if (!active) {
+            clearTimers();
+            setText("");
+            setShowCursor(false);
+            return clearTimers;
+        }
+
+        const startCycle = () => {
+            charIndexRef.current = 0;
+            setText("");
+            setShowCursor(true);
+            const fullText =
+                IDLE_PLACEHOLDERS[placeholderIndexRef.current] ?? "";
+
+            const typeNextChar = () => {
+                if (charIndexRef.current >= fullText.length) {
+                    setShowCursor(false);
+                    return;
+                }
+                charIndexRef.current += 1;
+                setText(fullText.slice(0, charIndexRef.current));
+                if (charIndexRef.current >= fullText.length) {
+                    setShowCursor(false);
+                    return;
+                }
+                charTimerRef.current = setTimeout(
+                    typeNextChar,
+                    PLACEHOLDER_CHAR_DELAY_MS,
+                );
+            };
+
+            typeNextChar();
+
+            cycleTimerRef.current = setTimeout(() => {
+                placeholderIndexRef.current =
+                    (placeholderIndexRef.current + 1) %
+                    IDLE_PLACEHOLDERS.length;
+                startCycle();
+            }, PLACEHOLDER_CYCLE_MS);
+        };
+
+        startCycle();
+        return clearTimers;
+    }, [active]);
+
+    return { text, showCursor };
+};
+
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
@@ -96,6 +173,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     // play their staggered "wake up" highlight once and briefly draw the eye.
     const highlightTriggeredRef = useRef(false);
     const [highlighted, setHighlighted] = useState(false);
+    const [isInputFocused, setIsInputFocused] = useState(false);
     // When the user submits before the agent has finished warming up, we hold
     // the message here and fire it off automatically once status flips to
     // "ready" (see the flush effect below).
@@ -350,6 +428,22 @@ export const StageInput: React.FC<StageInputProps> = ({
         );
     }, [status, hasActiveConversation, onWarmupLoadingChange]);
 
+    const isBusy = status === "loading" || queuedMessage !== null;
+    const showTypewriterPlaceholder =
+        status !== "error" &&
+        !isBusy &&
+        inputValue.length === 0 &&
+        !isInputFocused;
+    const typewriterPlaceholder = useTypewriterPlaceholder(
+        showTypewriterPlaceholder,
+    );
+
+    const placeholder = queuedMessage
+        ? "Waking up… your question is queued"
+        : isBusy
+        ? LOADING_HINTS[loadingHintIndex]
+        : "";
+
     if (status === "error") {
         return (
             <div className={styles.container}>
@@ -371,35 +465,44 @@ export const StageInput: React.FC<StageInputProps> = ({
         );
     }
 
-    const isBusy = status === "loading" || queuedMessage !== null;
-
-    const placeholder = queuedMessage
-        ? "Waking up… your question is queued"
-        : isBusy
-        ? LOADING_HINTS[loadingHintIndex]
-        : "";
-
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.inputRow}>
                 <span className={styles.prompt}>{">_"}</span>
-                <textarea
-                    ref={inputRef}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => {
-                        if (!highlightTriggeredRef.current) {
-                            highlightTriggeredRef.current = true;
-                            setHighlighted(true);
-                        }
-                    }}
-                    placeholder={placeholder}
-                    disabled={isBusy}
-                    maxLength={MAX_INPUT_LENGTH}
-                    rows={1}
-                    className={styles.input}
-                />
+                <div className={styles.inputWrap}>
+                    {showTypewriterPlaceholder && (
+                        <span
+                            className={styles.fakePlaceholder}
+                            aria-hidden="true"
+                        >
+                            {typewriterPlaceholder.text}
+                            {typewriterPlaceholder.showCursor && (
+                                <span className={styles.placeholderCursor}>
+                                    |
+                                </span>
+                            )}
+                        </span>
+                    )}
+                    <textarea
+                        ref={inputRef}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        onFocus={() => {
+                            setIsInputFocused(true);
+                            if (!highlightTriggeredRef.current) {
+                                highlightTriggeredRef.current = true;
+                                setHighlighted(true);
+                            }
+                        }}
+                        onBlur={() => setIsInputFocused(false)}
+                        placeholder={placeholder}
+                        disabled={isBusy}
+                        maxLength={MAX_INPUT_LENGTH}
+                        rows={1}
+                        className={styles.input}
+                    />
+                </div>
                 <button
                     type="submit"
                     disabled={!inputValue.trim() || isBusy}
