@@ -38,8 +38,7 @@ export const Stage: React.FC<StageProps> = (props) => {
     }));
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
     const [aiQuestion, setAiQuestion] = useState<string | null>(null);
-    const [warmupText, setWarmupText] = useState<string | null>(null);
-    const [warmupReady, setWarmupReady] = useState(false);
+    const [warmupLoading, setWarmupLoading] = useState(false);
     const [aiActivated, setAiActivated] = useState(false);
     // Soft launch: the AI chat is now always available. It used to be gated
     // behind a ?agent=true URL flag; that gate has been removed so the
@@ -176,13 +175,11 @@ export const Stage: React.FC<StageProps> = (props) => {
                                             ? `> ${aiQuestion}\n\n${aiAnswer}`
                                             : aiQuestion
                                             ? `> ${aiQuestion}`
-                                            : warmupText ?? undefined
+                                            : undefined
                                         : props.text
                                 }
-                                dimQuestion={
-                                    aiActivated &&
-                                    (aiAnswer !== null || warmupReady)
-                                }
+                                dimQuestion={aiActivated && aiAnswer !== null}
+                                warmupLoading={warmupLoading}
                                 onClose={aiActivated ? handleReset : undefined}
                             >
                                 {aiActivated && (
@@ -192,8 +189,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                         hasActiveConversation={
                                             aiQuestion !== null
                                         }
-                                        onWarmupTextChange={setWarmupText}
-                                        onWarmupReadyChange={setWarmupReady}
+                                        onWarmupLoadingChange={setWarmupLoading}
                                     />
                                 )}
                             </Window>

@@ -25,18 +25,8 @@ interface StageInputProps {
     onAnswer: (question: string, answer: string, suggestions: string[]) => void;
     /** If true, hides the "Ready when you are..." message (e.g., when an answer is being displayed) */
     hasActiveConversation?: boolean;
-    /**
-     * Emits the warmup "Hey agent, are you there?" exchange as markdown so the
-     * parent can render it through the same Window/conversation component the
-     * real chat uses. null once a real conversation takes over.
-     */
-    onWarmupTextChange?: (text: string | null) => void;
-    /**
-     * True once the warmup exchange is "answered" (agent ready, showing
-     * "Yes, I'm here!"); false while it's still warming up. Lets the parent dim
-     * the question blockquote the same way it does after a real answer.
-     */
-    onWarmupReadyChange?: (ready: boolean) => void;
+    /** True while the agent is still initializing (show spinner + hint in Window). */
+    onWarmupLoadingChange?: (loading: boolean) => void;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
@@ -89,20 +79,11 @@ const LOADING_HINTS = [
 ];
 const LOADING_HINT_INTERVAL_MS = 4000;
 
-// While the agent warms up we show a single line so the visitor knows they
-// don't have to wait, then swap in the "awake" line once initialization
-// finishes.
-const WARMUP_QUESTION = "Hey agent, are you there?";
-const WARMUP_ANSWER =
-    "Yes, just need a second to get cosy... But please go ahead already!";
-const WARMUP_READY_ANSWER = "Yes, I'm here! What's up?";
-
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
     hasActiveConversation = false,
-    onWarmupTextChange,
-    onWarmupReadyChange,
+    onWarmupLoadingChange,
 }: StageInputProps) => {
     const [status, setStatus] = useState<Status>("initializing");
     const [inputValue, setInputValue] = useState("");
@@ -362,27 +343,12 @@ export const StageInput: React.FC<StageInputProps> = ({
         return () => clearInterval(interval);
     }, [status]);
 
-    // Surface the warmup exchange as markdown so the parent renders it through
-    // the same Window/conversation component the real chat uses (identical
-    // styling — only the text differs). Cleared once a real conversation takes
-    // over or the agent errors out.
     useEffect(() => {
-        if (!onWarmupTextChange) return;
-        if (hasActiveConversation || status === "error") {
-            onWarmupTextChange(null);
-            return;
-        }
-        const answer =
-            status === "initializing" ? WARMUP_ANSWER : WARMUP_READY_ANSWER;
-        onWarmupTextChange(`> ${WARMUP_QUESTION}\n\n${answer}`);
-    }, [status, hasActiveConversation, onWarmupTextChange]);
-
-    // Mirror the warmup "answered" state up so the parent can dim the question
-    // once the agent is awake (and un-dim it while still warming up).
-    useEffect(() => {
-        if (!onWarmupReadyChange) return;
-        onWarmupReadyChange(!hasActiveConversation && status === "ready");
-    }, [status, hasActiveConversation, onWarmupReadyChange]);
+        if (!onWarmupLoadingChange) return;
+        onWarmupLoadingChange(
+            !hasActiveConversation && status === "initializing",
+        );
+    }, [status, hasActiveConversation, onWarmupLoadingChange]);
 
     if (status === "error") {
         return (
@@ -487,8 +453,8 @@ export const StageInput: React.FC<StageInputProps> = ({
             </ul>
 
             <p className={styles.privacyHint}>
-                Every chat lands in my (Alex&apos;s) inbox — leave your email or
-                phone if you&apos;d like a reply; details in my{" "}
+                Alex can see every message you send — all messages are stored in
+                his Gmail account; more on that in{" "}
                 <a
                     href="/datenschutz"
                     target="_blank"

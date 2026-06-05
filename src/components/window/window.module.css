@@ -187,3 +187,42 @@
 .windowInner a em {
     text-decoration: none;
 }
+
+.warmupLoading {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 0.5rem;
+}
+
+.warmupSpinner {
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border: 2px solid rgba(0, 255, 255, 0.25);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    animation: warmupSpin 0.8s linear infinite;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.warmupLoadingText {
+    margin: 0;
+    color: var(--grey-3);
+    font-size: inherit;
+    line-height: 1.6;
+    max-width: 60ch;
+}
+
+@keyframes warmupSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .warmupSpinner {
+        animation: none;
+    }
+}

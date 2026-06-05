@@ -11,7 +11,12 @@ interface WindowProps {
     onClose?: () => void;
     /** Dims the question blockquote (e.g. once the answer below it is shown). */
     dimQuestion?: boolean;
+    /** Spinner + hint shown while the AI agent is initializing. */
+    warmupLoading?: boolean;
 }
+
+const WARMUP_LOADING_MESSAGE =
+    "Agent is being initialized ... You can already come up with a question - in any language. The agent will respond as soon as it's ready.";
 
 export const Window: React.FC<WindowProps> = ({
     className,
@@ -20,6 +25,7 @@ export const Window: React.FC<WindowProps> = ({
     children,
     onClose,
     dimQuestion,
+    warmupLoading,
     ...props
 }) => {
     const html = useMemo(() => {
@@ -56,6 +62,18 @@ export const Window: React.FC<WindowProps> = ({
                     className={styles.text}
                     dangerouslySetInnerHTML={{ __html: html }}
                 ></pre>
+
+                {warmupLoading && (
+                    <div className={styles.warmupLoading}>
+                        <span
+                            className={styles.warmupSpinner}
+                            aria-hidden
+                        ></span>
+                        <p className={styles.warmupLoadingText}>
+                            {WARMUP_LOADING_MESSAGE}
+                        </p>
+                    </div>
+                )}
 
                 {children}
             </div>
