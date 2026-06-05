@@ -64,8 +64,16 @@ function getRepoConfig() {
     };
 }
 
-function getModel() {
-    return process.env.AGENT_MODEL || "composer-2.5";
+interface ModelSelection {
+    id: string;
+    params?: { id: string; value: string }[];
+}
+
+function getModel(): ModelSelection {
+    return {
+        id: process.env.AGENT_MODEL || "composer-2.5",
+        params: [{ id: "fast", value: "true" }],
+    };
 }
 
 function isRetryableHttp(status: number): boolean {
@@ -170,7 +178,7 @@ export async function createAgent(
         },
         body: JSON.stringify({
             prompt: { text: promptText },
-            model: { id: model },
+            model,
             repos: [repoEntry],
         }),
     });
