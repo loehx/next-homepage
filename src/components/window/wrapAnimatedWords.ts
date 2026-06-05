@@ -1,4 +1,4 @@
-export const AI_ANSWER_WORDS_PER_SECOND = 10;
+export const AI_ANSWER_WORDS_PER_SECOND = 100;
 export const AI_ANSWER_MS_PER_WORD = 1000 / AI_ANSWER_WORDS_PER_SECOND;
 
 export function wrapAnimatedWordsInHtml(
