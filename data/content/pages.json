@@ -720,6 +720,66 @@
                 },
                 "imageRight": false,
                 "imageWidth": 36
+            },
+            {
+                "id": "qaSection01",
+                "type": "faq",
+                "name": "FAQ",
+                "title": "FAQ",
+                "items": [
+                    {
+                        "question": "Are you scared of losing your job to AI?",
+                        "answer": "Not really. The difference between an average dev and a professional will stay the same, whether both use AI or not. The way a developer works has changed, but experience is still important."
+                    },
+                    {
+                        "question": "What are red flags for you whether a project succeeds or not?",
+                        "answer": "A few patterns I've learned to watch out for:",
+                        "list": [
+                            "Client is unwilling to commit to an MVP (biggest marker by far)",
+                            "Devs hesitate to take over tasks",
+                            "Daily standup takes longer than 15 minutes",
+                            "Meetings are not properly moderated",
+                            "No ownership — the whole team is responsible instead of a single person",
+                            "Estimations are done with the entire dev team",
+                            "Information and requirements are thrown at everyone",
+                            "Fewer than one retrospective per month",
+                            "The PO tries to keep work away from themselves",
+                            "The PO is unwilling to make decisions"
+                        ]
+                    },
+                    {
+                        "question": "What are the biggest challenges you've faced as a developer?",
+                        "answer": "The biggest challenges I've faced are:",
+                        "list": [
+                            "Managing a team of 5 developers and handling 7 projects with 4 different clients at the same time, all while working only 32h/week",
+                            "3 weeks to launch the s.Oliver webshop - which normally takes months",
+                            "Taking over legacy code - before there was AI",
+                            "Handling a client who is not willing to commit to an MVP",
+                            "Working in projects that are completely mismanaged"
+                        ]
+                    },
+                    {
+                        "question": "Why do you do frontend and not backend?",
+                        "answer": "I've worked several years in backend and have a good understanding of data-flow, architecture, security, etc. But ...",
+                        "list": [
+                            "frontend is more rewarding, since you get something visual in the end",
+                            "you can exceed expectations more easily, compared to backend, where the expectation is simply, that it works",
+                            "it is more challenging, since you need to understand not just everything that's important in backend, but also UX and how the browser works"
+                        ]
+                    },
+                    {
+                        "question": "Why did you not become an Agile Coach?",
+                        "answer": "I completed Agile Coach training (at Judith Andresen) because I love team dynamics and SCRUM. However, I found that in 90% of cases, the person hiring you is a manager with their own view of AGILE, which often turns the role into constant debate rather than real progress. That said, I would still love to support a company as an agile coach—I'm confident I have the skills and experience to guide the transformation of a team or even an entire company."
+                    },
+                    {
+                        "question": "Why did you teach?",
+                        "answer": "It was meant to be a way to overcome my anxiety of speaking in front of groups. But it turned out to be more than that. Unfortunately, the compensation is what let me stick to coding in the end."
+                    },
+                    {
+                        "question": "How much do you charge?",
+                        "answer": "Depending on the repsonsibility, the project and my capacity, I normally charge between €100 and €150 per hour. Please talk to my AI agent to get more information. Just scroll up to the stage."
+                    }
+                ]
             }
         ],
         "slug": "/",

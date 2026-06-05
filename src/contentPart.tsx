@@ -12,6 +12,7 @@ const ProjectsModule = dynamic(() => import("./contentParts/projectsModule"));
 const SecretLinkModule = dynamic(
     () => import("./contentParts/secretLinkModule"),
 );
+const Faq = dynamic(() => import("./contentParts/faq"));
 const LetterImageGenerator = dynamic(
     () => import("./contentParts/letterImageGenerator"),
 );
@@ -50,6 +51,7 @@ const Page: FC<Props> = (props: Props) => {
                 {props.type === "secretlinkmodule" && (
                     <SecretLinkModule {...(props as any)} />
                 )}
+                {props.type === "faq" && <Faq {...(props as any)} />}
 
                 {/* Timeline temporarily hidden */}
                 {false && props.type === "timeline" && (

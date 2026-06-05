@@ -1,0 +1,118 @@
+.wrapper {
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.inner {
+    position: relative;
+}
+
+.title {
+    font-family: var(--font-headline);
+    color: var(--headline-color);
+    font-size: 2.25rem;
+    margin: 0 0 1.75rem 0;
+    transition: color 0.35s ease;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.item {
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.35s ease;
+}
+
+.item:first-child {
+    border-top: 1px solid var(--border-color);
+}
+
+.question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.25rem 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--headline-color);
+    transition: color 0.25s ease;
+}
+
+.question:hover {
+    color: var(--primary);
+}
+
+.questionText {
+    font-family: var(--font-default);
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+.icon {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--primary);
+    transition: transform 0.25s ease;
+}
+
+.itemOpen .icon {
+    transform: rotate(180deg);
+}
+
+.answerWrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.answerInner {
+    overflow: hidden;
+}
+
+.answer {
+    margin: 0 0 1.25rem 0;
+    color: var(--body-color);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    transition: color 0.35s ease;
+}
+
+.answerList {
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.answerList li {
+    position: relative;
+    padding: 0.4rem 0 0.4rem 1.75rem;
+    color: var(--body-color);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    transition: color 0.35s ease;
+}
+
+.answerList li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.4rem;
+    color: var(--primary);
+    font-size: 1.1rem;
+    line-height: 1.55;
+}
+
+.answerList li:first-child {
+    font-weight: 700;
+}
