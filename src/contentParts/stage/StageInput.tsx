@@ -476,8 +476,8 @@ export const StageInput: React.FC<StageInputProps> = ({
             </form>
 
             <p className={styles.privacyHint}>
-                Alex can see every message you send — all messages are stored in
-                his Gmail account; more on that in{" "}
+                Alex receives the whole conversation via email. So please
+                behave. Check out the{" "}
                 <a
                     href="/datenschutz"
                     target="_blank"
@@ -485,8 +485,8 @@ export const StageInput: React.FC<StageInputProps> = ({
                     className={styles.privacyHintLink}
                 >
                     privacy policy
-                </a>
-                .
+                </a>{" "}
+                for more information.
             </p>
         </div>
     );

@@ -43,6 +43,8 @@ export const Window: React.FC<WindowProps> = ({
                 /<blockquote>\s*<p>([\s\S]*?)<\/p>\s*<\/blockquote>/g,
                 "<blockquote>$1</blockquote>",
             )
+            .replaceAll(/<\/blockquote>\s+<p>/g, "</blockquote><p>")
+            .replaceAll(/<\/p>\s+<p>/g, "</p><p>")
             .replaceAll(
                 /<a href="([^"]+)">([^<]+)<\/a>/g,
                 '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>',
@@ -64,10 +66,10 @@ export const Window: React.FC<WindowProps> = ({
                 )}
                 style={textStyle}
             >
-                <pre
+                <div
                     className={styles.text}
                     dangerouslySetInnerHTML={{ __html: html }}
-                ></pre>
+                ></div>
 
                 {warmupLoading && (
                     <div className={styles.warmupLoading}>
