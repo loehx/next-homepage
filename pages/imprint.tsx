@@ -53,6 +53,12 @@ const ImprintPage: NextPage = () => {
                         </a>
                     </p>
 
+                    <h2 className={styles.heading}>Umsatzsteuer-ID</h2>
+                    <p className={styles.text}>
+                        Umsatzsteuer-Identifikationsnummer gemäß § 27a
+                        Umsatzsteuergesetz: DE351595858
+                    </p>
+
                     <h2 className={styles.heading}>
                         Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
                     </h2>
