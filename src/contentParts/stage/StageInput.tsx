@@ -42,7 +42,7 @@ const capSuggestions = (items: string[]): string[] =>
     );
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
-    "What is he working on right now?",
+    "Can you setup a meeting with him?",
     "Can he support us in a project?",
     "Who is Alex?",
 ]);
