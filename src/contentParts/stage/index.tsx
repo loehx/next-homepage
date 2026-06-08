@@ -50,7 +50,9 @@ export const Stage: React.FC<StageProps> = (props) => {
     // ready agent is often available before the visitor clicks through.
     useEffect(() => {
         if (!agentEnabled) return;
-        void fetch("/api/ai/pool-kick", { method: "POST" }).catch(() => {});
+        void fetch("/api/ai/pool-kick", { method: "POST" }).catch(() => {
+            /* pool kick is best-effort */
+        });
     }, [agentEnabled]);
 
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
