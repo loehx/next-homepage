@@ -221,8 +221,27 @@
     }
 }
 
+.animatedWord {
+    opacity: 0;
+    animation-name: animatedWordFadeIn;
+    animation-duration: calc(1000ms / 100);
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animatedWordFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .warmupSpinner {
+        animation: none;
+    }
+
+    .animatedWord {
+        opacity: 1;
         animation: none;
     }
 }

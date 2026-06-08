@@ -169,14 +169,16 @@ export const Stage: React.FC<StageProps> = (props) => {
                         <div className={styles.descriptionWrapper}>
                             <Window
                                 className={styles.description}
-                                text={
-                                    aiActivated
+                                text={aiActivated ? undefined : props.text}
+                                questionText={
+                                    aiActivated && aiQuestion
+                                        ? aiQuestion
+                                        : undefined
+                                }
+                                answerText={
+                                    aiActivated && aiAnswer
                                         ? aiAnswer
-                                            ? `> ${aiQuestion}\n\n${aiAnswer}`
-                                            : aiQuestion
-                                            ? `> ${aiQuestion}`
-                                            : undefined
-                                        : props.text
+                                        : undefined
                                 }
                                 dimQuestion={aiActivated && aiAnswer !== null}
                                 warmupLoading={warmupLoading}

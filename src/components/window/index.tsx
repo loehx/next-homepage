@@ -1,12 +1,17 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import styles from "./window.module.css";
 import cx from "classnames";
-import { Marked } from "@ts-stack/markdown";
+import { parseMarkdownToHtml } from "./markdown";
+import { wrapAnimatedWordsInHtml } from "./wrapAnimatedWords";
 
 interface WindowProps {
     className?: string;
     style?: any;
     text?: string;
+    /** Question shown as a blockquote in the AI chat view. */
+    questionText?: string;
+    /** Answer revealed word-by-word in the AI chat view. */
+    answerText?: string;
     textStyle?: any;
     onClose?: () => void;
     /** Dims the question blockquote (e.g. once the answer below it is shown). */
@@ -21,6 +26,8 @@ const WARMUP_LOADING_MESSAGE =
 export const Window: React.FC<WindowProps> = ({
     className,
     text,
+    questionText,
+    answerText,
     textStyle,
     children,
     onClose,
@@ -29,20 +36,26 @@ export const Window: React.FC<WindowProps> = ({
     ...props
 }) => {
     const html = useMemo(() => {
+        if (questionText !== undefined || answerText !== undefined) {
+            const parts: string[] = [];
+
+            if (questionText) {
+                parts.push(parseMarkdownToHtml(`> ${questionText}`));
+            }
+
+            if (answerText) {
+                const answerHtml = parseMarkdownToHtml(answerText);
+                parts.push(
+                    wrapAnimatedWordsInHtml(answerHtml, styles.animatedWord),
+                );
+            }
+
+            return parts.join("");
+        }
+
         if (!text) return "";
-        return Marked.parse(text)
-            .replaceAll(/(ul|ol)>\n/g, "$1>")
-            .replaceAll(/\n<(li|ul|ol)/g, "<$1")
-            .replaceAll(
-                /<blockquote>\s*<p>([\s\S]*?)<\/p>\s*<\/blockquote>/g,
-                "<blockquote>$1</blockquote>",
-            )
-            .replaceAll(
-                /<a href="([^"]+)">([^<]+)<\/a>/g,
-                '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>',
-            )
-            .replace(/\n$/, "");
-    }, [text]);
+        return parseMarkdownToHtml(text);
+    }, [text, questionText, answerText]);
 
     return (
         <div className={cx(className, styles.window)} {...props}>
@@ -59,6 +72,7 @@ export const Window: React.FC<WindowProps> = ({
                 style={textStyle}
             >
                 <pre
+                    key={answerText ?? text}
                     className={styles.text}
                     dangerouslySetInnerHTML={{ __html: html }}
                 ></pre>
