@@ -44,6 +44,11 @@ const ImprintPage: NextPage = () => {
 
                     <h2 className={styles.heading}>Kontakt</h2>
                     <p className={styles.text}>
+                        Telefon:{" "}
+                        <a className={styles.link} href="tel:+4915121120247">
+                            +49 151 21120247
+                        </a>
+                        <br />
                         E-Mail:{" "}
                         <a
                             className={styles.link}
@@ -57,6 +62,22 @@ const ImprintPage: NextPage = () => {
                     <p className={styles.text}>
                         Umsatzsteuer-Identifikationsnummer gemäß § 27a
                         Umsatzsteuergesetz: DE351595858
+                    </p>
+
+                    <h2 className={styles.heading}>
+                        Angaben zur Berufshaftpflichtversicherung
+                    </h2>
+                    <p className={styles.text}>
+                        Name und Sitz des Versicherers:
+                        <br />
+                        Hiscox SA, Niederlassung für Deutschland
+                        <br />
+                        Arnulfstraße 31
+                        <br />
+                        80636 München
+                        <br />
+                        <br />
+                        Geltungsraum der Versicherung: Deutschland
                     </p>
 
                     <h2 className={styles.heading}>
