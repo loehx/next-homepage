@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import styles from "./window.module.css";
 import cx from "classnames";
 import { Marked } from "@ts-stack/markdown";
@@ -13,10 +13,15 @@ interface WindowProps {
     dimQuestion?: boolean;
     /** Spinner + hint shown while the AI agent is initializing. */
     warmupLoading?: boolean;
+    /** Hint shown once the agent is ready, before the first question. */
+    agentReady?: boolean;
 }
 
 const WARMUP_LOADING_MESSAGE =
     "Agent is being initialized ... You can already come up with a question - in any language. The agent will respond as soon as it's ready.";
+
+const AGENT_READY_MESSAGE =
+    "The agent is ready! Choose a question or come up with your own! Any language works.";
 
 export const Window: React.FC<WindowProps> = ({
     className,
@@ -26,6 +31,7 @@ export const Window: React.FC<WindowProps> = ({
     onClose,
     dimQuestion,
     warmupLoading,
+    agentReady,
     ...props
 }) => {
     const html = useMemo(() => {
@@ -73,6 +79,12 @@ export const Window: React.FC<WindowProps> = ({
                             {WARMUP_LOADING_MESSAGE}
                         </p>
                     </div>
+                )}
+
+                {agentReady && !warmupLoading && (
+                    <p className={styles.warmupReadyText}>
+                        {AGENT_READY_MESSAGE}
+                    </p>
                 )}
 
                 {children}

@@ -9,7 +9,8 @@ import {
     TERMINAL_STATUSES,
     WARMUP_PROMPT,
 } from "./_cursor";
-import { logConversationTurn } from "./_email";
+import { scheduleConversationLog } from "./_email";
+import { checkoutIdleAgent, maintainPool, markAgentUsed } from "./_agentPool";
 
 interface ChatRequest {
     mode: "prewarm" | "wait" | "ask";
@@ -83,6 +84,25 @@ export const handler: Handler = async (event) => {
                     }),
                 };
             }
+
+            const pooledAgentId = await checkoutIdleAgent();
+            if (pooledAgentId) {
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        agentId: pooledAgentId,
+                        status: "ready",
+                        fromPool: true,
+                    }),
+                };
+            }
+
+            // Pool empty — start refilling for the next visitor (and this one
+            // if maintain finishes before our cold start below).
+            void maintainPool().catch((error) => {
+                console.warn("Background pool maintain failed:", error);
+            });
 
             // /v1/agents always enqueues an initial run; the WARMUP_PROMPT has the
             // agent preload the core knowledge files while the VM boots, so the first
@@ -207,6 +227,10 @@ export const handler: Handler = async (event) => {
                 runId = run.runId;
             }
 
+            // Once a visitor message is enqueued, this agent must never go back
+            // into the shared pool — it retains that conversation on Cursor's side.
+            await markAgentUsed(currentAgentId);
+
             const result = await pollRunUntilComplete(currentAgentId, runId, {
                 maxWaitMs: 25000,
                 pollIntervalMs: 1000,
@@ -253,12 +277,10 @@ export const handler: Handler = async (event) => {
 
             const parsed = extractJsonFromResult(result.result);
 
-            // Best-effort conversation log to email. Awaited so it runs before
-            // the function freezes, but it never throws (see _email.ts), so a
-            // rate limit or any error can't break the chat response. The
-            // warmup/prewarm "initiation" exchange is intentionally excluded —
-            // only real "ask" turns are logged.
-            await logConversationTurn({
+            // Best-effort conversation log to email — do not await; the visitor
+            // should get the answer immediately. Errors are swallowed in
+            // _email.ts. Warmup/prewarm turns are intentionally excluded.
+            scheduleConversationLog({
                 sessionId: currentAgentId,
                 question: text,
                 answer: parsed.answer,

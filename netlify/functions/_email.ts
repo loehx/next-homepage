@@ -72,3 +72,19 @@ export async function logConversationTurn(params: {
         console.warn("Conversation log email threw:", error);
     }
 }
+
+/**
+ * Sends the conversation log without blocking the chat response. The Netlify
+ * function keeps running until the Resend request finishes (default event-loop
+ * behaviour), but the visitor gets the JSON answer as soon as we return.
+ */
+export function scheduleConversationLog(params: {
+    sessionId: string;
+    question: string;
+    answer: string;
+    locale?: string;
+}): void {
+    void logConversationTurn(params).catch((error) => {
+        console.warn("Conversation log scheduling failed:", error);
+    });
+}

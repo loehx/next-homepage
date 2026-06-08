@@ -39,11 +39,20 @@ export const Stage: React.FC<StageProps> = (props) => {
     const [aiAnswer, setAiAnswer] = useState<string | null>(null);
     const [aiQuestion, setAiQuestion] = useState<string | null>(null);
     const [warmupLoading, setWarmupLoading] = useState(false);
+    const [agentReady, setAgentReady] = useState(false);
     const [aiActivated, setAiActivated] = useState(false);
     // Soft launch: the AI chat is now always available. It used to be gated
     // behind a ?agent=true URL flag; that gate has been removed so the
     // "Talk to my AI Agent" entry point shows for every visitor.
     const agentEnabled = true;
+
+    // Start warming the shared agent pool as soon as the page loads so a
+    // ready agent is often available before the visitor clicks through.
+    useEffect(() => {
+        if (!agentEnabled) return;
+        void fetch("/api/ai/pool-kick", { method: "POST" }).catch(() => {});
+    }, [agentEnabled]);
+
     const w = typeof window !== "undefined" ? window : { innerHeight: 1000 };
 
     const handleQuestionSubmit = useCallback((question: string) => {
@@ -60,6 +69,8 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAiAnswer(null);
         setAiQuestion(null);
         setAiActivated(false);
+        setAgentReady(false);
+        setWarmupLoading(false);
     }, []);
 
     useEffect(() => {
@@ -180,6 +191,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                 }
                                 dimQuestion={aiActivated && aiAnswer !== null}
                                 warmupLoading={warmupLoading}
+                                agentReady={agentReady}
                                 onClose={aiActivated ? handleReset : undefined}
                             >
                                 {aiActivated && (
@@ -190,6 +202,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                             aiQuestion !== null
                                         }
                                         onWarmupLoadingChange={setWarmupLoading}
+                                        onAgentReadyChange={setAgentReady}
                                     />
                                 )}
                             </Window>

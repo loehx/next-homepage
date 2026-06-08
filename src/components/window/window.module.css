@@ -208,8 +208,16 @@
 }
 
 .warmupLoadingText {
-    margin: 0;
+    margin: 0 0 1rem 0;
     color: var(--grey-3);
+    font-size: inherit;
+    line-height: 1.6;
+    max-width: 60ch;
+}
+
+.warmupReadyText {
+    margin: 0 0 1rem 0;
+    color: var(--grey-2);
     font-size: inherit;
     line-height: 1.6;
     max-width: 60ch;

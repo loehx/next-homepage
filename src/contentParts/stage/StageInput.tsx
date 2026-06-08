@@ -27,6 +27,8 @@ interface StageInputProps {
     hasActiveConversation?: boolean;
     /** True while the agent is still initializing (show spinner + hint in Window). */
     onWarmupLoadingChange?: (loading: boolean) => void;
+    /** True once init finished and no question has been submitted yet. */
+    onAgentReadyChange?: (ready: boolean) => void;
 }
 
 // Suggestions are rendered as compact chips, so anything longer than this
@@ -79,88 +81,17 @@ const LOADING_HINTS = [
 ];
 const LOADING_HINT_INTERVAL_MS = 4000;
 
-const IDLE_PLACEHOLDERS = [
-    "Enter your questions here ...",
-    "Any language works!",
-    "Or choose one from below:",
-];
-const PLACEHOLDER_CHAR_DELAY_MS = 34;
-const PLACEHOLDER_CYCLE_MS = 3000;
+const INPUT_PLACEHOLDER = "Enter your question…";
 
-interface TypewriterPlaceholder {
-    text: string;
-    showCursor: boolean;
-}
-
-const useTypewriterPlaceholder = (active: boolean): TypewriterPlaceholder => {
-    const [text, setText] = useState("");
-    const [showCursor, setShowCursor] = useState(false);
-    const placeholderIndexRef = useRef(0);
-    const charIndexRef = useRef(0);
-    const charTimerRef = useRef<ReturnType<typeof setTimeout>>();
-    const cycleTimerRef = useRef<ReturnType<typeof setTimeout>>();
-
-    useEffect(() => {
-        const clearTimers = () => {
-            if (charTimerRef.current) clearTimeout(charTimerRef.current);
-            if (cycleTimerRef.current) clearTimeout(cycleTimerRef.current);
-            charTimerRef.current = undefined;
-            cycleTimerRef.current = undefined;
-        };
-
-        if (!active) {
-            clearTimers();
-            setText("");
-            setShowCursor(false);
-            return clearTimers;
-        }
-
-        const startCycle = () => {
-            charIndexRef.current = 0;
-            setText("");
-            setShowCursor(true);
-            const fullText =
-                IDLE_PLACEHOLDERS[placeholderIndexRef.current] ?? "";
-
-            const typeNextChar = () => {
-                if (charIndexRef.current >= fullText.length) {
-                    setShowCursor(false);
-                    return;
-                }
-                charIndexRef.current += 1;
-                setText(fullText.slice(0, charIndexRef.current));
-                if (charIndexRef.current >= fullText.length) {
-                    setShowCursor(false);
-                    return;
-                }
-                charTimerRef.current = setTimeout(
-                    typeNextChar,
-                    PLACEHOLDER_CHAR_DELAY_MS,
-                );
-            };
-
-            typeNextChar();
-
-            cycleTimerRef.current = setTimeout(() => {
-                placeholderIndexRef.current =
-                    (placeholderIndexRef.current + 1) %
-                    IDLE_PLACEHOLDERS.length;
-                startCycle();
-            }, PLACEHOLDER_CYCLE_MS);
-        };
-
-        startCycle();
-        return clearTimers;
-    }, [active]);
-
-    return { text, showCursor };
-};
+/** Keep the Window warmup hint visible at least this long, even on instant pool checkout. */
+const MIN_INIT_DISPLAY_MS = 8000;
 
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
     hasActiveConversation = false,
     onWarmupLoadingChange,
+    onAgentReadyChange,
 }: StageInputProps) => {
     const [status, setStatus] = useState<Status>("initializing");
     const [inputValue, setInputValue] = useState("");
@@ -173,7 +104,6 @@ export const StageInput: React.FC<StageInputProps> = ({
     // play their staggered "wake up" highlight once and briefly draw the eye.
     const highlightTriggeredRef = useRef(false);
     const [highlighted, setHighlighted] = useState(false);
-    const [isInputFocused, setIsInputFocused] = useState(false);
     // When the user submits before the agent has finished warming up, we hold
     // the message here and fire it off automatically once status flips to
     // "ready" (see the flush effect below).
@@ -252,6 +182,14 @@ export const StageInput: React.FC<StageInputProps> = ({
                 setErrorRetryable(true);
                 setStatus("error");
                 return;
+            }
+
+            const remainingDisplayMs =
+                MIN_INIT_DISPLAY_MS - (Date.now() - initStartedAt);
+            if (remainingDisplayMs > 0) {
+                await new Promise((resolve) =>
+                    setTimeout(resolve, remainingDisplayMs),
+                );
             }
 
             const elapsedMs = Date.now() - initStartedAt;
@@ -428,21 +366,18 @@ export const StageInput: React.FC<StageInputProps> = ({
         );
     }, [status, hasActiveConversation, onWarmupLoadingChange]);
 
+    useEffect(() => {
+        if (!onAgentReadyChange) return;
+        onAgentReadyChange(!hasActiveConversation && status === "ready");
+    }, [status, hasActiveConversation, onAgentReadyChange]);
+
     const isBusy = status === "loading" || queuedMessage !== null;
-    const showTypewriterPlaceholder =
-        status !== "error" &&
-        !isBusy &&
-        inputValue.length === 0 &&
-        !isInputFocused;
-    const typewriterPlaceholder = useTypewriterPlaceholder(
-        showTypewriterPlaceholder,
-    );
 
     const placeholder = queuedMessage
         ? "Waking up… your question is queued"
         : isBusy
         ? LOADING_HINTS[loadingHintIndex]
-        : "";
+        : INPUT_PLACEHOLDER;
 
     if (status === "error") {
         return (
@@ -467,35 +402,49 @@ export const StageInput: React.FC<StageInputProps> = ({
 
     return (
         <div className={styles.container}>
+            <ul className={styles.suggestions}>
+                {suggestions.map((suggestion, index) => (
+                    <li
+                        key={index}
+                        className={cx(
+                            styles.suggestionItem,
+                            highlighted && styles.suggestionItemHighlight,
+                        )}
+                        style={
+                            highlighted
+                                ? { animationDelay: `${index * 80}ms` }
+                                : undefined
+                        }
+                    >
+                        <button
+                            onClick={() => submitMessage(suggestion)}
+                            className={cx(
+                                styles.suggestionButton,
+                                isBusy && styles.suggestionButtonDisabled,
+                            )}
+                            type="button"
+                            disabled={isBusy}
+                        >
+                            {suggestion}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+
             <form onSubmit={handleSubmit} className={styles.inputRow}>
                 <span className={styles.prompt}>{">_"}</span>
                 <div className={styles.inputWrap}>
-                    {showTypewriterPlaceholder && (
-                        <span
-                            className={styles.fakePlaceholder}
-                            aria-hidden="true"
-                        >
-                            {typewriterPlaceholder.text}
-                            {typewriterPlaceholder.showCursor && (
-                                <span className={styles.placeholderCursor}>
-                                    |
-                                </span>
-                            )}
-                        </span>
-                    )}
                     <textarea
                         ref={inputRef}
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={handleKeyDown}
                         onFocus={() => {
-                            setIsInputFocused(true);
                             if (!highlightTriggeredRef.current) {
                                 highlightTriggeredRef.current = true;
                                 setHighlighted(true);
                             }
                         }}
-                        onBlur={() => setIsInputFocused(false)}
                         placeholder={placeholder}
                         disabled={isBusy}
                         maxLength={MAX_INPUT_LENGTH}
@@ -525,35 +474,6 @@ export const StageInput: React.FC<StageInputProps> = ({
                     )}
                 </button>
             </form>
-
-            <ul className={styles.suggestions}>
-                {suggestions.map((suggestion, index) => (
-                    <li
-                        key={index}
-                        className={cx(
-                            styles.suggestionItem,
-                            highlighted && styles.suggestionItemHighlight,
-                        )}
-                        style={
-                            highlighted
-                                ? { animationDelay: `${index * 80}ms` }
-                                : undefined
-                        }
-                    >
-                        <button
-                            onClick={() => submitMessage(suggestion)}
-                            className={cx(
-                                styles.suggestionButton,
-                                isBusy && styles.suggestionButtonDisabled,
-                            )}
-                            type="button"
-                            disabled={isBusy}
-                        >
-                            {suggestion}
-                        </button>
-                    </li>
-                ))}
-            </ul>
 
             <p className={styles.privacyHint}>
                 Alex can see every message you send — all messages are stored in

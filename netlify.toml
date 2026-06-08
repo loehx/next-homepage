@@ -19,6 +19,10 @@ from = "/api/ai/*"
 to = "/.netlify/functions/ai-:splat"
 status = 200
 
+# Refill the shared warm-agent pool (requires UPSTASH_REDIS_* + CURSOR_API_KEY).
+[functions."ai-pool-maintain"]
+schedule = "*/10 * * * *"
+
 [[redirects]]
 from = "/api/secret-link"
 to = "/.netlify/functions/secret-link"
