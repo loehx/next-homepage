@@ -152,9 +152,9 @@ export const handler: Handler = async (event) => {
             });
 
             // /v1/agents always enqueues an initial run; the WARMUP_PROMPT has the
-            // agent preload the core knowledge files while the VM boots, so the first
-            // real "ask" is already primed instead of paying for repo exploration on
-            // the critical path. We MUST still drain that run before reporting
+            // agent read all knowledge files and fetch the live project catalog
+            // while the VM boots, so the first real "ask" is already primed
+            // instead of paying for repo exploration on the critical path. We MUST
             // "ready" - otherwise the next /runs POST will 409 with agent_busy.
             const agent = await createAgent(WARMUP_PROMPT);
 

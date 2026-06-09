@@ -116,33 +116,27 @@ export function wrapUserPrompt(text: string, locale?: string): string {
     return `${USER_PROMPT_PREAMBLE}\n${localeLine}<USER_QUESTION>${text}</USER_QUESTION>`;
 }
 
-/**
- * The core knowledge files that drive almost every visitor answer. We preload
- * these during warmup so they are already in the agent's context window by the
- * time the first real question arrives — trading a slightly longer cold start
- * for a much faster (and better-grounded) first answer.
- */
-export const WARMUP_FILES = [
-    "AGENTS.md",
-    ".cursor/rules/persona.mdc",
-    "content/about.md",
-    "content/skills.md",
-    "content/projects.md",
-    "content/values.md",
-];
+/** Live project catalog — same URL documented in homepage-agent/AGENTS.md. */
+export const PROJECTS_CATALOG_URL = "https://loehx.com/api/v1/projects.json";
 
 /**
  * Warmup prompt for prewarm/initialization. While the VM boots, have the agent
- * read the most important knowledge files so it is primed to answer the first
- * question without spending that time exploring the repo on the critical path.
- * It must NOT explore beyond these files, run shell commands, or write a long
- * reply — just read them and acknowledge with a single token.
+ * read all knowledge files and fetch the live project catalog so it is primed
+ * for the first question without paying that cost on the critical path.
  */
 export const WARMUP_PROMPT = [
-    "Read these files now so you are ready to answer questions about Alex:",
-    ...WARMUP_FILES.map((f) => `- ${f}`),
-    "Do NOT read any other files, list directories, run shell commands, or write",
-    "anything. After reading those files, reply with exactly the single word: OK",
+    "Warm up now so you are ready to answer questions about Alex:",
+    "",
+    "1. Read all knowledge files in this repository:",
+    "   - AGENTS.md",
+    "   - .cursor/rules/persona.mdc",
+    "   - every *.md file in content/",
+    "",
+    "2. Fetch the live project catalog (authoritative client-work data):",
+    `   curl -fsS --max-time 10 ${PROJECTS_CATALOG_URL}`,
+    "",
+    "Do not read any other files or run any other commands.",
+    "After completing steps 1 and 2, reply with exactly the single word: OK",
 ].join("\n");
 
 /**
@@ -150,7 +144,7 @@ export const WARMUP_PROMPT = [
  *
  * The new /v1/agents endpoint always starts a run with the provided prompt.
  * For "prewarm" callers, pass the WARMUP_PROMPT (the default) so the agent
- * boots without doing any repo exploration.
+ * preloads all knowledge files and the live project catalog during boot.
  * For first-ask callers, pass the user's question directly to skip the
  * second round-trip.
  */
