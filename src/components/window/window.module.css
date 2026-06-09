@@ -163,14 +163,6 @@
     margin: 0;
 }
 
-.text blockquote + p {
-    margin-top: 1rem;
-}
-
-.text p + p {
-    margin-top: 1rem;
-}
-
 .text:empty {
     display: none;
 }

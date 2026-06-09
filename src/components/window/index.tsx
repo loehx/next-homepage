@@ -17,11 +17,14 @@ interface WindowProps {
     agentReady?: boolean;
 }
 
-const WARMUP_LOADING_MESSAGE =
-    "Agent is being initialized ... You can already come up with a question - in any language. The agent will respond as soon as it's ready.";
+const WARMUP_LOADING_MESSAGE = "Agent is being initialized ...";
 
-const AGENT_READY_MESSAGE =
-    "The agent is ready! Choose a question or come up with your own! Any language works.";
+const AGENT_READY_PARAGRAPHS = [
+    "I'm ready!",
+    "You can ask about Alex's experience, skills, projects, and how he works.",
+    "Share some details about your project, and I'll tell you whether Alex can help.",
+    "I can also set up a meeting or ask him to reach out to you.",
+];
 
 export const Window: React.FC<WindowProps> = ({
     className,
@@ -84,9 +87,16 @@ export const Window: React.FC<WindowProps> = ({
                 )}
 
                 {agentReady && !warmupLoading && (
-                    <p className={styles.warmupReadyText}>
-                        {AGENT_READY_MESSAGE}
-                    </p>
+                    <>
+                        {AGENT_READY_PARAGRAPHS.map((paragraph) => (
+                            <p
+                                key={paragraph}
+                                className={styles.warmupReadyText}
+                            >
+                                {paragraph}
+                            </p>
+                        ))}
+                    </>
                 )}
 
                 {children}

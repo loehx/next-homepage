@@ -33,7 +33,7 @@ interface StageInputProps {
 
 // Suggestions are rendered as compact chips, so anything longer than this
 // blows out the layout. We hard-cap them and drop any that don't fit.
-const MAX_SUGGESTION_LENGTH = 40;
+const MAX_SUGGESTION_LENGTH = 45;
 
 const sortSuggestionsByLength = (items: string[]): string[] =>
     [...items].sort((a, b) => b.trim().length - a.trim().length);
@@ -44,6 +44,7 @@ const capSuggestions = (items: string[]): string[] =>
     );
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
+    "I have a specific problem ... can Alex help?",
     "Can you setup a meeting with him?",
     "Can he support us in a project?",
     "Who is Alex?",
