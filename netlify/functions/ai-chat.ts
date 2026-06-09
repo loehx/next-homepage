@@ -11,6 +11,13 @@ import {
 } from "./_cursor";
 import { scheduleConversationLog } from "./_email";
 import { checkoutIdleAgent, maintainPool, markAgentUsed } from "./_agentPool";
+import {
+    checkRateLimit,
+    getAskLimit,
+    getClientIp,
+    getGeneralChatLimit,
+    rateLimitHeaders,
+} from "./_rateLimit";
 
 interface ChatRequest {
     mode: "prewarm" | "wait" | "ask";
@@ -67,6 +74,46 @@ export const handler: Handler = async (event) => {
             headers,
             body: JSON.stringify({ error: "Missing mode parameter" }),
         };
+    }
+
+    const clientIp = getClientIp(event);
+
+    const generalLimit = await checkRateLimit(
+        "ai-chat",
+        clientIp,
+        getGeneralChatLimit(),
+    );
+    if (!generalLimit.allowed) {
+        return {
+            statusCode: 429,
+            headers: { ...headers, ...rateLimitHeaders(generalLimit) },
+            body: JSON.stringify({
+                error: "rate_limited",
+                message:
+                    "Too many requests. Please wait a moment and try again.",
+                retryable: false,
+            }),
+        };
+    }
+
+    if (body.mode === "ask") {
+        const askLimit = await checkRateLimit(
+            "ai-chat-ask",
+            clientIp,
+            getAskLimit(),
+        );
+        if (!askLimit.allowed) {
+            return {
+                statusCode: 429,
+                headers: { ...headers, ...rateLimitHeaders(askLimit) },
+                body: JSON.stringify({
+                    error: "rate_limited",
+                    message:
+                        "You are sending questions too quickly. Please wait a moment.",
+                    retryable: false,
+                }),
+            };
+        }
     }
 
     try {
