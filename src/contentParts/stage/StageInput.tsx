@@ -581,32 +581,33 @@ export const StageInput: React.FC<StageInputProps> = ({
     return (
         <div className={styles.container}>
             <ul className={styles.suggestions}>
-                {!isBusy && suggestions.map((suggestion, index) => (
-                    <li
-                        key={index}
-                        className={cx(
-                            styles.suggestionItem,
-                            highlighted && styles.suggestionItemHighlight,
-                        )}
-                        style={
-                            highlighted
-                                ? { animationDelay: `${index * 80}ms` }
-                                : undefined
-                        }
-                    >
-                        <button
-                            onClick={() => submitMessage(suggestion)}
+                {!isBusy &&
+                    suggestions.map((suggestion, index) => (
+                        <li
+                            key={index}
                             className={cx(
-                                styles.suggestionButton,
-                                isBusy && styles.suggestionButtonDisabled,
+                                styles.suggestionItem,
+                                highlighted && styles.suggestionItemHighlight,
                             )}
-                            type="button"
-                            disabled={isBusy}
+                            style={
+                                highlighted
+                                    ? { animationDelay: `${index * 80}ms` }
+                                    : undefined
+                            }
                         >
-                            {suggestion}
-                        </button>
-                    </li>
-                ))}
+                            <button
+                                onClick={() => submitMessage(suggestion)}
+                                className={cx(
+                                    styles.suggestionButton,
+                                    isBusy && styles.suggestionButtonDisabled,
+                                )}
+                                type="button"
+                                disabled={isBusy}
+                            >
+                                {suggestion}
+                            </button>
+                        </li>
+                    ))}
             </ul>
 
             <form onSubmit={handleSubmit} className={styles.inputRow}>
