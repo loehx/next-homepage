@@ -23,7 +23,7 @@ const AGENT_READY_PARAGRAPHS = [
     "I'm ready!",
     "You can ask about *Alex*'s experience, skills, projects, and even how he works.",
     "Share some details about your project, and I'll tell you whether he can support you or not.",
-    "I can even set up a meeting or ask him to reach out to you — just let me know.",
+    "I can even schedule a meeting or ask him to reach out to you — just let me know.",
 ];
 
 export const Window: React.FC<WindowProps> = ({
