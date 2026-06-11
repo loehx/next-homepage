@@ -45,9 +45,8 @@ const capSuggestions = (items: string[]): string[] =>
     );
 
 const DEFAULT_SUGGESTIONS = capSuggestions([
-    "I have a specific problem ... can Alex help?",
-    "Can you setup a meeting with him?",
-    "Can he support us in a project?",
+    "Tell him to reach out to me",
+    "Schedule a meeting with him",
     "Who is Alex?",
 ]);
 
@@ -86,7 +85,7 @@ const LOADING_HINT_INTERVAL_MS = 4000;
 const INPUT_PLACEHOLDER = "Enter your question…";
 
 /** Keep the Window warmup hint visible at least this long, even on instant pool checkout. */
-const MIN_INIT_DISPLAY_MS = 8000;
+const MIN_INIT_DISPLAY_MS = 5000;
 
 /** Throttle interval for streaming updates to avoid excessive re-renders. */
 const STREAM_THROTTLE_MS = 50;
