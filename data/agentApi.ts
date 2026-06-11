@@ -31,6 +31,8 @@ export interface AgentApiV1 {
 export interface AgentProject {
     id: string;
     name: string;
+    /** Whether the project/product is publicly released. */
+    released: boolean;
     /** Markdown. May contain links, lists, emphasis. */
     description: string;
     /** ISO month, e.g. "2024-03". */
@@ -113,6 +115,7 @@ function mapProject(p: ProjectEntry): AgentProject {
     return {
         id: p.id,
         name: p.name,
+        released: p.released ?? true,
         description: descriptionToMarkdown(p.description),
         from: toIsoMonth(p.from),
         to: toIsoMonth(p.to),

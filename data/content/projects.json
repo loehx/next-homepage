@@ -80,13 +80,14 @@
             "url": "/cms/3RvC1pMvsIeE2YCsPE9tng.png",
             "width": 384,
             "height": 207
-        }
+        },
+        "released": false
     },
     {
         "id": "2fN4psbQGSzjq3yDriTtTK",
         "type": "project",
         "name": "Netto Webshop",
-        "description": "Netto's webshop relaunch based on SCAYLE's Storefront",
+        "description": "Netto's webshop relaunch. Technology and stack details are confidential for now.",
         "from": "11/2025",
         "to": "05/2026",
         "role": "Frontend Developer",
@@ -109,91 +110,8 @@
                 "height": 280
             }
         },
-        "technologies": [
-            {
-                "id": "9pupfiqnKwZkCXI3dGvkp",
-                "type": "technology",
-                "name": "storefront",
-                "fullName": "Storefront (by SCAYLE)",
-                "url": "https://www.scayle.com/platform/digital-storefront/"
-            },
-            {
-                "id": "nDzyvWkBE9cFBeRLgVbLN",
-                "type": "technology",
-                "name": "Storyblok",
-                "fullName": "Storyblok",
-                "url": "https://www.storyblok.com/",
-                "logo": {
-                    "id": "350IGo20AcnIAWPi9n8hHO",
-                    "type": "asset",
-                    "name": "storyblok-logo",
-                    "url": "/cms/350IGo20AcnIAWPi9n8hHO.png",
-                    "width": 586,
-                    "height": 586
-                }
-            },
-            {
-                "id": "2zimoPdvWo1mJVLhUkU8dC",
-                "type": "technology",
-                "name": "tailwind",
-                "fullName": "Tailwind CSS",
-                "url": "https://tailwindcss.com/",
-                "logo": {
-                    "id": "74PhGhAk96EoJkBw68nz1G",
-                    "type": "asset",
-                    "name": "tailwind",
-                    "url": "/cms/74PhGhAk96EoJkBw68nz1G.svg",
-                    "width": 200,
-                    "height": 200
-                }
-            },
-            {
-                "id": "54fGtF1zBRGpU9Zmtr8eux",
-                "type": "technology",
-                "name": "vue",
-                "fullName": "Vue.js",
-                "url": "https://vuejs.org/",
-                "logo": {
-                    "id": "2tW8ipPNPttvRG2JcSpWYV",
-                    "type": "asset",
-                    "name": "vue",
-                    "url": "/cms/2tW8ipPNPttvRG2JcSpWYV.png",
-                    "width": 200,
-                    "height": 200
-                }
-            },
-            {
-                "id": "2zClz1ezL03dCLlmnJbFAx",
-                "type": "technology",
-                "name": "nuxt",
-                "fullName": "Nuxt.js",
-                "url": "https://nuxtjs.org/",
-                "logo": {
-                    "id": "3EGs4QwTnbr75o6UiYCCzb",
-                    "type": "asset",
-                    "name": "nuxt",
-                    "url": "/cms/3EGs4QwTnbr75o6UiYCCzb.png",
-                    "width": 200,
-                    "height": 200
-                }
-            },
-            {
-                "id": "76esXpJFLSw9SqV4hadbc",
-                "type": "technology",
-                "name": "TS",
-                "fullName": "TypeScript",
-                "url": "https://www.typescriptlang.org/",
-                "logo": {
-                    "id": "16r0RL7imurjAe8jlRDb1E",
-                    "type": "asset",
-                    "name": "typescript",
-                    "url": "/cms/16r0RL7imurjAe8jlRDb1E.png",
-                    "width": 200,
-                    "height": 200
-                }
-            }
-        ],
-        "moreTechnologies": "JIRA, pnpm, GitLab",
+        "technologies": [],
+        "moreTechnologies": "Technology details are confidential for now.",
         "team": "Team of 6",
         "logo": {
             "id": "3RvC1pMvsIeE2YCsPE9tng",
@@ -202,7 +120,8 @@
             "url": "/cms/3RvC1pMvsIeE2YCsPE9tng.png",
             "width": 384,
             "height": 207
-        }
+        },
+        "released": false
     },
     {
         "id": "7HpdegD2qbUATnr2aUnMXR",
@@ -323,7 +242,8 @@
             "url": "/cms/2OzBceKbDJfKK3smLWnWo6.svg",
             "width": 114,
             "height": 32
-        }
+        },
+        "released": true
     },
     {
         "id": "4nZuGCYQpFNu9GnDRO50Ig",
@@ -444,7 +364,8 @@
             "url": "/cms/5vS9PnyEXR2DFQmdx41TRz.png",
             "width": 400,
             "height": 180
-        }
+        },
+        "released": true
     },
     {
         "id": "2tzfoWGM3pn2kPhq34DF1L",
@@ -565,7 +486,8 @@
             "url": "/cms/1f3dF7cpPxjihespTrMsRy.svg",
             "width": 606,
             "height": 85
-        }
+        },
+        "released": true
     },
     {
         "id": "qza8wmkD0TuDLBDY011mi",
@@ -686,7 +608,8 @@
             "url": "/cms/w4gpAk9ZNQkTZbonAYEiJ.svg",
             "width": 624,
             "height": 113
-        }
+        },
+        "released": true
     },
     {
         "id": "2YNCsf3HAUGKHhupsFWJIl",
@@ -807,7 +730,8 @@
             "url": "/cms/5bdbFylILDCXWUxQolpDGA.svg",
             "width": 3000,
             "height": 892
-        }
+        },
+        "released": true
     },
     {
         "id": "6NzUYN4NKPXazWnITqRNNz",
@@ -929,7 +853,8 @@
             "url": "/cms/4Pzf4XWoCboFqX6iQVo2rB.svg",
             "width": 157,
             "height": 34
-        }
+        },
+        "released": true
     },
     {
         "id": "6kL0ndYJ1FMqBVL3N6fpco",
@@ -1036,7 +961,8 @@
             "url": "/cms/3fHLY9GQyyPPdRl9paW61i.png",
             "width": 200,
             "height": 200
-        }
+        },
+        "released": true
     },
     {
         "id": "68CxDAHTJHdGara1epTYsS",
@@ -1157,7 +1083,8 @@
             "url": "/cms/6OTbAO4hR5nL1DTghoRDGy.png",
             "width": 1024,
             "height": 1024
-        }
+        },
+        "released": true
     },
     {
         "id": "9F5NzZHnbPyp1LkEBiQLQ",
@@ -1241,7 +1168,8 @@
             "url": "/cms/2DFNED3PThqPXAZi29EsdQ.png",
             "width": 200,
             "height": 59
-        }
+        },
+        "released": true
     },
     {
         "id": "5cyQf6CmWtfzalEK2yH3vk",
@@ -1286,7 +1214,8 @@
             "url": "/cms/3Ybjfl8dQViGbUABsLBkst.svg",
             "width": 60,
             "height": 22
-        }
+        },
+        "released": true
     },
     {
         "id": "5zKho85aVa9Ume4hWLC9JA",
@@ -1353,7 +1282,8 @@
             "url": "/cms/73W0unHeOeXMY4MIXHjmYc.png",
             "width": 200,
             "height": 200
-        }
+        },
+        "released": true
     },
     {
         "id": "6jjPrCOsjKdAOzPmvnY8ar",
@@ -1419,7 +1349,8 @@
             "url": "/cms/7Ch0VsE6dCPMG0z9FjvZTS.svg",
             "width": 1716,
             "height": 440
-        }
+        },
+        "released": true
     },
     {
         "id": "3uW6ArZwx1ETsLyTrcKaXM",
@@ -1486,7 +1417,8 @@
             "url": "/cms/1nrS6mmXjdfLePwRCb79O2.jpg",
             "width": 500,
             "height": 150
-        }
+        },
+        "released": true
     },
     {
         "id": "5luo3uiz3fL7eUL2tEbm7D",
@@ -1575,7 +1507,8 @@
             "url": "/cms/6TrKrHhi5ew81CJNd9gwCj.png",
             "width": 1024,
             "height": 1024
-        }
+        },
+        "released": true
     },
     {
         "id": "3x7nsifMx7JBOaUNdEzcU8",
@@ -1633,7 +1566,8 @@
             "url": "/cms/1CLNv9m1X9DtgXDsSvsfWZ.png",
             "width": 630,
             "height": 104
-        }
+        },
+        "released": true
     },
     {
         "id": "581JTHsG24yDsEQBnTHmvf",
@@ -1700,7 +1634,8 @@
             "url": "/cms/7Ha4krB10kq1Mj8awi1dN.svg",
             "width": 165,
             "height": 64
-        }
+        },
+        "released": true
     },
     {
         "id": "4hP5pbPWLfFSkrtUm9oplG",
@@ -1789,7 +1724,8 @@
             "url": "/cms/5jb8aNBxPUAsvRk7FEwzfR.png",
             "width": 415,
             "height": 413
-        }
+        },
+        "released": true
     },
     {
         "id": "27cq09Y9KpDJZmC6PZdUG5",
@@ -1848,7 +1784,8 @@
             "url": "/cms/56pVluVE26G2als1ya2Qrk.svg",
             "width": 200,
             "height": 200
-        }
+        },
+        "released": true
     },
     {
         "id": "7fKh83sjqPvktTHD4Jjddh",
@@ -1914,6 +1851,7 @@
             "url": "/cms/1e2Xfmut6BjtdPMNwjVaIX.svg",
             "width": 500,
             "height": 150
-        }
+        },
+        "released": true
     }
 ]

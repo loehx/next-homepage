@@ -70,6 +70,7 @@ export interface TechnologyEntry extends Entry {
 
 export interface ProjectEntry extends Entry {
     name: string;
+    released?: boolean;
     description: string;
     from: string;
     to: string;
