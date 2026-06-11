@@ -159,11 +159,6 @@
     transition: opacity 0.3s ease;
 }
 
-.text blockquote,
-.text p {
-    margin: 0;
-}
-
 .text p + p {
     margin-top: 1em;
 }
