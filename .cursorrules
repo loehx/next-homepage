@@ -11,6 +11,10 @@ Always run the following before committing:
 1. **Lint Check**: Run `npm run lint` or `npm run build` to verify there are no TypeScript errors or Prettier formatting issues
 2. If there are Prettier errors, run: `npx prettier --write <path-to-file>`
 
+## AI Chat Agent Repository
+
+The AI chat agent configuration lives in the `agent-repo/` subfolder (a clone of `git@github.com:loehx/homepage-agent.git`). Update files there (especially `.cursor/rules/persona.mdc` and `AGENTS.md`) to change how the agent responds to visitor questions.
+
 ## General Guidelines
 
 - Keep changes focused and atomic

@@ -62,6 +62,18 @@ export const Stage: React.FC<StageProps> = (props) => {
         setAiAnswer(null);
     }, []);
 
+    /**
+     * Called with each delta as the answer streams in. Throttled by the
+     * StageInput to avoid excessive re-renders of the markdown Window.
+     */
+    const handleAnswerDelta = useCallback(
+        (question: string, partialAnswer: string) => {
+            setAiQuestion(question);
+            setAiAnswer(partialAnswer);
+        },
+        [],
+    );
+
     const handleAnswer = useCallback((question: string, answer: string) => {
         setAiQuestion(question);
         setAiAnswer(answer);
@@ -200,6 +212,7 @@ export const Stage: React.FC<StageProps> = (props) => {
                                     <StageInput
                                         onQuestionSubmit={handleQuestionSubmit}
                                         onAnswer={handleAnswer}
+                                        onAnswerDelta={handleAnswerDelta}
                                         hasActiveConversation={
                                             aiQuestion !== null
                                         }

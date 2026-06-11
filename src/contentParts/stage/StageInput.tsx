@@ -8,7 +8,6 @@ interface ChatResponse {
     runId: string;
     answer: string;
     suggestions: string[];
-    lang: string;
     isNewAgent?: boolean;
 }
 
@@ -23,6 +22,8 @@ type Status = "initializing" | "ready" | "loading" | "error";
 interface StageInputProps {
     onQuestionSubmit?: (question: string) => void;
     onAnswer: (question: string, answer: string, suggestions: string[]) => void;
+    /** Called with each text delta as the answer streams in. */
+    onAnswerDelta?: (question: string, partialAnswer: string) => void;
     /** If true, hides the "Ready when you are..." message (e.g., when an answer is being displayed) */
     hasActiveConversation?: boolean;
     /** True while the agent is still initializing (show spinner + hint in Window). */
@@ -87,9 +88,28 @@ const INPUT_PLACEHOLDER = "Enter your question…";
 /** Keep the Window warmup hint visible at least this long, even on instant pool checkout. */
 const MIN_INIT_DISPLAY_MS = 8000;
 
+/** Throttle interval for streaming updates to avoid excessive re-renders. */
+const STREAM_THROTTLE_MS = 50;
+
+/** Splits accumulated streamed text into the visible answer and hidden metadata.
+ *  As soon as "\n\n{" appears, everything from that point is hidden — even
+ *  while the JSON is still being built char-by-char — so partial JSON never
+ *  flickers into the UI. */
+function splitVisibleAndMeta(fullText: string): {
+    visible: string;
+    hasMeta: boolean;
+} {
+    const idx = fullText.indexOf("\n\n{");
+    if (idx !== -1) {
+        return { visible: fullText.slice(0, idx).trim(), hasMeta: true };
+    }
+    return { visible: fullText, hasMeta: false };
+}
+
 export const StageInput: React.FC<StageInputProps> = ({
     onQuestionSubmit,
     onAnswer,
+    onAnswerDelta,
     hasActiveConversation = false,
     onWarmupLoadingChange,
     onAgentReadyChange,
@@ -230,6 +250,54 @@ export const StageInput: React.FC<StageInputProps> = ({
         inputRef.current?.focus();
     }, [status]);
 
+    /**
+     * Fall back to the buffered (non-streaming) endpoint on stream failure.
+     * This maintains compatibility and ensures reliability.
+     */
+    const sendMessageBuffered = useCallback(
+        async (text: string): Promise<void> => {
+            const response = await fetch("/api/ai/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    mode: "ask",
+                    agentId: agentIdRef.current,
+                    text,
+                    locale: getBrowserLocale(),
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData: ChatError = await response
+                    .json()
+                    .catch(() => ({
+                        error: "unknown",
+                        message: "Something went wrong.",
+                        retryable: true,
+                    }));
+                throw Object.assign(new Error(errorData.message), {
+                    retryable: errorData.retryable ?? true,
+                });
+            }
+
+            const data: ChatResponse = await response.json();
+
+            if (data.agentId) {
+                agentIdRef.current = data.agentId;
+                if (typeof window !== "undefined") {
+                    sessionStorage.setItem(STORAGE_KEY, data.agentId);
+                }
+            }
+
+            const capped = capSuggestions(data.suggestions || []);
+            setSuggestions(capped.length > 0 ? capped : DEFAULT_SUGGESTIONS);
+            setStatus("ready");
+            onAnswer(text, data.answer, data.suggestions || []);
+        },
+        [onAnswer],
+    );
+
+    /** Main streaming send. Falls back to buffered on any error. */
     const sendMessage = useCallback(
         async (text: string) => {
             if (!text.trim()) return;
@@ -240,57 +308,167 @@ export const StageInput: React.FC<StageInputProps> = ({
             setInputValue("");
 
             try {
-                const response = await fetch("/api/ai/chat", {
+                const response = await fetch("/api/ai/chat-stream", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        mode: "ask",
                         agentId: agentIdRef.current,
                         text,
                         locale: getBrowserLocale(),
                     }),
                 });
 
-                if (!response.ok) {
-                    const errorData: ChatError = await response
-                        .json()
-                        .catch(() => ({
-                            error: "unknown",
-                            message: "Something went wrong.",
-                            retryable: true,
-                        }));
-                    setErrorMessage(errorData.message);
-                    setErrorRetryable(errorData.retryable ?? true);
-                    setStatus("error");
-                    return;
+                if (!response.ok || !response.body) {
+                    // Stream endpoint unavailable — fall back to buffered
+                    return sendMessageBuffered(text);
                 }
 
-                const data: ChatResponse = await response.json();
+                // Set up SSE streaming reader
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = "";
+                let fullText = "";
+                let lastThrottle = 0;
+                // SSE state: accumulate event name + data across lines
+                let currentEventName = "";
+                let currentEventData = "";
 
-                if (data.agentId) {
-                    agentIdRef.current = data.agentId;
-                    if (typeof window !== "undefined") {
-                        sessionStorage.setItem(STORAGE_KEY, data.agentId);
+                // "done" or "fallback" signal from event dispatch
+                type DispatchSignal = "continue" | "done" | "fallback";
+
+                const dispatchEvent = (
+                    eventName: string,
+                    dataStr: string,
+                ): DispatchSignal => {
+                    let payload: Record<string, unknown>;
+                    try {
+                        payload = JSON.parse(dataStr);
+                    } catch {
+                        return "continue";
+                    }
+
+                    switch (eventName) {
+                        case "meta": {
+                            const agentId = payload.agentId as string;
+                            if (agentId) {
+                                agentIdRef.current = agentId;
+                                if (typeof window !== "undefined") {
+                                    sessionStorage.setItem(
+                                        STORAGE_KEY,
+                                        agentId,
+                                    );
+                                }
+                            }
+                            break;
+                        }
+
+                        case "delta": {
+                            const chunk = (payload.text as string) ?? "";
+                            fullText += chunk;
+                            const { visible } = splitVisibleAndMeta(fullText);
+                            const now = Date.now();
+                            if (now - lastThrottle >= STREAM_THROTTLE_MS) {
+                                lastThrottle = now;
+                                onAnswerDelta?.(text, visible);
+                            }
+                            break;
+                        }
+
+                        case "done": {
+                            const answer = (payload.answer as string) ?? "";
+                            // If the server returned an empty answer, something
+                            // went wrong upstream — fall back to buffered.
+                            if (!answer.trim()) {
+                                reader.releaseLock();
+                                return "fallback";
+                            }
+                            setStatus("ready");
+                            const suggestions =
+                                (payload.suggestions as string[]) || [];
+                            const capped = capSuggestions(suggestions);
+                            setSuggestions(
+                                capped.length > 0
+                                    ? capped
+                                    : DEFAULT_SUGGESTIONS,
+                            );
+                            onAnswer(text, answer, suggestions);
+                            reader.releaseLock();
+                            return "done";
+                        }
+
+                        case "error": {
+                            reader.releaseLock();
+                            if (payload.retryable !== false) {
+                                return "fallback";
+                            }
+                            throw Object.assign(
+                                new Error(
+                                    (payload.message as string) ||
+                                        "Stream error occurred",
+                                ),
+                                { retryable: false },
+                            );
+                        }
+                    }
+                    return "continue";
+                };
+
+                // eslint-disable-next-line no-constant-condition
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split("\n");
+                    buffer = lines.pop() ?? ""; // Keep incomplete line in buffer
+
+                    for (const line of lines) {
+                        if (line.startsWith("event: ")) {
+                            currentEventName = line.slice(7).trim();
+                        } else if (line.startsWith("data: ")) {
+                            currentEventData = line.slice(6);
+                        } else if (line === "") {
+                            // Blank line = end of SSE event block
+                            if (currentEventName && currentEventData) {
+                                const signal = dispatchEvent(
+                                    currentEventName,
+                                    currentEventData,
+                                );
+                                currentEventName = "";
+                                currentEventData = "";
+                                if (signal === "done") return;
+                                if (signal === "fallback")
+                                    return sendMessageBuffered(text);
+                            }
+                        }
                     }
                 }
 
-                const capped = capSuggestions(data.suggestions || []);
-                setSuggestions(
-                    capped.length > 0 ? capped : DEFAULT_SUGGESTIONS,
-                );
-                setStatus("ready");
-                onAnswer(text, data.answer, data.suggestions || []);
+                // Stream ended without a done event — try fallback
+                reader.releaseLock();
+                return sendMessageBuffered(text);
             } catch (error) {
+                // Any streaming failure falls back to buffered
+                if (
+                    error instanceof Error &&
+                    error.message?.includes("network")
+                ) {
+                    return sendMessageBuffered(text);
+                }
                 setErrorMessage(
                     error instanceof Error
                         ? error.message
                         : "An unexpected error occurred.",
                 );
-                setErrorRetryable(true);
+                setErrorRetryable(
+                    error && typeof error === "object" && "retryable" in error
+                        ? Boolean((error as { retryable?: boolean }).retryable)
+                        : true,
+                );
                 setStatus("error");
             }
         },
-        [onAnswer, onQuestionSubmit],
+        [onAnswer, onAnswerDelta, onQuestionSubmit, sendMessageBuffered],
     );
 
     // Entry point for every submission (form, Enter key, suggestion click). If
@@ -404,7 +582,7 @@ export const StageInput: React.FC<StageInputProps> = ({
     return (
         <div className={styles.container}>
             <ul className={styles.suggestions}>
-                {suggestions.map((suggestion, index) => (
+                {!isBusy && suggestions.map((suggestion, index) => (
                     <li
                         key={index}
                         className={cx(

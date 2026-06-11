@@ -81,21 +81,60 @@ function isRetryableHttp(status: number): boolean {
 }
 
 /**
- * Constraints prepended to every visitor-driven prompt.
+ * CRITICAL OUTPUT FORMAT - Overrides any other format instructions.
  *
- * Persona, tone, security, sources, and brevity all live in the agent repo
- * (loehx/homepage-agent: AGENTS.md + .cursor/rules/persona.mdc, applied on
- * every run). The only thing we re-assert here per turn is the JSON output
- * contract, since that's what this caller parses — see extractJsonFromResult.
+ * You MUST respond in this EXACT two-part format — nothing else:
+ *
+ * Part 1: The user-facing answer as plain markdown (no code fences).
+ *   - 1-6 short paragraphs
+ *   - Always italicize "Alex" as *Alex* (including possessives: *Alex*'s)
+ *   - This text is streamed live to the visitor
+ *
+ * Part 2: After ONE blank line, a single JSON object with ONLY suggestions:
+ *
+ *   {"suggestions":["...","..."]}
+ *
+ *   - suggestions: 2-4 items, max 60 chars each
+ *   - NOTHING after the JSON object
+ *   - NO prose before or after the JSON
+ *   - NO markdown code fence around the JSON
+ *
+ * EXAMPLE RESPONSE:
+ *
+ * *Alex* is a freelance developer specializing in Vue.js and React. He
+ * helps teams build fast, modern web applications.
+ *
+ * {"suggestions":["What does Alex do?","Book a free intro call?"]}
  */
 const USER_PROMPT_PREAMBLE = [
-    "[REPLY INSTRUCTIONS — apply now and to every future turn on this conversation]",
-    "Reply with EXACTLY ONE valid JSON object and nothing else — no prose before",
-    "or after it, no markdown code fence around it — matching this shape:",
-    '{ "answer": "<markdown>", "suggestions": ["...", "..."], "lang": "<iso>" }',
-    "All other behavior (persona, tone, security, allowed sources, brevity) is",
-    "defined in this repository's AGENTS.md and .cursor/rules/persona.mdc — follow",
-    "those exactly.",
+    "[CRITICAL REPLY INSTRUCTIONS — These override any other format rules]",
+    "",
+    "You MUST respond in this EXACT two-part format — nothing else:",
+    "",
+    "Part 1: The user-facing answer as plain markdown (no code fences).",
+    "- 1-6 short paragraphs",
+    "- Always italicize 'Alex' as *Alex* (including possessives: *Alex*'s)",
+    "- This text is streamed live to the visitor",
+    "",
+    "Part 2: After ONE blank line, a single JSON object with ONLY suggestions:",
+    "",
+    '  {"suggestions":["...","..."]}',
+    "",
+    "- suggestions: 2-4 items, max 60 chars each",
+    "- NOTHING after the JSON object",
+    "- NO prose before or after the JSON",
+    "- NO markdown code fence around the JSON",
+    "",
+    "EXAMPLE RESPONSE:",
+    "",
+    "*Alex* is a freelance developer specializing in Vue.js and React. He",
+    "helps teams build fast, modern web applications.",
+    "",
+    '{"suggestions":["What does Alex do?","Book a free intro call?"]}',
+    "",
+    "All other behavior (persona, tone, security, allowed sources, brevity)",
+    "follows your AGENTS.md and .cursor/rules/persona.mdc — but THIS format",
+    "is NON-NEGOTIABLE and takes precedence.",
     "",
 ].join("\n");
 
@@ -360,18 +399,79 @@ export async function createRunWithBusyRetry(
 export interface ParsedResponse {
     answer: string;
     suggestions: string[];
-    lang: string;
 }
 
-export function extractJsonFromResult(resultText: string): ParsedResponse {
-    // Strip an optional ```json ... ``` code fence, then extract the first
-    // JSON object found in the text.
-    const codeBlockMatch = resultText.match(/```json\s*([\s\S]*?)\s*```/);
-    const jsonText = codeBlockMatch ? codeBlockMatch[1] : resultText;
+export interface SplitMeta {
+    suggestions: string[];
+}
+
+/**
+ * Splits the full streamed text into the user-facing answer and metadata.
+ * Scans for the LAST occurrence of "\n\n{" — everything before is the answer,
+ * the JSON block after is the metadata. This is robust against braces inside
+ * the answer body.
+ *
+ * Falls back to the old full-JSON format for backward compatibility.
+ * If no JSON is found at all, returns the full text as the answer with empty suggestions.
+ */
+export function splitAnswerAndMeta(fullText: string): ParsedResponse {
+    const trimmed = fullText.trim();
+
+    // Find the LAST "\n\n{" to handle cases where the answer itself contains braces
+    let splitIndex = -1;
+    let searchFrom = trimmed.length;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const idx = trimmed.lastIndexOf("\n\n{", searchFrom);
+        if (idx === -1) break;
+        // Check if what follows is valid JSON
+        const jsonPart = trimmed.slice(idx + 2); // skip "\n\n"
+        try {
+            const parsed = JSON.parse(jsonPart);
+            if (parsed && typeof parsed === "object") {
+                splitIndex = idx;
+                break;
+            }
+        } catch {
+            // Not valid JSON, continue searching earlier
+            searchFrom = idx - 1;
+        }
+    }
+
+    if (splitIndex !== -1) {
+        const answer = trimmed.slice(0, splitIndex).trim();
+        const jsonText = trimmed.slice(splitIndex + 2);
+        try {
+            const meta: Partial<SplitMeta> = JSON.parse(jsonText);
+            return {
+                answer,
+                suggestions: Array.isArray(meta.suggestions)
+                    ? meta.suggestions.slice(0, 4).map(String)
+                    : [],
+            };
+        } catch {
+            // JSON parsing failed despite our check, fall through
+        }
+    }
+
+    // Backward compatibility: try parsing the entire text as the old format
+    // { "answer": "...", "suggestions": [...], "lang": "..." }
+    const codeBlockMatch = trimmed.match(/```json\s*([\s\S]*?)\s*```/);
+    const jsonText = codeBlockMatch ? codeBlockMatch[1] : trimmed;
 
     const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-        throw new CursorError("No JSON object found in response", 500, false);
+        // No JSON found at all - treat entire text as the answer
+        // This handles cases where the agent returns plain text without metadata
+        console.log(
+            "[ai-chat] No JSON metadata found, treating as plain text answer. " +
+                "Preview:",
+            trimmed.slice(0, 200),
+        );
+        return {
+            answer: trimmed,
+            suggestions: [],
+        };
     }
 
     try {
@@ -387,7 +487,6 @@ export function extractJsonFromResult(resultText: string): ParsedResponse {
         return {
             answer: parsed.answer,
             suggestions: parsed.suggestions.slice(0, 4).map(String),
-            lang: typeof parsed.lang === "string" ? parsed.lang : "de",
         };
     } catch (e) {
         throw new CursorError(
@@ -397,5 +496,213 @@ export function extractJsonFromResult(resultText: string): ParsedResponse {
             500,
             false,
         );
+    }
+}
+
+/**
+ * Legacy wrapper — delegates to splitAnswerAndMeta for backward compatibility.
+ * @deprecated Use splitAnswerAndMeta directly for new code.
+ */
+export function extractJsonFromResult(resultText: string): ParsedResponse {
+    return splitAnswerAndMeta(resultText);
+}
+
+/** SSE event types from Cursor's streaming endpoint */
+export type CursorStreamEvent =
+    | { type: "status"; runId: string; status: RunStatus }
+    | { type: "assistant"; text: string }
+    | { type: "thinking"; text: string }
+    | {
+          type: "tool_call";
+          callId: string;
+          name: string;
+          status: "running" | "completed";
+          args?: unknown;
+          result?: unknown;
+          truncated?: { args?: true; result?: true };
+      }
+    | {
+          type: "result";
+          runId: string;
+          status: RunStatus;
+          text?: string;
+          durationMs?: number;
+          git?: unknown;
+      }
+    | { type: "error"; code: string; message: string }
+    | { type: "done" }
+    | { type: "heartbeat" };
+
+/** Options for streamRun callback */
+export interface StreamRunCallbacks {
+    onEvent: (event: CursorStreamEvent) => void | Promise<void>;
+    onError?: (error: Error) => void;
+}
+
+/**
+ * Streams a run from the Cursor Cloud Agents API using Server-Sent Events.
+ * Reads from GET /v1/agents/{agentId}/runs/{runId}/stream and dispatches
+ * events via the callbacks.
+ *
+ * The stream emits:
+ * - status: run status updates
+ * - assistant: text deltas (the answer being generated)
+ * - thinking: thinking deltas (optional)
+ * - tool_call: tool execution updates
+ * - result: terminal run status with final text
+ * - done: stream complete
+ * - error: stream error
+ */
+export async function streamRun(
+    agentId: string,
+    runId: string,
+    callbacks: StreamRunCallbacks,
+): Promise<void> {
+    const apiKey = getApiKey();
+    const url = `${CURSOR_API_BASE}/agents/${agentId}/runs/${runId}/stream`;
+
+    const response = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            Accept: "text/event-stream",
+        },
+    });
+
+    if (!response.ok) {
+        throw new CursorError(
+            `Failed to start stream: ${response.status} ${response.statusText}`,
+            response.status,
+            isRetryableHttp(response.status),
+        );
+    }
+
+    if (!response.body) {
+        throw new CursorError("No response body from stream", 500, false);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    // SSE parsing state
+    let buffer = "";
+    let currentEvent: { event?: string; id?: string; data?: string } = {};
+
+    try {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            // Keep the last incomplete line in buffer
+            buffer = lines.pop() ?? "";
+
+            for (const line of lines) {
+                if (line.startsWith("event: ")) {
+                    currentEvent.event = line.slice(7);
+                } else if (line.startsWith("id: ")) {
+                    currentEvent.id = line.slice(4);
+                } else if (line.startsWith("data: ")) {
+                    currentEvent.data = line.slice(6);
+                } else if (line === "" && currentEvent.data !== undefined) {
+                    // Dispatch the complete event
+                    console.log("[streamRun] raw SSE event:", JSON.stringify(currentEvent));
+                    const event = parseSseEvent(
+                        currentEvent.event ?? "message",
+                        currentEvent.data,
+                    );
+                    await callbacks.onEvent(event);
+                    currentEvent = {};
+                }
+            }
+        }
+
+        // Process any remaining data in buffer
+        if (buffer.trim()) {
+            const lines = buffer.split("\n");
+            for (const line of lines) {
+                if (line.startsWith("event: ")) {
+                    currentEvent.event = line.slice(7);
+                } else if (line.startsWith("id: ")) {
+                    currentEvent.id = line.slice(4);
+                } else if (line.startsWith("data: ")) {
+                    currentEvent.data = line.slice(6);
+                } else if (line === "" && currentEvent.data !== undefined) {
+                    const event = parseSseEvent(
+                        currentEvent.event ?? "message",
+                        currentEvent.data,
+                    );
+                    await callbacks.onEvent(event);
+                    currentEvent = {};
+                }
+            }
+        }
+    } catch (error) {
+        callbacks.onError?.(
+            error instanceof Error ? error : new Error(String(error)),
+        );
+        throw error;
+    } finally {
+        reader.releaseLock();
+    }
+}
+
+function parseSseEvent(eventName: string, data: string): CursorStreamEvent {
+    switch (eventName) {
+        case "status": {
+            const parsed = JSON.parse(data);
+            return {
+                type: "status",
+                runId: parsed.runId,
+                status: parsed.status as RunStatus,
+            };
+        }
+        case "assistant": {
+            const parsed = JSON.parse(data);
+            return { type: "assistant", text: parsed.text ?? "" };
+        }
+        case "thinking": {
+            const parsed = JSON.parse(data);
+            return { type: "thinking", text: parsed.text ?? "" };
+        }
+        case "tool_call": {
+            const parsed = JSON.parse(data);
+            return {
+                type: "tool_call",
+                callId: parsed.callId,
+                name: parsed.name,
+                status: parsed.status,
+                args: parsed.args,
+                result: parsed.result,
+                truncated: parsed.truncated,
+            };
+        }
+        case "result": {
+            const parsed = JSON.parse(data);
+            return {
+                type: "result",
+                runId: parsed.runId,
+                status: parsed.status as RunStatus,
+                text: parsed.text,
+                durationMs: parsed.durationMs,
+                git: parsed.git,
+            };
+        }
+        case "error": {
+            const parsed = JSON.parse(data);
+            return {
+                type: "error",
+                code: parsed.code,
+                message: parsed.message,
+            };
+        }
+        case "done":
+            return { type: "done" };
+        case "heartbeat":
+            return { type: "heartbeat" };
+        default:
+            // Unknown event type (e.g. interaction_update) — ignore safely
+            return { type: "heartbeat" };
     }
 }

@@ -102,6 +102,7 @@ export async function checkoutIdleAgent(): Promise<string | null> {
     const redis = getRedis();
 
     // Skip any used IDs that should not be in the idle list (defensive).
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         const agentId = await redis.lpop<string>(POOL_IDLE_KEY);
         if (!agentId) {
